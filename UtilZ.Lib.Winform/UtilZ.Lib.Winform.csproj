@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DB3EA23F-790C-454A-AADF-D75CE5E964F4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Lib.Winform</RootNamespace>
+    <AssemblyName>UtilZ.Lib.Winform</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\IUIAction.cs" />
+    <Compile Include="Base\MouseActionArgs.cs" />
+    <Compile Include="Base\MouseActionType.cs" />
+    <Compile Include="DropdownBox\DropdownBoxHelper.cs" />
+    <Compile Include="DropdownBox\_ComboBox.cs" />
+    <Compile Include="DropdownBox\_ToolStripComboBox.cs" />
+    <Compile Include="Extend\NExtendWinfromControl.cs" />
+    <Compile Include="Extend\WinformNativeApi.cs" />
+    <Compile Include="NExtendProcess.cs" />
+    <Compile Include="NExtendScrollableControl.cs" />
+    <Compile Include="NExtendTreeView.cs" />
+    <Compile Include="NoneBorderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OpacityPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OriginalDataShow\IOriginalDataShow.cs" />
+    <Compile Include="OriginalDataShow\OriginalDataShowType.cs" />
+    <Compile Include="OriginalDataShow\OriginalDataShowTypeCollection.cs" />
+    <Compile Include="PartAsynWait\Interface\IPartAsynWaitWinform.cs" />
+    <Compile Include="PartAsynWait\PartAsynExcuteFactoryWinform.cs" />
+    <Compile Include="PartAsynWait\PartAsynWaitHelper.cs" />
+    <Compile Include="PartAsynWait\V1\MetroShadeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PartAsynWait\V1\MetroShadeControl.designer.cs">
+      <DependentUpon>MetroShadeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PartAsynWait\V1\WinformPartAsynExcuteV1.cs" />
+    <Compile Include="PartAsynWait\V2\UCMetroShadeControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PartAsynWait\V2\UCMetroShadeControl2.Designer.cs">
+      <DependentUpon>UCMetroShadeControl2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PartAsynWait\V2\WinformPartAsynExcute2.cs" />
+    <Compile Include="PartAsynWait\V3\UCMetroShadeControl3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PartAsynWait\V3\UCMetroShadeControl3.Designer.cs">
+      <DependentUpon>UCMetroShadeControl3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PartAsynWait\V3\WinformPartAsynExcute3.cs" />
+    <Compile Include="PartAsynWait\V4\UCMetroShadeControl4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PartAsynWait\V4\UCMetroShadeControl4.Designer.cs">
+      <DependentUpon>UCMetroShadeControl4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PartAsynWait\V4\WinformPartAsynExcute4.cs" />
+    <Compile Include="PartAsynWait\V5\ShadeControl5.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PartAsynWait\V5\WinformPartAsynExcute5.cs" />
+    <Compile Include="PartAsynWait\WinformPartAsynExcuteBase.cs" />
+    <Compile Include="PartAsynWait\WinformPartAsynExcuteHelper.cs" />
+    <Compile Include="PartAsynWait\WinformPartAsynExcuteTypeDefine.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyGrid\IPropertyGridDirectory.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridDropDown.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridFile.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridPassword.cs" />
+    <Compile Include="PropertyGrid\ModelDemo.cs" />
+    <Compile Include="PropertyGrid\PropertyGridAttribute.cs" />
+    <Compile Include="PropertyGrid\PropertyGridCustomEditor.cs" />
+    <Compile Include="PropertyGrid\PropertyGridDirectoryEditor.cs" />
+    <Compile Include="PropertyGrid\PropertyGridDropDownListConverter.cs" />
+    <Compile Include="PropertyGrid\PropertyGridEnumControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyGrid\PropertyGridEnumControl.Designer.cs">
+      <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyGrid\PropertyGridEnumConverter.cs" />
+    <Compile Include="PropertyGrid\PropertyGridFileEditor.cs" />
+    <Compile Include="PropertyGrid\PropertyGridHelper.cs" />
+    <Compile Include="PropertyGrid\PropertyGridPasswordConverter.cs" />
+    <Compile Include="PropertyGrid\PropertyValueVerifyBase.cs" />
+    <Compile Include="UCOpacityControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wav\FFTConvertor.cs" />
+    <Compile Include="Wav\WaveHelper.cs" />
+    <Compile Include="Wav\WaveInfo.cs" />
+    <Compile Include="WinformInterface\IControl.cs" />
+    <Compile Include="WinformInterface\IForm.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Lib.Base\UtilZ.Lib.Base.csproj">
+      <Project>{6841d072-6023-4f8c-9b72-8e4db9d371f2}</Project>
+      <Name>UtilZ.Lib.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PartAsynWait\V1\MetroShadeControl.resx">
+      <DependentUpon>MetroShadeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PartAsynWait\V2\UCMetroShadeControl2.resx">
+      <DependentUpon>UCMetroShadeControl2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PartAsynWait\V3\UCMetroShadeControl3.resx">
+      <DependentUpon>UCMetroShadeControl3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PartAsynWait\V4\UCMetroShadeControl4.resx">
+      <DependentUpon>UCMetroShadeControl4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyGrid\PropertyGridEnumControl.resx">
+      <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\LoadWait.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

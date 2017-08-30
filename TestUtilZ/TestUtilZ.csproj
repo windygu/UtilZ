@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D11B500B-7581-4B6D-B6C1-C9E18DEA941B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TestUtilZ</RootNamespace>
+    <AssemblyName>TestUtilZ</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTestNoneBorderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTestNoneBorderForm.designer.cs">
+      <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FTestNoneBorderForm.resx">
+      <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Lib.BaseEx\UtilZ.Lib.BaseEx.csproj">
+      <Project>{914f2fba-d23d-4400-8196-23e822a5efe7}</Project>
+      <Name>UtilZ.Lib.BaseEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.Base\UtilZ.Lib.Base.csproj">
+      <Project>{6841d072-6023-4f8c-9b72-8e4db9d371f2}</Project>
+      <Name>UtilZ.Lib.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.Wav\UtilZ.Lib.Wav.csproj">
+      <Project>{ff512b18-8ed0-45a1-b973-84848a82252f}</Project>
+      <Name>UtilZ.Lib.Wav</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.WinformEx\UtilZ.Lib.WinformEx.csproj">
+      <Project>{2fbc519b-4d32-4a01-ad80-4e58ed161a24}</Project>
+      <Name>UtilZ.Lib.WinformEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.Winform\UtilZ.Lib.Winform.csproj">
+      <Project>{db3ea23f-790c-454a-aadf-d75ce5e964f4}</Project>
+      <Name>UtilZ.Lib.Winform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
