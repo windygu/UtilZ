@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Lib.Base.NLog.LogRecorderInterface
+namespace UtilZ.Lib.Base.Log.LogRecorderInterface
 {
     /// <summary>
     /// 自动生成日志扩展信息

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog
+namespace UtilZ.Lib.Base.Log
 {
     /// <summary>
     /// 日志系统内部日志输出类

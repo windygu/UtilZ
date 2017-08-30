@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.LogOutput
+namespace UtilZ.Lib.Base.Log.LogOutput
 {
     /// <summary>
     /// 输出日志订阅项

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
-namespace UtilZ.Lib.Base.NLog.Model
+namespace UtilZ.Lib.Base.Log.Model
 {
     /// <summary>
     /// 日志信息类

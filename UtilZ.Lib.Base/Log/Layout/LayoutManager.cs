@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Interface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config.Interface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.Layout
+namespace UtilZ.Lib.Base.Log.Layout
 {
     /// <summary>
     /// 布局管理器

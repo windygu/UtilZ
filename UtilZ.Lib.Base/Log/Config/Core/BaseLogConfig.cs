@@ -4,11 +4,11 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using UtilZ.Lib.Base.NLog.Config;
-using UtilZ.Lib.Base.NLog.Model;
-using UtilZ.Lib.Base.NLog.Config.Interface;
+using UtilZ.Lib.Base.Log.Config;
+using UtilZ.Lib.Base.Log.Model;
+using UtilZ.Lib.Base.Log.Config.Interface;
 
-namespace UtilZ.Lib.Base.NLog.Config.Core
+namespace UtilZ.Lib.Base.Log.Config.Core
 {
     /// <summary>
     /// 日志基础配置类

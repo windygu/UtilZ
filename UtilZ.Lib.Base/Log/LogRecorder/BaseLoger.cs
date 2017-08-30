@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Interface;
-using UtilZ.Lib.Base.NLog.LogRecorderInterface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config.Interface;
+using UtilZ.Lib.Base.Log.LogRecorderInterface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.LogRecorder
+namespace UtilZ.Lib.Base.Log.LogRecorder
 {
     /// <summary>
     /// 日志接口蕨类
@@ -47,7 +47,7 @@ namespace UtilZ.Lib.Base.NLog.LogRecorder
         /// <param name="logItem">日志项</param>
         protected void OutputLog(string logRecorderName, LogItem logItem)
         {
-            UtilZ.Lib.Base.NLog.LogOutput.LogOutputCenter.Instance.AddOutputLog(logRecorderName, logItem);
+            UtilZ.Lib.Base.Log.LogOutput.LogOutputCenter.Instance.AddOutputLog(logRecorderName, logItem);
         }
 
         #region 记录日志方法

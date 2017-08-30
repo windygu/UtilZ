@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Lib.Base.NLog.LogRecorder;
-using UtilZ.Lib.Base.NLog.LogRecorderInterface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.LogRecorder;
+using UtilZ.Lib.Base.Log.LogRecorderInterface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.Core
+namespace UtilZ.Lib.Base.Log.Core
 {
     /// <summary>
     /// 空日志,记录日志

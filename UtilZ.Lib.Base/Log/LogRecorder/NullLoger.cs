@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Framework;
-using UtilZ.Lib.Base.NLog.Config.Interface;
-using UtilZ.Lib.Base.NLog.LogRecorderInterface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config.Framework;
+using UtilZ.Lib.Base.Log.Config.Interface;
+using UtilZ.Lib.Base.Log.LogRecorderInterface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.LogRecorder
+namespace UtilZ.Lib.Base.Log.LogRecorder
 {
     /// <summary>
     /// 空日志记录器

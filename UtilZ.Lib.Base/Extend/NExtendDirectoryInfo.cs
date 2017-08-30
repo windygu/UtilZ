@@ -1,4 +1,4 @@
-﻿using UtilZ.Lib.Base.NLog;
+﻿using UtilZ.Lib.Base.Log;
 using System;
 using System.Collections.Generic;
 using System.IO;

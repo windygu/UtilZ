@@ -5,7 +5,7 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
-using UtilZ.Lib.Base.NLog;
+using UtilZ.Lib.Base.Log;
 
 namespace UtilZ.Lib.Winform.PropertyGrid
 {

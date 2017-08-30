@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Core;
-using UtilZ.Lib.Base.NLog.Config.Interface;
+using UtilZ.Lib.Base.Log.Config.Core;
+using UtilZ.Lib.Base.Log.Config.Interface;
 
-namespace UtilZ.Lib.Base.NLog.Config.Framework
+namespace UtilZ.Lib.Base.Log.Config.Framework
 {
     /// <summary>
     /// 邮件配置节点元素

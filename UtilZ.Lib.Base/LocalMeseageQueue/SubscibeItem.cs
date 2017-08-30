@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog;
+using UtilZ.Lib.Base.Log;
 
 namespace UtilZ.Lib.Base.LocalMeseageQueue
 {

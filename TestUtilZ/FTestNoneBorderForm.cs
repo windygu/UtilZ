@@ -15,6 +15,7 @@ namespace TestUtilZ
         public FTestNoneBorderForm()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void FTestNoneBorderForm_Load(object sender, EventArgs e)

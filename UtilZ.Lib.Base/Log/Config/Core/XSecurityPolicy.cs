@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Interface;
+using UtilZ.Lib.Base.Log.Config.Interface;
 
-namespace UtilZ.Lib.Base.NLog.Config.Core
+namespace UtilZ.Lib.Base.Log.Config.Core
 {
     /// <summary>
     /// X日志安全策略类

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UtilZ.Lib.Base.NLog.Config.Framework;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config.Framework;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.Config.Core
+namespace UtilZ.Lib.Base.Log.Config.Core
 {
     /// <summary>
     /// 日志配置节类

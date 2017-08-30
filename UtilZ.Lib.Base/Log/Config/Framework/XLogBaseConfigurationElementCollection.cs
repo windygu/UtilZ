@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Core;
+using UtilZ.Lib.Base.Log.Config.Core;
 
-namespace UtilZ.Lib.Base.NLog.Config.Framework
+namespace UtilZ.Lib.Base.Log.Config.Framework
 {
     /// <summary>
     /// 元素集合基础配置类

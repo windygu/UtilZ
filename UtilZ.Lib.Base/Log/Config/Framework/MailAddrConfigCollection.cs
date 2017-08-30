@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Lib.Base.NLog.Config.Framework
+namespace UtilZ.Lib.Base.Log.Config.Framework
 {
     /// <summary>
     /// 邮件地址配置集合

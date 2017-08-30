@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config;
-using UtilZ.Lib.Base.NLog.Config.Interface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config;
+using UtilZ.Lib.Base.Log.Config.Interface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.LogRecorderInterface
+namespace UtilZ.Lib.Base.Log.LogRecorderInterface
 {
     /// <summary>
     /// 日志记录器接口

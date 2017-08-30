@@ -10,13 +10,13 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UtilZ.Lib.Base.NLog.Config;
-using UtilZ.Lib.Base.NLog.Config.Core;
-using UtilZ.Lib.Base.NLog.Config.Framework;
-using UtilZ.Lib.Base.NLog.Config.Interface;
-using UtilZ.Lib.Base.NLog.LogRecorder;
-using UtilZ.Lib.Base.NLog.LogRecorderInterface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config;
+using UtilZ.Lib.Base.Log.Config.Core;
+using UtilZ.Lib.Base.Log.Config.Framework;
+using UtilZ.Lib.Base.Log.Config.Interface;
+using UtilZ.Lib.Base.Log.LogRecorder;
+using UtilZ.Lib.Base.Log.LogRecorderInterface;
+using UtilZ.Lib.Base.Log.Model;
 
 ////////////////////////////////////////////////////////////////////
 //                          _ooOoo_                               //
@@ -41,7 +41,7 @@ using UtilZ.Lib.Base.NLog.Model;
 //         佛祖保佑       永无BUG     永不修改                    //
 ////////////////////////////////////////////////////////////////////
 
-namespace UtilZ.Lib.Base.NLog.Core
+namespace UtilZ.Lib.Base.Log.Core
 {
     /// <summary>
     /// 内部Log

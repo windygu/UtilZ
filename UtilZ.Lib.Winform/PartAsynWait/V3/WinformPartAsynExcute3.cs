@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using UtilZ.Lib.Base.NLog;
+using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Base.PartAsynWait.Model;
 
 namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V3

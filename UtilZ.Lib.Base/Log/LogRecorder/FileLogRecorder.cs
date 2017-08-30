@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Lib.Base.NLog;
-using UtilZ.Lib.Base.NLog.Config;
-using UtilZ.Lib.Base.NLog.Config.Interface;
-using UtilZ.Lib.Base.NLog.Layout;
-using UtilZ.Lib.Base.NLog.LogRecorderInterface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log;
+using UtilZ.Lib.Base.Log.Config;
+using UtilZ.Lib.Base.Log.Config.Interface;
+using UtilZ.Lib.Base.Log.Layout;
+using UtilZ.Lib.Base.Log.LogRecorderInterface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.LogRecorder
+namespace UtilZ.Lib.Base.Log.LogRecorder
 {
     /// <summary>
     /// 文件日志记录器

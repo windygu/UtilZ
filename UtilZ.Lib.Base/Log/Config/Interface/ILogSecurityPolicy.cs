@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Lib.Base.NLog.Config.Interface
+namespace UtilZ.Lib.Base.Log.Config.Interface
 {
     /// <summary>
     /// 日志安全策略接口

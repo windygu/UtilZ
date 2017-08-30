@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Lib.Base.NLog;
+using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Base.Threading;
 
 namespace UtilZ.Lib.Base.DataStruct

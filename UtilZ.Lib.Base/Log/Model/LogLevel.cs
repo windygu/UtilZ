@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Lib.Base.NLog.Model
+namespace UtilZ.Lib.Base.Log.Model
 {
     /// <summary>
     /// 日志级别[1-5,值越大;优先级:Faltal(5)>Error(4)>Warn(3)>Info(2)>Debug(1)]

@@ -5,9 +5,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog.LogOutput
+namespace UtilZ.Lib.Base.Log.LogOutput
 {
     /// <summary>
     /// 日志输出中心

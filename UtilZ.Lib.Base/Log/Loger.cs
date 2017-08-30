@@ -6,15 +6,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Lib.Base.NLog.Config;
-using UtilZ.Lib.Base.NLog.Config.Core;
-using UtilZ.Lib.Base.NLog.Core;
-using UtilZ.Lib.Base.NLog.Layout;
-using UtilZ.Lib.Base.NLog.LogOutput;
-using UtilZ.Lib.Base.NLog.LogRecorderInterface;
-using UtilZ.Lib.Base.NLog.Model;
+using UtilZ.Lib.Base.Log.Config;
+using UtilZ.Lib.Base.Log.Config.Core;
+using UtilZ.Lib.Base.Log.Core;
+using UtilZ.Lib.Base.Log.Layout;
+using UtilZ.Lib.Base.Log.LogOutput;
+using UtilZ.Lib.Base.Log.LogRecorderInterface;
+using UtilZ.Lib.Base.Log.Model;
 
-namespace UtilZ.Lib.Base.NLog
+namespace UtilZ.Lib.Base.Log
 {
     /// <summary>
     /// 日志记录器
@@ -241,10 +241,10 @@ namespace UtilZ.Lib.Base.NLog
         {
             var logConfig = new LogConfigSection();
             logConfig.LogRecorderType = typeof(XLog).AssemblyQualifiedName;
-            logConfig.Level = UtilZ.Lib.Base.NLog.Model.LogLevel.Debug;
+            logConfig.Level = UtilZ.Lib.Base.Log.Model.LogLevel.Debug;
             logConfig.ConfigFilePath = null;
 
-            var defaultFileLog = new UtilZ.Lib.Base.NLog.Config.Framework.FileLogConfigElement();
+            var defaultFileLog = new UtilZ.Lib.Base.Log.Config.Framework.FileLogConfigElement();
             defaultFileLog.Name = LogConstant.DefaultLogRecorderName;
             defaultFileLog.Days = 7;
             //defaultFileLog.Layout = string.Format("%d {0} 线程:{1} 事件ID:{2} 信息:{3} 位置:{4}",

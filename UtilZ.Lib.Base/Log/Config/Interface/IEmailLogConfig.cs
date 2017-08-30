@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.NLog.Config.Framework;
+using UtilZ.Lib.Base.Log.Config.Framework;
 
-namespace UtilZ.Lib.Base.NLog.Config.Interface
+namespace UtilZ.Lib.Base.Log.Config.Interface
 {
     /// <summary>
     /// 邮件日志配置接口

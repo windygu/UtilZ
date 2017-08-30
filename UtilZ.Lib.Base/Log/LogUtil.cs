@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace UtilZ.Lib.Base.NLog
+namespace UtilZ.Lib.Base.Log
 {
     /// <summary>
     /// 日志操作公共类
