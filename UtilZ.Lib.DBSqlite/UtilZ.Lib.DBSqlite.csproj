@@ -32,7 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,7 +46,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Core\SQLiteDBAccess.cs" />
+    <Compile Include="Core\SQLiteDBAccess_DBInfo.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Delete.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Insert.cs" />
+    <Compile Include="Core\SQLiteDBAccess_ISQLiteDBAccessBase.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Query.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Update.cs" />
+    <Compile Include="Core\SQLiteDBFactory.cs" />
+    <Compile Include="Core\SQLiteInteraction.cs" />
+    <Compile Include="Interface\ISQLiteDBAccessBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Write\DBPersistenceCollection.cs" />
+    <Compile Include="Write\DBPersistenceGroup.cs" />
+    <Compile Include="Write\SQLiteDelete.cs" />
+    <Compile Include="Write\SQLiteDeleteT.cs" />
+    <Compile Include="Write\SQLiteExcuteStoredProcedure.cs" />
+    <Compile Include="Write\SQLiteExecuteNonQuery.cs" />
+    <Compile Include="Write\SQLiteExecuteScalar.cs" />
+    <Compile Include="Write\SQLiteInsert.cs" />
+    <Compile Include="Write\SQLiteInsertT.cs" />
+    <Compile Include="Write\SQLiteTransaction.cs" />
+    <Compile Include="Write\SQLiteUpdate.cs" />
+    <Compile Include="Write\SQLiteUpdateT.cs" />
+    <Compile Include="Write\SQLiteWriteBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UtilZ.Lib.Base\UtilZ.Lib.Base.csproj">
@@ -56,6 +84,19 @@
       <Project>{90c54f62-0d89-4cee-a830-820b247bf712}</Project>
       <Name>UtilZ.Lib.DBModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\SQLite.Designer.dll" />
+    <Content Include="Lib\System.Data.SQLite.dll" />
+    <Content Include="Lib\System.Data.SQLite.EF6.dll" />
+    <Content Include="Lib\System.Data.SQLite.Linq.dll" />
+    <Content Include="Lib\System.Data.SQLite.xml" />
+    <None Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -53,7 +53,7 @@ namespace UtilZ.Lib.DBBase.Core
                 else
                 {
                     dbAccess = DBFactoryManager.GetDBFactory(dbid).GetDBAccess(dbid);
-                    dbAccess.InitConPool();
+                    dbAccess.Init();
                     bool ret = NExtendUtil.Add<int, IDBAccess>(_dicDBAccess, dbid, dbAccess, DBConstant.AddConcurrentDictionaryRepatCount);
                     if (!ret)
                     {

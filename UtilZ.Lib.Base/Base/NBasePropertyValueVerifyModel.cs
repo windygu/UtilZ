@@ -9,8 +9,16 @@ namespace UtilZ.Lib.Base
     /// 属性验证模型基类
     /// </summary>
     [Serializable]
-    public class NBasePropertyValueVerifyModel : NBaseModel, IPropertyValueVerify
+    public abstract class NBasePropertyValueVerifyModel : NBaseModel, IPropertyValueVerify
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public NBasePropertyValueVerifyModel()
+        {
+
+        }
+
         #region IPropertyValueVerify接口
         /// <summary>
         /// 属性值有效性验证结果通知事件

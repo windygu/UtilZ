@@ -38,7 +38,7 @@ namespace UtilZ.Lib.DBBase.Interface
         /// <summary>
         /// 初始化读写连接池
         /// </summary>
-        void InitConPool();
+        void Init();
 
         #region ADO.NET执行原子操作方法
         /// <summary>

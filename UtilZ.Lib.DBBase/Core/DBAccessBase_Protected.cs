@@ -44,7 +44,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <summary>
         /// 初始化读写连接池
         /// </summary>
-        public virtual void InitConPool()
+        public virtual void Init()
         {
             if (this._isInitReadWriteConPool)
             {
@@ -104,8 +104,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="tableName">表名</param>
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
-        /// <param name="con">数据库连接对象</param>
-        protected void ValidateBatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data, IDbConnection con)
+        protected void ValidateBatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
         {
             if (string.IsNullOrEmpty(tableName))
             {

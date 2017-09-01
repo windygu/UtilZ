@@ -104,7 +104,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid
                         }
 
                         string displayPropertyName = ipropertyGridDropDownList.GetPropertyGridDisplayName(context.PropertyDescriptor.Name);
-                        if (string.IsNullOrEmpty(displayPropertyName))
+                        if (string.IsNullOrEmpty(displayPropertyName) || TypeCode.String == Type.GetTypeCode(instanceType))
                         {
                             //如果显示属性名称为空或null则直接用原始数据作比较,比如:字符串集合
                             foreach (var item in collection)

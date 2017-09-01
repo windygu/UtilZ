@@ -307,21 +307,21 @@ namespace UtilZ.Lib.DBModel.Config
             }
         }
 
-        ///// <summary>
-        ///// 扩展参数
-        ///// </summary>
-        //[ConfigurationProperty(ExtendPropertyName, DefaultValue = null, IsRequired = false)]
-        //public string Extend
-        //{
-        //    get
-        //    {
-        //        return Convert.ToString(this[ExtendPropertyName]);
-        //    }
-        //    set
-        //    {
-        //        this[ExtendPropertyName] = value;
-        //    }
-        //}
+        /// <summary>
+        /// 扩展参数
+        /// </summary>
+        [ConfigurationProperty(ExtendPropertyName, DefaultValue = null, IsRequired = false)]
+        public string Extend
+        {
+            get
+            {
+                return Convert.ToString(this[ExtendPropertyName]);
+            }
+            set
+            {
+                this[ExtendPropertyName] = value;
+            }
+        }
 
         /// <summary>
         /// 数据库写连接数,小于1为不限制

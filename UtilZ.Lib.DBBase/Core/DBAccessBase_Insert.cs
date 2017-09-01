@@ -197,7 +197,7 @@ namespace UtilZ.Lib.DBBase.Core
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
                 //验证批量插入数据参数
-                this.ValidateBatchInsert(tableName, cols, data, conInfo.Con);
+                this.ValidateBatchInsert(tableName, cols, data);
 
                 using (IDbTransaction transaction = conInfo.Con.BeginTransaction())
                 {
