@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms.Design;
 
-namespace UtilZ.Lib.Winform.PropertyGrid.UITypeEditors
+namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 {
     /// <summary>
     /// 属性表格枚举自定义编辑器

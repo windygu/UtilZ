@@ -10,7 +10,7 @@ using UtilZ.Lib.Base;
 using UtilZ.Lib.Base.Extend;
 using UtilZ.Lib.Winform.DropdownBox;
 
-namespace UtilZ.Lib.Winform.PropertyGrid
+namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 {
     /// <summary>
     /// 属性表格枚举编辑控件

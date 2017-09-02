@@ -52,7 +52,15 @@ namespace UtilZ.Lib.Winform.PropertyGrid.UITypeEditors
                     {
                         IPropertyGridFile ipropertyGridFile = (IPropertyGridFile)context.Instance;
                         string extension = ipropertyGridFile.GetFileExtension(context.PropertyDescriptor.Name);
-                        dialog.Filter = string.Format("*{0}文件|*{1}", extension, extension);
+                        if (string.IsNullOrWhiteSpace(extension))
+                        {
+                            dialog.Filter = "*所有文件|*.*";
+                        }
+                        else
+                        {
+                            dialog.Filter = string.Format("*{0}文件|*{1}", extension, extension);
+                        }
+
                         dialog.FileName = ipropertyGridFile.GetFileName(context.PropertyDescriptor.Name);
                         if (string.IsNullOrEmpty(dialog.FileName))
                         {

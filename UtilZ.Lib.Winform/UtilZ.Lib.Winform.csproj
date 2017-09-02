@@ -117,7 +117,6 @@
     <Compile Include="PropertyGrid\Demo\PersonConverter.cs" />
     <Compile Include="PropertyGrid\Demo\PostureCommon.cs" />
     <Compile Include="PropertyGrid\Demo\SexEnum.cs" />
-    <Compile Include="PropertyGrid\TypeConverters\PropertyGridCustomConverter.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridDirectory.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridDropDown.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridFile.cs" />
@@ -125,19 +124,17 @@
     <Compile Include="PropertyGrid\Base\PropertyGridAttribute.cs" />
     <Compile Include="PropertyGrid\TypeConverters\PropertyGridDropdownConverter.cs" />
     <Compile Include="PropertyGrid\UITypeEditors\PropertyGridDirectoryEditor.cs" />
-    <Compile Include="PropertyGrid\TypeConverters\PropertyGridDropDownListConverter.cs" />
-    <Compile Include="PropertyGrid\PropertyGridEnumControl.cs">
+    <Compile Include="PropertyGrid\Demo\PropertyGridEnumControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PropertyGrid\PropertyGridEnumControl.Designer.cs">
+    <Compile Include="PropertyGrid\Demo\PropertyGridEnumControl.Designer.cs">
       <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropertyGrid\TypeConverters\PropertyGridEnumConverter.cs" />
     <Compile Include="PropertyGrid\UITypeEditors\PropertyGridFileEditor.cs" />
     <Compile Include="PropertyGrid\PropertyGridHelper.cs" />
     <Compile Include="PropertyGrid\TypeConverters\PropertyGridPasswordConverter.cs" />
     <Compile Include="PropertyGrid\Base\PropertyValueVerifyBase.cs" />
-    <Compile Include="PropertyGrid\UITypeEditors\PropertyGridCustomEnumEditor.cs" />
+    <Compile Include="PropertyGrid\Demo\PropertyGridCustomEnumEditor.cs" />
     <Compile Include="UCOpacityControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -170,7 +167,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropertyGrid\PropertyGridEnumControl.resx">
+    <EmbeddedResource Include="PropertyGrid\Demo\PropertyGridEnumControl.resx">
       <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

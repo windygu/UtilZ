@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Winform.PropertyGrid.Interface;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
@@ -26,7 +27,15 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>如果应调用 GetStandardValues 来查找对象支持的一组公共值，则为 true；否则，为 false</returns>
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
-            return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
+            try
+            {
+                return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                return false;
+            }
         }
 
         /// <summary>
@@ -36,23 +45,32 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>包含标准有效值集的 TypeConverter.StandardValuesCollection；如果数据类型不支持标准值集，则为null</returns>
         public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            if (context.PropertyDescriptor.PropertyType.IsEnum)
+            try
             {
-                List<DropdownBindingItem> dbiItems = EnumHelper.GetNDisplayNameAttributeDisplayNameBindingItems(context.PropertyDescriptor.PropertyType);
-                var enumItems = (from item in dbiItems select item.Value).ToArray();
-                return new StandardValuesCollection(enumItems);
-            }
-            else
-            {
-                if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null && context.Instance != null)
+                if (context.PropertyDescriptor.PropertyType.IsEnum)
                 {
-                    System.Collections.ICollection collection = ((IPropertyGridDropDown)context.Instance).GetPropertyGridDropDownItems(context.PropertyDescriptor.Name);
-                    if (collection != null)
-                    {
-                        return new StandardValuesCollection(collection);
-                    }
+                    List<DropdownBindingItem> dbiItems = EnumHelper.GetNDisplayNameAttributeDisplayNameBindingItems(context.PropertyDescriptor.PropertyType);
+                    var enumItems = (from item in dbiItems select item.Value).ToArray();
+                    return new StandardValuesCollection(enumItems);
                 }
+                else
+                {
 
+                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null && context.Instance != null)
+                    {
+                        System.Collections.ICollection collection = ((IPropertyGridDropDown)context.Instance).GetPropertyGridDropDownItems(context.PropertyDescriptor.Name);
+                        if (collection != null)
+                        {
+                            return new StandardValuesCollection(collection);
+                        }
+                    }
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
                 return null;
             }
         }
@@ -65,7 +83,15 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>如果该转换器能够执行转换，则为 true；否则为 false</returns>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
+            try
+            {
+                return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                return false;
+            }
         }
 
         /// <summary>
@@ -77,114 +103,70 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
-            if (context == null)
+            try
             {
-                return base.ConvertFrom(context, culture, value);
-            }
-
-            if (context.PropertyDescriptor.PropertyType.IsEnum)
-            {
-                string valueStr = value.ToString();
-                if (string.IsNullOrEmpty(valueStr))
+                if (context == null)
                 {
                     return base.ConvertFrom(context, culture, value);
                 }
-                else
-                {
-                    return EnumHelper.GetEnumByNDisplayNameAttributeDisplayName(context.PropertyDescriptor.PropertyType, valueStr);
-                }
-            }
-            else
-            {
-                if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null || value == null)
-                {
-                    return value;
-                }
 
-                string valueStr = value.ToString();
-                if (string.IsNullOrEmpty(valueStr))
+                if (context.PropertyDescriptor.PropertyType.IsEnum)
                 {
-                    return value;
-                }
-
-                IPropertyGridDropDown ipropertyGridDropDownList = (IPropertyGridDropDown)context.Instance;
-                System.Collections.ICollection collection = ipropertyGridDropDownList.GetPropertyGridDropDownItems(context.PropertyDescriptor.Name);
-                if (collection.Count > 0)
-                {
-                    return value;
-                }
-
-                Type instanceType = null;
-                foreach (var item in collection)
-                {
-                    instanceType = item.GetType();
-                    break;
-                }
-
-                if (instanceType.IsPrimitive)
-                {
-                    if (value.GetType() != instanceType)
+                    string valueStr = value.ToString();
+                    if (string.IsNullOrEmpty(valueStr))
                     {
-                        value = Convert.ChangeType(value, instanceType);
-                    }
-
-                    return value;
-                }
-                else
-                {
-                    string displayPropertyName = ipropertyGridDropDownList.GetPropertyGridDisplayName(context.PropertyDescriptor.Name);
-                    if (string.IsNullOrWhiteSpace(displayPropertyName))
-                    {
-                        //如果显示属性名称为空或null则直接用原始数据作比较,比如:字符串集合
-                        foreach (var item in collection)
-                        {
-                            if (object.Equals(value, item))
-                            {
-                                return item;
-                            }
-                        }
-
-                        return null;
+                        return base.ConvertFrom(context, culture, value);
                     }
                     else
                     {
-                        System.Reflection.PropertyInfo propertyInfo = instanceType.GetProperty(displayPropertyName);
-                        if (propertyInfo == null)
+                        return EnumHelper.GetEnumByNDisplayNameAttributeDisplayName(context.PropertyDescriptor.PropertyType, valueStr);
+                    }
+                }
+                else
+                {
+                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null || value == null)
+                    {
+                        return value;
+                    }
+
+                    string valueStr = value.ToString();
+                    if (string.IsNullOrEmpty(valueStr))
+                    {
+                        return value;
+                    }
+
+                    IPropertyGridDropDown ipropertyGridDropDownList = (IPropertyGridDropDown)context.Instance;
+                    System.Collections.ICollection collection = ipropertyGridDropDownList.GetPropertyGridDropDownItems(context.PropertyDescriptor.Name);
+                    if (collection == null || collection.Count == 0)
+                    {
+                        return value;
+                    }
+
+                    Type instanceType = null;
+                    foreach (var item in collection)
+                    {
+                        instanceType = item.GetType();
+                        break;
+                    }
+
+                    if (instanceType.IsPrimitive)
+                    {
+                        if (value.GetType() != instanceType)
                         {
-                            System.Reflection.FieldInfo fieldInfo = instanceType.GetField(displayPropertyName);
-                            if (fieldInfo == null)
-                            {
-                                //如果属性名或字段名不正确,则也调用父类方法
-                                foreach (var item in collection)
-                                {
-                                    if (object.Equals(value, item))
-                                    {
-                                        return item;
-                                    }
-                                }
-
-                                return null;
-                            }
-                            else
-                            {
-                                //通过字段反射获取值
-                                foreach (var item in collection)
-                                {
-                                    if (object.Equals(fieldInfo.GetValue(item), value))
-                                    {
-                                        return item;
-                                    }
-                                }
-
-                                return null;
-                            }
+                            value = Convert.ChangeType(value, instanceType);
                         }
-                        else
+
+                        return value;
+                    }
+                    else
+                    {
+                        string displayPropertyName = ipropertyGridDropDownList.GetPropertyGridDisplayName(context.PropertyDescriptor.Name);
+                        if (string.IsNullOrWhiteSpace(displayPropertyName))
                         {
-                            //通过属性反射获取值
+                            //如果显示属性名称为空或null则直接用原始数据作比较,比如:字符串集合
                             foreach (var item in collection)
                             {
-                                if (propertyInfo.GetValue(item, null).Equals(value))
+                                if (object.Equals(value, item))
                                 {
                                     return item;
                                 }
@@ -192,8 +174,60 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
 
                             return null;
                         }
+                        else
+                        {
+                            System.Reflection.PropertyInfo propertyInfo = instanceType.GetProperty(displayPropertyName);
+                            if (propertyInfo == null)
+                            {
+                                System.Reflection.FieldInfo fieldInfo = instanceType.GetField(displayPropertyName);
+                                if (fieldInfo == null)
+                                {
+                                    //如果属性名或字段名不正确,则也调用父类方法
+                                    foreach (var item in collection)
+                                    {
+                                        if (object.Equals(value, item))
+                                        {
+                                            return item;
+                                        }
+                                    }
+
+                                    return null;
+                                }
+                                else
+                                {
+                                    //通过字段反射获取值
+                                    foreach (var item in collection)
+                                    {
+                                        if (object.Equals(fieldInfo.GetValue(item), value))
+                                        {
+                                            return item;
+                                        }
+                                    }
+
+                                    return null;
+                                }
+                            }
+                            else
+                            {
+                                //通过属性反射获取值
+                                foreach (var item in collection)
+                                {
+                                    if (object.Equals(propertyInfo.GetValue(item, null), value))
+                                    {
+                                        return item;
+                                    }
+                                }
+
+                                return null;
+                            }
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                return null;
             }
         }
 
@@ -205,7 +239,15 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>如果该转换器能够执行转换，则为 true；否则为 false</returns>
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
+            try
+            {
+                return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                return false;
+            }
         }
 
         /// <summary>
@@ -218,54 +260,67 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
         {
-            if (context == null)
+            try
             {
-                return base.ConvertTo(context, culture, value, destinationType);
-            }
-
-            if (context.PropertyDescriptor.PropertyType.IsEnum)
-            {
-                return EnumHelper.GetEnumItemDisplayName(value);
-            }
-            else
-            {
-                if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null || value == null)
+                if (context == null)
                 {
-                    return value;
+                    return base.ConvertTo(context, culture, value, destinationType);
                 }
 
-                Type valueType = value.GetType();
-                IPropertyGridDropDown ipropertyGridDropDownList = (IPropertyGridDropDown)context.Instance;
-                string displayPropertyName = ipropertyGridDropDownList.GetPropertyGridDisplayName(context.PropertyDescriptor.Name);
-                //如果显示属性名称为空或null则调用父类方法
-                if (string.IsNullOrEmpty(displayPropertyName) || valueType.IsPrimitive)
+                if (context.PropertyDescriptor.PropertyType.IsEnum)
                 {
-                    return value;
-                }
-
-                object retValue = null;
-                System.Reflection.PropertyInfo propertyInfo = valueType.GetProperty(displayPropertyName);
-                if (propertyInfo == null)
-                {
-                    System.Reflection.FieldInfo fieldInfo = valueType.GetField(displayPropertyName);
-                    if (fieldInfo == null)
-                    {
-                        //如果属性名或字段名不正确,则也调用父类方法
-                        retValue = value;
-                    }
-                    else
-                    {
-                        //通过字段反射获取值
-                        retValue = fieldInfo.GetValue(value);
-                    }
+                    return EnumHelper.GetEnumItemDisplayName(value);
                 }
                 else
                 {
-                    //通过属性反射获取值
-                    retValue = propertyInfo.GetValue(value, null);
-                }
+                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null || value == null)
+                    {
+                        return value;
+                    }
 
-                return retValue;
+                    Type valueType = value.GetType();
+                    if (valueType.IsPrimitive)
+                    {
+                        return value;
+                    }
+
+                    IPropertyGridDropDown ipropertyGridDropDownList = (IPropertyGridDropDown)context.Instance;
+                    string displayPropertyName = ipropertyGridDropDownList.GetPropertyGridDisplayName(context.PropertyDescriptor.Name);
+                    //如果显示属性名称为空或null则调用父类方法
+                    if (string.IsNullOrEmpty(displayPropertyName))
+                    {
+                        return value;
+                    }
+
+                    object retValue = null;
+                    System.Reflection.PropertyInfo propertyInfo = valueType.GetProperty(displayPropertyName);
+                    if (propertyInfo == null)
+                    {
+                        System.Reflection.FieldInfo fieldInfo = valueType.GetField(displayPropertyName);
+                        if (fieldInfo == null)
+                        {
+                            //如果属性名或字段名不正确,则也调用父类方法
+                            retValue = value;
+                        }
+                        else
+                        {
+                            //通过字段反射获取值
+                            retValue = fieldInfo.GetValue(value);
+                        }
+                    }
+                    else
+                    {
+                        //通过属性反射获取值
+                        retValue = propertyInfo.GetValue(value, null);
+                    }
+
+                    return retValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                return null;
             }
         }
     }

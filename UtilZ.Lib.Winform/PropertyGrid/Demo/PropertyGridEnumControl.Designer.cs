@@ -1,4 +1,4 @@
-﻿namespace UtilZ.Lib.Winform.PropertyGrid
+﻿namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 {
     partial class PropertyGridEnumControl
     {

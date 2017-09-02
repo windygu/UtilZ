@@ -22,7 +22,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         public DemoModel()
         {
             this._addrs.Add(new NAddress { Text = "NAddress1", Value = 1 });
-            this._addrs.Add(new NAddress { Text = "NAddress1", Value = 1 });
             this._addrs.Add(new NAddress { Text = "NAddress2", Value = 2 });
             this._addrs.Add(new NAddress { Text = "NAddress3", Value = 3 });
 
@@ -120,7 +119,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Category("个人信息")]
         [DisplayName("枚举性别")]
         [Description("获取或设置年龄")]
-        [TypeConverter(typeof(PropertyGridEnumConverter))]
+        //[TypeConverter(typeof(PropertyGridEnumConverter))]
+        [TypeConverter(typeof(PropertyGridDropdownConverter))]
         public SexEnum Sex { get; set; }
 
         /// <summary>
@@ -150,7 +150,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Category("基元类型")]
         [DisplayName("Primitive")]
         [Description("下拉基元类型")]
-        [TypeConverter(typeof(PropertyGridDropDownListConverter))]
+        //[TypeConverter(typeof(PropertyGridDropDownListConverter))]
+        [TypeConverter(typeof(PropertyGridDropdownConverter))]
         public string PrimitiveType { get; set; }
 
         /// <summary>
@@ -159,7 +160,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Category("地址")]
         [DisplayName("地址信息")]
         [Description("获取或设置地址信息")]
-        [TypeConverter(typeof(PropertyGridDropDownListConverter))]
+        //[TypeConverter(typeof(PropertyGridDropDownListConverter))]
+        [TypeConverter(typeof(PropertyGridDropdownConverter))]
         public NAddress Addr { get; set; }
 
         /// <summary>
@@ -200,6 +202,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <param name="propertyName">要获取扩展名的文件字段名称</param>
         public string GetFileExtension(string propertyName)
         {
+            return string.Empty;
             if (propertyName.Equals("File"))
             {
                 return ".wav";
