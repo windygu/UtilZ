@@ -110,7 +110,7 @@ namespace UtilZ.Lib.Winform
         /// <summary>
         /// 设置父节点选中
         /// </summary>
-        /// <param name="node">当前节点</param>
+        /// <param name="curNode">当前节点</param>
         /// <param name="isChecked">选中状态</param>
         private void SetParentNodes(TreeNode curNode, bool isChecked)
         {
@@ -141,7 +141,7 @@ namespace UtilZ.Lib.Winform
         /// <summary>
         /// 设置子节点选中状态
         /// </summary>
-        /// <param name="node">当前节点</param>
+        /// <param name="curNode">当前节点</param>
         /// <param name="isChecked">选中状态</param>
         private void SetChildNodes(TreeNode curNode, bool isChecked)
         {

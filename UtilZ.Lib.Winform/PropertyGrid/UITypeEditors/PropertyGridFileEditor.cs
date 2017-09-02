@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using UtilZ.Lib.Winform.PropertyGrid;
+using UtilZ.Lib.Winform.PropertyGrid.Interface;
 
-namespace UtilZ.Lib.Winform.PropertyGrid
+namespace UtilZ.Lib.Winform.PropertyGrid.UITypeEditors
 {
     /// <summary>
-    /// 属性编辑窗口目录编辑
+    /// 属性编辑窗口文件编辑
     /// </summary>
     [Serializable]
-    public class PropertyGridDirectoryEditor : UITypeEditor
+    public class PropertyGridFileEditor : UITypeEditor
     {
         /// <summary>
         /// 获取由 EditValue 方法使用的编辑器样式
@@ -38,24 +39,39 @@ namespace UtilZ.Lib.Winform.PropertyGrid
             if (edSvc != null)
             {
                 // 可以打开任何特定的对话框  
-                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.AddExtension = false;
                 if (value != null)
                 {
-                    fbd.SelectedPath = value.ToString();
+                    dialog.FileName = value.ToString();
                 }
 
-                if (string.IsNullOrEmpty(fbd.SelectedPath))
+                if (string.IsNullOrEmpty(dialog.FileName))
                 {
-                    if (context.Instance.GetType().GetInterface(typeof(IPropertyGridDirectory).FullName) != null)
+                    if (context.Instance.GetType().GetInterface(typeof(IPropertyGridFile).FullName) != null)
                     {
-                        IPropertyGridDirectory ipropertyGridFile = (IPropertyGridDirectory)context.Instance;
-                        fbd.SelectedPath = ipropertyGridFile.GetInitialSelectedPath(context.PropertyDescriptor.Name);
+                        IPropertyGridFile ipropertyGridFile = (IPropertyGridFile)context.Instance;
+                        string extension = ipropertyGridFile.GetFileExtension(context.PropertyDescriptor.Name);
+                        dialog.Filter = string.Format("*{0}文件|*{1}", extension, extension);
+                        dialog.FileName = ipropertyGridFile.GetFileName(context.PropertyDescriptor.Name);
+                        if (string.IsNullOrEmpty(dialog.FileName))
+                        {
+                            dialog.InitialDirectory = ipropertyGridFile.GetInitialDirectory(context.PropertyDescriptor.Name);
+                        }
+                        else
+                        {
+                            dialog.InitialDirectory = Path.GetDirectoryName(dialog.FileName);
+                        }
                     }
                 }
-
-                if (fbd.ShowDialog() == DialogResult.OK)
+                else
                 {
-                    return fbd.SelectedPath;
+                    dialog.InitialDirectory = Path.GetDirectoryName(dialog.FileName);
+                }
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    return dialog.FileName;
                 }
             }
 

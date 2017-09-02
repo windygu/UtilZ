@@ -11,6 +11,9 @@ using UtilZ.Lib.Winform.PartAsynWait.Interface;
 
 namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V4
 {
+    /// <summary>
+    /// 第四种方式控件
+    /// </summary>
     public partial class UCMetroShadeControl4 : UserControl, IPartAsynWaitWinform
     {
         #region IPartAsynWait接口

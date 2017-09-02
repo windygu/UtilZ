@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Lib.Winform.PropertyGrid
+namespace UtilZ.Lib.Winform.PropertyGrid.Base
 {
     /// <summary>
     /// 属性设置值有效性验证基类

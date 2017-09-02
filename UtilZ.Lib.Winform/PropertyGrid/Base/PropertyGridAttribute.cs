@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Lib.Winform.PropertyGrid
+namespace UtilZ.Lib.Winform.PropertyGrid.Base
 {
     /// <summary>
     /// 属性表格修改值特性

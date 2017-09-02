@@ -300,9 +300,15 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V5
             get { return this.DesignMode; }
         }
 
+        /// <summary>
+        /// 控件加载完成事件
+        /// </summary>
         public event EventHandler Load;
         #endregion
 
+        /// <summary>
+        /// 重写前景色属性
+        /// </summary>
         public override System.Drawing.Color ForeColor
         {
             get
@@ -419,7 +425,10 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V5
             this._cancelButtonReg = new Rectangle(x + (_asynWidth - _cancelButtonWidth) / 2, y + (_cancelHeight - _cancelButtonHeight) / 2, _cancelButtonWidth, _cancelButtonHeight);
         }
 
-
+        /// <summary>
+        /// 重写OnMouseMove
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -442,6 +451,10 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V5
             }
         }
 
+        /// <summary>
+        /// 重写OnMouseClick
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnMouseClick(MouseEventArgs e)
         {
             base.OnMouseClick(e);
@@ -452,6 +465,9 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V5
             }
         }
 
+        /// <summary>
+        /// 重写OnCreateControl
+        /// </summary>
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
@@ -462,6 +478,10 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V5
             }
         }
 
+        /// <summary>
+        /// 重写OnResize
+        /// </summary>
+        /// <param name="e">e</param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);

@@ -11,6 +11,9 @@ using UtilZ.Lib.Winform.PartAsynWait.Excute;
 
 namespace UtilZ.Lib.Winform.PartAsynWait
 {
+    /// <summary>
+    /// Winform异步等待辅助类
+    /// </summary>
     public class PartAsynWaitHelper : PartAsynWaitHelperBase
     {
         /// <summary>

@@ -11,6 +11,9 @@ using UtilZ.Lib.Winform.PartAsynWait.Interface;
 
 namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V3
 {
+    /// <summary>
+    /// 第三种方式
+    /// </summary>
     public partial class UCMetroShadeControl3 : UserControl, IPartAsynWaitWinform
     {
         #region IPartAsynWait接口
@@ -196,7 +199,7 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V3
 
         private void UCMetroShadeControl2_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void btnCancell_Click(object sender, EventArgs e)

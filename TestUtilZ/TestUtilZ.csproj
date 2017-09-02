@@ -43,11 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="FTestPRopertyGrid.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FTestPRopertyGrid.Designer.cs">
+      <DependentUpon>FTestPRopertyGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="FTestNoneBorderForm.cs">
       <SubType>Form</SubType>
@@ -57,6 +57,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FTestPRopertyGrid.resx">
+      <DependentUpon>FTestPRopertyGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FTestNoneBorderForm.resx">
       <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
     </EmbeddedResource>

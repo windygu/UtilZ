@@ -208,6 +208,10 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V2
             this.Cancel();
         }
 
+        /// <summary>
+        /// 重写绘制
+        /// </summary>
+        /// <param name="e">e</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);

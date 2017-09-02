@@ -20,7 +20,6 @@ namespace UtilZ.Lib.Winform.DropdownBox
         /// </summary>
         /// <typeparam name="T">枚举</typeparam>
         /// <param name="combox">ComboBox</param>
-        /// <param name="defaultSelectedValue">默认选中项值</param>
         /// <param name="ignoreList">忽略项列表</param>
         public static void BindingEnumToComboBox<T>(System.Windows.Forms.ComboBox combox, IEnumerable<T> ignoreList = null) where T : struct
         {

@@ -15,7 +15,7 @@ namespace TestUtilZ
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestNoneBorderForm());
+            Application.Run(new FTestPRopertyGrid());
         }
     }
 }

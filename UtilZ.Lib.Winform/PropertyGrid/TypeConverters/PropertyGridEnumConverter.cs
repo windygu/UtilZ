@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms.Design;
 
-namespace UtilZ.Lib.Winform.PropertyGrid
+namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
 {
     /// <summary>
     /// 属性表格枚举编辑下拉框转换器
@@ -126,6 +126,11 @@ namespace UtilZ.Lib.Winform.PropertyGrid
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
         {
+            if(context==null)
+            {
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
+
             if (context.PropertyDescriptor.PropertyType.IsEnum)
             {
                 return EnumHelper.GetEnumItemDisplayName(value);

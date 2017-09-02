@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UtilZ.Lib.Winform.PropertyGrid.Base;
 
 namespace UtilZ.Lib.Winform.PropertyGrid
 {

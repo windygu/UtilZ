@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using UtilZ.Lib.Winform.PropertyGrid.Interface;
 
-namespace UtilZ.Lib.Winform.PropertyGrid
+namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
 {
     /// <summary>
     /// 属性表格编辑下拉框转换器
@@ -189,6 +190,11 @@ namespace UtilZ.Lib.Winform.PropertyGrid
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
         {
+            if(context==null)
+            {
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
+
             if (context.Instance.GetType().GetInterface(this._ipropertyGridDropDownListType.FullName) != null && value != null)
             {
                 IPropertyGridDropDown ipropertyGridDropDownList = (IPropertyGridDropDown)context.Instance;

@@ -41,6 +41,9 @@ namespace UtilZ.Lib.Winform
 
         private Color _realBackColor;
 
+        /// <summary>
+        /// 真实背景色
+        /// </summary>
         public Color RealBackColor
         {
             get { return _realBackColor; }

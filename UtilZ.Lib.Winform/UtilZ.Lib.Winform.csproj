@@ -109,26 +109,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PropertyGrid\IPropertyGridDirectory.cs" />
-    <Compile Include="PropertyGrid\IPropertyGridDropDown.cs" />
-    <Compile Include="PropertyGrid\IPropertyGridFile.cs" />
-    <Compile Include="PropertyGrid\IPropertyGridPassword.cs" />
-    <Compile Include="PropertyGrid\ModelDemo.cs" />
-    <Compile Include="PropertyGrid\PropertyGridAttribute.cs" />
-    <Compile Include="PropertyGrid\PropertyGridCustomEditor.cs" />
-    <Compile Include="PropertyGrid\PropertyGridDirectoryEditor.cs" />
-    <Compile Include="PropertyGrid\PropertyGridDropDownListConverter.cs" />
+    <Compile Include="PropertyGrid\Demo\DemoLonLatTypeConverter.cs" />
+    <Compile Include="PropertyGrid\Demo\DemoModel.cs" />
+    <Compile Include="PropertyGrid\Demo\DirectionEnum.cs" />
+    <Compile Include="PropertyGrid\Demo\NAddress.cs" />
+    <Compile Include="PropertyGrid\Demo\Person.cs" />
+    <Compile Include="PropertyGrid\Demo\PersonConverter.cs" />
+    <Compile Include="PropertyGrid\Demo\PostureCommon.cs" />
+    <Compile Include="PropertyGrid\Demo\SexEnum.cs" />
+    <Compile Include="PropertyGrid\TypeConverters\PropertyGridCustomConverter.cs" />
+    <Compile Include="PropertyGrid\Interface\IPropertyGridDirectory.cs" />
+    <Compile Include="PropertyGrid\Interface\IPropertyGridDropDown.cs" />
+    <Compile Include="PropertyGrid\Interface\IPropertyGridFile.cs" />
+    <Compile Include="PropertyGrid\Interface\IPropertyGridPassword.cs" />
+    <Compile Include="PropertyGrid\Base\PropertyGridAttribute.cs" />
+    <Compile Include="PropertyGrid\TypeConverters\PropertyGridDropdownConverter.cs" />
+    <Compile Include="PropertyGrid\UITypeEditors\PropertyGridDirectoryEditor.cs" />
+    <Compile Include="PropertyGrid\TypeConverters\PropertyGridDropDownListConverter.cs" />
     <Compile Include="PropertyGrid\PropertyGridEnumControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropertyGrid\PropertyGridEnumControl.Designer.cs">
       <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropertyGrid\PropertyGridEnumConverter.cs" />
-    <Compile Include="PropertyGrid\PropertyGridFileEditor.cs" />
+    <Compile Include="PropertyGrid\TypeConverters\PropertyGridEnumConverter.cs" />
+    <Compile Include="PropertyGrid\UITypeEditors\PropertyGridFileEditor.cs" />
     <Compile Include="PropertyGrid\PropertyGridHelper.cs" />
-    <Compile Include="PropertyGrid\PropertyGridPasswordConverter.cs" />
-    <Compile Include="PropertyGrid\PropertyValueVerifyBase.cs" />
+    <Compile Include="PropertyGrid\TypeConverters\PropertyGridPasswordConverter.cs" />
+    <Compile Include="PropertyGrid\Base\PropertyValueVerifyBase.cs" />
+    <Compile Include="PropertyGrid\UITypeEditors\PropertyGridCustomEnumEditor.cs" />
     <Compile Include="UCOpacityControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>

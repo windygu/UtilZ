@@ -38,7 +38,6 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform
         /// 断言对象类型是IAsynWait和UserControl的子类对象类型
         /// </summary>
         /// <param name="value">要断言的对象类型</param>
-        /// <param name="asynControlType">异步等待控件基类型</param>
         protected static void AssertIAsynWait(Type value)
         {
             AssertIAsynWait(value, _asynControlType);
