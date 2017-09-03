@@ -105,15 +105,15 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         {
             try
             {
-                if (context == null)
+                if (context == null || value == null)
                 {
                     return base.ConvertFrom(context, culture, value);
                 }
 
+                string valueStr = value.ToString();
                 if (context.PropertyDescriptor.PropertyType.IsEnum)
                 {
-                    string valueStr = value.ToString();
-                    if (string.IsNullOrEmpty(valueStr))
+                    if (string.IsNullOrWhiteSpace(valueStr))
                     {
                         return base.ConvertFrom(context, culture, value);
                     }
@@ -124,13 +124,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
                 }
                 else
                 {
-                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null || value == null)
-                    {
-                        return value;
-                    }
-
-                    string valueStr = value.ToString();
-                    if (string.IsNullOrEmpty(valueStr))
+                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null)
                     {
                         return value;
                     }
@@ -166,7 +160,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
                             //如果显示属性名称为空或null则直接用原始数据作比较,比如:字符串集合
                             foreach (var item in collection)
                             {
-                                if (object.Equals(value, item))
+                                if (object.Equals(valueStr, item.ToString()))
                                 {
                                     return item;
                                 }
@@ -289,7 +283,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
                     //如果显示属性名称为空或null则调用父类方法
                     if (string.IsNullOrEmpty(displayPropertyName))
                     {
-                        return value;
+                        return value.ToString();
                     }
 
                     object retValue = null;

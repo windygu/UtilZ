@@ -24,11 +24,13 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
             this._addrs.Add(new NAddress { Text = "NAddress1", Value = 1 });
             this._addrs.Add(new NAddress { Text = "NAddress2", Value = 2 });
             this._addrs.Add(new NAddress { Text = "NAddress3", Value = 3 });
+            this.Addr = this._addrs[0];
 
-            _pstrs.Add("Str1");
-            _pstrs.Add("Str2");
-            _pstrs.Add("Str3");
-            _pstrs.Add("Str4");
+            _primitiveTypes.Add("Str1");
+            _primitiveTypes.Add("Str2");
+            _primitiveTypes.Add("Str3");
+            _primitiveTypes.Add("Str4");
+            this.PrimitiveType = _primitiveTypes[0];
         }
 
         private int _age = 28;
@@ -150,7 +152,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Category("基元类型")]
         [DisplayName("Primitive")]
         [Description("下拉基元类型")]
-        //[TypeConverter(typeof(PropertyGridDropDownListConverter))]
         [TypeConverter(typeof(PropertyGridDropdownConverter))]
         public string PrimitiveType { get; set; }
 
@@ -160,7 +161,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Category("地址")]
         [DisplayName("地址信息")]
         [Description("获取或设置地址信息")]
-        //[TypeConverter(typeof(PropertyGridDropDownListConverter))]
         [TypeConverter(typeof(PropertyGridDropdownConverter))]
         public NAddress Addr { get; set; }
 
@@ -202,14 +202,12 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <param name="propertyName">要获取扩展名的文件字段名称</param>
         public string GetFileExtension(string propertyName)
         {
-            return string.Empty;
-            if (propertyName.Equals("File"))
+            switch (propertyName)
             {
-                return ".wav";
-            }
-            else
-            {
-                return string.Empty;
+                //case "File":
+                //    return ".wav";
+                default:
+                    return null;
             }
         }
 
@@ -248,7 +246,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 
         #region IPropertyGridDropDown接口
         private readonly List<NAddress> _addrs = new List<NAddress>();
-        private readonly List<string> _pstrs = new List<string>();
+        private readonly List<string> _primitiveTypes = new List<string>();
 
         /// <summary>
         /// 获取表格下拉框选择列表集合
@@ -262,7 +260,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
                 case "Addr":
                     return _addrs;
                 case "PrimitiveType":
-                    return _pstrs;
+                    return _primitiveTypes;
                 default:
                     return null;
             }
@@ -277,8 +275,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         {
             switch (propertyName)
             {
-                case "Addr":
-                    return "Text";
+                //case "Addr":
+                //    return "Text";
                 default:
                     return null;
             }
