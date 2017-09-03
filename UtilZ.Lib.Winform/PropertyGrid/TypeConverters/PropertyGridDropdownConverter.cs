@@ -29,6 +29,11 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         {
             try
             {
+                if (context == null)
+                {
+                    return base.GetStandardValuesSupported(context);
+                }
+
                 return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
             }
             catch (Exception ex)
@@ -47,6 +52,11 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         {
             try
             {
+                if (context == null)
+                {
+                    return base.GetStandardValues(context);
+                }
+
                 if (context.PropertyDescriptor.PropertyType.IsEnum)
                 {
                     List<DropdownBindingItem> dbiItems = EnumHelper.GetNDisplayNameAttributeDisplayNameBindingItems(context.PropertyDescriptor.PropertyType);
@@ -85,6 +95,11 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         {
             try
             {
+                if (context == null || sourceType == null)
+                {
+                    return base.CanConvertFrom(context, sourceType);
+                }
+
                 return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
             }
             catch (Exception ex)
@@ -105,9 +120,14 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         {
             try
             {
-                if (context == null || value == null)
+                if (context == null)
                 {
                     return base.ConvertFrom(context, culture, value);
+                }
+
+                if (value == null)
+                {
+                    return value;
                 }
 
                 string valueStr = value.ToString();
@@ -235,6 +255,11 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         {
             try
             {
+                if (context == null || destinationType == null)
+                {
+                    return base.CanConvertTo(context, destinationType);
+                }
+
                 return context.PropertyDescriptor.PropertyType.IsEnum || context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) != null;
             }
             catch (Exception ex)
@@ -261,13 +286,18 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
                     return base.ConvertTo(context, culture, value, destinationType);
                 }
 
+                if (value == null)
+                {
+                    return value;
+                }
+
                 if (context.PropertyDescriptor.PropertyType.IsEnum)
                 {
                     return EnumHelper.GetEnumItemDisplayName(value);
                 }
                 else
                 {
-                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null || value == null)
+                    if (context.Instance.GetType().GetInterface(_ipropertyGridDropDownListType.FullName) == null)
                     {
                         return value;
                     }
