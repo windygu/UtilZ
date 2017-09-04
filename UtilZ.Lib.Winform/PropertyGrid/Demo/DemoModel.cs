@@ -14,7 +14,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
     /// <summary>
     /// Demo模型
     /// </summary>
-    public class DemoModel : PropertyValueVerifyBase, IPropertyGridFile, IPropertyGridDirectory, IPropertyGridDropDown, IPropertyGridPassword
+    public class DemoModel : PropertyValueVerifyBase, IPropertyGridFile, IPropertyGridDirectory, IPropertyGridDropDown, IPropertyGridPassword, IPropertyGridCategoryOrder
     {
         /// <summary>
         /// 构造函数
@@ -31,6 +31,10 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
             _primitiveTypes.Add("Str3");
             _primitiveTypes.Add("Str4");
             this.PrimitiveType = _primitiveTypes[0];
+
+            _propertyGridCategoryNames.Add("文件系统");
+            _propertyGridCategoryNames.Add("个人信息");
+            _propertyGridCategoryNames.Add("数据库");
         }
 
         private int _age = 28;
@@ -41,6 +45,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [DisplayName("年龄")]
         [Description("获取或设置年龄")]
         [DefaultValue(28)]
+        [PropertyGridOrderAttribute(1)]
         public int Age
         {
             get { return _age; }
@@ -123,6 +128,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Description("获取或设置年龄")]
         //[TypeConverter(typeof(PropertyGridEnumConverter))]
         [TypeConverter(typeof(PropertyGridDropdownConverter))]
+        [PropertyGridOrderAttribute(2)]
         public SexEnum Sex { get; set; }
 
         /// <summary>
@@ -182,6 +188,28 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
             get { return _mapCenterLatitude; }
             set { _mapCenterLatitude = value; }
         }
+
+        #region IPropertyGridCategoryOrder
+        /// <summary>
+        /// 排序类型
+        /// </summary>
+        [Browsable(false)]
+        public PropertyGridOrderType OrderType
+        {
+            get { return PropertyGridOrderType.Ascending; }
+        }
+
+        private readonly List<string> _propertyGridCategoryNames = new List<string>();
+
+        /// <summary>
+        /// 表格排序组名称列表
+        /// </summary>
+        [Browsable(false)]
+        public List<string> PropertyGridCategoryNames
+        {
+            get { return _propertyGridCategoryNames; }
+        }
+        #endregion
 
         #region IPropertyGridPassword接口
         /// <summary>
