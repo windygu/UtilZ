@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\DBInteractionBase.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Core\CacheManager.cs" />
     <Compile Include="Core\DBAccessBase.cs" />
     <Compile Include="Core\DBAccessBase_DBInfo.cs" />

@@ -33,7 +33,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <returns>字段信息集合</returns>
-        public virtual List<string> GetTableBinaryFieldInfo(string tableName)
+        public List<string> GetTableBinaryFieldInfo(string tableName)
         {
             string sqlStr = string.Format("select * from {0} where 0=1", tableName);
             List<string> binaryCols = new List<string>();
@@ -74,7 +74,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="tableName">表名</param>
         /// <param name="cols">列集合</param>
         /// <returns>字段的公共语言运行时类型字典集合</returns>
-        public virtual Dictionary<string, DBFieldType> GetFieldDbClrFieldType(string tableName, DataColumnCollection cols)
+        public Dictionary<string, DBFieldType> GetFieldDbClrFieldType(string tableName, DataColumnCollection cols)
         {
             Dictionary<string, DBFieldType> dicFieldDbClrFieldType = new Dictionary<string, DBFieldType>();
             foreach (DataColumn col in cols)

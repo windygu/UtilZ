@@ -5,7 +5,6 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.LocalMeseageQueue;
 using UtilZ.Lib.Base.Extend;
 using UtilZ.Lib.DBBase.Interface;
 using UtilZ.Lib.DBModel.Config;
@@ -23,7 +22,7 @@ namespace Utilities.Lib.DBBase.Base
         /// <summary>
         /// 数据库连接字符串字典集合[key:数据库编号ID;value:数据库连接字符串]
         /// </summary>
-        private readonly ConcurrentDictionary<int, string> _dicConStrs = new ConcurrentDictionary<int, string>();
+        private readonly ConcurrentDictionary<int, DBConStrInfo> _dicConStrs = new ConcurrentDictionary<int, DBConStrInfo>();
 
         /// <summary>
         /// 数据库连接字符串字典集合线程锁
@@ -35,18 +34,6 @@ namespace Utilities.Lib.DBBase.Base
         /// </summary>
         public DBInteractionBase()
         {
-            //订阅配置移除
-            var subscibeItem = new SubscibeItem(DBConstant.ConfigRemoveSubject);
-            subscibeItem.MessageNotify += (obj) => { this.ConfigRemoveNotify(obj.Data as DBConfigElement); };
-            LMQCenter.Subscibe(subscibeItem);
-        }
-
-        /// <summary>
-        /// 配置项移除通知
-        /// </summary>
-        /// <param name="config">配置项</param>
-        protected virtual void ConfigRemoveNotify(DBConfigElement config)
-        {
 
         }
 
@@ -54,8 +41,9 @@ namespace Utilities.Lib.DBBase.Base
         /// 创建数据库读连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
+        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public abstract IDbConnection CreateConnection(DBConfigElement config);
+        public abstract IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
 
         /// <summary>
         /// 创建DbDataAdapter
@@ -72,10 +60,10 @@ namespace Utilities.Lib.DBBase.Base
         public string GetDBConStr(DBConfigElement config, DBVisitType visitType)
         {
             int dbid = config.DBID;
-            string conStr;
+            DBConStrInfo dbConStrInfo;
             if (this._dicConStrs.ContainsKey(dbid))
             {
-                if (!this._dicConStrs.TryGetValue(dbid, out conStr))
+                if (!this._dicConStrs.TryGetValue(dbid, out dbConStrInfo))
                 {
                     throw new ApplicationException(string.Format("获取数据库编号为{0}的数据库连接字符串失败", dbid));
                 }
@@ -86,7 +74,7 @@ namespace Utilities.Lib.DBBase.Base
                 {
                     if (this._dicConStrs.ContainsKey(dbid))
                     {
-                        if (!this._dicConStrs.TryGetValue(dbid, out conStr))
+                        if (!this._dicConStrs.TryGetValue(dbid, out dbConStrInfo))
                         {
                             throw new ApplicationException(string.Format("获取数据库编号为{0}的数据库连接字符串失败", dbid));
                         }
@@ -94,15 +82,18 @@ namespace Utilities.Lib.DBBase.Base
                     else
                     {
                         string decryptionType = config.Decryption;
+                        string readConStr, writeConStr;
                         if (string.IsNullOrEmpty(decryptionType))
                         {
                             if (config.DBConInfoType == 0)
                             {
-                                conStr = config.ConStr;
+                                readConStr = config.ConStr;
+                                writeConStr = config.ConStr;
                             }
                             else
                             {
-                                conStr = this.GenerateDBConStr(config, visitType);
+                                readConStr = this.GenerateDBConStr(config, DBVisitType.R);
+                                writeConStr = this.GenerateDBConStr(config, DBVisitType.W);
                             }
                         }
                         else
@@ -114,12 +105,24 @@ namespace Utilities.Lib.DBBase.Base
                                 throw new ApplicationException(string.Format("创建数据库连接信息解密接口类型{0}失败", decryptionType));
                             }
 
-                            conStr = decryption.GetDBConStr(config, visitType);
+                            readConStr = decryption.GetDBConStr(config, DBVisitType.R);
+                            writeConStr = decryption.GetDBConStr(config, DBVisitType.W);
                         }
 
-                        this._dicConStrs.TryAdd(dbid, conStr);
+                        dbConStrInfo = new DBConStrInfo(readConStr, writeConStr);
+                        this._dicConStrs.TryAdd(dbid, dbConStrInfo);
                     }
                 }
+            }
+
+            string conStr;
+            if (visitType == DBVisitType.R)
+            {
+                conStr = dbConStrInfo.ReadConStr;
+            }
+            else
+            {
+                conStr = dbConStrInfo.WriteConStr;
             }
 
             return conStr;
@@ -450,6 +453,33 @@ namespace Utilities.Lib.DBBase.Base
             }
 
             return sbSql.ToString();
+        }
+    }
+
+    /// <summary>
+    /// 数据库连接字符串信息
+    /// </summary>
+    internal class DBConStrInfo
+    {
+        /// <summary>
+        /// 读取连接字符串
+        /// </summary>
+        public string ReadConStr { get; private set; }
+
+        /// <summary>
+        /// 写取连接字符串
+        /// </summary>
+        public string WriteConStr { get; private set; }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="readConStr">读取连接字符串</param>
+        /// <param name="writeConStr">写取连接字符串</param>
+        public DBConStrInfo(string readConStr, string writeConStr)
+        {
+            this.ReadConStr = readConStr;
+            this.WriteConStr = writeConStr;
         }
     }
 }

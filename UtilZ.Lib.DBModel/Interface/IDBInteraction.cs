@@ -17,8 +17,9 @@ namespace UtilZ.Lib.DBModel.Interface
         /// 创建数据库连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
+        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        IDbConnection CreateConnection(DBConfigElement config);
+        IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
 
         /// <summary>
         /// 创建DbDataAdapter

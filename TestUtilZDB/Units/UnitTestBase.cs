@@ -44,17 +44,17 @@ namespace TestUtilZDB.Units
                 List<DBConfigElement> configItems = ConfigManager.GetAllConfigItems();
 
                 /******************************************************************************************************************/
-                //collection = new NDbParameterCollection();
-                //collection.Add("Name", "肖少林");
-                //foreach (var config in configItems)
-                //{
-                //    dbAccess = this.GetDBAccess(config.DBID);
-                //    sqlStr = @"insert into stu (Name,age,addr) values('陈天来',18,'东兴区')";
-                //    obj = dbAccess.ExecuteNonQuery(sqlStr, DBVisitType.W);
+                collection = new NDbParameterCollection();
+                collection.Add("Name", "肖少林");
+                foreach (var config in configItems)
+                {
+                    dbAccess = this.GetDBAccess(config.DBID);
+                    sqlStr = @"insert into stu (Name,age,addr) values('陈天来',18,'东兴区')";
+                    obj = dbAccess.ExecuteNonQuery(sqlStr, DBVisitType.W);
 
-                //    sqlStr = string.Format(@"insert into stu (Name,age,addr) values({0}Name,18,'东兴区')", dbAccess.ParaSign);
-                //    obj = dbAccess.ExecuteNonQuery(sqlStr, DBVisitType.W, collection);
-                //}
+                    sqlStr = string.Format(@"insert into stu (Name,age,addr) values({0}Name,18,'东兴区')", dbAccess.ParaSign);
+                    obj = dbAccess.ExecuteNonQuery(sqlStr, DBVisitType.W, collection);
+                }
                 /******************************************************************************************************************/
 
 
@@ -86,39 +86,39 @@ namespace TestUtilZDB.Units
                 string sqlStr;
                 List<DBConfigElement> configItems = ConfigManager.GetAllConfigItems();
 
-                ///******************************************************************************************************************/
-                //collection = new NDbParameterCollection();
-                //collection.Add("Addr", "中国地球美国大家");
-                //foreach (var config in configItems)
-                //{
-                //    sqlStr = @"insert into stu (Name,age,addr) values('zhn',23,'成都')";
-                //    obj = dbAccess.Insert(sqlStr);
+                /******************************************************************************************************************/
+                collection = new NDbParameterCollection();
+                collection.Add("Addr", "中国地球美国大家");
+                foreach (var config in configItems)
+                {
+                    sqlStr = @"insert into stu (Name,age,addr) values('zhn',23,'成都')";
+                    obj = dbAccess.Insert(sqlStr);
 
-                //    sqlStr = string.Format(@"insert into stu (Name,age,addr) values('zhn',23,{0}Addr)", dbAccess.ParaSign);
-                //    obj = dbAccess.Insert(sqlStr, collection);
-                //}
+                    sqlStr = string.Format(@"insert into stu (Name,age,addr) values('zhn',23,{0}Addr)", dbAccess.ParaSign);
+                    obj = dbAccess.Insert(sqlStr, collection);
+                }
 
-                ///******************************************************************************************************************/
-                //Stu stu = new Stu();
-                //stu.Name = "金光露";
-                //stu.Age = 28;
-                //stu.Addr = "heb";
-                //foreach (var conf in configItems)
-                //{
-                //    try
-                //    {
-                //        dbAccess = this.GetDBAccess(conf.DBID);
-                //        obj = dbAccess.InsertT<Stu>(stu);
-                //    }
-                //    catch (Exception exi)
-                //    {
-                //        obj = string.Format("{0}.{1}", conf.ConName, exi.Message);
-                //    }
+                /******************************************************************************************************************/
+                Stu stu = new Stu();
+                stu.Name = "金光露";
+                stu.Age = 28;
+                stu.Addr = "heb";
+                foreach (var conf in configItems)
+                {
+                    try
+                    {
+                        dbAccess = this.GetDBAccess(conf.DBID);
+                        obj = dbAccess.InsertT<Stu>(stu);
+                    }
+                    catch (Exception exi)
+                    {
+                        obj = string.Format("{0}.{1}", conf.ConName, exi.Message);
+                    }
 
-                //    this.OutputValue(obj);
-                //}
+                    this.OutputValue(obj);
+                }
 
-                ///******************************************************************************************************************/
+                /******************************************************************************************************************/
                 DataTable dt = new DataTable();
                 dt.TableName = "Stu";
                 dt.Columns.Add("Name", typeof(string));
@@ -353,9 +353,9 @@ namespace TestUtilZDB.Units
                 }
 
                 /******************************************************************************************************************/
-                Stu stu = new Stu() { ID = 3, Name = "刘宇2", Age = 55, Addr = "中国四川省成都市金牛区你妹的" };
+                Stu stu = new Stu() { ID = 3, Name = "刘宇", Age = 40, Addr = "中国四川省成都市金牛区你妹的222" };
                 List<string> updateProperties = null;
-                //updateProperties = new List<string>() { "Name" };
+                updateProperties = new List<string>() { "Name" };
                 foreach (var conf in configItems)
                 {
                     try
@@ -453,6 +453,17 @@ namespace TestUtilZDB.Units
             IDBAccess dbAccess = this.GetDBAccess(dBConfigElement.DBID);
             try
             {
+                Stu stui = new Stu();
+                stui.Name = "金光露";
+                stui.Age = 28;
+                stui.Addr = "heb";
+                List<Stu> stusi = new List<Stu>();
+                for (int i = 0; i < 100; i++)
+                {
+                    stusi.Add(stui);
+                }
+                dbAccess.BatchInsertT<Stu>(stusi);
+
                 List<DBConfigElement> configItems = ConfigManager.GetAllConfigItems();
                 NDbParameterCollection collection = new NDbParameterCollection();
                 object value = null;

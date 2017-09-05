@@ -26,7 +26,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("tableName");
             }
 
-            var item = new SQLiteUpdate(tableName, priKeyColValues, colValues);
+            var item = new SQLiteUpdate(this._waitTimeout, tableName, priKeyColValues, colValues);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -52,7 +52,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("sqlStr");
             }
 
-            var item = new SQLiteUpdate(sqlStr, collection);
+            var item = new SQLiteUpdate(this._waitTimeout, sqlStr, collection);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -84,7 +84,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentException("要更新到表的属性名称集合当不为null时元素不能为空", "updateProperties");
             }
 
-            var updateItem = new SQLiteUpdateT<T>(updateProperties, item);
+            var updateItem = new SQLiteUpdateT<T>(this._waitTimeout, updateProperties, item);
             this._writeQueue.Enqueue(updateItem);
             updateItem.WaitOne();
             if (updateItem.ExcuteResult)
@@ -112,7 +112,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("sqlStr");
             }
 
-            var item = new SQLiteUpdate(sqlStr, collections);
+            var item = new SQLiteUpdate(this._waitTimeout, sqlStr, collections);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -137,7 +137,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0L;
             }
 
-            var item = new SQLiteUpdate(sqlStrs);
+            var item = new SQLiteUpdate(this._waitTimeout, sqlStrs);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -169,7 +169,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentException("要更新到表的属性名称集合当不为null时元素不能为空", "updateProperties");
             }
 
-            var updateItem = new SQLiteUpdateT<T>(updateProperties, items);
+            var updateItem = new SQLiteUpdateT<T>(this._waitTimeout, updateProperties, items);
             this._writeQueue.Enqueue(updateItem);
             updateItem.WaitOne();
             if (updateItem.ExcuteResult)

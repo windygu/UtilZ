@@ -28,9 +28,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="para">参数</param>
         /// <param name="function">事务执行委托</param>
-        public SQLiteTransaction(object para, Func<IDbConnection, IDbTransaction, object, object> function) : base(-1)
+        public SQLiteTransaction(int waitTimeout, object para, Func<IDbConnection, IDbTransaction, object, object> function) : base(waitTimeout, -1)
         {
             this._para = para;
             this._function = function;
@@ -40,11 +41,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con)
+        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess)
         {
             ISQLiteDBAccessBase sqliteDBAccessBase = (ISQLiteDBAccessBase)sqliteDBAccess;
-            this.Result = sqliteDBAccessBase.BaseExcuteAdoNetTransaction(this._para, this._function, con);
+            this.Result = sqliteDBAccessBase.BaseExcuteAdoNetTransaction(this._para, this._function);
             return this.Result;
         }
     }

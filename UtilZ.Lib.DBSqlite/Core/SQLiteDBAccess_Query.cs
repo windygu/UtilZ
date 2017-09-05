@@ -28,46 +28,6 @@ namespace UtilZ.Lib.DBSqlite.Core
         {
             string pageSql = this.SplicedPagingSql(sqlStr, orderInfos, pageIndex, pageSize);
             return this.QueryData(pageSql, collection);
-
-            //var dbItem = DatabaseConfig.GetDBConInfoByDBID(dbid);
-            //string pagingAssistColName = null;//分页辅助列列名
-            //string pageSql = null;
-            //DataTable dt = null;
-            //switch (dbItem.Type)
-            //{
-            //    case DataBaseType.SQLServer:
-            //        pagingAssistColName = this.GetPagingAssistColName(sqlStr);
-            //        pageSql = PagingSqlHelper.SplicedSqlServerSql(sqlStr, orderInfos, pageIndex, pageSize, pagingAssistColName);
-            //        dt = this.QueryData(dbid, pageSql, collection);
-            //        break;
-            //    case DataBaseType.DB2:
-            //        throw new NotSupportedException(string.Format("数据库类型:{0}不支持", dbItem.Type));
-            //    case DataBaseType.MySQL:
-            //        pageSql = PagingSqlHelper.SplicedMySQLSql(sqlStr, orderInfos, pageIndex, pageSize);
-            //        dt = this.QueryData(dbid, pageSql, collection);
-            //        break;
-            //    case DataBaseType.Oracle:
-            //        pagingAssistColName = this.GetPagingAssistColName(sqlStr);
-            //        pageSql = PagingSqlHelper.SplicedOracleSql(sqlStr, orderInfos, pageIndex, pageSize, pagingAssistColName, priKeyCols);
-            //        //查询数据
-            //        dt = this.QueryData(dbid, pageSql, collection);
-            //        break;
-            //    case DataBaseType.SQLite:
-            //        pageSql = PagingSqlHelper.SplicedSQLiteSql(sqlStr, orderInfos, pageIndex, pageSize);
-            //        //查询数据
-            //        dt = this.QueryData(dbid, pageSql, collection);
-            //        break;
-            //    default:
-            //        throw new NotSupportedException(string.Format("数据库类型:{0}不支持", dbItem.Type));
-            //}
-
-            ////移除分页辅助列
-            //if (!string.IsNullOrEmpty(pagingAssistColName) && dt.Columns.Contains(pagingAssistColName))
-            //{
-            //    dt.Columns.Remove(pagingAssistColName);
-            //}
-
-            //return dt;
         }
 
         /// <summary>

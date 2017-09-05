@@ -25,7 +25,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0L;
             }
 
-            var item = new SQLiteInsert(sqlStr, collection);
+            var item = new SQLiteInsert(this._waitTimeout, sqlStr, collection);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -51,7 +51,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0L;
             }
 
-            var sqliteItem = new SQLiteInsert<T>(item);
+            var sqliteItem = new SQLiteInsert<T>(this._waitTimeout, item);
             this._writeQueue.Enqueue(sqliteItem);
             sqliteItem.WaitOne();
             if (sqliteItem.ExcuteResult)
@@ -83,7 +83,7 @@ namespace UtilZ.Lib.DBSqlite.Core
             //验证批量插入数据参数
             this.ValidateBatchInsert(tableName, cols, data);
 
-            var item = new SQLiteInsert(tableName, cols, data);
+            var item = new SQLiteInsert(this._waitTimeout, tableName, cols, data);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -109,33 +109,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0;
             }
 
-            var item = new SQLiteInsert(sqlStr, collections);
-            this._writeQueue.Enqueue(item);
-            item.WaitOne();
-            if (item.ExcuteResult)
-            {
-                return Convert.ToInt32(item.Result);
-            }
-            else
-            {
-                throw item.Result as Exception;
-            }
-        }
-
-        /// <summary>
-        /// 批量插入泛型T类型对象数据到数据到库,返回受影响的行数,仅支持单表
-        /// </summary>
-        /// <typeparam name="T">数据模型类型</typeparam>
-        /// <param name="items">插入项集合</param>
-        /// <returns>返回受影响的行数</returns>
-        public override long BatchInsertT<T>(IEnumerable<T> items)
-        {
-            if (items == null || items.Count() == 0)
-            {
-                throw new ArgumentNullException("items");
-            }
-
-            var item = new SQLiteInsert<T>(items);
+            var item = new SQLiteInsert(this._waitTimeout, sqlStr, collections);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)

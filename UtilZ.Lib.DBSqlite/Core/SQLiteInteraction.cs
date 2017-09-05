@@ -21,16 +21,6 @@ namespace UtilZ.Lib.DBSqlite.Core
     public class SQLiteInteraction : DBInteractionBase
     {
         /// <summary>
-        /// 数据库连接写对象字典集合[key:数据库编号ID;value:数据库连接写对象]
-        /// </summary>
-        private readonly ConcurrentDictionary<int, IDbConnection> _dicWriteCons = new ConcurrentDictionary<int, IDbConnection>();
-
-        /// <summary>
-        /// 数据库连接写对象字典集合线程锁
-        /// </summary>
-        private readonly object _dicWriteConsMonitor = new object();
-
-        /// <summary>
         /// 数据库程序集名称
         /// </summary>
         private readonly string _databaseName = typeof(System.Data.SQLite.SQLiteConnection).Assembly.FullName;
@@ -54,47 +44,14 @@ namespace UtilZ.Lib.DBSqlite.Core
         }
 
         /// <summary>
-        /// 配置项移除通知
-        /// </summary>
-        /// <param name="config">配置项</param>
-        protected override void ConfigRemoveNotify(DBConfigElement config)
-        {
-            try
-            {
-                if (config == null)
-                {
-                    return;
-                }
-
-                int dbid = config.DBID;
-                IDbConnection con = null;
-                lock (this._dicWriteConsMonitor)
-                {
-                    if (this._dicWriteCons.ContainsKey(dbid))
-                    {
-                        this._dicWriteCons.TryRemove(dbid, out con);
-                    }
-                }
-
-                if (con != null && con.State != ConnectionState.Closed)
-                {
-                    con.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                DBLog.OutLog(ex);
-            }
-        }
-
-        /// <summary>
         /// 创建数据库读连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
+        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public override IDbConnection CreateConnection(DBConfigElement config)
+        public override IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
         {
-            return new SQLiteConnection(this.GetDBConStr(config, DBVisitType.R));
+            return new SQLiteConnection(this.GetDBConStr(config, visitType));
         }
 
         /// <summary>
@@ -144,6 +101,10 @@ namespace UtilZ.Lib.DBSqlite.Core
             if (visitType == DBVisitType.R)
             {
                 scsb.ReadOnly = true;
+            }
+            else
+            {
+                scsb.ReadOnly = false;
             }
 
             return scsb.ConnectionString;

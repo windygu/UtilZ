@@ -78,7 +78,7 @@ namespace UtilZ.Lib.DBSqlite.Core
             }
             else
             {
-                var item = new SQLiteExecuteScalar(sqlStr, collection);
+                var item = new SQLiteExecuteScalar(this._waitTimeout, sqlStr, collection);
                 this._writeQueue.Enqueue(item);
                 item.WaitOne();
                 if (item.ExcuteResult)
@@ -112,7 +112,7 @@ namespace UtilZ.Lib.DBSqlite.Core
             }
             else
             {
-                var item = new SQLiteExecuteNonQuery(sqlStr, collection);
+                var item = new SQLiteExecuteNonQuery(this._waitTimeout, sqlStr, collection);
                 this._writeQueue.Enqueue(item);
                 item.WaitOne();
                 if (item.ExcuteResult)
@@ -140,7 +140,7 @@ namespace UtilZ.Lib.DBSqlite.Core
             }
             else
             {
-                var item = new SQLiteExcuteStoredProcedure(para);
+                var item = new SQLiteExcuteStoredProcedure(this._waitTimeout, para);
                 this._writeQueue.Enqueue(item);
                 item.WaitOne();
                 if (item.ExcuteResult)
@@ -164,7 +164,7 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <returns>事务返回值</returns>
         public override object ExcuteAdoNetTransaction(object para, Func<IDbConnection, IDbTransaction, object, object> function)
         {
-            var item = new SQLiteTransaction(para, function);
+            var item = new SQLiteTransaction(this._waitTimeout, para, function);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -185,14 +185,9 @@ namespace UtilZ.Lib.DBSqlite.Core
         private readonly AsynQueue<SQLiteWriteBase> _writeQueue;
 
         /// <summary>
-        /// SQLite数据库写连接对象,同时也作为线程同步锁对象
+        /// 等待超时时间(-1表示无限等待)
         /// </summary>
-        private IDbConnection _writeCon;
-
-        /// <summary>
-        /// 数据库连接信息
-        /// </summary>
-        private DbConnectionInfo _conInfo = null;
+        private readonly int _waitTimeout = System.Threading.Timeout.Infinite;
 
         /// <summary>
         /// 构造函数
@@ -203,6 +198,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                     : base(dbid)
         {
             this._databaseName = databaseName;
+            this._waitTimeout = this.Config.CommandTimeout;
             if (this.Config.SqlMaxLength == DBConstant.SqlMaxLength)
             {
                 //The maximum number of bytes in the text of an SQL statement is limited to SQLITE_MAX_SQL_LENGTH which defaults to 1000000. You can red
@@ -225,7 +221,7 @@ namespace UtilZ.Lib.DBSqlite.Core
         {
             try
             {
-                item.Excute(this, this._writeCon);
+                item.Excute(this);
                 item.ExcuteResult = true;
             }
             catch (Exception ex)
@@ -251,9 +247,6 @@ namespace UtilZ.Lib.DBSqlite.Core
         {
             this.Config.WriteConCount = 1;
             base.Init();
-
-            this._conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W);
-            this._writeCon = this._conInfo.Con;
             this._writeQueue.Start();
         }
 
@@ -265,12 +258,6 @@ namespace UtilZ.Lib.DBSqlite.Core
         {
             base.Dispose(isDisposing);
             this._writeQueue.Dispose();
-
-            if (this._conInfo != null)
-            {
-                this._conInfo.Dispose();
-                this._writeCon = null;
-            }
         }
     }
 }

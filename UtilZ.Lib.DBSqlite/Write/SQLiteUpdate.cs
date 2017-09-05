@@ -43,10 +43,11 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="tableName">表名</param>
         /// <param name="priKeyColValues">主键列名值映射字典</param>
         /// <param name="colValues">修改列名值字典</param>
-        public SQLiteUpdate(string tableName, Dictionary<string, object> priKeyColValues, Dictionary<string, object> colValues) : base(1)
+        public SQLiteUpdate(int waitTimeout, string tableName, Dictionary<string, object> priKeyColValues, Dictionary<string, object> colValues) : base(waitTimeout, 1)
         {
             this._tableName = tableName;
             this._priKeyColValues = priKeyColValues;
@@ -56,8 +57,9 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 批量更新记录,返回受影响的行数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStrs">Sql语句集合</param>
-        public SQLiteUpdate(IEnumerable<string> sqlStrs) : base(2)
+        public SQLiteUpdate(int waitTimeout, IEnumerable<string> sqlStrs) : base(waitTimeout, 2)
         {
             this._sqlStrs = sqlStrs;
         }
@@ -65,9 +67,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
-        public SQLiteUpdate(string sqlStr, NDbParameterCollection collection) : base(3)
+        public SQLiteUpdate(int waitTimeout, string sqlStr, NDbParameterCollection collection) : base(waitTimeout, 3)
         {
             this._sqlStr = sqlStr;
             this._collection = collection;
@@ -76,9 +79,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collections">命令的参数集合</param>
-        public SQLiteUpdate(string sqlStr, IEnumerable<NDbParameterCollection> collections) : base(4)
+        public SQLiteUpdate(int waitTimeout, string sqlStr, IEnumerable<NDbParameterCollection> collections) : base(waitTimeout, 4)
         {
             this._sqlStr = sqlStr;
             this._collections = collections;
@@ -88,22 +92,21 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con)
+        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess)
         {
             switch (this._type)
             {
                 case 1:
-                    this.Result = sqliteDBAccess.BaseUpdate(this._tableName, this._priKeyColValues, this._colValues, con);
+                    this.Result = sqliteDBAccess.BaseUpdate(this._tableName, this._priKeyColValues, this._colValues);
                     break;
                 case 2:
-                    this.Result = sqliteDBAccess.BaseBatchUpdate(this._sqlStrs, con);
+                    this.Result = sqliteDBAccess.BaseBatchUpdate(this._sqlStrs);
                     break;
                 case 3:
-                    this.Result = sqliteDBAccess.BaseUpdate(this._sqlStr, this._collection, con);
+                    this.Result = sqliteDBAccess.BaseUpdate(this._sqlStr, this._collection);
                     break;
                 case 4:
-                    this.Result = sqliteDBAccess.BaseBatchUpdate(this._sqlStr, this._collections, con);
+                    this.Result = sqliteDBAccess.BaseBatchUpdate(this._sqlStr, this._collections);
                     break;
                 default:
                     throw new NotImplementedException(string.Format("未实现的泛型插入类型{0}", this._type));

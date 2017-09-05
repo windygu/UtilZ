@@ -28,10 +28,11 @@ namespace UtilZ.Lib.DBMySql.Core
         /// 创建数据库连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
+        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public override IDbConnection CreateConnection(DBConfigElement config)
+        public override IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
         {
-            return new MySqlConnection(this.GetDBConStr(config, DBVisitType.R));
+            return new MySqlConnection(this.GetDBConStr(config, visitType));
         }
 
         /// <summary>

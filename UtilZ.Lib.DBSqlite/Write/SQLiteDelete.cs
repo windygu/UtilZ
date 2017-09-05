@@ -44,9 +44,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">Sql语句</param>
         /// <param name="collection">命令的参数集合</param>
-        public SQLiteDelete(string sqlStr, NDbParameterCollection collection) : base(1)
+        public SQLiteDelete(int waitTimeout, string sqlStr, NDbParameterCollection collection) : base(waitTimeout, 1)
         {
             this._sqlStr = sqlStr;
             this._collection = collection;
@@ -55,9 +56,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="tableName">要删除的表名</param>
         /// <param name="priKeyColValues">要删除的表条件值集合[key:列名;value:值]</param>
-        public SQLiteDelete(string tableName, Dictionary<string, object> priKeyColValues) : base(2)
+        public SQLiteDelete(int waitTimeout, string tableName, Dictionary<string, object> priKeyColValues) : base(waitTimeout, 2)
         {
             this._tableName = tableName;
             this._priKeyColValues = new Dictionary<string, object>(priKeyColValues);
@@ -66,8 +68,9 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStrs">Sql语句集合</param>
-        public SQLiteDelete(IEnumerable<string> sqlStrs) : base(3)
+        public SQLiteDelete(int waitTimeout, IEnumerable<string> sqlStrs) : base(waitTimeout, 3)
         {
             this._sqlStrs = sqlStrs;
         }
@@ -75,9 +78,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="tableName">表名</param>
         /// <param name="priKeyColValues">主键列名值字典集合</param>
-        public SQLiteDelete(string tableName, IEnumerable<Dictionary<string, object>> priKeyColValues) : base(4)
+        public SQLiteDelete(int waitTimeout, string tableName, IEnumerable<Dictionary<string, object>> priKeyColValues) : base(waitTimeout, 4)
         {
             this._tableName = tableName;
             this._priKeyColValuess = priKeyColValues;
@@ -86,9 +90,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">Sql语句集合</param>
         /// <param name="collections">参数集合</param>
-        public SQLiteDelete(string sqlStr, IEnumerable<NDbParameterCollection> collections) : base(5)
+        public SQLiteDelete(int waitTimeout, string sqlStr, IEnumerable<NDbParameterCollection> collections) : base(waitTimeout, 5)
         {
             this._sqlStr = sqlStr;
             this._collections = collections;
@@ -98,25 +103,24 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con)
+        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess)
         {
             switch (this._type)
             {
                 case 1:
-                    this.Result = sqliteDBAccess.BaseDelete(this._sqlStr, con, this._collection);
+                    this.Result = sqliteDBAccess.BaseDelete(this._sqlStr, this._collection);
                     break;
                 case 2:
-                    this.Result = sqliteDBAccess.BaseDelete(this._tableName, this._priKeyColValues, con);
+                    this.Result = sqliteDBAccess.BaseDelete(this._tableName, this._priKeyColValues);
                     break;
                 case 3:
-                    this.Result = sqliteDBAccess.BaseBatchDelete(this._sqlStrs, con);
+                    this.Result = sqliteDBAccess.BaseBatchDelete(this._sqlStrs);
                     break;
                 case 4:
-                    this.Result = sqliteDBAccess.BaseBatchDelete(this._tableName, this._priKeyColValuess, con);
+                    this.Result = sqliteDBAccess.BaseBatchDelete(this._tableName, this._priKeyColValuess);
                     break;
                 case 5:
-                    this.Result = sqliteDBAccess.BaseBatchDelete(this._sqlStr, this._collections, con);
+                    this.Result = sqliteDBAccess.BaseBatchDelete(this._sqlStr, this._collections);
                     break;
                 default:
                     throw new NotImplementedException(string.Format("未实现的泛型插入类型{0}", this._type));

@@ -16,6 +16,11 @@ namespace UtilZ.Lib.DBSqlite.Write
     public abstract class SQLiteWriteBase : IDisposable
     {
         /// <summary>
+        /// 等待超时时间(-1表示无限等待)
+        /// </summary>
+        private readonly int _waitTimeout = System.Threading.Timeout.Infinite;
+
+        /// <summary>
         /// 实例ID
         /// </summary>
         public Guid ID { get; private set; }
@@ -53,9 +58,11 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="type">执行类型</param>
-        protected SQLiteWriteBase(int type)
+        protected SQLiteWriteBase(int waitTimeout, int type)
         {
+            this._waitTimeout = waitTimeout;
             this.ID = Guid.NewGuid();
             this._writeAutoResetEvent = new AutoResetEvent(false);
             this._type = type;
@@ -72,17 +79,17 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 等等当前操作被执行
         /// </summary>
-        public void WaitOne()
+        /// <returns>等待结果</returns>
+        public bool WaitOne()
         {
-            this._writeAutoResetEvent.WaitOne();
+            return this._writeAutoResetEvent.WaitOne(this._waitTimeout);
         }
 
         /// <summary>
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public abstract object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con);
+        public abstract object Excute(ISQLiteDBAccessBase sqliteDBAccess);
 
         #region IDisposable
         /// <summary>

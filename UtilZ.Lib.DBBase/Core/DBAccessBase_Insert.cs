@@ -31,16 +31,6 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 return this.InnerExecuteNonQuery(conInfo.Con, sqlStr, collection);
             }
-
-            //IDbConnection con = this.GetDbConnection(DBVisitType.W);
-            //try
-            //{
-            //    return this.InnerExecuteNonQuery(con, sqlStr, collection);
-            //}
-            //finally
-            //{
-            //    this.ReleaseDbConnection(con, DBVisitType.W);
-            //}
         }
 
         /// <summary>
@@ -148,7 +138,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="tableName">表名</param>
         /// <param name="dt">DataTable</param>
         /// <returns>返回受影响的行数</returns>
-        public virtual long BatchInsert(string tableName, DataTable dt)
+        public long BatchInsert(string tableName, DataTable dt)
         {
             if (string.IsNullOrWhiteSpace(tableName))
             {
@@ -345,7 +335,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="items">插入项集合</param>
         /// <returns>返回受影响的行数</returns>
-        public virtual long BatchInsertT<T>(IEnumerable<T> items) where T : class
+        public long BatchInsertT<T>(IEnumerable<T> items) where T : class
         {
             if (items == null || items.Count() == 0)
             {

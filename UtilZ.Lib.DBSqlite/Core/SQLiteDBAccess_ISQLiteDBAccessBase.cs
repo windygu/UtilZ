@@ -19,12 +19,11 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        public object BaseExecuteScalar(string sqlStr, DBVisitType visitType, IDbConnection con = null, NDbParameterCollection collection = null)
+        public object BaseExecuteScalar(string sqlStr, DBVisitType visitType, NDbParameterCollection collection = null)
         {
-            return base.InnerExecuteScalar(con, sqlStr, collection);
+            return base.ExecuteScalar(sqlStr, visitType, collection);
         }
 
         /// <summary>
@@ -32,23 +31,21 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        public int BaseExecuteNonQuery(string sqlStr, DBVisitType visitType, IDbConnection con = null, NDbParameterCollection collection = null)
+        public int BaseExecuteNonQuery(string sqlStr, DBVisitType visitType, NDbParameterCollection collection = null)
         {
-            return base.InnerExecuteNonQuery(con, sqlStr, collection);
+            return base.ExecuteNonQuery(sqlStr, visitType, collection);
         }
 
         /// <summary>
         /// 执行存储过程
         /// </summary>
         /// <param name="para">参数</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>执行结果</returns>
-        public StoredProcedureResult BaseExcuteStoredProcedure(StoredProcedurePara para, IDbConnection con = null)
+        public StoredProcedureResult BaseExcuteStoredProcedure(StoredProcedurePara para)
         {
-            return base.ExcuteStoredProcedure(para, con);
+            return base.ExcuteStoredProcedure(para);
         }
 
         /// <summary>
@@ -56,11 +53,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="para">参数</param>
         /// <param name="function">事务执行委托</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>事务返回值</returns>
-        public object BaseExcuteAdoNetTransaction(object para, Func<IDbConnection, IDbTransaction, object, object> function, IDbConnection con = null)
+        public object BaseExcuteAdoNetTransaction(object para, Func<IDbConnection, IDbTransaction, object, object> function)
         {
-            return base.ExcuteAdoNetTransaction(para, function, con);
+            return base.ExcuteAdoNetTransaction(para, function);
         }
         #endregion
 
@@ -71,11 +67,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseInsert(string sqlStr, NDbParameterCollection collection = null, IDbConnection con = null)
+        public long BaseInsert(string sqlStr, NDbParameterCollection collection = null)
         {
-            return base.Insert(sqlStr, collection, con);
+            return base.Insert(sqlStr, collection);
         }
 
         /// <summary>
@@ -83,11 +78,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="item">插入项</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseInsertT<T>(T item, IDbConnection con = null) where T : class
+        public long BaseInsertT<T>(T item) where T : class
         {
-            return base.InsertT<T>(item, con);
+            return base.InsertT<T>(item);
         }
         #endregion
 
@@ -98,68 +92,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <param name="tableName">表名</param>
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data, IDbConnection con = null)
+        public long BaseBatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new ArgumentNullException("tableName");
-            }
-
-            if (cols == null || cols.Count() == 0 || data == null || data.Count() == 0)
-            {
-                return 0L;
-            }
-
-            if (con == null)
-            {
-                con = this.GetDbConnection(DBVisitType.W);
-            }
-
-            bool closeFlag = false;
-            if (con.State == ConnectionState.Closed)
-            {
-                con.Open();
-                closeFlag = true;
-            }
-
-            try
-            {
-                using (IDbTransaction transaction = con.BeginTransaction())
-                {
-                    try
-                    {
-                        IDbCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = this.Interaction.GenerateSqlInsert(tableName, this.ParaSign, cols);
-                        cmd.Prepare();
-                        this.InitCommand(cmd);
-                        long effectCount = 0;
-
-                        foreach (var arr in data)
-                        {
-                            this.Interaction.SetParameter(cmd, cols, arr);
-                            effectCount += cmd.ExecuteNonQuery();
-                        }
-
-                        transaction.Commit();
-                        return effectCount;
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-            finally
-            {
-                if (closeFlag)
-                {
-                    con.Close();
-                }
-            }
+            return base.BatchInsert(tableName, cols, data);
         }
 
         /// <summary>
@@ -167,53 +103,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collections">命令的参数集合</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchInsert(string sqlStr, IEnumerable<NDbParameterCollection> collections, IDbConnection con = null)
+        public long BaseBatchInsert(string sqlStr, IEnumerable<NDbParameterCollection> collections)
         {
-            return base.BatchInsert(sqlStr, collections, con);
-        }
-
-        /// <summary>
-        /// 批量插入泛型T类型对象数据到数据到库,返回受影响的行数,仅支持单表
-        /// </summary>
-        /// <typeparam name="T">数据模型类型</typeparam>
-        /// <param name="items">插入项集合</param>
-        /// <param name="con">数据库连接对象</param>
-        /// <returns>返回受影响的行数</returns>
-        public long BaseBatchInsertT<T>(IEnumerable<T> items, IDbConnection con = null) where T : class
-        {
-            if (items == null || items.Count() == 0)
-            {
-                return 0;
-            }
-
-            if (con == null)
-            {
-                con = this.GetDbConnection(DBVisitType.W);
-            }
-
-            bool closeFlag = false;
-            if (con.State == ConnectionState.Closed)
-            {
-                con.Open();
-                closeFlag = true;
-            }
-
-            try
-            {
-                List<string> cols;
-                List<object[]> data;
-                string tableName = this.ConvertTToBatchValue(items, con, out cols, out data);
-                return base.BatchInsert(tableName, cols, data, con);
-            }
-            finally
-            {
-                if (closeFlag)
-                {
-                    con.Close();
-                }
-            }
+            return base.BatchInsert(sqlStr, collections);
         }
         #endregion
         #endregion
@@ -224,12 +117,11 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// 删除记录,返回受影响的行数
         /// </summary>
         /// <param name="sqlStr">Sql语句</param>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseDelete(string sqlStr, IDbConnection con = null, NDbParameterCollection collection = null)
+        public long BaseDelete(string sqlStr, NDbParameterCollection collection = null)
         {
-            return base.Delete(sqlStr, con, collection);
+            return base.Delete(sqlStr, collection);
         }
 
         /// <summary>
@@ -237,11 +129,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="priKeyColValues">主键列名值映射字典</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseDelete(string tableName, Dictionary<string, object> priKeyColValues, IDbConnection con = null)
+        public long BaseDelete(string tableName, Dictionary<string, object> priKeyColValues)
         {
-            return base.Delete(tableName, priKeyColValues, con);
+            return base.Delete(tableName, priKeyColValues);
         }
 
         /// <summary>
@@ -249,11 +140,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="item">要删除的对象</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseDeleteT<T>(T item, IDbConnection con = null) where T : class
+        public long BaseDeleteT<T>(T item) where T : class
         {
-            return base.DeleteT<T>(item, con);
+            return base.DeleteT<T>(item);
         }
         #endregion
 
@@ -262,11 +152,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// 批量删除记录,返回受影响的行数
         /// </summary>
         /// <param name="sqlStrs">Sql语句集合</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchDelete(IEnumerable<string> sqlStrs, IDbConnection con = null)
+        public long BaseBatchDelete(IEnumerable<string> sqlStrs)
         {
-            return base.BatchDelete(sqlStrs, con);
+            return base.BatchDelete(sqlStrs);
         }
 
         /// <summary>
@@ -274,23 +163,21 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="priKeyColValues">主键列名值映射字典</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchDelete(string tableName, IEnumerable<Dictionary<string, object>> priKeyColValues, IDbConnection con = null)
+        public long BaseBatchDelete(string tableName, IEnumerable<Dictionary<string, object>> priKeyColValues)
         {
-            return base.BatchDelete(tableName, priKeyColValues, con);
+            return base.BatchDelete(tableName, priKeyColValues);
         }
 
         /// <summary>
         /// 批量删除记录,返回受影响的行数
         /// </summary>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">Sql语句</param>
         /// <param name="collections">命令的参数集合</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchDelete(string sqlStr, IEnumerable<NDbParameterCollection> collections, IDbConnection con = null)
+        public long BaseBatchDelete(string sqlStr, IEnumerable<NDbParameterCollection> collections)
         {
-            return base.BatchDelete(sqlStr, collections, con);
+            return base.BatchDelete(sqlStr, collections);
         }
 
         /// <summary>
@@ -298,11 +185,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="items">要删除的集合</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchDeleteT<T>(IEnumerable<T> items, IDbConnection con = null) where T : class
+        public long BaseBatchDeleteT<T>(IEnumerable<T> items) where T : class
         {
-            return base.BatchDeleteT<T>(items, con);
+            return base.BatchDeleteT<T>(items);
         }
         #endregion
         #endregion
@@ -315,11 +201,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <param name="tableName">表名</param>
         /// <param name="priKeyColValues">主键列名值映射字典</param>
         /// <param name="colValues">修改列名值字典</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseUpdate(string tableName, Dictionary<string, object> priKeyColValues, Dictionary<string, object> colValues, IDbConnection con = null)
+        public long BaseUpdate(string tableName, Dictionary<string, object> priKeyColValues, Dictionary<string, object> colValues)
         {
-            return base.Update(tableName, priKeyColValues, colValues, con);
+            return base.Update(tableName, priKeyColValues, colValues);
         }
 
         /// <summary>
@@ -327,11 +212,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="sqlStr">Sql语句</param>
         /// <param name="collection">命令的参数集合</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseUpdate(string sqlStr, NDbParameterCollection collection = null, IDbConnection con = null)
+        public long BaseUpdate(string sqlStr, NDbParameterCollection collection = null)
         {
-            return base.Update(sqlStr, collection, con);
+            return base.Update(sqlStr, collection);
         }
 
         /// <summary>
@@ -340,11 +224,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="item">对象</param>
         /// <param name="updateProperties">要更新到数据库表的属性名称集合,为null时全部更新</param>
-        /// <param name="con">数据连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseUpdateT<T>(T item, IEnumerable<string> updateProperties = null, IDbConnection con = null) where T : class
+        public long BaseUpdateT<T>(T item, IEnumerable<string> updateProperties = null) where T : class
         {
-            return base.UpdateT<T>(item, updateProperties, con);
+            return base.UpdateT<T>(item, updateProperties);
         }
         #endregion
 
@@ -354,22 +237,20 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="sqlStr">Sql语句</param>
         /// <param name="collections">命令的参数集合</param>
-        /// <param name="con">数据连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchUpdate(string sqlStr, IEnumerable<NDbParameterCollection> collections = null, IDbConnection con = null)
+        public long BaseBatchUpdate(string sqlStr, IEnumerable<NDbParameterCollection> collections = null)
         {
-            return base.BatchUpdate(sqlStr, collections, con);
+            return base.BatchUpdate(sqlStr, collections);
         }
 
         /// <summary>
         /// 批量更新记录,返回受影响的行数
         /// </summary>
         /// <param name="sqlStrs">Sql语句集合</param>
-        /// <param name="con">数据连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchUpdate(IEnumerable<string> sqlStrs, IDbConnection con = null)
+        public long BaseBatchUpdate(IEnumerable<string> sqlStrs)
         {
-            return base.BatchUpdate(sqlStrs, con);
+            return base.BatchUpdate(sqlStrs);
         }
 
         /// <summary>
@@ -378,11 +259,10 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="items">要更新的对象集合</param>
         /// <param name="updateProperties">要更新到数据库表的属性名称集合,为null时全部更新</param>
-        /// <param name="con">数据连接对象</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseBatchUpdateT<T>(IEnumerable<T> items, IEnumerable<string> updateProperties = null, IDbConnection con = null) where T : class
+        public long BaseBatchUpdateT<T>(IEnumerable<T> items, IEnumerable<string> updateProperties = null) where T : class
         {
-            return base.BatchUpdateT<T>(items, updateProperties, con);
+            return base.BatchUpdateT<T>(items, updateProperties);
         }
         #endregion
         #endregion

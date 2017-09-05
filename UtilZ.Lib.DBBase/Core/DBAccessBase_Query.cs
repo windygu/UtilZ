@@ -20,7 +20,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>分页信息</returns>
-        public virtual DBPageInfo QueryPageInfo(int pageSize, string sqlStr, NDbParameterCollection collection = null)
+        public DBPageInfo QueryPageInfo(int pageSize, string sqlStr, NDbParameterCollection collection = null)
         {
             if (pageSize < 1)
             {
@@ -61,7 +61,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        protected virtual DataSet InnerQueryDataSet(IDbConnection con, string sqlStr, NDbParameterCollection collection = null)
+        protected DataSet InnerQueryDataSet(IDbConnection con, string sqlStr, NDbParameterCollection collection = null)
         {
             DbConnectionInfo conInfo = null;
             if (con == null)
@@ -96,7 +96,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        protected virtual DataTable InnerQueryData(IDbConnection con, string sqlStr, NDbParameterCollection collection = null)
+        protected DataTable InnerQueryData(IDbConnection con, string sqlStr, NDbParameterCollection collection = null)
         {
             DataSet ds = this.InnerQueryDataSet(con, sqlStr, collection);
             if (ds.Tables.Count > 0)
@@ -113,7 +113,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        public virtual DataSet QueryDataSet(string sqlStr, NDbParameterCollection collection = null)
+        public DataSet QueryDataSet(string sqlStr, NDbParameterCollection collection = null)
         {
             return this.InnerQueryDataSet(null, sqlStr, collection);
         }
@@ -124,7 +124,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        public virtual DataTable QueryData(string sqlStr, NDbParameterCollection collection = null)
+        public DataTable QueryData(string sqlStr, NDbParameterCollection collection = null)
         {
             return this.InnerQueryData(null, sqlStr, collection);
         }
@@ -168,7 +168,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="orderInfos">排序列名集合</param>
         /// <param name="priKeyCols">主键列集合</param>
         /// <returns>排序字符串</returns>
-        protected virtual string CreateOrderStr(IEnumerable<DBOrderInfo> orderInfos, IEnumerable<string> priKeyCols)
+        protected string CreateOrderStr(IEnumerable<DBOrderInfo> orderInfos, IEnumerable<string> priKeyCols)
         {
             if (orderInfos == null || orderInfos.Count() == 0)
             {

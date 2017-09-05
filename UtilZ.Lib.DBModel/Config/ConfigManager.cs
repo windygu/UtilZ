@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.LocalMeseageQueue;
 using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.DBModel.Config;
 using UtilZ.Lib.DBModel.Constant;
@@ -82,10 +81,7 @@ namespace UtilZ.Lib.DBModel.Config
         public static void RemoveConfigItem(int dbid)
         {
             DBConfigElement dbItem;
-            if (_configItems.TryRemove(dbid, out dbItem))
-            {
-                LMQCenter.Publish(DBConstant.ConfigRemoveSubject, dbItem);
-            }
+            _configItems.TryRemove(dbid, out dbItem);
         }
 
         /// <summary>

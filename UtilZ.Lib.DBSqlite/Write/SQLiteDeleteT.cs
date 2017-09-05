@@ -27,8 +27,9 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="item">删除项集合</param>
-        public SQLiteDeleteT(T item) : base(1)
+        public SQLiteDeleteT(int waitTimeout, T item) : base(waitTimeout, 1)
         {
             this._item = item;
         }
@@ -36,8 +37,9 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="items">删除项集合</param>
-        public SQLiteDeleteT(IEnumerable<T> items) : base(2)
+        public SQLiteDeleteT(int waitTimeout, IEnumerable<T> items) : base(waitTimeout, 2)
         {
             this._items = items;
         }
@@ -46,16 +48,15 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con)
+        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess)
         {
             switch (this._type)
             {
                 case 1:
-                    this.Result = sqliteDBAccess.BaseDeleteT<T>(this._item, con);
+                    this.Result = sqliteDBAccess.BaseDeleteT<T>(this._item);
                     break;
                 case 2:
-                    this.Result = sqliteDBAccess.BaseBatchDeleteT<T>(this._items, con);
+                    this.Result = sqliteDBAccess.BaseBatchDeleteT<T>(this._items);
                     break;
                 default:
                     throw new NotImplementedException(string.Format("未实现的泛型插入类型{0}", this._type));

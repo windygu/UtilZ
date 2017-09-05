@@ -23,9 +23,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
-        public SQLiteExecuteScalar(string sqlStr, NDbParameterCollection collection) : base(1)
+        public SQLiteExecuteScalar(int waitTimeout, string sqlStr, NDbParameterCollection collection) : base(waitTimeout, 1)
         {
             this._sqlStr = sqlStr;
             this._collection = collection;
@@ -35,13 +36,12 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con)
+        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess)
         {
             switch (this._type)
             {
                 case 1:
-                    this.Result = sqliteDBAccess.BaseExecuteScalar(this._sqlStr, DBVisitType.W, con, this._collection);
+                    this.Result = sqliteDBAccess.BaseExecuteScalar(this._sqlStr, DBVisitType.W, this._collection);
                     break;
                 default:
                     throw new NotImplementedException(string.Format("未实现的写类型{0}", this._type));

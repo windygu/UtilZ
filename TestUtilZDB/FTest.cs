@@ -120,7 +120,7 @@ namespace TestUtilZDB
                 DBPageInfo dbPageInfo = _unitTest.QueryPage(config, _pageSize);
                 if (dbPageInfo.PageCount == 0)
                 {
-                    pageIndex = -1;
+                    pageIndex = 1;
                 }
 
                 int count;

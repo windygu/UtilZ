@@ -55,12 +55,12 @@ namespace UtilZ.Lib.DBBase.Core
         {
             for (int i = 0; i < this._config.ReadConCount; i++)
             {
-                this._readConPool.Add(this._interaction.CreateConnection(this._config));
+                this._readConPool.Add(this._interaction.CreateConnection(this._config, DBVisitType.R));
             }
 
             for (int i = 0; i < this._config.WriteConCount; i++)
             {
-                this._writeConPool.Add(this._interaction.CreateConnection(this._config));
+                this._writeConPool.Add(this._interaction.CreateConnection(this._config, DBVisitType.W));
             }
         }
 
@@ -76,7 +76,7 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 if (this._config.ReadConCount < 1)
                 {
-                    con = this._interaction.CreateConnection(this._config);
+                    con = this._interaction.CreateConnection(this._config, visitType);
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 if (this._config.WriteConCount < 1)
                 {
-                    con = this._interaction.CreateConnection(this._config);
+                    con = this._interaction.CreateConnection(this._config, visitType);
                 }
                 else
                 {

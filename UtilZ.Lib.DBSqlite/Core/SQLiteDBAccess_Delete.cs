@@ -26,7 +26,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("sqlStr");
             }
 
-            var item = new SQLiteDelete(sqlStr, collection);
+            var item = new SQLiteDelete(this._waitTimeout, sqlStr, collection);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -52,7 +52,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("tableName");
             }
 
-            var item = new SQLiteDelete(tableName, priKeyColValues);
+            var item = new SQLiteDelete(this._waitTimeout, tableName, priKeyColValues);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -78,7 +78,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0;
             }
 
-            var delItem = new SQLiteDeleteT<T>(item);
+            var delItem = new SQLiteDeleteT<T>(this._waitTimeout, item);
             this._writeQueue.Enqueue(delItem);
             delItem.WaitOne();
             if (delItem.ExcuteResult)
@@ -105,7 +105,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0L;
             }
 
-            var item = new SQLiteDelete(sqlStrs);
+            var item = new SQLiteDelete(this._waitTimeout, sqlStrs);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -131,7 +131,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("tableName");
             }
 
-            var item = new SQLiteDelete(tableName, priKeyColValues);
+            var item = new SQLiteDelete(this._waitTimeout, tableName, priKeyColValues);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -157,7 +157,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 throw new ArgumentNullException("sqlStr");
             }
 
-            var item = new SQLiteDelete(sqlStr, collections);
+            var item = new SQLiteDelete(this._waitTimeout, sqlStr, collections);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)
@@ -183,7 +183,7 @@ namespace UtilZ.Lib.DBSqlite.Core
                 return 0L;
             }
 
-            var item = new SQLiteDeleteT<T>(items);
+            var item = new SQLiteDeleteT<T>(this._waitTimeout, items);
             this._writeQueue.Enqueue(item);
             item.WaitOne();
             if (item.ExcuteResult)

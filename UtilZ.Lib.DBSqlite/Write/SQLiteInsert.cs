@@ -38,9 +38,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collection">命令的参数集合</param>
-        public SQLiteInsert(string sqlStr, NDbParameterCollection collection) : base(1)
+        public SQLiteInsert(int waitTimeout, string sqlStr, NDbParameterCollection collection) : base(waitTimeout, 1)
         {
             this._sqlStr = sqlStr;
             this._collection = collection;
@@ -49,9 +50,10 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collections">命令的参数集合</param>
-        public SQLiteInsert(string sqlStr, IEnumerable<NDbParameterCollection> collections) : base(2)
+        public SQLiteInsert(int waitTimeout, string sqlStr, IEnumerable<NDbParameterCollection> collections) : base(waitTimeout, 2)
         {
             this._sqlStr = sqlStr;
             this._collections = collections;
@@ -60,10 +62,11 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// <summary>
         /// 批量插入数据,返回受影响的行数
         /// </summary>
+        /// <param name="waitTimeout">等待超时时间(-1表示无限等待)</param>
         /// <param name="tableName">表名</param>
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
-        public SQLiteInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data) : base(3)
+        public SQLiteInsert(int waitTimeout, string tableName, IEnumerable<string> cols, IEnumerable<object[]> data) : base(waitTimeout, 3)
         {
             this._tableName = tableName;
             this._cols = cols;
@@ -74,19 +77,18 @@ namespace UtilZ.Lib.DBSqlite.Write
         /// 执行写入操作
         /// </summary>
         /// <param name="sqliteDBAccess">SQLite数据库访问对象</param>
-        /// <param name="con">数据库连接</param>
-        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess, IDbConnection con)
+        public override object Excute(ISQLiteDBAccessBase sqliteDBAccess)
         {
             switch (this._type)
             {
                 case 1:
-                    this.Result = sqliteDBAccess.BaseInsert(this._sqlStr, this._collection, con);
+                    this.Result = sqliteDBAccess.BaseInsert(this._sqlStr, this._collection);
                     break;
                 case 2:
-                    this.Result = sqliteDBAccess.BaseBatchInsert(this._sqlStr, this._collections, con);
+                    this.Result = sqliteDBAccess.BaseBatchInsert(this._sqlStr, this._collections);
                     break;
                 case 3:
-                    this.Result = sqliteDBAccess.BaseBatchInsert(this._tableName, this._cols, this._data, con);
+                    this.Result = sqliteDBAccess.BaseBatchInsert(this._tableName, this._cols, this._data);
                     break;
                 default:
                     throw new NotImplementedException(string.Format("未实现的泛型插入类型{0}", this._type));
