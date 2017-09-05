@@ -109,5 +109,14 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         {
             InnerPerson = new Person();
         }
+
+        /// <summary>
+        /// 重写ToString
+        /// </summary>
+        /// <returns>String</returns>
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
