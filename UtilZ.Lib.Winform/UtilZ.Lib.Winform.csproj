@@ -116,6 +116,7 @@
     <Compile Include="PropertyGrid\Demo\NAddress.cs" />
     <Compile Include="PropertyGrid\Demo\Person.cs" />
     <Compile Include="PropertyGrid\Demo\PersonConverter.cs" />
+    <Compile Include="PropertyGrid\Demo\PersonDemo.cs" />
     <Compile Include="PropertyGrid\Demo\PostureCommon.cs" />
     <Compile Include="PropertyGrid\Demo\SexEnum.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridCategoryOrder.cs" />

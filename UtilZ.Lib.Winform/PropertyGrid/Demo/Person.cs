@@ -25,21 +25,21 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <summary>
         /// 最后一个名字
         /// </summary>
-        [DisplayName("最后一个名字")]
+        [DisplayName("属性顺序1")]
         [PropertyGridOrderAttribute(2)]
         public string LastName { get; set; }
 
         /// <summary>
         /// 第一个名字
         /// </summary>
-        [DisplayName("第一个名字")]
+        [DisplayName("属性顺序2")]
         [PropertyGridOrderAttribute(1)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// 年龄
         /// </summary>
-        [DisplayName("年龄P")]
+        [DisplayName("属性顺序3")]
         [PropertyGridOrderAttribute(0)]
         public int Age { get; set; }
 

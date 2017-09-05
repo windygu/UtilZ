@@ -32,9 +32,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
             _primitiveTypes.Add("Str4");
             this.PrimitiveType = _primitiveTypes[0];
 
-            _propertyGridCategoryNames.Add("文件系统");
-            _propertyGridCategoryNames.Add("个人信息");
-            _propertyGridCategoryNames.Add("数据库");
+            _propertyGridCategoryNames = new List<string>()
+            { "常规","文件系统", "个人信息", "数据库","围棋","人配置","基元类型","地址"  };
         }
 
         private int _age = 28;
@@ -196,10 +195,10 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         [Browsable(false)]
         public PropertyGridOrderType OrderType
         {
-            get { return PropertyGridOrderType.Ascending; }
+            get { return PropertyGridOrderType.Custom; }
         }
 
-        private readonly List<string> _propertyGridCategoryNames = new List<string>();
+        private readonly List<string> _propertyGridCategoryNames;
 
         /// <summary>
         /// 表格排序组名称列表
