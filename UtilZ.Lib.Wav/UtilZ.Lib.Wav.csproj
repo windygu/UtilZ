@@ -33,6 +33,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,14 +42,97 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ExBass\Bass.cs" />
+    <Compile Include="ExBass\BassConfigOption.cs" />
+    <Compile Include="ExBass\BassErrorCode.cs" />
+    <Compile Include="ExBass\BassX64.cs" />
+    <Compile Include="ExBass\BassX86.cs" />
+    <Compile Include="ExBass\ConfigPtrOptions.cs" />
+    <Compile Include="ExBass\Delegates.cs" />
+    <Compile Include="Model\BASSAttribute.cs" />
+    <Compile Include="Model\BASSDeviceInfo.cs" />
+    <Compile Include="Model\BASSFileFlag.cs" />
+    <Compile Include="Model\BASSInit.cs" />
+    <Compile Include="Model\BASSMode.cs" />
+    <Compile Include="Model\BASSUrlFlag.cs" />
+    <Compile Include="Model\BASS_ChannelGetDataLengthMode.cs" />
+    <Compile Include="Model\BASS_CHANNELINFO_INTERNAL.cs" />
+    <Compile Include="Model\BASS_DEVICEINFO_INTERNAL.cs" />
+    <Compile Include="Model\BASS_PLUGININFO.cs" />
+    <Compile Include="Model\ChannelDataSegment.cs" />
+    <Compile Include="Model\PlayStatus.cs" />
+    <Compile Include="Model\RepeatSampleDataSegmentInfo.cs" />
+    <Compile Include="Model\UIArea.cs" />
+    <Compile Include="Model\WavLogInfoArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WavePlayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavePlayer_Const.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavePlayer_Draw.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavePlayer_Event.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavePlayer_Method.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavePlayer_Property.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavePlayer_SystemEvent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WavMaterial\FFTConvertor.cs" />
+    <Compile Include="WavMaterial\WaveHelper.cs" />
+    <Compile Include="WavMaterial\WaveInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UtilZ.Lib.Base\UtilZ.Lib.Base.csproj">
       <Project>{6841d072-6023-4f8c-9b72-8e4db9d371f2}</Project>
       <Name>UtilZ.Lib.Base</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x64\BassDecoders\bassflac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x64\BassDecoders\bass_aac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x64\BassDecoders\bass_ac3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x64\BassDecoders\bass_ape.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x64\BassDecoders\bass_tta.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\BassDecoders\bassflac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\BassDecoders\bass_aac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\BassDecoders\bass_ac3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\BassDecoders\bass_ape.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\BassDecoders\bass_tta.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

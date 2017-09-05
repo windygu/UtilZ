@@ -14,7 +14,6 @@ namespace UtilZ.Lib.DBMySql.Core
         /// <summary>
         /// 查询分页数据
         /// </summary>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">查询SQL语句</param>
         /// <param name="orderInfos">排序列名集合[null为或空不排序]</param>
         /// <param name="pageSize">页大小</param>

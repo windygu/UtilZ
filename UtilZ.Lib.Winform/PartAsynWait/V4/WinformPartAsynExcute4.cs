@@ -139,11 +139,11 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V4
             System.Drawing.Image bitmap;
             if (containerControl is Form)
             {
-                bitmap = NExtendWinfromControl.CreateFormImg(containerControl as Form);
+                bitmap = NExtendWinformControl.CreateFormImg(containerControl as Form);
             }
             else
             {
-                bitmap = NExtendWinfromControl.CreateControlImg(containerControl);
+                bitmap = NExtendWinformControl.CreateControlImg(containerControl);
             }
 
             bitmap = NExtendImg.ChangeImageOpacity(bitmap, 50);

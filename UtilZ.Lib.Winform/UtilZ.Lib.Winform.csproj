@@ -48,7 +48,7 @@
     <Compile Include="DropdownBox\DropdownBoxHelper.cs" />
     <Compile Include="DropdownBox\_ComboBox.cs" />
     <Compile Include="DropdownBox\_ToolStripComboBox.cs" />
-    <Compile Include="Extend\NExtendWinfromControl.cs" />
+    <Compile Include="Extend\NExtendWinformControl.cs" />
     <Compile Include="Extend\WinformNativeApi.cs" />
     <Compile Include="NExtendProcess.cs" />
     <Compile Include="NExtendScrollableControl.cs" />

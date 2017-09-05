@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<log4net>
+  <root>
+    <level value="ALL"/>
+    <appender-ref ref="LogFileAppender"/>
+    <!-- <appender-ref ref="ConsoleAppender"/>-->
+    <!--<appender-ref ref="SQLServerAppender"/>-->
+    <!--<appender-ref ref="OracleAppender"/>-->
+    <!--<appender-ref ref="SQLiteAppender"/>-->
+    <!--<appender-ref ref="MySQLAppender"/>-->
+    <!--<appender-ref ref="AccessAppender"/>-->
+  </root>
+   
+  <logger name="testApp.Logging">
+    <level value="ERROR"/>
+  </logger>
+   
+   <!--Access,没搞出来-->
+  <appender name="AccessAppender" type="log4net.Appender.AdoNetAppender">
+    <connectionString value="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\HSoft\DataBase\Access\TestACDB.accdb;User Id=;Password=;" />
+    <commandText value="INSERT INTO Log ([Date],[Thread],[Level],[Logger],[Message]) VALUES (@log_date, @thread, @log_level, @logger, @message)" />
+    <parameter>
+      <parameterName value="@log_date" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@thread" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%thread" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@log_level" />
+      <dbType value="String" />
+      <size value="50" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%level" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@logger" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%logger" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@message" />
+      <dbType value="String" />
+      <size value="1024" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%message" />
+      </layout>
+    </parameter>
+  </appender>
+
+  <!--MySQL-->
+  <appender name="MySQLAppender" type="log4net.Appender.AdoNetAppender">
+    <connectionType value="MySql.Data.MySqlClient.MySqlConnection, MySql.Data, Version=6.8.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+    <connectionString value="database=testdb;data source=192.168.0.250;user id=root;password=xtaITXwwx982+-" />
+    <commandText value="INSERT INTO Log (Date,Thread,Level,Logger,Message,Exception) VALUES (?log_date, ?thread, ?log_level, ?logger, ?message, ?exception)" />
+    <bufferSize value="1" />
+    <parameter>
+      <parameterName value="?log_date" />
+      <dbType value="DateTime" />
+      <layout type="log4net.Layout.RawTimeStampLayout" />
+    </parameter>
+    <parameter>
+      <parameterName value="?thread" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%thread" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="?log_level" />
+      <dbType value="String" />
+      <size value="50" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%level" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="?logger" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%logger" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="?message" />
+      <dbType value="String" />
+      <size value="4000" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%message" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="?exception" />
+      <dbType value="String" />
+      <size value="2000" />
+      <layout type="log4net.Layout.ExceptionLayout" />
+    </parameter>
+  </appender>
+
+  <!--SQLite-->
+  <appender name="SQLiteAppender" type="log4net.Appender.AdoNetAppender">
+    <bufferSize value="1" />
+    <connectionType value="System.Data.SQLite.SQLiteConnection, System.Data.SQLite, Version=1.0.97.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139" />
+    <connectionString value="Data Source=E:\HSoft\DataBase\SQLite\test.sqlite" />
+    <commandText value="INSERT INTO Log (Date, Level, Logger, Message) VALUES (@Date, @Level, @Logger, @Message)" />
+    <parameter>
+      <parameterName value="@Date" />
+      <dbType value="DateTime" />
+      <layout type="log4net.Layout.RawTimeStampLayout" />
+    </parameter>
+    <parameter>
+      <parameterName value="@Level" />
+      <dbType value="String" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%level" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@Logger" />
+      <dbType value="String" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%logger" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@Message" />
+      <dbType value="String" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%message" />
+      </layout>
+    </parameter>
+  </appender>
+
+  <!--Oracle-->
+  <appender name="OracleAppender" type="log4net.Appender.AdoNetAppender">
+    <connectionType value="Oracle.ManagedDataAccess.Client.OracleConnection, Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+    <connectionString value="User Id=userwq21210;Password=123456;Data Source=192.168.0.10:1521/daojiao" />
+
+    <!--使用.NET系统提供的访问Oracle数据库的方式方式需要安装Oracle客户端,而且版本位数需要与程序版本位数一致,同为32位或64位-->
+    <!--<connectionType value="System.Data.OracleClient.OracleConnection, System.Data.OracleClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <connectionString value="data source=WQ21210;User ID=userwq21210;Password=123456" />-->
+
+    <commandText value="INSERT INTO Log (Datetime,Thread,Log_Level,Logger,Message) VALUES (:log_date, :thread, :log_level, :logger, :message)" />
+    <bufferSize value="1" />
+    <parameter>
+      <parameterName value=":log_date" />
+      <dbType value="DateTime" />
+      <layout type="log4net.Layout.RawTimeStampLayout" />
+    </parameter>
+    <parameter>
+      <parameterName value=":thread" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%thread" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value=":log_level" />
+      <dbType value="String" />
+      <size value="50" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%level" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value=":logger" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%logger" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value=":message" />
+      <dbType value="String" />
+      <size value="4000" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%message" />
+      </layout>
+    </parameter>
+  </appender>
+
+  <!--SQLServer-->
+  <appender name="SQLServerAppender" type="log4net.Appender.AdoNetAppender">
+    <bufferSize value="10" />
+    <connectionType value="System.Data.SqlClient.SqlConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <connectionString value="data source=192.168.0.250;initial catalog=TestDB;integrated security=false;persist security info=True;User ID=sa;Password=xtaITXwwx982+-" />
+    <commandText value="INSERT INTO Log ([Date],[Thread],[Level],[Logger],[Message],[Exception]) VALUES (@log_date, @thread, @log_level, @logger, @message, @exception)" />
+    <parameter>
+      <parameterName value="@log_date" />
+      <dbType value="DateTime" />
+      <layout type="log4net.Layout.RawTimeStampLayout" />
+    </parameter>
+    <parameter>
+      <parameterName value="@thread" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%thread" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@log_level" />
+      <dbType value="String" />
+      <size value="50" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%level" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@logger" />
+      <dbType value="String" />
+      <size value="255" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%logger" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@message" />
+      <dbType value="String" />
+      <size value="4000" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%message" />
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@exception" />
+      <dbType value="String" />
+      <size value="2000" />
+      <layout type="log4net.Layout.ExceptionLayout" />
+    </parameter>
+  </appender>
+
+  <!--记文件-->
+  <appender name="LogFileAppender" type="log4net.Appender.RollingFileAppender,log4net">
+    <param name="File" value="Log/" />
+    <param name="AppendToFile" value="true" />
+    <!-- 切割最多文件数 -1表示不限制产生日志文件数-->
+    <param name="MaxSizeRollBackups" value="-1"/>
+    <!-- 每个文件的大小限制  -->
+    <!--<param name="MaximumFileSize" value="10MB"/>-->
+    <param name="MaximumFileSize" value="10KB"/>
+    <!-- RollingStyle Composite 综合  Size 按大小  Date 按时间 -->
+    <param name="RollingStyle" value="Composite" />
+    <!--<param name="DatePattern" value="&quot;Logs_&quot;yyyyMMdd&quot;.txt&quot;" />-->
+    <param name="DatePattern" value="yyyy-MM-dd&quot;.log&quot;" />
+    <param name="StaticLogFileName" value="false" />
+    <layout type="log4net.Layout.PatternLayout,log4net">
+      <!--<param name="ConversionPattern" value="%d [%t] %-5p %c - (%line)  %m%n" />-->
+      <param name="ConversionPattern" value="%m%n" />
+    </layout>
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <param name="LevelMin" value="ALL" />
+      <param name="LevelMax" value="OFF" />
+    </filter>
+  </appender>
+  <!--<appender name="LogFileAppender" type="log4net.Appender.FileAppender">
+    <param name="File" value="Logs/log.txt"/>
+    <param name="AppendToFile" value="true"/>
+     
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="Date:%d ThreadId:%t Priority:%p Class:%c File:%F Line:%L %m%n"/>
+    </layout>
+     
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <param name="LevelMin" value="DEBUG"/>
+      <param name="LevelMax" value="OFF"/>
+    </filter>
+  </appender>-->
+   
+  <!--控制台-->
+  <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="%d [%t] %-5p %c [%x] - %m%n"/>
+    </layout>
+  </appender>
+</log4net>

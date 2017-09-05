@@ -11,22 +11,18 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
     [AttributeUsage(AttributeTargets.Property)]
     public class PropertyGridOrderAttribute : Attribute
     {
-        //
-        // Simple attribute to allow the order of a property to be specified
-        //
-        private int _order;
+        /// <summary>
+        /// 顺序索引
+        /// </summary>
+        public int Order { get; private set; }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="order">顺序索引</param>
         public PropertyGridOrderAttribute(int order)
         {
-            _order = order;
-        }
-
-        public int Order
-        {
-            get
-            {
-                return _order;
-            }
+            Order = order;
         }
     }
 }

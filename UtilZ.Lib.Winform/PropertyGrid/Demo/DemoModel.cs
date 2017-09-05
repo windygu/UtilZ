@@ -145,7 +145,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         private Person p = new Person();
         [Category("人配置")]
         [DisplayName("人Person人")]
-        public Person Person
+        public Person PersonEx
         {
             get { return p; }
             set { this.p = value; }

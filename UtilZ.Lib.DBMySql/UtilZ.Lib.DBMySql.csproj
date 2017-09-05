@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Core\MysqlDBAccess.cs" />
     <Compile Include="Core\MysqlDBAccess_DBInfo.cs" />
     <Compile Include="Core\MysqlDBAccess_Insert.cs" />

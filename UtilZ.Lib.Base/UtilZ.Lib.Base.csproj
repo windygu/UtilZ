@@ -101,6 +101,7 @@
     <Compile Include="Expression\Exceptions.cs" />
     <Compile Include="Expression\ExpressionCalculator.cs" />
     <Compile Include="Expression\Models.cs" />
+    <Compile Include="Log\Security\XSecurityPolicy.cs" />
     <Compile Include="PartAsynWait\Excute\PartAsynExcuteBase.cs" />
     <Compile Include="PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
     <Compile Include="PartAsynWait\Interface\IPartAsynExcute.cs" />

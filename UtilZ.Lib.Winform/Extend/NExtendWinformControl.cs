@@ -8,7 +8,7 @@ namespace UtilZ.Lib.Winform.Extend
     /// <summary>
     /// Winfrom扩展类
     /// </summary>
-    public static class NExtendWinfromControl
+    public static class NExtendWinformControl
     {
         #region 生成控件图片
         /// <summary>

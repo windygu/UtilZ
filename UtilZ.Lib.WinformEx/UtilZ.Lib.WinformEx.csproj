@@ -46,7 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="PageGrid\DataRowDoubleClickArgs.cs" />
     <Compile Include="PageGrid\FColumnDisplaySetting.cs">
       <SubType>Form</SubType>

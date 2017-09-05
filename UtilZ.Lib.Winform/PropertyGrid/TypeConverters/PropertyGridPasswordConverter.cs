@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Winform.PropertyGrid.Interface;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
@@ -110,6 +111,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
             }
             catch (Exception ex)
             {
+                Loger.Error(ex);
                 return null;
             }
         }
