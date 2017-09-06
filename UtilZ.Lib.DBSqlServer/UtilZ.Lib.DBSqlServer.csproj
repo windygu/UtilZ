@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,6 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Core\SQLServerDBAccess.cs" />
+    <Compile Include="Core\SQLServerDBAccess_DBInfo.cs" />
+    <Compile Include="Core\SQLServerDBAccess_Insert.cs" />
+    <Compile Include="Core\SQLServerDBAccess_Query.cs" />
+    <Compile Include="Core\SQLServerDBFactory.cs" />
+    <Compile Include="Core\SQLServerInteraction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

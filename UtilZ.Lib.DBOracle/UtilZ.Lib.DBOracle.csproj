@@ -30,7 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,6 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Core\OracleDBAccess.cs" />
+    <Compile Include="Core\OracleDBAccess_DBInfo.cs" />
+    <Compile Include="Core\OracleDBAccess_Insert.cs" />
+    <Compile Include="Core\OracleDBAccess_Query.cs" />
+    <Compile Include="Core\OracleDBFactory.cs" />
+    <Compile Include="Core\OracleInteraction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +66,26 @@
       <Project>{90c54f62-0d89-4cee-a830-820b247bf712}</Project>
       <Name>UtilZ.Lib.DBModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ExtendLib\doc\readme.htm" />
+    <Content Include="ExtendLib\managed\common\Oracle.ManagedDataAccess.Catalog.xml" />
+    <Content Include="ExtendLib\managed\common\Oracle.ManagedDataAccess.dll" />
+    <Content Include="ExtendLib\managed\x64\Oracle.ManagedDataAccessDTC.dll" />
+    <Content Include="ExtendLib\managed\x64\OraProvCfg.exe" />
+    <Content Include="ExtendLib\managed\x86\Oracle.ManagedDataAccessDTC.dll" />
+    <Content Include="ExtendLib\managed\x86\OraProvCfg.exe" />
+    <Content Include="ExtendLib\Oracle分布式事务使用-说明.txt" />
+    <Content Include="Oracle.ManagedDataAccess.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExtendLib\managed\common\Oracle.ManagedDataAccess.Client.Configuration.Section.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExtendLib\managed\x64\configure.bat" />
+    <None Include="ExtendLib\managed\x64\unconfigure.bat" />
+    <None Include="ExtendLib\managed\x86\configure.bat" />
+    <None Include="ExtendLib\managed\x86\unconfigure.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

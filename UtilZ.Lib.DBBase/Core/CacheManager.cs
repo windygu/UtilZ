@@ -5,6 +5,7 @@ using System.Text;
 using UtilZ.Lib.DBModel.DBInfo;
 using UtilZ.Lib.Base.ZMemoryCache;
 using UtilZ.Lib.DBBase.Interface;
+using System.Data;
 
 namespace UtilZ.Lib.DBBase.Core
 {
@@ -126,17 +127,18 @@ namespace UtilZ.Lib.DBBase.Core
         /// <summary>
         /// 获取数据表信息
         /// </summary>
+        /// <param name="con">数据库连接对象</param>
         /// <param name="dbAccess">数据库访问对象</param>
         /// <param name="tableName">表名</param>
         /// <returns>数据表信息</returns>
-        public static DBTableInfo GetDBTableInfo(IDBAccess dbAccess, string tableName)
+        public static DBTableInfo GetDBTableInfo(IDbConnection con, DBAccessBase dbAccess, string tableName)
         {
             string cacheKey = CacheManager.GetCacheKey(dbAccess.DBID, tableName, CacheType.TableInfo);//字段缓存key
             DBTableInfo dbTableInfo = CacheManager.GetCacheData(cacheKey) as DBTableInfo;//从缓存中获取表信息
             if (dbTableInfo == null)
             {
                 //如果缓存中获取到手表信息为null,则查询该表的表信息
-                dbTableInfo = dbAccess.GetTableInfo(tableName, true);
+                dbTableInfo = dbAccess.InnerGetTableInfo(con, tableName, true);
                 if (dbTableInfo == null)
                 {
                     throw new ApplicationException(string.Format("表{0}不存在", tableName));

@@ -69,11 +69,12 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <summary>
         /// 批量插入数据,返回受影响的行数
         /// </summary>
+        /// <param name="con">数据库连接对象</param>
         /// <param name="tableName">表名</param>
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
         /// <returns>返回受影响的行数</returns>
-        public override long BatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
+        protected override long InnerBatchInsert(IDbConnection con, string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
         {
             if (cols == null || cols.Count() == 0 || data == null || data.Count() == 0)
             {

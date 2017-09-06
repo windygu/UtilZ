@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Common\DBHelper.cs" />
     <Compile Include="Common\DBLog.cs" />
     <Compile Include="Config\ConfigManager.cs" />

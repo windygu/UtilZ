@@ -130,7 +130,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="tableName">表名</param>
         /// <param name="isGetFieldInfo">是否获取字段信息[true:获取字段信息;false:不获取;默认不获取]</param>
         /// <returns>表信息</returns>
-        protected abstract DBTableInfo InnerGetTableInfo(IDbConnection con, string tableName, bool isGetFieldInfo = false);
+        internal protected abstract DBTableInfo InnerGetTableInfo(IDbConnection con, string tableName, bool isGetFieldInfo = false);
         #endregion
 
         #region 数据库表结构版本管理

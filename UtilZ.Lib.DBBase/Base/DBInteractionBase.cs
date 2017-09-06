@@ -12,7 +12,7 @@ using UtilZ.Lib.DBModel.Constant;
 using UtilZ.Lib.DBModel.Interface;
 using UtilZ.Lib.DBModel.Model;
 
-namespace Utilities.Lib.DBBase.Base
+namespace UtilZ.Lib.DBBase.Base
 {
     /// <summary>
     /// 数据库交互基类

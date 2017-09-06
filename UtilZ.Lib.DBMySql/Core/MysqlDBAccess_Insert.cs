@@ -14,11 +14,12 @@ namespace UtilZ.Lib.DBMySql.Core
         /// <summary>
         /// 批量插入数据,返回受影响的行数
         /// </summary>
+        /// <param name="con">数据库连接对象</param>
         /// <param name="tableName">表名</param>
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
         /// <returns>返回受影响的行数</returns>
-        public override long BatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
+        protected override long InnerBatchInsert(IDbConnection con, string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
         {
             if (cols == null || cols.Count() == 0 || data == null || data.Count() == 0)
             {
@@ -49,68 +50,64 @@ namespace UtilZ.Lib.DBMySql.Core
             string paraSign = this.ParaSign;
             string paraName;
 
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
+            using (IDbTransaction transaction = con.BeginTransaction())
             {
-                var con = conInfo.Con;
-                using (IDbTransaction transaction = con.BeginTransaction())
+                try
                 {
-                    try
+                    long effectRowCount = 0;
+                    //INSERT INTO tbl_name (a,b,c) VALUES(1,2,3),(4,5,6),(7,8,9),(10,11,12)...; 
+                    foreach (var dataRow in data)
                     {
-                        long effectRowCount = 0;
-                        //INSERT INTO tbl_name (a,b,c) VALUES(1,2,3),(4,5,6),(7,8,9),(10,11,12)...; 
-                        foreach (var dataRow in data)
+                        sbTmpValue.Append('(');
+                        foreach (var colValue in dataRow)
                         {
-                            sbTmpValue.Append('(');
-                            foreach (var colValue in dataRow)
-                            {
-                                paraName = string.Format("{0}para{1}", paraSign, paraIndex++);
-                                sbTmpValue.Append(paraName);
-                                sbTmpValue.Append(comma);
-                                collection.Add(paraName, colValue);
-                            }
-
-                            sbTmpValue = sbTmpValue.Remove(sbTmpValue.Length - 1, 1);//去掉最后一个逗号
-                            sbTmpValue.Append("),");
-
-                            if (sbInsert.Length > 0 && sbTmpValue.Length + sbInsert.Length >= sqlMaxLength)
-                            {
-                                if (sbTmpValue[sbTmpValue.Length - 1] == comma)
-                                {
-                                    sbTmpValue = sbTmpValue.Remove(sbTmpValue.Length - 1, 1);//去掉最后一个逗号
-                                }
-
-                                //执行
-                                sbInsert.Append(sbTmpValue.ToString());
-                                sbTmpValue.Clear();
-                                effectRowCount += this.InnerExecuteNonQuery(con, sbInsert.ToString(), collection);
-
-                                //清空执行过的语句
-                                collection.Clear();
-                                sbInsert = sbInsert.Clear();
-                                sbInsert.Append(insertPreSqlStr);
-                            }
+                            paraName = string.Format("{0}para{1}", paraSign, paraIndex++);
+                            sbTmpValue.Append(paraName);
+                            sbTmpValue.Append(comma);
+                            collection.Add(paraName, colValue);
                         }
 
-                        if (sbTmpValue.Length > 0)
+                        sbTmpValue = sbTmpValue.Remove(sbTmpValue.Length - 1, 1);//去掉最后一个逗号
+                        sbTmpValue.Append("),");
+
+                        if (sbInsert.Length > 0 && sbTmpValue.Length + sbInsert.Length >= sqlMaxLength)
                         {
-                            //执行最后一次
                             if (sbTmpValue[sbTmpValue.Length - 1] == comma)
                             {
                                 sbTmpValue = sbTmpValue.Remove(sbTmpValue.Length - 1, 1);//去掉最后一个逗号
                             }
 
-                            sbInsert.Append(sbTmpValue.ToString());
                             //执行
-                            effectRowCount += this.InnerExecuteNonQuery(con, sbInsert.ToString(), collection, transaction);
+                            sbInsert.Append(sbTmpValue.ToString());
+                            sbTmpValue.Clear();
+                            effectRowCount += this.InnerExecuteNonQuery(con, sbInsert.ToString(), collection);
+
+                            //清空执行过的语句
+                            collection.Clear();
+                            sbInsert = sbInsert.Clear();
+                            sbInsert.Append(insertPreSqlStr);
+                        }
+                    }
+
+                    if (sbTmpValue.Length > 0)
+                    {
+                        //执行最后一次
+                        if (sbTmpValue[sbTmpValue.Length - 1] == comma)
+                        {
+                            sbTmpValue = sbTmpValue.Remove(sbTmpValue.Length - 1, 1);//去掉最后一个逗号
                         }
 
-                        return effectRowCount;
+                        sbInsert.Append(sbTmpValue.ToString());
+                        //执行
+                        effectRowCount += this.InnerExecuteNonQuery(con, sbInsert.ToString(), collection, transaction);
                     }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
+
+                    return effectRowCount;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
                 }
             }
         }

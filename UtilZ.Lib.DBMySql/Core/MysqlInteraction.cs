@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using Utilities.Lib.DBBase.Base;
+using UtilZ.Lib.DBBase.Base;
 using UtilZ.Lib.DBModel.Config;
 using UtilZ.Lib.DBModel.Model;
 

@@ -4,11 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base.Extend;
-using Utilities.Lib.DBBase.Base;
+using UtilZ.Lib.DBBase.Base;
 using UtilZ.Lib.DBBase.Interface;
 using UtilZ.Lib.DBModel.Config;
 
-namespace Utilities.Lib.DBBase.Factory
+namespace UtilZ.Lib.DBBase.Factory
 {
     /// <summary>
     /// 数据访问工厂基类

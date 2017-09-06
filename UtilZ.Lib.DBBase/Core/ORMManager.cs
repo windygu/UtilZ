@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Utilities.Lib.DBBase.Factory;
+using UtilZ.Lib.DBBase.Factory;
 using UtilZ.Lib.DBModel.DBInfo;
 using UtilZ.Lib.DBModel.DBObject;
 using UtilZ.Lib.Base.Extend;

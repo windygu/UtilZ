@@ -52,79 +52,79 @@ namespace UtilZ.Lib.DBBase.Core
             DataModelInfo dataTableInfo = ORMManager.GetDataModelInfo(type);
             IDBModelValueConvert dbModelValueConvert = dataTableInfo.ModelValueConvert;
             string tableName = dataTableInfo.DBTable.Name;
-            DBTableInfo dbTableInfo = CacheManager.GetDBTableInfo(this, tableName);
-            //数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
-            Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
-            DBColumnPropertyInfo dbColumnPropertyInfo = null;
-            var paraCollection = new NDbParameterCollection();
-            string dbParaSign = this.ParaSign;
-            StringBuilder sbPara = new StringBuilder();//参数
-            StringBuilder sbSql = new StringBuilder();//值
-
-            sbSql.Append("insert into ");
-            sbSql.Append(dataTableInfo.DBTable.Name);
-            sbSql.Append(" (");
-
-            DBFieldDataAccessType dataAccessType;
-            foreach (var key in dicDBColumnProperties.Keys)
-            {
-                dbColumnPropertyInfo = dicDBColumnProperties[key];
-                dataAccessType = dbColumnPropertyInfo.DBColumn.DataAccessType;
-                //如果该字段是为只读或读改则不需要插入
-                if (dataAccessType == DBFieldDataAccessType.R || dataAccessType == DBFieldDataAccessType.RM)
-                {
-                    continue;
-                }
-
-                //sql
-                sbSql.Append(key);
-                sbSql.Append(",");
-                sbPara.Append(dbParaSign);
-                sbPara.Append(key);
-                sbPara.Append(",");
-
-                //参数
-                paraCollection.Add(key, null);
-            }
-
-            sbSql.Remove(sbSql.Length - 1, 1);
-            sbPara.Remove(sbPara.Length - 1, 1);
-            sbSql.Append(") values(");
-            sbSql.Append(sbPara.ToString());
-            sbSql.Append(")");
-
-            string insertSql = sbSql.ToString();
-            var paraKeys = paraCollection.ParameterNames;//列名集合
-            object tmpValue = null;
-            DBFieldInfo dbFieldInfo = null;
-            //参数
-            foreach (var key in paraKeys)
-            {
-                dbColumnPropertyInfo = dicDBColumnProperties[key];
-                tmpValue = dbColumnPropertyInfo.PropertyInfo.GetValue(item, dbColumnPropertyInfo.DBColumn.Index);
-                if (dbModelValueConvert != null)//如果该值需要转换为数据库表中字段对应的值,则转换值
-                {
-                    tmpValue = dbModelValueConvert.ModelToDB(type, this.DatabaseTypeName, dbColumnPropertyInfo.PropertyInfo.Name, tmpValue);
-                }
-
-                dbFieldInfo = dbTableInfo.DbFieldInfos[key];
-                if (tmpValue == null)
-                {
-                    if (dbFieldInfo.AllowNull)
-                    {
-                        tmpValue = DBNull.Value;
-                    }
-                    else
-                    {
-                        throw new ApplicationException(string.Format("表{0}中字段{1}不允许为null值", tableName, key));
-                    }
-                }
-
-                paraCollection[key].Value = tmpValue;
-            }
-
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
+                DBTableInfo dbTableInfo = CacheManager.GetDBTableInfo(conInfo.Con, this, tableName);
+                //数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
+                Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
+                DBColumnPropertyInfo dbColumnPropertyInfo = null;
+                var paraCollection = new NDbParameterCollection();
+                string dbParaSign = this.ParaSign;
+                StringBuilder sbPara = new StringBuilder();//参数
+                StringBuilder sbSql = new StringBuilder();//值
+
+                sbSql.Append("insert into ");
+                sbSql.Append(dataTableInfo.DBTable.Name);
+                sbSql.Append(" (");
+
+                DBFieldDataAccessType dataAccessType;
+                foreach (var key in dicDBColumnProperties.Keys)
+                {
+                    dbColumnPropertyInfo = dicDBColumnProperties[key];
+                    dataAccessType = dbColumnPropertyInfo.DBColumn.DataAccessType;
+                    //如果该字段是为只读或读改则不需要插入
+                    if (dataAccessType == DBFieldDataAccessType.R || dataAccessType == DBFieldDataAccessType.RM)
+                    {
+                        continue;
+                    }
+
+                    //sql
+                    sbSql.Append(key);
+                    sbSql.Append(",");
+                    sbPara.Append(dbParaSign);
+                    sbPara.Append(key);
+                    sbPara.Append(",");
+
+                    //参数
+                    paraCollection.Add(key, null);
+                }
+
+                sbSql.Remove(sbSql.Length - 1, 1);
+                sbPara.Remove(sbPara.Length - 1, 1);
+                sbSql.Append(") values(");
+                sbSql.Append(sbPara.ToString());
+                sbSql.Append(")");
+
+                string insertSql = sbSql.ToString();
+                var paraKeys = paraCollection.ParameterNames;//列名集合
+                object tmpValue = null;
+                DBFieldInfo dbFieldInfo = null;
+                //参数
+                foreach (var key in paraKeys)
+                {
+                    dbColumnPropertyInfo = dicDBColumnProperties[key];
+                    tmpValue = dbColumnPropertyInfo.PropertyInfo.GetValue(item, dbColumnPropertyInfo.DBColumn.Index);
+                    if (dbModelValueConvert != null)//如果该值需要转换为数据库表中字段对应的值,则转换值
+                    {
+                        tmpValue = dbModelValueConvert.ModelToDB(type, this.DatabaseTypeName, dbColumnPropertyInfo.PropertyInfo.Name, tmpValue);
+                    }
+
+                    dbFieldInfo = dbTableInfo.DbFieldInfos[key];
+                    if (tmpValue == null)
+                    {
+                        if (dbFieldInfo.AllowNull)
+                        {
+                            tmpValue = DBNull.Value;
+                        }
+                        else
+                        {
+                            throw new ApplicationException(string.Format("表{0}中字段{1}不允许为null值", tableName, key));
+                        }
+                    }
+
+                    paraCollection[key].Value = tmpValue;
+                }
+
                 //执行sql语句
                 return this.InnerExecuteNonQuery(conInfo.Con, insertSql, paraCollection);
             }
@@ -138,7 +138,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="tableName">表名</param>
         /// <param name="dt">DataTable</param>
         /// <returns>返回受影响的行数</returns>
-        public long BatchInsert(string tableName, DataTable dt)
+        public virtual long BatchInsert(string tableName, DataTable dt)
         {
             if (string.IsNullOrWhiteSpace(tableName))
             {
@@ -177,42 +177,56 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
         /// <returns>返回受影响的行数</returns>
-        public virtual long BatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
+        public long BatchInsert(string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
+        {
+            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
+            {
+                return this.InnerBatchInsert(conInfo.Con, tableName, cols, data);
+            }
+        }
+
+        /// <summary>
+        /// 批量插入数据,返回受影响的行数
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="tableName">表名</param>
+        /// <param name="cols">列名集合</param>
+        /// <param name="data">数据</param>
+        /// <returns>返回受影响的行数</returns>
+        protected virtual long InnerBatchInsert(IDbConnection con, string tableName, IEnumerable<string> cols, IEnumerable<object[]> data)
         {
             if (cols == null || cols.Count() == 0 || data == null || data.Count() == 0)
             {
                 return 0L;
             }
 
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
+
+            //验证批量插入数据参数
+            this.ValidateBatchInsert(tableName, cols, data);
+
+            using (IDbTransaction transaction = con.BeginTransaction())
             {
-                //验证批量插入数据参数
-                this.ValidateBatchInsert(tableName, cols, data);
-
-                using (IDbTransaction transaction = conInfo.Con.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        IDbCommand cmd = this.CreateCommand(conInfo.Con);
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = this.Interaction.GenerateSqlInsert(tableName, this.ParaSign, cols);
-                        cmd.Prepare();
-                        long effectCount = 0;
+                    IDbCommand cmd = this.CreateCommand(con);
+                    cmd.Transaction = transaction;
+                    cmd.CommandText = this.Interaction.GenerateSqlInsert(tableName, this.ParaSign, cols);
+                    cmd.Prepare();
+                    long effectCount = 0;
 
-                        foreach (var arr in data)
-                        {
-                            this.Interaction.SetParameter(cmd, cols, arr);
-                            effectCount += cmd.ExecuteNonQuery();
-                        }
-
-                        transaction.Commit();
-                        return effectCount;
-                    }
-                    catch (Exception)
+                    foreach (var arr in data)
                     {
-                        transaction.Rollback();
-                        throw;
+                        this.Interaction.SetParameter(cmd, cols, arr);
+                        effectCount += cmd.ExecuteNonQuery();
                     }
+
+                    transaction.Commit();
+                    return effectCount;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
                 }
             }
         }
@@ -259,18 +273,19 @@ namespace UtilZ.Lib.DBBase.Core
         /// 转换泛型类型T为批量插入的值类型
         /// </summary>
         /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="con">数据库连接对象</param>
         /// <param name="items">泛型类型集合</param>
         /// <param name="cols">列名集合</param>
         /// <param name="data">数据</param>
         /// <returns>插入表名</returns>
-        protected string ConvertTToBatchValue<T>(IEnumerable<T> items, out List<string> cols, out List<object[]> data) where T : class
+        protected string ConvertTToBatchValue<T>(IDbConnection con, IEnumerable<T> items, out List<string> cols, out List<object[]> data) where T : class
         {
             //数据模型信息
             Type type = typeof(T);
             DataModelInfo dataTableInfo = ORMManager.GetDataModelInfo(type);
             IDBModelValueConvert dbModelValueConvert = dataTableInfo.ModelValueConvert;
             string tableName = dataTableInfo.DBTable.Name;
-            DBTableInfo dbTableInfo = CacheManager.GetDBTableInfo(this, tableName);
+            DBTableInfo dbTableInfo = CacheManager.GetDBTableInfo(con, this, tableName);
             //数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
             Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
             DBColumnPropertyInfo dbColumnPropertyInfo = null;
@@ -342,10 +357,13 @@ namespace UtilZ.Lib.DBBase.Core
                 return 0;
             }
 
-            List<string> cols;
-            List<object[]> data;
-            string tableName = this.ConvertTToBatchValue(items, out cols, out data);
-            return this.BatchInsert(tableName, cols, data);
+            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
+            {
+                List<string> cols;
+                List<object[]> data;
+                string tableName = this.ConvertTToBatchValue(conInfo.Con, items, out cols, out data);
+                return this.InnerBatchInsert(conInfo.Con, tableName, cols, data);
+            }
         }
         #endregion
     }

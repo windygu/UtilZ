@@ -13,7 +13,7 @@ using UtilZ.Lib.DBModel.Config;
 using UtilZ.Lib.DBModel.Constant;
 using UtilZ.Lib.DBModel.Model;
 
-namespace Utilities.Lib.DBBase.Factory
+namespace UtilZ.Lib.DBBase.Factory
 {
     /// <summary>
     /// 数据库访问工厂管理类

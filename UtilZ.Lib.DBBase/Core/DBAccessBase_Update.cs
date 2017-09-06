@@ -118,126 +118,125 @@ namespace UtilZ.Lib.DBBase.Core
                 throw new Exception(string.Format("类型:{0}没有标记为主键的字段,不能通过此方法删除该记录,请调用非泛型的方法对记录进行删除", type.FullName));
             }
 
-
             string tableName = dataTableInfo.DBTable.Name;
-            var dbTableInfo = CacheManager.GetDBTableInfo(this, tableName);
-            //要更新到数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
-            Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties;
-            if (updateProperties == null)
-            {
-                //找出可更新值的列
-                dicDBColumnProperties = (from dbcol in dataTableInfo.DicDBColumnProperties.Values
-                                         where dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.IM ||
-                                         dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RIM ||
-                                         dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RM
-                                         select dbcol).ToDictionary((dbItem) => { return dbItem.DBColumn.ColumnName.ToUpper(); });
-            }
-            else
-            {
-                //字段列
-                dicDBColumnProperties = new Dictionary<string, DBColumnPropertyInfo>();
-                DBFieldDataAccessType dataAccessType;
-                foreach (var kv in dataTableInfo.DicDBColumnProperties)
-                {
-                    dataAccessType = kv.Value.DBColumn.DataAccessType;
-                    //找出可更新值的列且属性要更新值的列
-                    if (updateProperties.Contains(kv.Value.PropertyInfo.Name))
-                    {
-                        if ((dataAccessType == DBFieldDataAccessType.IM || dataAccessType == DBFieldDataAccessType.RIM || dataAccessType == DBFieldDataAccessType.RM))
-                        {
-                            dicDBColumnProperties.Add(kv.Key.ToUpper(), kv.Value);
-                        }
-                        else
-                        {
-                            throw new ArgumentException(string.Format("属性{0}对应的表{1}中字段{2}的值不允许修改", kv.Value.PropertyInfo.Name, dataTableInfo.DBTable.Name, kv.Value.DBColumn.ColumnName));
-                        }
-                    }
-                }
-            }
-
-            var paraCollection = new NDbParameterCollection();//更新参数值字典集合
-            string dbParaSign = this.ParaSign;//数据库参数符号            
-            DBColumnPropertyInfo dbColumnPropertyInfo = null;
-            StringBuilder sbSql = new StringBuilder();//更新值语句            
-            sbSql.Append("UPDATE ");
-            sbSql.Append(dataTableInfo.DBTable.Name);
-            sbSql.Append(" SET ");
-            foreach (var key in dicDBColumnProperties.Keys.ToArray())
-            {
-                dbColumnPropertyInfo = dicDBColumnProperties[key];
-                //sql
-                sbSql.Append(key);
-                sbSql.Append("=");
-                sbSql.Append(dbParaSign);
-                sbSql.Append(key);
-                sbSql.Append(",");
-                paraCollection.Add(key, null);
-            }
-
-            var whereParaNameValues = new Dictionary<string, object>();//条件参数值字典集合
-            string and = "AND";
-            StringBuilder sbWhereSql = new StringBuilder();//条件语句
-            var dicPrikeyDBColumnProperties = dataTableInfo.DicPriKeyDBColumnProperties;
-            foreach (var priKey in dicPrikeyDBColumnProperties)
-            {
-                //如果该字段是主键列
-                sbWhereSql.Append(priKey.Key);
-                sbWhereSql.Append("=");
-                sbWhereSql.Append(dbParaSign);
-                sbWhereSql.Append(priKey.Key);
-                //参数
-                whereParaNameValues.Add(priKey.Key, null);
-                sbWhereSql.Append(and);
-            }
-
-            //移除结尾
-            sbSql.Remove(sbSql.Length - 1, 1);
-            sbWhereSql.Remove(sbWhereSql.Length - and.Length, and.Length);
-
-            //合并SQL
-            sbSql.Append(" WHERE ");
-            sbSql.Append(sbWhereSql.ToString());
-            //合并参数
-            foreach (var pv in whereParaNameValues)
-            {
-                paraCollection.Add(pv.Key, pv.Value);
-            }
-
-            string updateSql = sbSql.ToString();//更新SQL语句
-            object tmpValue = null;//临时参数值
-            List<string> keys = paraCollection.ParameterNames;
-            DBFieldInfo dbFieldInfo = null;//字段信息
-
-            foreach (var key in keys)
-            {
-                dbColumnPropertyInfo = dataTableInfo.DicDBColumnProperties[key];
-                tmpValue = dbColumnPropertyInfo.PropertyInfo.GetValue(item, dbColumnPropertyInfo.DBColumn.Index);
-                if (tmpValue == null)
-                {
-                    if (whereParaNameValues.ContainsKey(key))
-                    {
-                        throw new Exception("主键字段的值不能为空或null");
-                    }
-
-                    dbFieldInfo = dbTableInfo.DbFieldInfos[key];
-                    if (tmpValue == null)
-                    {
-                        if (dbFieldInfo.AllowNull)
-                        {
-                            tmpValue = DBNull.Value;
-                        }
-                        else
-                        {
-                            throw new ApplicationException(string.Format("表{0}中字段{1}不能为空值", tableName, key));
-                        }
-                    }
-                }
-
-                paraCollection[key].Value = tmpValue;
-            }
-
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
+                var dbTableInfo = CacheManager.GetDBTableInfo(conInfo.Con, this, tableName);
+                //要更新到数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
+                Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties;
+                if (updateProperties == null)
+                {
+                    //找出可更新值的列
+                    dicDBColumnProperties = (from dbcol in dataTableInfo.DicDBColumnProperties.Values
+                                             where dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.IM ||
+                                             dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RIM ||
+                                             dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RM
+                                             select dbcol).ToDictionary((dbItem) => { return dbItem.DBColumn.ColumnName.ToUpper(); });
+                }
+                else
+                {
+                    //字段列
+                    dicDBColumnProperties = new Dictionary<string, DBColumnPropertyInfo>();
+                    DBFieldDataAccessType dataAccessType;
+                    foreach (var kv in dataTableInfo.DicDBColumnProperties)
+                    {
+                        dataAccessType = kv.Value.DBColumn.DataAccessType;
+                        //找出可更新值的列且属性要更新值的列
+                        if (updateProperties.Contains(kv.Value.PropertyInfo.Name))
+                        {
+                            if ((dataAccessType == DBFieldDataAccessType.IM || dataAccessType == DBFieldDataAccessType.RIM || dataAccessType == DBFieldDataAccessType.RM))
+                            {
+                                dicDBColumnProperties.Add(kv.Key.ToUpper(), kv.Value);
+                            }
+                            else
+                            {
+                                throw new ArgumentException(string.Format("属性{0}对应的表{1}中字段{2}的值不允许修改", kv.Value.PropertyInfo.Name, dataTableInfo.DBTable.Name, kv.Value.DBColumn.ColumnName));
+                            }
+                        }
+                    }
+                }
+
+                var paraCollection = new NDbParameterCollection();//更新参数值字典集合
+                string dbParaSign = this.ParaSign;//数据库参数符号            
+                DBColumnPropertyInfo dbColumnPropertyInfo = null;
+                StringBuilder sbSql = new StringBuilder();//更新值语句            
+                sbSql.Append("UPDATE ");
+                sbSql.Append(dataTableInfo.DBTable.Name);
+                sbSql.Append(" SET ");
+                foreach (var key in dicDBColumnProperties.Keys.ToArray())
+                {
+                    dbColumnPropertyInfo = dicDBColumnProperties[key];
+                    //sql
+                    sbSql.Append(key);
+                    sbSql.Append("=");
+                    sbSql.Append(dbParaSign);
+                    sbSql.Append(key);
+                    sbSql.Append(",");
+                    paraCollection.Add(key, null);
+                }
+
+                var whereParaNameValues = new Dictionary<string, object>();//条件参数值字典集合
+                string and = "AND";
+                StringBuilder sbWhereSql = new StringBuilder();//条件语句
+                var dicPrikeyDBColumnProperties = dataTableInfo.DicPriKeyDBColumnProperties;
+                foreach (var priKey in dicPrikeyDBColumnProperties)
+                {
+                    //如果该字段是主键列
+                    sbWhereSql.Append(priKey.Key);
+                    sbWhereSql.Append("=");
+                    sbWhereSql.Append(dbParaSign);
+                    sbWhereSql.Append(priKey.Key);
+                    //参数
+                    whereParaNameValues.Add(priKey.Key, null);
+                    sbWhereSql.Append(and);
+                }
+
+                //移除结尾
+                sbSql.Remove(sbSql.Length - 1, 1);
+                sbWhereSql.Remove(sbWhereSql.Length - and.Length, and.Length);
+
+                //合并SQL
+                sbSql.Append(" WHERE ");
+                sbSql.Append(sbWhereSql.ToString());
+                //合并参数
+                foreach (var pv in whereParaNameValues)
+                {
+                    paraCollection.Add(pv.Key, pv.Value);
+                }
+
+                string updateSql = sbSql.ToString();//更新SQL语句
+                object tmpValue = null;//临时参数值
+                List<string> keys = paraCollection.ParameterNames;
+                DBFieldInfo dbFieldInfo = null;//字段信息
+
+                foreach (var key in keys)
+                {
+                    dbColumnPropertyInfo = dataTableInfo.DicDBColumnProperties[key];
+                    tmpValue = dbColumnPropertyInfo.PropertyInfo.GetValue(item, dbColumnPropertyInfo.DBColumn.Index);
+                    if (tmpValue == null)
+                    {
+                        if (whereParaNameValues.ContainsKey(key))
+                        {
+                            throw new Exception("主键字段的值不能为空或null");
+                        }
+
+                        dbFieldInfo = dbTableInfo.DbFieldInfos[key];
+                        if (tmpValue == null)
+                        {
+                            if (dbFieldInfo.AllowNull)
+                            {
+                                tmpValue = DBNull.Value;
+                            }
+                            else
+                            {
+                                throw new ApplicationException(string.Format("表{0}中字段{1}不能为空值", tableName, key));
+                            }
+                        }
+                    }
+
+                    paraCollection[key].Value = tmpValue;
+                }
+
                 //更新记录
                 return this.InnerExecuteNonQuery(conInfo.Con, updateSql, paraCollection);
             }
@@ -329,98 +328,99 @@ namespace UtilZ.Lib.DBBase.Core
                 throw new Exception(string.Format("类型:{0}没有标记为主键的字段,不能通过此方法删除该记录,请调用非泛型的方法对记录进行删除", type.FullName));
             }
 
-            string tableName = dataTableInfo.DBTable.Name;
-            var dbTableInfo = CacheManager.GetDBTableInfo(this, tableName);
-            //要更新到数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
-            Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties;
-            if (updateProperties == null)
+            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
-                //找出可更新值的列
-                dicDBColumnProperties = (from dbcol in dataTableInfo.DicDBColumnProperties.Values
-                                         where dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.IM ||
-                                         dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RIM ||
-                                         dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RM
-                                         select dbcol).ToDictionary((dbItem) => { return dbItem.DBColumn.ColumnName.ToUpper(); });
-            }
-            else
-            {
-                //字段列
-                dicDBColumnProperties = new Dictionary<string, DBColumnPropertyInfo>();
-                DBFieldDataAccessType dataAccessType;
-                foreach (var kv in dataTableInfo.DicDBColumnProperties)
+                string tableName = dataTableInfo.DBTable.Name;
+                var dbTableInfo = CacheManager.GetDBTableInfo(conInfo.Con, this, tableName);
+                //要更新到数据库列信息及对应的类的属性信息集合[key:列名;value:列信息]
+                Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties;
+                if (updateProperties == null)
                 {
-                    dataAccessType = kv.Value.DBColumn.DataAccessType;
-                    //找出可更新值的列且属性要更新值的列
-                    if (updateProperties.Contains(kv.Value.PropertyInfo.Name))
+                    //找出可更新值的列
+                    dicDBColumnProperties = (from dbcol in dataTableInfo.DicDBColumnProperties.Values
+                                             where dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.IM ||
+                                             dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RIM ||
+                                             dbcol.DBColumn.DataAccessType == DBFieldDataAccessType.RM
+                                             select dbcol).ToDictionary((dbItem) => { return dbItem.DBColumn.ColumnName.ToUpper(); });
+                }
+                else
+                {
+                    //字段列
+                    dicDBColumnProperties = new Dictionary<string, DBColumnPropertyInfo>();
+                    DBFieldDataAccessType dataAccessType;
+                    foreach (var kv in dataTableInfo.DicDBColumnProperties)
                     {
-                        if ((dataAccessType == DBFieldDataAccessType.IM || dataAccessType == DBFieldDataAccessType.RIM || dataAccessType == DBFieldDataAccessType.RM))
+                        dataAccessType = kv.Value.DBColumn.DataAccessType;
+                        //找出可更新值的列且属性要更新值的列
+                        if (updateProperties.Contains(kv.Value.PropertyInfo.Name))
                         {
-                            dicDBColumnProperties.Add(kv.Key.ToUpper(), kv.Value);
-                        }
-                        else
-                        {
-                            throw new ArgumentException(string.Format("属性{0}对应的表{1}中字段{2}的值不允许修改", kv.Value.PropertyInfo.Name, dataTableInfo.DBTable.Name, kv.Value.DBColumn.ColumnName));
+                            if ((dataAccessType == DBFieldDataAccessType.IM || dataAccessType == DBFieldDataAccessType.RIM || dataAccessType == DBFieldDataAccessType.RM))
+                            {
+                                dicDBColumnProperties.Add(kv.Key.ToUpper(), kv.Value);
+                            }
+                            else
+                            {
+                                throw new ArgumentException(string.Format("属性{0}对应的表{1}中字段{2}的值不允许修改", kv.Value.PropertyInfo.Name, dataTableInfo.DBTable.Name, kv.Value.DBColumn.ColumnName));
+                            }
                         }
                     }
                 }
-            }
 
-            var paraCollection = new NDbParameterCollection();//更新参数值字典集合
-            string dbParaSign = this.ParaSign;//数据库参数符号
-            DBColumnPropertyInfo dbColumnPropertyInfo = null;
-            StringBuilder sbSql = new StringBuilder();//更新值语句
-            sbSql.Append("UPDATE ");
-            sbSql.Append(dataTableInfo.DBTable.Name);
-            sbSql.Append(" SET ");
-            foreach (var key in dicDBColumnProperties.Keys.ToArray())
-            {
-                dbColumnPropertyInfo = dicDBColumnProperties[key];
-                //sql
-                sbSql.Append(key);
-                sbSql.Append("=");
-                sbSql.Append(dbParaSign);
-                sbSql.Append(key);
-                sbSql.Append(",");
-                paraCollection.Add(key, null);
-            }
+                var paraCollection = new NDbParameterCollection();//更新参数值字典集合
+                string dbParaSign = this.ParaSign;//数据库参数符号
+                DBColumnPropertyInfo dbColumnPropertyInfo = null;
+                StringBuilder sbSql = new StringBuilder();//更新值语句
+                sbSql.Append("UPDATE ");
+                sbSql.Append(dataTableInfo.DBTable.Name);
+                sbSql.Append(" SET ");
+                foreach (var key in dicDBColumnProperties.Keys.ToArray())
+                {
+                    dbColumnPropertyInfo = dicDBColumnProperties[key];
+                    //sql
+                    sbSql.Append(key);
+                    sbSql.Append("=");
+                    sbSql.Append(dbParaSign);
+                    sbSql.Append(key);
+                    sbSql.Append(",");
+                    paraCollection.Add(key, null);
+                }
 
-            var whereParaNameValues = new Dictionary<string, object>();//条件参数值字典集合
-            string and = "AND";
-            StringBuilder sbWhereSql = new StringBuilder();//条件语句
-            var dicPrikeyDBColumnProperties = dataTableInfo.DicPriKeyDBColumnProperties;
-            foreach (var priKey in dicPrikeyDBColumnProperties)
-            {
-                //如果该字段是主键列
-                sbWhereSql.Append(priKey.Key);
-                sbWhereSql.Append("=");
-                sbWhereSql.Append(dbParaSign);
-                sbWhereSql.Append(priKey.Key);
-                //参数
-                whereParaNameValues.Add(priKey.Key, null);
-                sbWhereSql.Append(and);
-            }
+                var whereParaNameValues = new Dictionary<string, object>();//条件参数值字典集合
+                string and = "AND";
+                StringBuilder sbWhereSql = new StringBuilder();//条件语句
+                var dicPrikeyDBColumnProperties = dataTableInfo.DicPriKeyDBColumnProperties;
+                foreach (var priKey in dicPrikeyDBColumnProperties)
+                {
+                    //如果该字段是主键列
+                    sbWhereSql.Append(priKey.Key);
+                    sbWhereSql.Append("=");
+                    sbWhereSql.Append(dbParaSign);
+                    sbWhereSql.Append(priKey.Key);
+                    //参数
+                    whereParaNameValues.Add(priKey.Key, null);
+                    sbWhereSql.Append(and);
+                }
 
-            //移除结尾
-            sbSql.Remove(sbSql.Length - 1, 1);
-            sbWhereSql.Remove(sbWhereSql.Length - and.Length, and.Length);
+                //移除结尾
+                sbSql.Remove(sbSql.Length - 1, 1);
+                sbWhereSql.Remove(sbWhereSql.Length - and.Length, and.Length);
 
-            //合并SQL
-            sbSql.Append(" WHERE ");
-            sbSql.Append(sbWhereSql.ToString());
-            //合并参数
-            foreach (var pv in whereParaNameValues)
-            {
-                paraCollection.Add(pv.Key, pv.Value);
-            }
+                //合并SQL
+                sbSql.Append(" WHERE ");
+                sbSql.Append(sbWhereSql.ToString());
+                //合并参数
+                foreach (var pv in whereParaNameValues)
+                {
+                    paraCollection.Add(pv.Key, pv.Value);
+                }
 
-            string updateSql = sbSql.ToString();//更新SQL语句
-            long effectCount = 0;//受影响的记录行数
-            object tmpValue = null;//临时参数值
-            List<string> keys = paraCollection.ParameterNames;
-            DBFieldInfo dbFieldInfo = null;//字段信息
+                string updateSql = sbSql.ToString();//更新SQL语句
+                long effectCount = 0;//受影响的记录行数
+                object tmpValue = null;//临时参数值
+                List<string> keys = paraCollection.ParameterNames;
+                DBFieldInfo dbFieldInfo = null;//字段信息
 
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
-            {
+
                 var cmd = this.CreateCommand(conInfo.Con);
                 cmd.CommandText = updateSql;
                 cmd.Prepare();
