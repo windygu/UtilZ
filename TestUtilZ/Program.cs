@@ -15,7 +15,7 @@ namespace TestUtilZ
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FWave22());
+            Application.Run(new FTest());
         }
     }
 }

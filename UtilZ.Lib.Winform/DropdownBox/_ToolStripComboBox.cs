@@ -142,7 +142,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         /// <param name="items">要绑定的集合</param>
         /// <param name="displayMember">显示的成员,属性名或字段名,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
         /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>  
-        public static void BindingIEnumerableGenericToToolStripComboBox<T>(System.Windows.Forms.ToolStripComboBox toolStripComboBox, IEnumerable<T> items, string displayMember, T selectedItem = null) where T : class
+        public static void BindingIEnumerableGenericToToolStripComboBox<T>(System.Windows.Forms.ToolStripComboBox toolStripComboBox, IEnumerable<T> items, string displayMember = null, T selectedItem = null) where T : class
         {
             if (toolStripComboBox == null)
             {

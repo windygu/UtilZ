@@ -168,7 +168,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <param name="orderInfos">排序列名集合</param>
         /// <param name="priKeyCols">主键列集合</param>
         /// <returns>排序字符串</returns>
-        protected string CreateOrderStr(IEnumerable<DBOrderInfo> orderInfos, IEnumerable<string> priKeyCols)
+        protected virtual string CreateOrderStr(IEnumerable<DBOrderInfo> orderInfos, IEnumerable<string> priKeyCols)
         {
             if (orderInfos == null || orderInfos.Count() == 0)
             {
@@ -185,19 +185,7 @@ namespace UtilZ.Lib.DBBase.Core
                 sbOrder.Append(",");
             }
 
-            //根据主键排序
-            if (priKeyCols != null && priKeyCols.Count() > 0)
-            {
-                foreach (var priKeyCol in priKeyCols)
-                {
-                    sbOrder.Append(priKeyCol);
-                    sbOrder.Append(" ");
-                    sbOrder.Append("DESC");
-                    sbOrder.Append(",");
-                }
-            }
-
-            //移除最后一个
+            //移除最后一个,
             sbOrder = sbOrder.Remove(sbOrder.Length - 1, 1);
             return sbOrder.ToString();
         }
@@ -243,55 +231,270 @@ namespace UtilZ.Lib.DBBase.Core
 
         #region 泛型
         /// <summary>
-        /// 查询数据并返回List泛型集合,带分页
+        /// 查询数据并返回List泛型集合
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
-        /// <param name="orderByColName">排序列名[为空或null不排序]</param>
-        /// <param name="pageSize">页大小</param>
-        /// <param name="pageIndex">查询页索引</param>
-        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
-        /// <param name="queryColumns">要查询的列集合[该集合为空或null时查询全部字段]</param>
-        /// <param name="priKeyCols">主键集合[当为oracle时此值不能为空或null,否则查询出的结果可能出现重复,因为Oracle数据的分页查询中排序规则不稳定]</param>
         /// <returns>数据集合</returns>
-        public List<T> QueryT<T>(string orderByColName, int pageSize, int pageIndex, bool orderFlag, IEnumerable<string> queryColumns = null, IEnumerable<string> priKeyCols = null) where T : class, new()
+        public List<T> QueryT<T>() where T : class, new()
         {
-            List<DBOrderInfo> orderInfos = null;
-            if (!string.IsNullOrWhiteSpace(orderByColName))
+            return this.QueryT<T>(null, null, null, string.Empty, false);
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryT<T>(T query, IEnumerable<string> conditionProperties) where T : class, new()
+        {
+            return this.QueryT<T>(query, conditionProperties, null, string.Empty, false);
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryT<T>(T query, IEnumerable<string> conditionProperties, IEnumerable<string> queryProperties) where T : class, new()
+        {
+            return this.QueryT<T>(query, conditionProperties, queryProperties, string.Empty, false);
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
+        /// <param name="orderProperty">排序属性名称[为null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryT<T>(T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, string orderProperty = null, bool orderFlag = false) where T : class, new()
+        {
+            List<DBOrderInfo> orderInfos;
+            if (string.IsNullOrWhiteSpace(orderProperty))
+            {
+                orderInfos = null;
+            }
+            else
             {
                 orderInfos = new List<DBOrderInfo>();
-                orderInfos.Add(new DBOrderInfo(orderByColName, orderFlag));
+                orderInfos.Add(new DBOrderInfo(orderProperty, orderFlag));
             }
 
-            return this.QueryT<T>(orderInfos, pageSize, pageIndex, orderFlag, queryColumns, priKeyCols);
+            return this.QueryT<T>(query, conditionProperties, queryProperties, orderInfos);
         }
 
         /// <summary>
         /// 查询数据并返回List泛型集合,带分页
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
-        /// <param name="orderInfos">排序列名[为空或null不排序]</param>
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">查询页索引</param>
-        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
-        /// <param name="queryColumns">要查询的列集合[该集合为空或null时查询全部字段]</param>
-        /// <param name="priKeyCols">主键集合[当为oracle时此值不能为空或null,否则查询出的结果可能出现重复,因为Oracle数据的分页查询中排序规则不稳定]</param>
+        /// <param name="orderProperty">排序属性名称[为null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
         /// <returns>数据集合</returns>
-        public List<T> QueryT<T>(IEnumerable<DBOrderInfo> orderInfos, int pageSize, int pageIndex, bool orderFlag, IEnumerable<string> queryColumns = null, IEnumerable<string> priKeyCols = null) where T : class, new()
+        public List<T> QueryTPaging<T>(int pageSize, int pageIndex, string orderProperty = null, bool orderFlag = false) where T : class, new()
         {
-            Type type = typeof(T);
-            //数据模型信息
-            DataModelInfo dataTableInfo = ORMManager.GetDataModelInfo(type);
-            string sqlStr = null;
-            if (queryColumns == null || queryColumns.Count() == 0)
+            return QueryTPaging<T>(pageSize, pageIndex, null, null, orderProperty, orderFlag);
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合,带分页
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="orderProperty">排序属性名称[为null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryTPaging<T>(int pageSize, int pageIndex, T query, IEnumerable<string> conditionProperties, string orderProperty = null, bool orderFlag = false) where T : class, new()
+        {
+            return QueryTPaging<T>(pageSize, pageIndex, query, conditionProperties, orderProperty, orderFlag);
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合,带分页
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
+        /// <param name="orderProperty">排序属性名称[为null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryTPaging<T>(int pageSize, int pageIndex, T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, string orderProperty = null, bool orderFlag = false) where T : class, new()
+        {
+            List<DBOrderInfo> orderInfos;
+            if (string.IsNullOrWhiteSpace(orderProperty))
             {
-                sqlStr = string.Format("select * from {0}", dataTableInfo.DBTable.Name);
+                orderInfos = null;
             }
             else
             {
-                sqlStr = string.Format("select {0} from {1}", string.Join(",", queryColumns), dataTableInfo.DBTable.Name);
+                orderInfos = new List<DBOrderInfo>();
+                orderInfos.Add(new DBOrderInfo(orderProperty, orderFlag));
             }
 
-            DataTable dt = this.QueryPagingData(sqlStr, orderInfos, pageSize, pageIndex, orderFlag, null, priKeyCols);
+            return this.QueryTPaging<T>(pageSize, pageIndex, query, conditionProperties, queryProperties, orderInfos);
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
+        /// <param name="orderInfos">排序列名[为空或null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryT<T>(T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, IEnumerable<DBOrderInfo> orderInfos = null, bool orderFlag = false) where T : class, new()
+        {
+            DataModelInfo dataTableInfo;
+            StringBuilder sbSqlStr;
+            NDbParameterCollection collection;
+            this.GenerateTQuery(query, conditionProperties, queryProperties, out dataTableInfo, out sbSqlStr, out collection);
+
+            if (orderInfos != null && orderInfos.Count() > 0)
+            {
+                sbSqlStr.Append(" order by ");
+                sbSqlStr.Append(this.CreateOrderStr(orderInfos, dataTableInfo.DicPriKeyDBColumnProperties.Keys));
+            }
+
+            DataTable dt = this.QueryData(sbSqlStr.ToString(), collection);
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return new List<T>();
+            }
+            else
+            {
+                return ORMManager.ConvertData<T>(dt, this);
+            }
+        }
+
+        /// <summary>
+        /// 创建T泛型查询
+        /// </summary>
+        /// <typeparam name="T">T泛型</typeparam>
+        /// <param name="query">查询条件对象</param>
+        /// <param name="conditionProperties">条件属性集合</param>
+        /// <param name="queryProperties">查询属性集合</param>
+        /// <param name="dataTableInfo">数据模型信息</param>
+        /// <param name="sbSqlStr">SQL StringBuilder</param>
+        /// <param name="collection">参数集合</param>
+        private void GenerateTQuery<T>(T query, IEnumerable<string> conditionProperties, IEnumerable<string> queryProperties, out DataModelInfo dataTableInfo, out StringBuilder sbSqlStr, out NDbParameterCollection collection) where T : class, new()
+        {
+            Type type = typeof(T);
+            //数据模型信息
+            dataTableInfo = ORMManager.GetDataModelInfo(type);
+            var propertyNameColNameMapDic = dataTableInfo.PropertyNameColNameMapDic;
+            sbSqlStr = new StringBuilder();
+            if (queryProperties == null || queryProperties.Count() == 0)
+            {
+                sbSqlStr.Append(string.Format("select * from {0}", dataTableInfo.DBTable.Name));
+            }
+            else
+            {
+                var queryColNames = new List<string>();
+                foreach (var queryPropertyName in queryProperties)
+                {
+                    if (propertyNameColNameMapDic.ContainsKey(queryPropertyName))
+                    {
+                        queryColNames.Add(propertyNameColNameMapDic[queryPropertyName]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(string.Format("类型:{0}中不包含属性:{1}", type.FullName, queryPropertyName));
+                    }
+                }
+
+                sbSqlStr.Append(string.Format("select {0} from {1}", string.Join(",", queryColNames), dataTableInfo.DBTable.Name));
+            }
+            if (query != null)
+            {
+                collection = new NDbParameterCollection();
+                string tmpConditionColName;
+                Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
+                DBColumnPropertyInfo dbColumnPropertyInfo;
+
+                var conditionList = new List<string>();
+                if (conditionProperties == null || conditionProperties.Count() == 0)
+                {
+                    //条件属性集合[该集合为空或null时仅用主键字段]
+                    foreach (var priKeyColName in dataTableInfo.DicPriKeyDBColumnProperties.Keys)
+                    {
+                        if (propertyNameColNameMapDic.ContainsKey(priKeyColName))
+                        {
+                            tmpConditionColName = propertyNameColNameMapDic[priKeyColName];
+                            conditionList.Add(string.Format("{0}={1}{2}", tmpConditionColName, this.ParaSign, tmpConditionColName));
+                            dbColumnPropertyInfo = dicDBColumnProperties[tmpConditionColName];
+                            collection.Add(tmpConditionColName, dbColumnPropertyInfo.PropertyInfo.GetValue(query, dbColumnPropertyInfo.DBColumn.Index));
+                        }
+                        else
+                        {
+                            throw new ArgumentException(string.Format("表:{0}中不包含列:{1}", dataTableInfo.DBTable.Name, priKeyColName));
+                        }
+                    }
+                }
+                else
+                {
+                    //条件属性集合[该集合为空或null时仅用主键字段]
+                    foreach (var colName in dataTableInfo.DicDBColumnProperties.Keys)
+                    {
+                        if (propertyNameColNameMapDic.ContainsKey(colName))
+                        {
+                            tmpConditionColName = propertyNameColNameMapDic[colName];
+                            conditionList.Add(string.Format("{0}={1}{2}", tmpConditionColName, this.ParaSign, tmpConditionColName));
+                            dbColumnPropertyInfo = dicDBColumnProperties[tmpConditionColName];
+                            collection.Add(tmpConditionColName, dbColumnPropertyInfo.PropertyInfo.GetValue(query, dbColumnPropertyInfo.DBColumn.Index));
+                        }
+                        else
+                        {
+                            throw new ArgumentException(string.Format("表:{0}中不包含列:{1}", dataTableInfo.DBTable.Name, colName));
+                        }
+                    }
+                }
+
+                sbSqlStr.Append(" where ");
+                sbSqlStr.Append(string.Join(" AND ", conditionList));
+            }
+            else
+            {
+                collection = null;
+            }
+        }
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合,带分页
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
+        /// <param name="orderInfos">排序列名[为空或null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryTPaging<T>(int pageSize, int pageIndex, T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, IEnumerable<DBOrderInfo> orderInfos = null, bool orderFlag = false) where T : class, new()
+        {
+            DataModelInfo dataTableInfo;
+            StringBuilder sbSqlStr;
+            NDbParameterCollection collection;
+            this.GenerateTQuery(query, conditionProperties, queryProperties, out dataTableInfo, out sbSqlStr, out collection);
+
+            DataTable dt = this.QueryPagingData(sbSqlStr.ToString(), orderInfos, pageSize, pageIndex, orderFlag, collection, dataTableInfo.DicPriKeyDBColumnProperties.Keys);
             if (dt == null || dt.Rows.Count == 0)
             {
                 return new List<T>();
