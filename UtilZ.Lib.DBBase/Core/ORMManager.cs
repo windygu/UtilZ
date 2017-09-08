@@ -289,6 +289,11 @@ namespace UtilZ.Lib.DBBase.Core
         /// <returns>数据集合</returns>
         public static List<T> ConvertData<T>(DataTable dt, Type tType, IDBAccess dbAccess) where T : class, new()
         {
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return new List<T>();
+            }
+
             DataModelInfo dataTableInfo = GetDataModelInfo(tType);
             //列名及模型属性字典集合[key:列名,value:属性信息]
             Dictionary<string, DBColumnPropertyInfo> dicProperties = dataTableInfo.DicDBColumnProperties;

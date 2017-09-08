@@ -63,8 +63,8 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 Dictionary<string, object> paraValues;
                 IDbCommand cmd = this.CreateCommand(conInfo.Con);
-                cmd.CommandText = this.Interaction.GenerateSqlUpdate(tableName, this.ParaSign, priKeyColValues, colValues, out paraValues);
-                this.Interaction.SetParameter(cmd, paraValues);
+                cmd.CommandText = this._interaction.GenerateSqlUpdate(tableName, this.ParaSign, priKeyColValues, colValues, out paraValues);
+                this._interaction.SetParameter(cmd, paraValues);
                 return cmd.ExecuteNonQuery();
             }
         }
@@ -86,7 +86,7 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 var cmd = this.CreateCommand(conInfo.Con);
                 cmd.CommandText = sqlStr;
-                this.Interaction.SetParameter(cmd, collection);
+                this._interaction.SetParameter(cmd, collection);
                 return cmd.ExecuteNonQuery();
             }
         }
@@ -267,7 +267,7 @@ namespace UtilZ.Lib.DBBase.Core
                 foreach (var collection in collections)
                 {
                     cmd.Parameters.Clear();
-                    this.Interaction.SetParameter(cmd, collection);
+                    this._interaction.SetParameter(cmd, collection);
                     effectCount += cmd.ExecuteNonQuery();
                 }
 
@@ -457,7 +457,7 @@ namespace UtilZ.Lib.DBBase.Core
 
                     //更新记录
                     cmd.Parameters.Clear();
-                    this.Interaction.SetParameter(cmd, paraCollection);
+                    this._interaction.SetParameter(cmd, paraCollection);
                     effectCount += cmd.ExecuteNonQuery();
                 }
 

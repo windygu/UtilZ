@@ -73,8 +73,8 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 IDbCommand cmd = this.CreateCommand(con);
                 cmd.CommandText = sqlStr;
-                this.Interaction.SetParameter(cmd, collection);
-                IDbDataAdapter da = this.Interaction.CreateDbDataAdapter();
+                this._interaction.SetParameter(cmd, collection);
+                IDbDataAdapter da = this._interaction.CreateDbDataAdapter();
                 da.SelectCommand = cmd;
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -189,6 +189,98 @@ namespace UtilZ.Lib.DBBase.Core
             sbOrder = sbOrder.Remove(sbOrder.Length - 1, 1);
             return sbOrder.ToString();
         }
+
+        /// <summary>
+        /// 创建T泛型查询
+        /// </summary>
+        /// <typeparam name="T">T泛型</typeparam>
+        /// <param name="query">查询条件对象</param>
+        /// <param name="conditionProperties">条件属性集合</param>
+        /// <param name="queryProperties">查询属性集合</param>
+        /// <param name="dataTableInfo">数据模型信息</param>
+        /// <param name="sbSqlStr">SQL StringBuilder</param>
+        /// <param name="collection">参数集合</param>
+        protected void GenerateTQuery<T>(T query, IEnumerable<string> conditionProperties, IEnumerable<string> queryProperties, out DataModelInfo dataTableInfo, out StringBuilder sbSqlStr, out NDbParameterCollection collection) where T : class, new()
+        {
+            Type type = typeof(T);
+            //数据模型信息
+            dataTableInfo = ORMManager.GetDataModelInfo(type);
+            var propertyNameColNameMapDic = dataTableInfo.PropertyNameColNameMapDic;
+            sbSqlStr = new StringBuilder();
+            if (queryProperties == null || queryProperties.Count() == 0)
+            {
+                sbSqlStr.Append(string.Format("select * from {0}", dataTableInfo.DBTable.Name));
+            }
+            else
+            {
+                var queryColNames = new List<string>();
+                foreach (var queryPropertyName in queryProperties)
+                {
+                    if (propertyNameColNameMapDic.ContainsKey(queryPropertyName))
+                    {
+                        queryColNames.Add(propertyNameColNameMapDic[queryPropertyName]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(string.Format("类型:{0}中不包含属性:{1}", type.FullName, queryPropertyName));
+                    }
+                }
+
+                sbSqlStr.Append(string.Format("select {0} from {1}", string.Join(",", queryColNames), dataTableInfo.DBTable.Name));
+            }
+            if (query != null)
+            {
+                collection = new NDbParameterCollection();
+                string tmpConditionColName;
+                Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
+                DBColumnPropertyInfo dbColumnPropertyInfo;
+
+                var conditionList = new List<string>();
+                if (conditionProperties == null || conditionProperties.Count() == 0)
+                {
+                    //条件属性集合[该集合为空或null时仅用主键字段]
+                    foreach (var priKeyColName in dataTableInfo.DicPriKeyDBColumnProperties.Keys.ToArray())
+                    {
+                        if (propertyNameColNameMapDic.ContainsKey(priKeyColName))
+                        {
+                            tmpConditionColName = propertyNameColNameMapDic[priKeyColName];
+                            conditionList.Add(string.Format("{0}={1}{2}", tmpConditionColName, this.ParaSign, tmpConditionColName));
+                            dbColumnPropertyInfo = dicDBColumnProperties[tmpConditionColName];
+                            collection.Add(tmpConditionColName, dbColumnPropertyInfo.PropertyInfo.GetValue(query, dbColumnPropertyInfo.DBColumn.Index));
+                        }
+                        else
+                        {
+                            throw new ArgumentException(string.Format("表:{0}中不包含列:{1}", dataTableInfo.DBTable.Name, priKeyColName));
+                        }
+                    }
+                }
+                else
+                {
+                    //条件属性集合[该集合为空或null时仅用主键字段]
+                    foreach (var conditionPropertyName in conditionProperties)
+                    {
+                        if (propertyNameColNameMapDic.ContainsKey(conditionPropertyName))
+                        {
+                            tmpConditionColName = propertyNameColNameMapDic[conditionPropertyName];
+                            conditionList.Add(string.Format("{0}={1}{2}", tmpConditionColName, this.ParaSign, tmpConditionColName));
+                            dbColumnPropertyInfo = dicDBColumnProperties[tmpConditionColName];
+                            collection.Add(tmpConditionColName, dbColumnPropertyInfo.PropertyInfo.GetValue(query, dbColumnPropertyInfo.DBColumn.Index));
+                        }
+                        else
+                        {
+                            throw new ArgumentException(string.Format("类型:{0}中不包含属性:{1}", type.FullName, conditionPropertyName));
+                        }
+                    }
+                }
+
+                sbSqlStr.Append(" where ");
+                sbSqlStr.Append(string.Join(" AND ", conditionList));
+            }
+            else
+            {
+                collection = null;
+            }
+        }
         #endregion
 
         #region sql语句分页查询数据
@@ -230,6 +322,17 @@ namespace UtilZ.Lib.DBBase.Core
         #endregion
 
         #region 泛型
+        /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <returns>数据集合</returns>
+        public List<T> QueryT<T>(string sqlStr, NDbParameterCollection collection = null) where T : class, new()
+        {
+            DataTable dt = this.QueryData(sqlStr, collection);
+            return ORMManager.ConvertData<T>(dt, this);
+        }
+
         /// <summary>
         /// 查询数据并返回List泛型集合
         /// </summary>
@@ -292,6 +395,76 @@ namespace UtilZ.Lib.DBBase.Core
         }
 
         /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
+        /// <param name="orderInfos">排序列名[为空或null不排序]</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
+        /// <returns>数据集合</returns>
+        public List<T> QueryT<T>(T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, IEnumerable<DBOrderInfo> orderInfos = null, bool orderFlag = false) where T : class, new()
+        {
+            DataModelInfo dataTableInfo;
+            StringBuilder sbSqlStr;
+            NDbParameterCollection collection;
+            this.GenerateTQuery(query, conditionProperties, queryProperties, out dataTableInfo, out sbSqlStr, out collection);
+
+            if (orderInfos != null && orderInfos.Count() > 0)
+            {
+                sbSqlStr.Append(" order by ");
+                sbSqlStr.Append(this.CreateOrderStr(orderInfos, dataTableInfo.DicPriKeyDBColumnProperties.Keys.ToArray()));
+            }
+
+            DataTable dt = this.QueryData(sbSqlStr.ToString(), collection);
+            return ORMManager.ConvertData<T>(dt, this);
+        }
+
+        /// <summary>
+        /// 查询分页数据
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="sqlStr">查询SQL语句</param>
+        /// <param name="orderByColName">排序列名</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
+        /// <param name="collection">命令的参数集合</param>
+        /// <returns>数据表</returns>
+        public List<T> QueryTPaging<T>(string sqlStr, string orderByColName, int pageSize, int pageIndex, bool orderFlag, NDbParameterCollection collection = null) where T : class, new()
+        {
+            List<DBOrderInfo> orderInfos = null;
+            if (!string.IsNullOrWhiteSpace(orderByColName))
+            {
+                orderInfos = new List<DBOrderInfo>();
+                orderInfos.Add(new DBOrderInfo(orderByColName, orderFlag));
+            }
+
+            return this.QueryTPaging<T>(sqlStr, orderInfos, pageSize, pageIndex, orderFlag, collection);
+        }
+
+        /// <summary>
+        /// 查询分页数据
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="sqlStr">查询SQL语句</param>
+        /// <param name="orderInfos">排序列名集合[null为或空不排序]</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
+        /// <param name="collection">命令的参数集合</param>
+        /// <returns>数据表</returns>
+        public List<T> QueryTPaging<T>(string sqlStr, IEnumerable<DBOrderInfo> orderInfos, int pageSize, int pageIndex, bool orderFlag, NDbParameterCollection collection = null) where T : class, new()
+        {
+            Type type = typeof(T);
+            //数据模型信息
+            var dataTableInfo = ORMManager.GetDataModelInfo(type);
+            DataTable dt = this.QueryPagingData(sqlStr, orderInfos, pageSize, pageIndex, orderFlag, collection, dataTableInfo.DicPriKeyDBColumnProperties.Keys.ToArray());
+            return ORMManager.ConvertData<T>(dt, this);
+        }
+
+        /// <summary>
         /// 查询数据并返回List泛型集合,带分页
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
@@ -350,132 +523,6 @@ namespace UtilZ.Lib.DBBase.Core
         }
 
         /// <summary>
-        /// 查询数据并返回List泛型集合
-        /// </summary>
-        /// <typeparam name="T">数据模型类型</typeparam>
-        /// <param name="query">查询对象[为null时无条件查询]</param>
-        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
-        /// <param name="queryProperties">要查询的列集合[该集合为空或null时查询全部字段]</param>
-        /// <param name="orderInfos">排序列名[为空或null不排序]</param>
-        /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
-        /// <returns>数据集合</returns>
-        public List<T> QueryT<T>(T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, IEnumerable<DBOrderInfo> orderInfos = null, bool orderFlag = false) where T : class, new()
-        {
-            DataModelInfo dataTableInfo;
-            StringBuilder sbSqlStr;
-            NDbParameterCollection collection;
-            this.GenerateTQuery(query, conditionProperties, queryProperties, out dataTableInfo, out sbSqlStr, out collection);
-
-            if (orderInfos != null && orderInfos.Count() > 0)
-            {
-                sbSqlStr.Append(" order by ");
-                sbSqlStr.Append(this.CreateOrderStr(orderInfos, dataTableInfo.DicPriKeyDBColumnProperties.Keys));
-            }
-
-            DataTable dt = this.QueryData(sbSqlStr.ToString(), collection);
-            if (dt == null || dt.Rows.Count == 0)
-            {
-                return new List<T>();
-            }
-            else
-            {
-                return ORMManager.ConvertData<T>(dt, this);
-            }
-        }
-
-        /// <summary>
-        /// 创建T泛型查询
-        /// </summary>
-        /// <typeparam name="T">T泛型</typeparam>
-        /// <param name="query">查询条件对象</param>
-        /// <param name="conditionProperties">条件属性集合</param>
-        /// <param name="queryProperties">查询属性集合</param>
-        /// <param name="dataTableInfo">数据模型信息</param>
-        /// <param name="sbSqlStr">SQL StringBuilder</param>
-        /// <param name="collection">参数集合</param>
-        private void GenerateTQuery<T>(T query, IEnumerable<string> conditionProperties, IEnumerable<string> queryProperties, out DataModelInfo dataTableInfo, out StringBuilder sbSqlStr, out NDbParameterCollection collection) where T : class, new()
-        {
-            Type type = typeof(T);
-            //数据模型信息
-            dataTableInfo = ORMManager.GetDataModelInfo(type);
-            var propertyNameColNameMapDic = dataTableInfo.PropertyNameColNameMapDic;
-            sbSqlStr = new StringBuilder();
-            if (queryProperties == null || queryProperties.Count() == 0)
-            {
-                sbSqlStr.Append(string.Format("select * from {0}", dataTableInfo.DBTable.Name));
-            }
-            else
-            {
-                var queryColNames = new List<string>();
-                foreach (var queryPropertyName in queryProperties)
-                {
-                    if (propertyNameColNameMapDic.ContainsKey(queryPropertyName))
-                    {
-                        queryColNames.Add(propertyNameColNameMapDic[queryPropertyName]);
-                    }
-                    else
-                    {
-                        throw new ArgumentException(string.Format("类型:{0}中不包含属性:{1}", type.FullName, queryPropertyName));
-                    }
-                }
-
-                sbSqlStr.Append(string.Format("select {0} from {1}", string.Join(",", queryColNames), dataTableInfo.DBTable.Name));
-            }
-            if (query != null)
-            {
-                collection = new NDbParameterCollection();
-                string tmpConditionColName;
-                Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
-                DBColumnPropertyInfo dbColumnPropertyInfo;
-
-                var conditionList = new List<string>();
-                if (conditionProperties == null || conditionProperties.Count() == 0)
-                {
-                    //条件属性集合[该集合为空或null时仅用主键字段]
-                    foreach (var priKeyColName in dataTableInfo.DicPriKeyDBColumnProperties.Keys)
-                    {
-                        if (propertyNameColNameMapDic.ContainsKey(priKeyColName))
-                        {
-                            tmpConditionColName = propertyNameColNameMapDic[priKeyColName];
-                            conditionList.Add(string.Format("{0}={1}{2}", tmpConditionColName, this.ParaSign, tmpConditionColName));
-                            dbColumnPropertyInfo = dicDBColumnProperties[tmpConditionColName];
-                            collection.Add(tmpConditionColName, dbColumnPropertyInfo.PropertyInfo.GetValue(query, dbColumnPropertyInfo.DBColumn.Index));
-                        }
-                        else
-                        {
-                            throw new ArgumentException(string.Format("表:{0}中不包含列:{1}", dataTableInfo.DBTable.Name, priKeyColName));
-                        }
-                    }
-                }
-                else
-                {
-                    //条件属性集合[该集合为空或null时仅用主键字段]
-                    foreach (var colName in dataTableInfo.DicDBColumnProperties.Keys)
-                    {
-                        if (propertyNameColNameMapDic.ContainsKey(colName))
-                        {
-                            tmpConditionColName = propertyNameColNameMapDic[colName];
-                            conditionList.Add(string.Format("{0}={1}{2}", tmpConditionColName, this.ParaSign, tmpConditionColName));
-                            dbColumnPropertyInfo = dicDBColumnProperties[tmpConditionColName];
-                            collection.Add(tmpConditionColName, dbColumnPropertyInfo.PropertyInfo.GetValue(query, dbColumnPropertyInfo.DBColumn.Index));
-                        }
-                        else
-                        {
-                            throw new ArgumentException(string.Format("表:{0}中不包含列:{1}", dataTableInfo.DBTable.Name, colName));
-                        }
-                    }
-                }
-
-                sbSqlStr.Append(" where ");
-                sbSqlStr.Append(string.Join(" AND ", conditionList));
-            }
-            else
-            {
-                collection = null;
-            }
-        }
-
-        /// <summary>
         /// 查询数据并返回List泛型集合,带分页
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
@@ -494,15 +541,8 @@ namespace UtilZ.Lib.DBBase.Core
             NDbParameterCollection collection;
             this.GenerateTQuery(query, conditionProperties, queryProperties, out dataTableInfo, out sbSqlStr, out collection);
 
-            DataTable dt = this.QueryPagingData(sbSqlStr.ToString(), orderInfos, pageSize, pageIndex, orderFlag, collection, dataTableInfo.DicPriKeyDBColumnProperties.Keys);
-            if (dt == null || dt.Rows.Count == 0)
-            {
-                return new List<T>();
-            }
-            else
-            {
-                return ORMManager.ConvertData<T>(dt, this);
-            }
+            DataTable dt = this.QueryPagingData(sbSqlStr.ToString(), orderInfos, pageSize, pageIndex, orderFlag, collection, dataTableInfo.DicPriKeyDBColumnProperties.Keys.ToArray());
+            return ORMManager.ConvertData<T>(dt, this);
         }
         #endregion
         #endregion

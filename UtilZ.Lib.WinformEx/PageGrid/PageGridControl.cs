@@ -541,7 +541,7 @@ namespace UtilZ.Lib.WinformEx.PageGrid
         {
             get
             {
-                Dictionary<int, object> dicSelectedRows = new Dictionary<int, object>();
+                Dictionary<int, DataGridViewRow> dicSelectedRows = new Dictionary<int, DataGridViewRow>();
                 foreach (DataGridViewCell cell in this._fgrid.GridView.SelectedCells)
                 {
                     if (dicSelectedRows.ContainsKey(cell.RowIndex))
@@ -755,7 +755,7 @@ namespace UtilZ.Lib.WinformEx.PageGrid
                 //获取字段名
                 fieldName = gridColumn.Name;
                 //设置为可编辑性
-                gridColumn.ReadOnly = allowEditColumns.Contains(fieldName);
+                gridColumn.ReadOnly = !allowEditColumns.Contains(fieldName);
 
                 //设置显示标题
                 if (colHeadInfos.ContainsKey(fieldName))

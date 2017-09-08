@@ -139,6 +139,17 @@ namespace UtilZ.Lib.DBBase.Base
         /// <summary>
         /// 创建命令参数
         /// </summary>
+        /// <param name="parameterName">参数名称</param>
+        /// <param name="value">值</param>
+        /// <returns>创建好的命令参数</returns>
+        public IDbDataParameter CreateDbParameter(string parameterName, object value)
+        {
+            return this.CreateDbParameter(new NDbParameter(parameterName, value));
+        }
+
+        /// <summary>
+        /// 创建命令参数
+        /// </summary>
         /// <param name="parameter">命令参数</param>
         /// <returns>创建好的命令参数</returns>
         public abstract IDbDataParameter CreateDbParameter(NDbParameter parameter);

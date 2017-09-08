@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.DBModel.Config;
+using UtilZ.Lib.DBModel.Interface;
 using UtilZ.Lib.DBModel.Model;
 
 namespace UtilZ.Lib.DBBase.Interface
@@ -33,6 +34,11 @@ namespace UtilZ.Lib.DBBase.Interface
         /// sql语句最大长度
         /// </summary>
         long SqlMaxLength { get; }
+
+        /// <summary>
+        /// 外部数据库交互接口
+        /// </summary>
+        IDBInteractionEx InteractionEx { get; }
         #endregion
 
         /// <summary>
@@ -41,6 +47,13 @@ namespace UtilZ.Lib.DBBase.Interface
         void Init();
 
         #region ADO.NET执行原子操作方法
+        /// <summary>
+        /// 创建命令
+        /// </summary>
+        /// <param name="con">连接对象</param>
+        /// <returns>命令</returns>
+        IDbCommand CreateCommand(IDbConnection con);
+
         /// <summary>
         /// ExecuteScalar执行SQL语句,返回执行结果的第一行第一列；
         /// </summary>

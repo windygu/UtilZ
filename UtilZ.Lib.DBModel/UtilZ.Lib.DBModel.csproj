@@ -63,6 +63,7 @@
     <Compile Include="DBObject\IDBModelValueConvert.cs" />
     <Compile Include="Interface\IConStrDecryption.cs" />
     <Compile Include="Interface\IDBInteraction.cs" />
+    <Compile Include="Interface\IDBInteractionEx.cs" />
     <Compile Include="Model\DBExcuteType.cs" />
     <Compile Include="Model\DBOrderInfo.cs" />
     <Compile Include="Model\DBPageInfo.cs" />

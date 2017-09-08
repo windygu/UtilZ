@@ -16,22 +16,6 @@ namespace UtilZ.Lib.DBBase.Core
         #region protect method
         #region ADO.NET执行辅助方法
         /// <summary>
-        /// 创建命令
-        /// </summary>
-        /// <param name="con">连接对象</param>
-        /// <returns>命令</returns>
-        protected virtual IDbCommand CreateCommand(IDbConnection con)
-        {
-            var cmd = con.CreateCommand();
-            if (this.Config.CommandTimeout != DBConstant.CommandTimeout)
-            {
-                cmd.CommandTimeout = this.Config.CommandTimeout;
-            }
-
-            return cmd;
-        }
-
-        /// <summary>
         /// 是否初始化读写连接池
         /// </summary>
         protected bool _isInitReadWriteConPool = false;
@@ -58,7 +42,7 @@ namespace UtilZ.Lib.DBBase.Core
                     return;
                 }
 
-                DbConnectionPool.AddDbConnectionPool(this.Config, this.Interaction);
+                DbConnectionPool.AddDbConnectionPool(this.Config, this._interaction);
                 this._isInitReadWriteConPool = true;
             }
         }
@@ -77,7 +61,7 @@ namespace UtilZ.Lib.DBBase.Core
             IDbCommand cmd = this.CreateCommand(con);
             cmd.Transaction = transaction;
             cmd.CommandText = sqlStr;
-            this.Interaction.SetParameter(cmd, collection);
+            this._interaction.SetParameter(cmd, collection);
             return cmd.ExecuteScalar();
         }
 
@@ -94,7 +78,7 @@ namespace UtilZ.Lib.DBBase.Core
             IDbCommand cmd = this.CreateCommand(con);
             cmd.Transaction = transaction;
             cmd.CommandText = sqlStr;
-            this.Interaction.SetParameter(cmd, collection);
+            this._interaction.SetParameter(cmd, collection);
             return cmd.ExecuteNonQuery();
         }
 

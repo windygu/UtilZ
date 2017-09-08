@@ -63,7 +63,7 @@ namespace UtilZ.Lib.DBBase.Core
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
                 var cmd = this.CreateCommand(conInfo.Con);
-                this.Interaction.GenerateSqlDelete(cmd, tableName, this.ParaSign, priKeyColValues);
+                this._interaction.GenerateSqlDelete(cmd, tableName, this.ParaSign, priKeyColValues);
                 return cmd.ExecuteNonQuery();
             }
         }
@@ -73,9 +73,9 @@ namespace UtilZ.Lib.DBBase.Core
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="item">要删除的对象</param>
-        /// <param name="con">数据库连接对象</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
         /// <returns>返回受影响的行数</returns>
-        public virtual long DeleteT<T>(T item) where T : class
+        public virtual long DeleteT<T>(T item, IEnumerable<string> conditionProperties = null) where T : class
         {
             if (item == null)
             {
@@ -90,27 +90,35 @@ namespace UtilZ.Lib.DBBase.Core
                 throw new Exception(string.Format("类型:{0}没有标记为主键的字段,不能通过此方法删除该记录,请调用非泛型的方法对记录进行删除", type.FullName));
             }
 
+            Dictionary<string, DBColumnPropertyInfo> dicDBColumnProperties;
+            if (conditionProperties == null || conditionProperties.Count() == 0)
+            {
+                dicDBColumnProperties = dataTableInfo.DicPriKeyDBColumnProperties;
+            }
+            else
+            {
+                dicDBColumnProperties = dataTableInfo.DicDBColumnProperties;
+            }
 
             object value = null;
-            //多主键遍历删除
+            //多字段条件遍历删除
             var priKeyColValues = new Dictionary<string, object>();
-            priKeyColValues.Clear();
-            foreach (var key in dataTableInfo.DicPriKeyDBColumnProperties)
+            foreach (var kv in dicDBColumnProperties)
             {
-                value = key.Value.PropertyInfo.GetValue(item, key.Value.DBColumn.Index);
+                value = kv.Value.PropertyInfo.GetValue(item, kv.Value.DBColumn.Index);
                 if (value == null)
                 {
                     throw new Exception("主键字段值不能为空或null");
                 }
 
-                priKeyColValues.Add(key.Key, value);
+                priKeyColValues.Add(kv.Key, value);
             }
 
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
                 //删除记录
                 var cmd = this.CreateCommand(conInfo.Con);
-                this.Interaction.GenerateSqlDelete(cmd, dataTableInfo.DBTable.Name, this.ParaSign, priKeyColValues);
+                this._interaction.GenerateSqlDelete(cmd, dataTableInfo.DBTable.Name, this.ParaSign, priKeyColValues);
                 return cmd.ExecuteNonQuery();
             }
         }
@@ -178,12 +186,12 @@ namespace UtilZ.Lib.DBBase.Core
                         {
                             cmd = this.CreateCommand(conInfo.Con);
                             cmd.Transaction = transaction;
-                            this.Interaction.GenerateSqlDelete(cmd, tableName, this.ParaSign, priKeyColValues.ElementAt(0));
+                            this._interaction.GenerateSqlDelete(cmd, tableName, this.ParaSign, priKeyColValues.ElementAt(0));
                             cmd.Prepare();
 
                             foreach (var priKeyColValue in priKeyColValues)
                             {
-                                this.Interaction.SetParameter(cmd, priKeyColValue);
+                                this._interaction.SetParameter(cmd, priKeyColValue);
                                 effectCount += cmd.ExecuteNonQuery();
                             }
                         }
@@ -193,7 +201,7 @@ namespace UtilZ.Lib.DBBase.Core
                             {
                                 cmd = this.CreateCommand(conInfo.Con);
                                 cmd.Transaction = transaction;
-                                this.Interaction.GenerateSqlDelete(cmd, tableName, this.ParaSign, priKeyColValue);
+                                this._interaction.GenerateSqlDelete(cmd, tableName, this.ParaSign, priKeyColValue);
                                 effectCount += cmd.ExecuteNonQuery();
                             }
                         }
@@ -238,7 +246,7 @@ namespace UtilZ.Lib.DBBase.Core
                         foreach (var collection in collections)
                         {
                             cmd.Parameters.Clear();
-                            this.Interaction.SetParameter(cmd, collection);
+                            this._interaction.SetParameter(cmd, collection);
                             effectCount += cmd.ExecuteNonQuery();
                         }
 
@@ -285,7 +293,7 @@ namespace UtilZ.Lib.DBBase.Core
                         long effectCount = 0;
                         IDbCommand cmd = this.CreateCommand(conInfo.Con);
                         cmd.Transaction = transaction;
-                        cmd.CommandText = this.Interaction.GenerateSqlDelete(dataTableInfo.DBTable.Name, this.ParaSign, dataTableInfo.DicPriKeyDBColumnProperties.Keys);
+                        cmd.CommandText = this._interaction.GenerateSqlDelete(dataTableInfo.DBTable.Name, this.ParaSign, dataTableInfo.DicPriKeyDBColumnProperties.Keys);
                         cmd.Prepare();
 
                         //多主键遍历删除
@@ -306,7 +314,7 @@ namespace UtilZ.Lib.DBBase.Core
 
                             //删除记录
                             cmd.Parameters.Clear();
-                            this.Interaction.SetParameter(cmd, priKeyColValues);
+                            this._interaction.SetParameter(cmd, priKeyColValues);
                             effectCount += cmd.ExecuteNonQuery();
                         }
 

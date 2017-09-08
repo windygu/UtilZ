@@ -140,10 +140,11 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="item">要删除的对象</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
         /// <returns>返回受影响的行数</returns>
-        public long BaseDeleteT<T>(T item) where T : class
+        public long BaseDeleteT<T>(T item, IEnumerable<string> conditionProperties) where T : class
         {
-            return base.DeleteT<T>(item);
+            return base.DeleteT<T>(item, conditionProperties);
         }
         #endregion
 

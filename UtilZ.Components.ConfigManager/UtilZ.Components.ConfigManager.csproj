@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9E9D6E4-BC98-4D31-A5C0-3B02B35BF10A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>UtilZ.Components.ConfigManager</RootNamespace>
+    <AssemblyName>UtilZ.Components.ConfigManager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FConfig.Designer.cs">
+      <DependentUpon>FConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FConfigParaKeyValueEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FConfigParaKeyValueEdit.Designer.cs">
+      <DependentUpon>FConfigParaKeyValueEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FParaGroupManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FParaGroupManager.Designer.cs">
+      <DependentUpon>FParaGroupManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FParaManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FParaManager.Designer.cs">
+      <DependentUpon>FParaManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FServiceMapManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FServiceMapManager.Designer.cs">
+      <DependentUpon>FServiceMapManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FConfig.resx">
+      <DependentUpon>FConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FConfigParaKeyValueEdit.resx">
+      <DependentUpon>FConfigParaKeyValueEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FParaGroupManager.resx">
+      <DependentUpon>FParaGroupManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FParaManager.resx">
+      <DependentUpon>FParaManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FServiceMapManager.resx">
+      <DependentUpon>FServiceMapManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Components.ConfigBLL\UtilZ.Components.ConfigBLL.csproj">
+      <Project>{3a0901e2-b154-4f68-a80c-52a2266c9e83}</Project>
+      <Name>UtilZ.Components.ConfigBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Components.ConfigModel\UtilZ.Components.ConfigModel.csproj">
+      <Project>{dab4d719-6dec-4c5e-b50d-7267682a62a0}</Project>
+      <Name>UtilZ.Components.ConfigModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.Base\UtilZ.Lib.Base.csproj">
+      <Project>{6841d072-6023-4f8c-9b72-8e4db9d371f2}</Project>
+      <Name>UtilZ.Lib.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.WinformEx\UtilZ.Lib.WinformEx.csproj">
+      <Project>{2fbc519b-4d32-4a01-ad80-4e58ed161a24}</Project>
+      <Name>UtilZ.Lib.WinformEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Lib.Winform\UtilZ.Lib.Winform.csproj">
+      <Project>{db3ea23f-790c-454a-aadf-d75ce5e964f4}</Project>
+      <Name>UtilZ.Lib.Winform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\group.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Map.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ParaManager.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

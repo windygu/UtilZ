@@ -210,13 +210,13 @@ namespace UtilZ.Lib.DBBase.Core
                 {
                     IDbCommand cmd = this.CreateCommand(con);
                     cmd.Transaction = transaction;
-                    cmd.CommandText = this.Interaction.GenerateSqlInsert(tableName, this.ParaSign, cols);
+                    cmd.CommandText = this._interaction.GenerateSqlInsert(tableName, this.ParaSign, cols);
                     cmd.Prepare();
                     long effectCount = 0;
 
                     foreach (var arr in data)
                     {
-                        this.Interaction.SetParameter(cmd, cols, arr);
+                        this._interaction.SetParameter(cmd, cols, arr);
                         effectCount += cmd.ExecuteNonQuery();
                     }
 
@@ -253,7 +253,7 @@ namespace UtilZ.Lib.DBBase.Core
                         foreach (var collection in collections)
                         {
                             cmd.Parameters.Clear();
-                            this.Interaction.SetParameter(cmd, collection);
+                            this._interaction.SetParameter(cmd, collection);
                             effectCount += cmd.ExecuteNonQuery();
                         }
 

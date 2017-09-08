@@ -146,5 +146,34 @@ namespace UtilZ.Lib.Base
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// 数据模型用于绑定时允许编辑的列集合
+        /// </summary>
+        /// <returns>允许编辑的列集合</returns>
+        public virtual IEnumerable<string> GetAllowEditColumns()
+        {
+            var properties = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var browsableType = typeof(BrowsableAttribute);
+            object[] attrObj;
+            var allowEditColumns = new List<string>();
+            foreach (var propertyInfo in properties)
+            {
+                if (!propertyInfo.CanWrite)
+                {
+                    continue;
+                }
+
+                attrObj = propertyInfo.GetCustomAttributes(browsableType, true);
+                if (attrObj.Length > 0 && ((BrowsableAttribute)attrObj[0]).Browsable == false)
+                {
+                    continue;
+                }
+
+                allowEditColumns.Add(propertyInfo.Name);
+            }
+
+            return allowEditColumns;
+        }
     }
 }

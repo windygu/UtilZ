@@ -10,6 +10,46 @@ namespace UtilZ.Lib.DBOracle.Core
     //SQLServer数据库访问类-查询
     public partial class OracleDBAccess
     {
+        /// <summary>
+        /// 创建排序字符串
+        /// </summary>
+        /// <param name="orderInfos">排序列名集合</param>
+        /// <param name="priKeyCols">主键列集合</param>
+        /// <returns>排序字符串</returns>
+        protected override string CreateOrderStr(IEnumerable<DBOrderInfo> orderInfos, IEnumerable<string> priKeyCols)
+        {
+            if (orderInfos == null || orderInfos.Count() == 0)
+            {
+                return "1";
+            }
+
+            //排序列
+            StringBuilder sbOrder = new StringBuilder();
+            foreach (var orderInfo in orderInfos)
+            {
+                sbOrder.Append(orderInfo.FieldName);
+                sbOrder.Append(" ");
+                sbOrder.Append(orderInfo.OrderFlag ? "ASC" : "DESC");
+                sbOrder.Append(",");
+            }
+
+            //根据主键排序
+            if (priKeyCols != null && priKeyCols.Count() > 0)
+            {
+                foreach (var priKeyCol in priKeyCols)
+                {
+                    sbOrder.Append(priKeyCol);
+                    sbOrder.Append(" ");
+                    sbOrder.Append("DESC");
+                    sbOrder.Append(",");
+                }
+            }
+
+            //移除最后一个
+            sbOrder = sbOrder.Remove(sbOrder.Length - 1, 1);
+            return sbOrder.ToString();
+        }
+
         #region 分页查询数据
         /// <summary>
         /// 查询分页数据

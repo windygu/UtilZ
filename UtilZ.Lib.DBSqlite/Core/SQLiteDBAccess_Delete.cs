@@ -70,15 +70,16 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <param name="item">要删除的对象</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
         /// <returns>返回受影响的行数</returns>
-        public override long DeleteT<T>(T item)
+        public override long DeleteT<T>(T item, IEnumerable<string> conditionProperties = null)
         {
             if (item == null)
             {
                 return 0;
             }
 
-            var delItem = new SQLiteDeleteT<T>(this._waitTimeout, item);
+            var delItem = new SQLiteDeleteT<T>(this._waitTimeout, item, conditionProperties);
             this._writeQueue.Enqueue(delItem);
             delItem.WaitOne();
             if (delItem.ExcuteResult)

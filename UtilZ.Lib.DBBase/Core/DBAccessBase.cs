@@ -9,7 +9,6 @@ using UtilZ.Lib.DBModel.Constant;
 using UtilZ.Lib.DBModel.Interface;
 using UtilZ.Lib.DBModel.Model;
 using UtilZ.Lib.DBBase.Interface;
-using UtilZ.Lib.DBBase.Factory;
 
 namespace UtilZ.Lib.DBBase.Core
 {
@@ -35,7 +34,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <summary>
         /// 数据库交互实例
         /// </summary>
-        protected IDBInteraction Interaction { get; private set; }
+        protected readonly IDBInteraction _interaction;
 
         /// <summary>
         /// 数据库配置实例
@@ -56,6 +55,14 @@ namespace UtilZ.Lib.DBBase.Core
         /// sql语句最大长度
         /// </summary>
         public abstract long SqlMaxLength { get; protected set; }
+
+        /// <summary>
+        /// 外部数据库交互接口
+        /// </summary>
+        public IDBInteractionEx InteractionEx
+        {
+            get { return this._interaction; }
+        }
         #endregion
 
         /// <summary>
@@ -67,11 +74,27 @@ namespace UtilZ.Lib.DBBase.Core
             this._dbid = dbid;
             this.Config = ConfigManager.GetConfigItem(dbid);
             DBFactoryBase dbFactory = DBFactoryManager.GetDBFactory(dbid);
-            this.Interaction = dbFactory.GetDBInteraction(this.Config);
+            this._interaction = dbFactory.GetDBInteraction(this.Config);
             //this.ConditionGenerator = dbFactory.GetConditionGenerator();
         }
 
         #region ADO.NET执行原子操作方法
+        /// <summary>
+        /// 创建命令
+        /// </summary>
+        /// <param name="con">连接对象</param>
+        /// <returns>命令</returns>
+        public IDbCommand CreateCommand(IDbConnection con)
+        {
+            var cmd = con.CreateCommand();
+            if (this.Config.CommandTimeout != DBConstant.CommandTimeout)
+            {
+                cmd.CommandTimeout = this.Config.CommandTimeout;
+            }
+
+            return cmd;
+        }
+
         /// <summary>
         /// ExecuteScalar执行SQL语句,返回执行结果的第一行第一列；
         /// </summary>
@@ -139,7 +162,7 @@ namespace UtilZ.Lib.DBBase.Core
                 IDbDataParameter cmdParameter = null;
                 foreach (var parameter in para)
                 {
-                    cmdParameter = this.Interaction.CreateDbParameter(parameter);
+                    cmdParameter = this._interaction.CreateDbParameter(parameter);
                     cmd.Parameters.Add(cmdParameter);
                     if (parameter.Direction == ParameterDirection.InputOutput
                         || parameter.Direction == ParameterDirection.Output
@@ -160,7 +183,7 @@ namespace UtilZ.Lib.DBBase.Core
                         result.Value = cmd.ExecuteScalar();
                         break;
                     case DBExcuteType.Query:
-                        IDbDataAdapter da = this.Interaction.CreateDbDataAdapter();
+                        IDbDataAdapter da = this._interaction.CreateDbDataAdapter();
                         da.SelectCommand = cmd;
                         DataSet ds = new DataSet();
                         da.Fill(ds);

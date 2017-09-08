@@ -169,7 +169,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
                 for (int i = 0; i < dbiItems.Count; i++)
                 {
                     item = dbiItems[i];
-                    if (item.Value == selectedItem)
+                    if (item.Value == selectedItem || object.Equals(item.Value, selectedItem))
                     {
                         selectedIndex = i;
                     }
@@ -213,7 +213,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
                 for (int i = 0; i < toolStripComboBox.Items.Count; i++)
                 {
                     value = ((DropdownBindingItem)toolStripComboBox.Items[i]).Value;
-                    if (value != null && value.Equals(selectedItem))
+                    if (object.Equals(value, selectedItem))
                     {
                         toolStripComboBox.SelectedIndex = i;
                         return;

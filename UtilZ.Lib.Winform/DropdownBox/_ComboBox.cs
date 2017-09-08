@@ -345,7 +345,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
                 {
                     for (int i = 0; i < items.Count(); i++)
                     {
-                        if (selectedItem == items.ElementAt(i))
+                        if (selectedItem == items.ElementAt(i) || object.Equals(selectedItem, items.ElementAt(i)))
                         {
                             combox.SelectedIndex = i;
                             break;
@@ -385,7 +385,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             {
                 for (int i = 0; i < combox.Items.Count; i++)
                 {
-                    if (selectedItem == combox.Items[i])
+                    if (selectedItem == combox.Items[i] || object.Equals(selectedItem, combox.Items[i]))
                     {
                         combox.SelectedIndex = i;
                         return;
@@ -469,7 +469,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
                         throw new ArgumentException("字符串集合中不能有为空或null的项");
                     }
 
-                    if (item.Equals(selectedItem))
+                    if (item == selectedItem || object.Equals(item, selectedItem))
                     {
                         selectedIndex = i;
                     }

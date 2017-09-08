@@ -661,7 +661,8 @@ namespace TestUtilZDB.Units
 
             List<Stu> stus;
             //stus = dbAccess.Query<Stu>("ID", pageSize, pageIndex, true, null, _priKeyCols);
-            stus = dbAccess.QueryT<Stu>(_orderInfos, pageSize, pageIndex, true, null, _priKeyCols);
+            stus = dbAccess.QueryTPaging<Stu>(pageSize, pageIndex, null, null, null, _orderInfos, true);
+            //stus = dbAccess.QueryT<Stu>();
             count = stus.Count;
             return stus;
         }

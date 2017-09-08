@@ -11,7 +11,7 @@ namespace UtilZ.Lib.DBModel.Interface
     /// <summary>
     /// 数据库交互接口
     /// </summary>
-    public interface IDBInteraction
+    public interface IDBInteraction : IDBInteractionEx
     {
         /// <summary>
         /// 创建数据库连接对象
@@ -22,63 +22,12 @@ namespace UtilZ.Lib.DBModel.Interface
         IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
 
         /// <summary>
-        /// 创建DbDataAdapter
-        /// </summary>
-        /// <returns>创建好的DbDataAdapter</returns>
-        IDbDataAdapter CreateDbDataAdapter();
-
-        /// <summary>
         /// 获取数据库连接字符串
         /// </summary>
         /// <param name="config">数据库配置</param>
         /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接字符串</returns>
         string GetDBConStr(DBConfigElement config, DBVisitType visitType);
-
-        /// <summary>
-        /// 创建命令参数
-        /// </summary>
-        /// <param name="parameter">命令参数</param>
-        /// <returns>创建好的命令参数</returns>
-        IDbDataParameter CreateDbParameter(NDbParameter parameter);
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="cmdParameter">命令参数</param>
-        /// <param name="parameter">参数</param>
-        void SetParameter(IDbDataParameter cmdParameter, NDbParameter parameter);
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="cmd">命令</param>
-        /// <param name="collection">参数集合</param>
-        /// <returns>创建好的命令参数</returns>
-        void SetParameter(IDbCommand cmd, NDbParameterCollection collection);
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="cmd">命令</param>
-        /// <param name="parameters">参数集合</param>
-        /// <returns>创建好的命令参数</returns>
-        void SetParameter(IDbCommand cmd, IEnumerable<IDbDataParameter> parameters);
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="cmd">命令参数</param>
-        /// <param name="paraNames">参数名集合</param>
-        /// <param name="values">参数值集合</param>
-        void SetParameter(IDbCommand cmd, IEnumerable<string> paraNames, IEnumerable<object> values);
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="cmd">命令参数</param>
-        /// <param name="paraValues">参数名及值字典集合</param>
-        void SetParameter(IDbCommand cmd, Dictionary<string, object> paraValues);
 
         /// <summary>
         /// 生成插入SQL语句

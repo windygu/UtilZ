@@ -25,6 +25,15 @@ namespace UtilZ.Lib.DBModel.DBObject
             this.DicDBColumnProperties = dicDBColumnProperties;
             this.DicPriKeyDBColumnProperties = dicPriKeyDBColumnProperties;
             this.ModelValueConvert = modelValueConvert;
+
+            //属性名称与列名映射字典集合[key:属性名称;value:列名]
+            var propertyNameColNameMapDic = new Dictionary<string, string>();
+            foreach (var kv in dicDBColumnProperties)
+            {
+                propertyNameColNameMapDic.Add(kv.Value.PropertyInfo.Name, kv.Key);
+            }
+
+            this.PropertyNameColNameMapDic = propertyNameColNameMapDic;
         }
 
         /// <summary>
@@ -46,5 +55,10 @@ namespace UtilZ.Lib.DBModel.DBObject
         /// 数据模型值转换器
         /// </summary>
         public IDBModelValueConvert ModelValueConvert { get; private set; }
+
+        /// <summary>
+        /// 属性名称与列名映射字典集合[key:属性名称;value:列名]
+        /// </summary>
+        public Dictionary<string, string> PropertyNameColNameMapDic { get; private set; }
     }
 }

@@ -73,6 +73,13 @@ namespace UtilZ.Lib.DBBase.Interface
         /// </summary>
         /// <typeparam name="T">数据模型类型</typeparam>
         /// <returns>数据集合</returns>
+        List<T> QueryT<T>(string sqlStr, NDbParameterCollection collection = null) where T : class, new();
+
+        /// <summary>
+        /// 查询数据并返回List泛型集合
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <returns>数据集合</returns>
         List<T> QueryT<T>() where T : class, new();
 
         /// <summary>
@@ -105,6 +112,32 @@ namespace UtilZ.Lib.DBBase.Interface
         /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
         /// <returns>数据集合</returns>
         List<T> QueryT<T>(T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, string orderProperty = null, bool orderFlag = false) where T : class, new();
+
+        /// <summary>
+        /// 查询分页数据
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="sqlStr">查询SQL语句</param>
+        /// <param name="orderByColName">排序列名</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
+        /// <param name="collection">命令的参数集合</param>
+        /// <returns>数据表</returns>
+        List<T> QueryTPaging<T>(string sqlStr, string orderByColName, int pageSize, int pageIndex, bool orderFlag, NDbParameterCollection collection = null) where T : class, new();
+
+        /// <summary>
+        /// 查询分页数据
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="sqlStr">查询SQL语句</param>
+        /// <param name="orderInfos">排序列名集合[null为或空不排序]</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
+        /// <param name="collection">命令的参数集合</param>
+        /// <returns>数据表</returns>
+        List<T> QueryTPaging<T>(string sqlStr, IEnumerable<DBOrderInfo> orderInfos, int pageSize, int pageIndex, bool orderFlag, NDbParameterCollection collection = null) where T : class, new();
 
         /// <summary>
         /// 查询数据并返回List泛型集合,带分页
@@ -169,6 +202,8 @@ namespace UtilZ.Lib.DBBase.Interface
         /// <param name="orderFlag">排序类型[true:升序;false:降序,默认false]</param>
         /// <returns>数据集合</returns>
         List<T> QueryTPaging<T>(int pageSize, int pageIndex, T query = null, IEnumerable<string> conditionProperties = null, IEnumerable<string> queryProperties = null, IEnumerable<DBOrderInfo> orderInfos = null, bool orderFlag = false) where T : class, new();
+
+
         #endregion
 
         /*
