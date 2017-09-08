@@ -42,7 +42,7 @@ namespace TestUtilZ
         {
             try
             {
-                DropdownBoxHelper.BindingEnumToComboBox<BASSAttribute>(comboBoxBASSAttribute);
+                DropdownBoxHelper.BindingEnumToComboBox<BASSAttribute>(comboBoxBASSAttribute, BASSAttribute.BASS_ATTRIB_EAXMIX);
 
                 this.trackBarQualityCoefficient.ValueChanged += new System.EventHandler(this.trackBarQualityCoefficient_ValueChanged);
 

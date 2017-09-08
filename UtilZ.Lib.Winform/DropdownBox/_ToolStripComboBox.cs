@@ -39,20 +39,19 @@ namespace UtilZ.Lib.Winform.DropdownBox
             try
             {
                 toolStripComboBox.Items.Clear();
-
                 List<DropdownBindingItem> items = EnumHelper.GetNDisplayNameAttributeDisplayNameBindingItems(enumType);
                 int selectedIndex = -1;
 
                 for (int i = 0; i < items.Count; i++)
                 {
                     var item = items[i];
-                    bool isIgnore = (from ignoreItem in ignoreList where item.Value.Equals(ignoreItem) select ignoreItem).Count() > 0;
+                    bool isIgnore = (from ignoreItem in ignoreList where object.Equals(item.Value, ignoreItem) select ignoreItem).Count() > 0;
                     if (isIgnore)
                     {
                         continue;
                     }
 
-                    if (item.Value.Equals(defaultSelectedValue))
+                    if (object.Equals(item.Value, defaultSelectedValue))
                     {
                         selectedIndex = i;
                     }
@@ -264,46 +263,51 @@ namespace UtilZ.Lib.Winform.DropdownBox
         /// <param name="toolStripComboBox">ToolStripComboBox</param>
         /// <param name="items">集合项</param>
         /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>
-        public static void BindingIEnumerableStringToolStripComboBox(System.Windows.Forms.ToolStripComboBox toolStripComboBox, IEnumerable<string> items, string selectedItem = null)
+        /// <param name="ignoreCase">是否区分大小写[true:区分大小写,false:不区分,默认值为false]</param>
+        public static void BindingIEnumerableStringToolStripComboBox(System.Windows.Forms.ToolStripComboBox toolStripComboBox, IEnumerable<string> items, string selectedItem = null, bool ignoreCase = false)
         {
             if (toolStripComboBox == null)
             {
                 throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
-            if (items == null)
-            {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => items), "集合不能为null");
-            }
-
             try
             {
                 toolStripComboBox.Items.Clear();
-                if (items.Count() == 0)
+                if (items == null || items.Count() == 0)
                 {
                     return;
                 }
 
+                if (selectedItem != null && !ignoreCase)
+                {
+                    selectedItem = selectedItem.ToUpper();
+                }
+
                 int selectedIndex = -1;
                 string item = null;
-
                 for (int i = 0; i < items.Count(); i++)
                 {
                     item = items.ElementAt(i);
-                    if (string.IsNullOrEmpty(item))
+                    toolStripComboBox.Items.Add(new DropdownBindingItem(item.ToString(), item, string.Empty, item));
+
+                    if (selectedIndex != -1)
                     {
-                        toolStripComboBox.Items.Clear();
-                        throw new ArgumentException("字符串集合中不能有为空或null的项");
+                        continue;
                     }
 
-                    if (item.Equals(selectedItem))
+                    if (!ignoreCase && item != null)
+                    {
+                        item = item.ToUpper();
+                    }
+
+                    if (item == selectedItem || object.Equals(selectedItem, item.ToUpper()))
                     {
                         selectedIndex = i;
                     }
-
-                    toolStripComboBox.Items.Add(new DropdownBindingItem(item.ToString(), item, string.Empty, item));
                 }
 
+                //toolStripComboBox.DisplayMember = DropdownBindingItem.DisplayNameFieldName;
                 toolStripComboBox.SelectedIndex = selectedIndex == -1 ? 0 : selectedIndex;
             }
             catch (Exception ex)
@@ -325,38 +329,41 @@ namespace UtilZ.Lib.Winform.DropdownBox
                 throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
-            if (string.IsNullOrEmpty(selectedItem))
-            {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => selectedItem), "选中项不能为空或null");
-            }
-
             if (toolStripComboBox.Items.Count == 0)
             {
-                throw new Exception("ToolStripComboBox的中还没有绑定数据项");
+                return;
             }
 
             try
             {
-                if (!ignoreCase)
+                if (!ignoreCase && selectedItem != null)
                 {
                     selectedItem = selectedItem.ToUpper();
                 }
 
                 object value = null;
+                string item;
                 for (int i = 0; i < toolStripComboBox.Items.Count; i++)
                 {
                     value = ((DropdownBindingItem)toolStripComboBox.Items[i]).Value;
                     if (value == null)
                     {
+                        if (selectedItem == null)
+                        {
+                            toolStripComboBox.SelectedIndex = i;
+                            return;
+                        }
+
                         continue;
                     }
 
-                    if (!ignoreCase && selectedItem.Equals(value.ToString().ToUpper()))
+                    item = value.ToString();
+                    if (!ignoreCase && item != null)
                     {
-                        toolStripComboBox.SelectedIndex = i;
-                        return;
+                        item = item.ToUpper();
                     }
-                    else if (ignoreCase && selectedItem.Equals(value.ToString()))
+
+                    if (object.Equals(selectedItem, item))
                     {
                         toolStripComboBox.SelectedIndex = i;
                         return;
