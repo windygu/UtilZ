@@ -34,6 +34,7 @@
             // 
             // propertyGrid1
             // 
+            this.propertyGrid1.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid1.Location = new System.Drawing.Point(12, 12);
             this.propertyGrid1.Name = "propertyGrid1";
             this.propertyGrid1.Size = new System.Drawing.Size(617, 465);
@@ -53,7 +54,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(737, 489);
+            this.ClientSize = new System.Drawing.Size(731, 490);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.propertyGrid1);
             this.Name = "FTestPRopertyGrid";

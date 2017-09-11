@@ -23,6 +23,19 @@ namespace UtilZ.Components.ConfigModel
             this._ID = -1;
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ConfigParaKeyValue(ConfigParaKeyValue value)
+        {
+            this._ID = value.ID;
+            this._key = value.Key;
+            this._value = value.Value;
+            this._GID = value.GID;
+            this._group = value.Group;
+            this._des = value.Des;
+        }
+
         private int _ID;
 
         /// <summary>

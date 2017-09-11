@@ -49,11 +49,6 @@ namespace UtilZ.Lib.WinformEx.PageGrid
         {
             InitializeComponent();
 
-            if (this.DesignMode)
-            {
-                return;
-            }
-
             //初始化数据展示表格控件
             this._fgrid = new FGrid(this._fColumnDisplaySetting.ListBoxSettingCols);
 

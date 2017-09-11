@@ -92,6 +92,80 @@ namespace UtilZ.Components.ConfigBLL
             return null;
         }
 
+        public void ModifyValidDomain(List<int> addIDs, List<int> delIDs, ConfigParaServiceMap serviceMap)
+        {
+            this._dbAccess.ExcuteAdoNetTransaction(new Tuple<List<int>, List<int>, ConfigParaServiceMap>(addIDs, delIDs, serviceMap), this.ModifyValidDomainTransaction);
+        }
+
+        private object ModifyValidDomainTransaction(IDbConnection con, IDbTransaction transaction, object para)
+        {
+            var inPara = para as Tuple<List<int>, List<int>, ConfigParaServiceMap>;
+            List<int> addIDs = inPara.Item1;
+            List<int> delIDs = inPara.Item2;
+            ConfigParaServiceMap serviceMap = inPara.Item3;
+
+            var interactionEx = this._dbAccess.InteractionEx;
+            var paraSign = this._dbAccess.ParaSign;
+
+            if (delIDs.Count > 0)
+            {
+                var cmdDel = this._dbAccess.CreateCommand(con);
+                cmdDel.Transaction = transaction;
+                cmdDel.CommandText = string.Format("delete from ConfigParaValidDomain where SID={0}SID AND CID={0}CID", paraSign);
+                cmdDel.Parameters.Add(interactionEx.CreateDbParameter("SID", serviceMap.ID));
+                IDbDataParameter delParameter = interactionEx.CreateDbParameter("CID", 0);
+                cmdDel.Parameters.Add(delParameter);
+
+                foreach (var delID in delIDs)
+                {
+                    delParameter.Value = delID;
+                    cmdDel.ExecuteNonQuery();
+                }
+            }
+
+            if (addIDs.Count > 0)
+            {
+                var cmdInsert = this._dbAccess.CreateCommand(con);
+                cmdInsert.Transaction = transaction;
+                cmdInsert.CommandText = string.Format("INSERT INTO ConfigParaValidDomain (SID, CID) VALUES ({0}SID, {0}CID)", paraSign);
+                IDbDataParameter insertSIDParameter = interactionEx.CreateDbParameter("SID", 0);
+                IDbDataParameter insertCIDParameter = interactionEx.CreateDbParameter("CID", 0);
+                cmdInsert.Parameters.Add(insertSIDParameter);
+                cmdInsert.Parameters.Add(insertCIDParameter);
+
+                foreach (var addID in addIDs)
+                {
+                    insertSIDParameter.Value = serviceMap.ID;
+                    insertCIDParameter.Value = addID;
+                    cmdInsert.ExecuteNonQuery();
+                }
+            }
+
+            return null;
+        }
+
+        public List<ConfigParaKeyValue> GetConfigParaKeyValueByServiceId(int serviceID)
+        {
+            string sqlStr = string.Format(@"SELECT * FROM ConfigParaKeyValue WHERE ID in (SELECT CID FROM ConfigParaValidDomain WHERE SID={0}SID)", this._dbAccess.ParaSign);
+            var collection = new NDbParameterCollection();
+            collection.Add("SID", serviceID);
+            var items = this._dbAccess.QueryT<ConfigParaKeyValue>(sqlStr, collection);
+            this.UpdateConfigParaGroup(items);
+            return items;
+        }
+
+        private void UpdateConfigParaGroup(List<ConfigParaKeyValue> items)
+        {
+            var groupDic = this._dbAccess.QueryT<ConfigParaGroup>().ToDictionary((tmpItem) => { return tmpItem.ID; });
+            foreach (var item in items)
+            {
+                if (groupDic.ContainsKey(item.GID))
+                {
+                    item.Group = groupDic[item.GID];
+                }
+            }
+        }
+
         public void SaveConfigParaServiceMap(List<ConfigParaServiceMap> addItems, List<ConfigParaServiceMap> delItems, List<ConfigParaServiceMap> updateItems)
         {
             this._dbAccess.ExcuteAdoNetTransaction(new Tuple<List<ConfigParaServiceMap>, List<ConfigParaServiceMap>, List<ConfigParaServiceMap>>(addItems, delItems, updateItems), this.SaveConfigParaServiceMapTransaction);
@@ -291,17 +365,26 @@ namespace UtilZ.Components.ConfigBLL
 
         public List<ConfigParaKeyValue> GetGroupConfigParaKeyValue(ConfigParaGroup selectedItem)
         {
-            var query = new ConfigParaKeyValue();
-            query.GID = selectedItem.ID;
-            var conditionProperties = new List<string>();
-            conditionProperties.Add(nameof(ConfigParaKeyValue.GID));
-            var cobfigParas = this._dbAccess.QueryT<ConfigParaKeyValue>(query, conditionProperties);
-            foreach (var item in cobfigParas)
+            List<ConfigParaKeyValue> configParas;
+            if (selectedItem != null)
             {
-                item.Group = selectedItem;
+                var query = new ConfigParaKeyValue();
+                query.GID = selectedItem.ID;
+                var conditionProperties = new List<string>();
+                conditionProperties.Add(nameof(ConfigParaKeyValue.GID));
+                configParas = this._dbAccess.QueryT<ConfigParaKeyValue>(query, conditionProperties);
+                foreach (var item in configParas)
+                {
+                    item.Group = selectedItem;
+                }
+            }
+            else
+            {
+                configParas = this._dbAccess.QueryT<ConfigParaKeyValue>();
+                this.UpdateConfigParaGroup(configParas);
             }
 
-            return cobfigParas;
+            return configParas;
         }
 
         public List<ConfigParaGroup> GetAllConfigParaGroup()
@@ -329,7 +412,7 @@ namespace UtilZ.Components.ConfigBLL
             return this._dbAccess.QueryT<ConfigParaServiceMap>();
         }
 
-        public List<ConfigParaServiceMap> GetConfigParaServiceMap(int id)
+        public List<ConfigParaServiceMap3> GetConfigParaServiceMap(int id)
         {
             string sqlStr = string.Format("SELECT * FROM ConfigParaServiceMap WHERE ID IN (SELECT SID from ConfigParaValidDomain WHERE CID={0}CID)", this._dbAccess.ParaSign);
             NDbParameterCollection collection = new NDbParameterCollection();
@@ -337,12 +420,13 @@ namespace UtilZ.Components.ConfigBLL
             var validServiceDic = this._dbAccess.QueryT<ConfigParaServiceMap>(sqlStr, collection).ToDictionary((tmpItem) => { return tmpItem.ID; });
 
             var allServcieMap = this._dbAccess.QueryT<ConfigParaServiceMap>();
+            List<ConfigParaServiceMap3> items = new List<ConfigParaServiceMap3>();
             foreach (var servcieMap in allServcieMap)
             {
-                servcieMap.IsSelected = validServiceDic.ContainsKey(servcieMap.ID);
+                items.Add(new ConfigParaServiceMap3(servcieMap, validServiceDic.ContainsKey(servcieMap.ID)));
             }
 
-            return allServcieMap;
+            return items;
         }
     }
 }

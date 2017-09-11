@@ -23,16 +23,15 @@ namespace UtilZ.Components.ConfigModel
 
         }
 
-        private bool _isSelected = false;
-        [DisplayName("是否应用")]
-        public bool IsSelected
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ConfigParaServiceMap(ConfigParaServiceMap service)
         {
-            get { return _isSelected; }
-            set
-            {
-                _isSelected = value;
-                this.OnRaisePropertyChanged("IsSelected");
-            }
+            this._ID = service.ID;
+            this._serviceMapID = service.ServiceMapID;
+            this._name = service.Name;
+            this._des = service.Des;
         }
 
         private int _ID;

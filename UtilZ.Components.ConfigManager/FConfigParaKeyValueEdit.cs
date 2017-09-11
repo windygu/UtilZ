@@ -29,7 +29,7 @@ namespace UtilZ.Components.ConfigManager
             this._configParaKeyValue = configParaKeyValue;
         }
 
-        private readonly UIBindingList<ConfigParaServiceMap> _serviceList = new UIBindingList<ConfigParaServiceMap>();
+        private readonly UIBindingList<ConfigParaServiceMap3> _serviceList = new UIBindingList<ConfigParaServiceMap3>();
         private void FConfigParaKeyValueEdit_Load(object sender, EventArgs e)
         {
             if (this.DesignMode)
@@ -40,7 +40,7 @@ namespace UtilZ.Components.ConfigManager
             try
             {
                 this._serviceList.AddRange(this._configLogic.GetConfigParaServiceMap(this._configParaKeyValue.ID));
-                pgValidDomain.ShowData("FConfigParaKeyValueEdit.ConfigParaServiceMap", this._serviceList, null, new string[] { nameof(ConfigParaServiceMap.IsSelected) });
+                pgValidDomain.ShowData("FConfigParaKeyValueEdit.ConfigParaServiceMap", this._serviceList, null, new string[] { nameof(ConfigParaServiceMap3.IsSelected) });
                 List<ConfigParaGroup> groups = this._configLogic.GetAllConfigParaGroup();
                 DropdownBoxHelper.BindingIEnumerableGenericToComboBox<ConfigParaGroup>(comGroup, groups, nameof(ConfigParaGroup.Name), this._configParaKeyValue.Group);
                 this.txtKey.Text = this._configParaKeyValue.Key;

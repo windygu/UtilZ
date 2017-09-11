@@ -41,8 +41,10 @@
   <ItemGroup>
     <Compile Include="ConfigParaGroup.cs" />
     <Compile Include="ConfigParaKeyValue.cs" />
+    <Compile Include="ConfigParaKeyValue2.cs" />
     <Compile Include="ConfigParaServiceMap.cs" />
     <Compile Include="ConfigParaServiceMap2.cs" />
+    <Compile Include="ConfigParaServiceMap3.cs" />
     <Compile Include="ConfigParaValidDomain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

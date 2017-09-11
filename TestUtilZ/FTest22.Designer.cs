@@ -1,6 +1,6 @@
 ﻿namespace TestUtilZ
 {
-    partial class FTest
+    partial class FTest22
     {
         /// <summary>
         /// Required designer variable.
@@ -28,34 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnTest1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // btnTest1
-            // 
-            this.btnTest1.Location = new System.Drawing.Point(28, 26);
-            this.btnTest1.Name = "btnTest1";
-            this.btnTest1.Size = new System.Drawing.Size(75, 23);
-            this.btnTest1.TabIndex = 0;
-            this.btnTest1.Text = "Test1";
-            this.btnTest1.UseVisualStyleBackColor = true;
-            this.btnTest1.Click += new System.EventHandler(this.btnTest1_Click);
-            // 
-            // FTest
+            // FTest22
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 415);
-            this.Controls.Add(this.btnTest1);
-            this.Name = "FTest";
-            this.Text = "FTest";
-            this.Load += new System.EventHandler(this.FTest_Load);
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "FTest22";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "FTest22";
+            this.Load += new System.EventHandler(this.FTest22_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnTest1;
     }
 }

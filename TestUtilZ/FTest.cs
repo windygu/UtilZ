@@ -26,11 +26,11 @@ namespace TestUtilZ
         {
             try
             {
-                var a1 = AppDomain.CurrentDomain.GetAssemblies();
-                string dllPath = @"F:\Projects\Zhanghn\UtilZ\UtilZ.Lib.Winform\bin\Debug\UtilZ.Lib.Base.dll";
-                int handle = NExtendUnmanagedDll.LoadLibraryEx(dllPath);
+                var frm = new FTest22(null);
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
 
-                var a2 = AppDomain.CurrentDomain.GetAssemblies();
+                }
             }
             catch (Exception ex)
             {
