@@ -41,6 +41,12 @@ namespace UtilZ.Lib.Winform
             switch (m.Msg)
             {
                 case 0x0084:
+                    //当窗口处于最大化时,屏蔽拖动窗口消息
+                    if (this.WindowState == FormWindowState.Maximized)
+                    {
+                        return;
+                    }
+
                     base.WndProc(ref m);
                     var vPoint = new Point((int)m.LParam & 0xFFFF, (int)m.LParam >> 16 & 0xFFFF);
                     vPoint = PointToClient(vPoint);
