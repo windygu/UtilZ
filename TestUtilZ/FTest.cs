@@ -19,23 +19,28 @@ namespace TestUtilZ
 
         private void FTest_Load(object sender, EventArgs e)
         {
+            if (this.DesignMode)
+            {
+                return;
+            }
 
+            ucPageGridControl1.DataSource = new List<TestDGVModel>();
         }
 
-        private void btnTest1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var frm = new FTest22(null);
-                if (frm.ShowDialog() == DialogResult.OK)
-                {
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
+            ucPageGridControl1.IsColSettingVisible = !ucPageGridControl1.IsColSettingVisible;
         }
+    }
+
+    public class TestDGVModel
+    {
+        public bool IsSelected { get; set; }
+
+        public string Name { get; set; }
+
+        public int Age { get; set; }
+
+        public string Addr { get; set; }
     }
 }

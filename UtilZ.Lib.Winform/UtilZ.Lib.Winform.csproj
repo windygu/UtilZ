@@ -66,6 +66,12 @@
     <Compile Include="OriginalDataShow\IOriginalDataShow.cs" />
     <Compile Include="OriginalDataShow\OriginalDataShowType.cs" />
     <Compile Include="OriginalDataShow\OriginalDataShowTypeCollection.cs" />
+    <Compile Include="PageGrid\UCPageGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PageGrid\UCPageGridControl.Designer.cs">
+      <DependentUpon>UCPageGridControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="PartAsynWait\Interface\IPartAsynWaitWinform.cs" />
     <Compile Include="PartAsynWait\PartAsynExcuteFactoryWinform.cs" />
     <Compile Include="PartAsynWait\PartAsynWaitHelper.cs" />
@@ -157,6 +163,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PageGrid\UCPageGridControl.resx">
+      <DependentUpon>UCPageGridControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PartAsynWait\V1\MetroShadeControl.resx">
       <DependentUpon>MetroShadeControl.cs</DependentUpon>
     </EmbeddedResource>
