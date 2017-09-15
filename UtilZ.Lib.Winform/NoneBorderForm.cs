@@ -32,6 +32,28 @@ namespace UtilZ.Lib.Winform
         private const int Guying_HTBOTTOMLEFT = 0x10;
         private const int Guying_HTBOTTOMRIGHT = 17;
 
+        private bool _isDisableDragMoveForm = false;
+
+        /// <summary>
+        /// 是否禁用拖动移动窗口[true:禁用]
+        /// </summary>
+        public bool IsDisableDragMoveForm
+        {
+            get { return _isDisableDragMoveForm; }
+            set { _isDisableDragMoveForm = value; }
+        }
+
+        private bool _isAllowMinimize = true;
+
+        /// <summary>
+        /// 是否允许最小化[true:允许]
+        /// </summary>
+        public bool IsAllowMinimize
+        {
+            get { return _isAllowMinimize; }
+            set { _isAllowMinimize = value; }
+        }
+
         /// <summary>
         /// 重写WndProc函数实现可调整大小
         /// </summary>
@@ -42,7 +64,7 @@ namespace UtilZ.Lib.Winform
             {
                 case 0x0084:
                     //当窗口处于最大化时,屏蔽拖动窗口消息
-                    if (this.WindowState == FormWindowState.Maximized)
+                    if (this._isDisableDragMoveForm || this.WindowState == FormWindowState.Maximized)
                     {
                         return;
                     }
@@ -108,9 +130,12 @@ namespace UtilZ.Lib.Winform
         {
             get
             {
-                const int WS_MINIMIZEBOX = 0x00020000; // Winuser.h中定义
                 CreateParams cp = base.CreateParams;
-                cp.Style = cp.Style | WS_MINIMIZEBOX; // 允许最小化操作
+                if (this._isAllowMinimize)
+                {
+                    cp.Style = cp.Style | 0x00020000; // 允许最小化操作
+                }
+
                 return cp;
             }
         }

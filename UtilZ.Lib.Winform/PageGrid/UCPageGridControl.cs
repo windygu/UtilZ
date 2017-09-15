@@ -18,6 +18,8 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// </summary>
         private readonly UIBindingList<DataGridViewColumn> _hidenCols = new UIBindingList<DataGridViewColumn>();
 
+        private readonly FPageGridColumnsSetting _fPageGridColumnsSetting;
+
         /// <summary>
         /// 目标列
         /// </summary>
@@ -26,6 +28,23 @@ namespace UtilZ.Lib.Winform.PageGrid
         public UCPageGridControl()
         {
             InitializeComponent();
+
+            this._fPageGridColumnsSetting = new FPageGridColumnsSetting(this.panelColVisibleSetting, this.labelTitle, this._hidenCols);
+            this._fPageGridColumnsSetting.SaveColumnDisplaySetting += _fPageGridColumnsSetting_SaveColumnDisplaySetting;
+        }
+
+        private void _fPageGridColumnsSetting_SaveColumnDisplaySetting(object sender, EventArgs e)
+        {
+            try
+            {
+                //..
+                this._fPageGridColumnsSetting.ColumnDisplaySettingChanged = false;
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public bool IsColSettingVisible
@@ -34,10 +53,27 @@ namespace UtilZ.Lib.Winform.PageGrid
             set { panelColVisibleSetting.Visible = value; }
         }
 
+        public bool IsPageVissible
+        {
+            get { return panelPage.Visible; }
+            set { panelPage.Visible = value; }
+        }
+
         public object DataSource
         {
             get { return dataGridView.DataSource; }
-            set { dataGridView.DataSource = value; }
+            set
+            {
+                dataGridView.DataSource = value;
+
+            }
+        }
+
+
+        public PageGridColumnSettingStatus ColumnSettingStatus
+        {
+            get { return _fPageGridColumnsSetting.ColumnSettingStatus; }
+            set { _fPageGridColumnsSetting.ColumnSettingStatus = value; }
         }
 
         private void UCPageGridControl_Load(object sender, EventArgs e)
@@ -47,8 +83,7 @@ namespace UtilZ.Lib.Winform.PageGrid
                 return;
             }
 
-            this.listBoxColVisibleSetting.DataSource = this._hidenCols;
-            this.listBoxColVisibleSetting.DisplayMember = "HeaderText";
+            this._fPageGridColumnsSetting.Show();
         }
 
         private void dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -96,24 +131,14 @@ namespace UtilZ.Lib.Winform.PageGrid
             panelColVisibleSetting.Visible = false;
         }
 
-        private void listBoxColVisibleSetting_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void labelTitle_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataGridViewColumn targetCol = this.listBoxColVisibleSetting.SelectedItem as DataGridViewColumn;
-                if (targetCol == null)
-                {
-                    return;
-                }
+            this._fPageGridColumnsSetting.SwitchColumnSettingStatus(PageGridColumnSettingStatus.Dock);
+        }
 
-                targetCol.Visible = true;
-                this._hidenCols.Remove(targetCol);
-            }
-            catch (Exception ex)
-            {
-                Loger.Error(ex);
-                MessageBox.Show(ex.Message);
-            }
+        private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            this._fPageGridColumnsSetting.ColumnDisplaySettingChanged = true;
         }
     }
 }

@@ -31,6 +31,11 @@ namespace TestUtilZ
         {
             ucPageGridControl1.IsColSettingVisible = !ucPageGridControl1.IsColSettingVisible;
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ucPageGridControl1.IsPageVissible = !ucPageGridControl1.IsPageVissible;
+        }
     }
 
     public class TestDGVModel

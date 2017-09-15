@@ -81,7 +81,7 @@
             this.cbAllowClose.AutoSize = true;
             this.cbAllowClose.Location = new System.Drawing.Point(385, 107);
             this.cbAllowClose.Name = "cbAllowClose";
-            this.cbAllowClose.Size = new System.Drawing.Size(84, 16);
+            this.cbAllowClose.Size = new System.Drawing.Size(82, 16);
             this.cbAllowClose.TabIndex = 4;
             this.cbAllowClose.Text = "AllowClose";
             this.cbAllowClose.UseVisualStyleBackColor = true;
@@ -91,7 +91,7 @@
             this.cbFullScreen.AutoSize = true;
             this.cbFullScreen.Location = new System.Drawing.Point(295, 107);
             this.cbFullScreen.Name = "cbFullScreen";
-            this.cbFullScreen.Size = new System.Drawing.Size(84, 16);
+            this.cbFullScreen.Size = new System.Drawing.Size(82, 16);
             this.cbFullScreen.TabIndex = 5;
             this.cbFullScreen.Text = "FullScreen";
             this.cbFullScreen.UseVisualStyleBackColor = true;
@@ -108,6 +108,7 @@
             this.Controls.Add(this.btnMin);
             this.Controls.Add(this.btnMax);
             this.Name = "FTestNoneBorderForm";
+            this.ShowInTaskbar = false;
             this.Text = "FTestNoneBorderForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FTestNoneBorderForm_FormClosing);
             this.Load += new System.EventHandler(this.FTestNoneBorderForm_Load);
