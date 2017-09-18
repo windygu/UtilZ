@@ -72,7 +72,13 @@
     <Compile Include="PageGrid\FPageGridColumnsSetting.Designer.cs">
       <DependentUpon>FPageGridColumnsSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="PageGrid\Interface\DataRowClickArgs.cs" />
+    <Compile Include="PageGrid\Interface\DataRowSelectionChangedArgs.cs" />
+    <Compile Include="PageGrid\Interface\IPageDataGrid.cs" />
+    <Compile Include="PageGrid\Interface\PageInfo.cs" />
+    <Compile Include="PageGrid\Interface\QueryDataArgs.cs" />
     <Compile Include="PageGrid\PageGridColumnSettingStatus.cs" />
+    <Compile Include="PageGrid\PageGridControlCommon.cs" />
     <Compile Include="PageGrid\UCPageGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

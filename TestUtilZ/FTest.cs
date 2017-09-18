@@ -24,17 +24,17 @@ namespace TestUtilZ
                 return;
             }
 
-            ucPageGridControl1.DataSource = new List<TestDGVModel>();
+            ucPageGridControl1.ShowData(new List<TestDGVModel>() { new TestDGVModel(), new TestDGVModel(), new TestDGVModel() }, "123");
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ucPageGridControl1.IsColSettingVisible = !ucPageGridControl1.IsColSettingVisible;
+            ucPageGridControl1.ColumnSettingVisible = !ucPageGridControl1.ColumnSettingVisible;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ucPageGridControl1.IsPageVissible = !ucPageGridControl1.IsPageVissible;
+            ucPageGridControl1.PagingVisible = !ucPageGridControl1.PagingVisible;
         }
     }
 

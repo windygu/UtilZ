@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using UtilZ.Lib.Base;
 using UtilZ.Lib.Base.DataStruct.UIBinding;
 using UtilZ.Lib.Base.Log;
 
@@ -18,6 +19,12 @@ namespace UtilZ.Lib.Winform.PageGrid
     {
         private readonly Control _parentControl;
         private readonly Control _titleControl;
+
+        /// <summary>
+        /// 当前绑定的全部列集合
+        /// </summary>
+        private readonly UIBindingList<ColumnSettingInfo> _columnSettingInfos = new UIBindingList<ColumnSettingInfo>();
+
         /// <summary>
         /// 隐藏列绑定列表
         /// </summary>
@@ -66,6 +73,40 @@ namespace UtilZ.Lib.Winform.PageGrid
         public event EventHandler SaveColumnDisplaySetting;
 
         /// <summary>
+        /// 列显示高级设置是否可见
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool AdvanceSettingVisible
+        {
+            get { return this.tabControl1.TabPages.Contains(this.tpColSetting); }
+            set
+            {
+                if (value)
+                {
+                    if (this.tabControl1.TabPages.Contains(this.tpColSetting))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        this.tabControl1.TabPages.Add(this.tpColSetting);
+                    }
+                }
+                else
+                {
+                    if (this.tabControl1.TabPages.Contains(this.tpColSetting))
+                    {
+                        this.tabControl1.TabPages.Remove(this.tpColSetting);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         public FPageGridColumnsSetting()
@@ -93,6 +134,8 @@ namespace UtilZ.Lib.Winform.PageGrid
             this.listBoxCol.DataSource = this._hidenCols;
             this.listBoxCol.DisplayMember = "HeaderText";
             this.listBoxCol.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxCol_MouseDoubleClick);
+
+            this.dgvColumnSetting.DataSource = this._columnSettingInfos;
 
             this.SwitchColumnSettingStatus(this._columnSettingStatus);
         }
@@ -178,6 +221,7 @@ namespace UtilZ.Lib.Winform.PageGrid
 
         private void StatusHiden()
         {
+            this._lastParentControlSize = this._parentControl.Size;
             this._parentControl.Visible = true;
             this._parentControl.Controls.Remove(this);
             this.Visible = false;
@@ -268,6 +312,102 @@ namespace UtilZ.Lib.Winform.PageGrid
                     MessageBox.Show(string.Format("不识别的状态:{0}", this._columnSettingStatus.ToString()));
                     return;
             }
+        }
+
+        /// <summary>
+        /// 更新高级设置
+        /// </summary>
+        /// <param name="cols">显示列集合</param>
+        public void UpdateAdvanceSetting(DataGridViewColumnCollection cols)
+        {
+            this._columnSettingInfos.Clear();
+            if (cols == null || cols.Count == 0)
+            {
+                return;
+            }
+
+            foreach (DataGridViewColumn col in cols)
+            {
+                this._columnSettingInfos.Add(new ColumnSettingInfo(col, this.ColumnVisibleChangedNotify));
+            }
+        }
+
+        /// <summary>
+        /// 列可见性改变通知处理方法
+        /// </summary>
+        /// <param name="col">DataGridViewColumn</param>
+        private void ColumnVisibleChangedNotify(DataGridViewColumn col)
+        {
+            if (col.Visible)
+            {
+                if (this._hidenCols.Contains(col))
+                {
+                    this._hidenCols.Remove(col);
+                }
+            }
+            else
+            {
+                if (!this._hidenCols.Contains(col))
+                {
+                    this._hidenCols.Add(col);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 列设置类
+    /// </summary>
+    public class ColumnSettingInfo : NBaseModel
+    {
+        /// <summary>
+        /// 列可见性改变通知委托
+        /// </summary>
+        private Action<DataGridViewColumn> _columnVisibleChangedNotify;
+
+        /// <summary>
+        /// 目标列
+        /// </summary>
+        [Browsable(false)]
+        public DataGridViewColumn Column { get; }
+
+        /// <summary>
+        /// 是否显示
+        /// </summary>
+        [DisplayName("是否显示")]
+        public bool Visible
+        {
+            get { return this.Column.Visible; }
+            set
+            {
+                this.Column.Visible = value;
+                this.OnRaisePropertyChanged("Visible");
+                var handler = _columnVisibleChangedNotify;
+                if (handler != null)
+                {
+                    handler(this.Column);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 列标题
+        /// </summary>
+        [DisplayName("列")]
+        public string Header
+        {
+            get { return this.Column.HeaderText; }
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="column">列</param>
+        /// <param name="columnVisibleChangedNotify">列可见性改变通知委托</param>
+        public ColumnSettingInfo(DataGridViewColumn column, Action<DataGridViewColumn> columnVisibleChangedNotify)
+        {
+            this.Column = column;
+            this._columnVisibleChangedNotify = columnVisibleChangedNotify;
         }
     }
 }
