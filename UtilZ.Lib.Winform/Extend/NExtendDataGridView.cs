@@ -31,7 +31,27 @@ namespace UtilZ.Lib.Winform.Extend
                 return;
             }
 
-            dgv.DataSource = dataSource;
+            if (dgv.SelectionMode == DataGridViewSelectionMode.FullColumnSelect ||
+                dgv.SelectionMode == DataGridViewSelectionMode.ColumnHeaderSelect)
+            {
+                var srcSelectionMode = dgv.SelectionMode;
+                dgv.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
+                dgv.DataSource = dataSource;
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    if (col.SortMode == DataGridViewColumnSortMode.Automatic)
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                }
+
+                dgv.SelectionMode = srcSelectionMode;
+            }
+            else
+            {
+                dgv.DataSource = dataSource;
+            }
+
             if (dataSource == null)
             {
                 return;

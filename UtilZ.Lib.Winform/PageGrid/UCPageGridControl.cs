@@ -20,7 +20,7 @@ namespace UtilZ.Lib.Winform.PageGrid
     /// <summary>
     /// 分页数据表格
     /// </summary>
-    public partial class UCPageGridControl : UserControl, IPageDataGrid<DataGridViewRow, DataGridView>
+    public partial class UCPageGridControl : UserControl, IPageDataGrid<DataGridViewRow, ZDataGridView>
     {
         #region IPageDataGrid接口
         #region 事件
@@ -212,8 +212,10 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <summary>
         /// 获取表格控件
         /// </summary>
-        [Browsable(false)]
-        public DataGridView GridControl
+        [Description("表格控件")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Category("分页数据显示控件")]
+        public ZDataGridView GridControl
         {
             get { return dataGridView; }
         }
@@ -225,19 +227,6 @@ namespace UtilZ.Lib.Winform.PageGrid
         public Control StatusControl
         {
             get { throw new NotImplementedException(); }
-        }
-
-        /// <summary>
-        /// 获取或设置与数据表格控件关联的 System.Windows.Forms.ContextMenuStrip
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        [Description("获取或设置与数据表格控件关联的 System.Windows.Forms.ContextMenuStrip")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [Category("分页数据显示控件")]
-        public ContextMenuStrip GridContextMenuStrip
-        {
-            get { return this.dataGridView.ContextMenuStrip; }
-            set { this.dataGridView.ContextMenuStrip = value; }
         }
 
         /// <summary>
@@ -580,6 +569,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         public UCPageGridControl()
         {
             InitializeComponent();
+
 
             //初始化列设置存放目录
             this._settingDirectory = PageGridControlCommon.GetDefaultSettingDirectory();

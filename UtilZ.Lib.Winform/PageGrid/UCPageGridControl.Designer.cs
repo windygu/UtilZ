@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridView = new ZDataGridView();
             this.panelPage = new System.Windows.Forms.Panel();
             this.labelRecordInfo = new System.Windows.Forms.Label();
             this.btnProPage = new System.Windows.Forms.Button();
@@ -259,7 +259,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView;
+        private ZDataGridView dataGridView;
         private System.Windows.Forms.Panel panelPage;
         private System.Windows.Forms.Label labelRecordInfo;
         private System.Windows.Forms.Button btnProPage;

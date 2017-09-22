@@ -44,6 +44,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NumericTextBox.xaml.cs">
+      <DependentUpon>NumericTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PartAsynWait\PartAsynExcuteFactoryWPF.cs" />
     <Compile Include="PartAsynWait\PartAsynWaitHelper.cs" />
     <Compile Include="PartAsynWait\V1\WPFPartAsynExcuteV1.cs" />
@@ -64,6 +67,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="NumericTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WaitingControls\MetroLRWaitIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

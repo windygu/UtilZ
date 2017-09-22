@@ -83,11 +83,6 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
         Control StatusControl { get; }
 
         /// <summary>
-        /// 获取或设置与数据表格控件关联的 System.Windows.Forms.ContextMenuStrip
-        /// </summary>
-        ContextMenuStrip GridContextMenuStrip { get; set; }
-
-        /// <summary>
         /// 获取或设置用户设置数据存放目录
         /// </summary>
         string SettingDirectory { get; set; }
