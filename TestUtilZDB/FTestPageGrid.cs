@@ -52,7 +52,8 @@ namespace TestUtilZDB
         private void QueryPageInfo(int pageSize)
         {
             var dal = GetDBAccess();
-            var dbPageInfo = dal.QueryPageInfo(pageSize, "select count(0) from Stu");
+            //var dbPageInfo = dal.QueryPageInfo(pageSize, "select count(0) from Stu");
+            var dbPageInfo = dal.QueryPageInfoT<Stu>(pageSize);
             ucPageGridControl1.SetPageInfo(new PageInfo(dbPageInfo.PageCount, dbPageInfo.PageSize, 1));
         }
 

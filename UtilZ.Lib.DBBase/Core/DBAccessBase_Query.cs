@@ -51,6 +51,28 @@ namespace UtilZ.Lib.DBBase.Core
 
             return new DBPageInfo(Convert.ToInt32(pageCount), totalCount, pageSize);
         }
+
+        /// <summary>
+        /// 查询分页信息
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="query">查询对象[为null时无条件查询]</param>
+        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
+        /// <returns>分页信息</returns>
+        public DBPageInfo QueryPageInfoT<T>(int pageSize, T query = null, IEnumerable<string> conditionProperties = null) where T : class, new()
+        {
+            Type type = typeof(T);
+            //数据模型信息
+            var dataTableInfo = ORMManager.GetDataModelInfo(type);
+            var propertyNameColNameMapDic = dataTableInfo.PropertyNameColNameMapDic;
+            var sbSqlStr = new StringBuilder();
+            sbSqlStr.Append("select count(0) from ");
+            sbSqlStr.Append(dataTableInfo.DBTable.Name);
+            sbSqlStr.Append(" ");
+            NDbParameterCollection collection = this.GenerateTQueryWhere<T>(query, conditionProperties, dataTableInfo, sbSqlStr, type, propertyNameColNameMapDic);
+            return this.QueryPageInfo(pageSize, sbSqlStr.ToString(), collection);
+        }
         #endregion
 
         #region 基础查询
@@ -228,6 +250,24 @@ namespace UtilZ.Lib.DBBase.Core
 
                 sbSqlStr.Append(string.Format("select {0} from {1}", string.Join(",", queryColNames), dataTableInfo.DBTable.Name));
             }
+
+            collection = GenerateTQueryWhere(query, conditionProperties, dataTableInfo, sbSqlStr, type, propertyNameColNameMapDic);
+        }
+
+        /// <summary>
+        /// 创建泛型条件查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="conditionProperties"></param>
+        /// <param name="dataTableInfo"></param>
+        /// <param name="sbSqlStr"></param>
+        /// <param name="type"></param>
+        /// <param name="propertyNameColNameMapDic"></param>
+        /// <returns></returns>
+        private NDbParameterCollection GenerateTQueryWhere<T>(T query, IEnumerable<string> conditionProperties, DataModelInfo dataTableInfo, StringBuilder sbSqlStr, Type type, Dictionary<string, string> propertyNameColNameMapDic) where T : class, new()
+        {
+            NDbParameterCollection collection;
             if (query != null)
             {
                 collection = new NDbParameterCollection();
@@ -280,6 +320,8 @@ namespace UtilZ.Lib.DBBase.Core
             {
                 collection = null;
             }
+
+            return collection;
         }
         #endregion
 
