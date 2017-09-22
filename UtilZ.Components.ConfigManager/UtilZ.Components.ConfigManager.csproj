@@ -160,10 +160,6 @@
       <Project>{6841d072-6023-4f8c-9b72-8e4db9d371f2}</Project>
       <Name>UtilZ.Lib.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UtilZ.Lib.WinformEx\UtilZ.Lib.WinformEx.csproj">
-      <Project>{2fbc519b-4d32-4a01-ad80-4e58ed161a24}</Project>
-      <Name>UtilZ.Lib.WinformEx</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UtilZ.Lib.Winform\UtilZ.Lib.Winform.csproj">
       <Project>{db3ea23f-790c-454a-aadf-d75ce5e964f4}</Project>
       <Name>UtilZ.Lib.Winform</Name>

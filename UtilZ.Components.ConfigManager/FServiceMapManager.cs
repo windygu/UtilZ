@@ -39,7 +39,7 @@ namespace UtilZ.Components.ConfigManager
             {
                 this._srcItems = this._configLogic.GetAllConfigParaServiceMap();
                 this._bindItems.AddRange(this._srcItems);
-                this.pgServiceMap.ShowData("FServiceMapManager.ConfigParaServiceMap", this._bindItems, null, new ConfigParaServiceMap().GetAllowEditColumns());
+                this.pgServiceMap.ShowData(this._bindItems, "FServiceMapManager.ConfigParaServiceMap", null, null, new ConfigParaServiceMap().GetAllowEditColumns());
             }
             catch (Exception ex)
             {

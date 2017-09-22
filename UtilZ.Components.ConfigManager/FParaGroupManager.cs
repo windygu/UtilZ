@@ -39,7 +39,7 @@ namespace UtilZ.Components.ConfigManager
             {
                 this._srcItems = this._configLogic.GetAllConfigParaGroup();
                 this._bindItems.AddRange(this._srcItems);
-                this.pgGroup.ShowData("FParaGroupManager.ConfigParaGroup", this._bindItems, null, new ConfigParaGroup().GetAllowEditColumns());
+                this.pgGroup.ShowData(this._bindItems, "FParaGroupManager.ConfigParaGroup", null, null, new ConfigParaGroup().GetAllowEditColumns());
             }
             catch (Exception ex)
             {

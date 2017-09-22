@@ -42,7 +42,7 @@ namespace UtilZ.Components.ConfigManager
                 DropdownBoxHelper.BindingIEnumerableGenericToComboBox<ConfigParaGroup>(comboBoxParaGroup, groups, nameof(ConfigParaGroup.Name), null);
                 this._srcItems = this._configLogic.GetAllConfigParaKeyValue();
                 this._bindItems.AddRange(this._srcItems);
-                this.pgPara.ShowData("FParaManager.ConfigParaKeyValue", this._bindItems, null, new ConfigParaKeyValue().GetAllowEditColumns());
+                this.pgPara.ShowData(this._bindItems, "FParaManager.ConfigParaKeyValue", null, null, new ConfigParaKeyValue().GetAllowEditColumns());
             }
             catch (Exception ex)
             {
@@ -115,7 +115,7 @@ namespace UtilZ.Components.ConfigManager
             }
         }
 
-        private void pgPara_SelectionChanged(object sender, Lib.WinformEx.PageGrid.SelectionChangedArgs e)
+        private void pgPara_SelectionChanged(object sender, Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs e)
         {
             try
             {

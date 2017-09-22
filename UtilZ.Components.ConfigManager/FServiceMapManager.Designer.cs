@@ -33,7 +33,7 @@
             this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.pgServiceMap = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgServiceMap = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,12 +72,10 @@
             this.pgServiceMap.BackColor = System.Drawing.SystemColors.Control;
             this.pgServiceMap.ColumnSettingVisible = false;
             this.pgServiceMap.ContextMenuStrip = this.contextMenuStrip1;
-            this.pgServiceMap.DataReadOnly = false;
             this.pgServiceMap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgServiceMap.GridContextMenuStrip = null;
             this.pgServiceMap.Location = new System.Drawing.Point(0, 0);
             this.pgServiceMap.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgServiceMap.MuiltSelect = true;
+            this.pgServiceMap.GridControl.MultiSelect = true;
             this.pgServiceMap.Name = "pgServiceMap";
             this.pgServiceMap.PagingVisible = false;
             this.pgServiceMap.Size = new System.Drawing.Size(500, 324);
@@ -104,6 +102,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
         private System.Windows.Forms.ToolStripMenuItem tsmiSave;
-        private Lib.WinformEx.PageGrid.PageGridControl pgServiceMap;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgServiceMap;
     }
 }

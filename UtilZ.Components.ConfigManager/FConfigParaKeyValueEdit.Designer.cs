@@ -38,7 +38,7 @@
             this.comGroup = new System.Windows.Forms.ComboBox();
             this.rtxtDes = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pgValidDomain = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgValidDomain = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.btnOK = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -160,11 +160,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pgValidDomain.BackColor = System.Drawing.SystemColors.Control;
             this.pgValidDomain.ColumnSettingVisible = false;
-            this.pgValidDomain.DataReadOnly = false;
-            this.pgValidDomain.GridContextMenuStrip = null;
             this.pgValidDomain.Location = new System.Drawing.Point(3, 17);
             this.pgValidDomain.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgValidDomain.MuiltSelect = false;
+            this.pgValidDomain.GridControl.MultiSelect = false;
             this.pgValidDomain.Name = "pgValidDomain";
             this.pgValidDomain.PagingVisible = false;
             this.pgValidDomain.Size = new System.Drawing.Size(453, 137);
@@ -213,6 +211,6 @@
         private System.Windows.Forms.TextBox txtKey;
         private System.Windows.Forms.RichTextBox rtxtValue;
         private System.Windows.Forms.ComboBox comGroup;
-        private Lib.WinformEx.PageGrid.PageGridControl pgValidDomain;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgValidDomain;
     }
 }

@@ -29,9 +29,9 @@ namespace UtilZ.Components.ConfigManager.UCViews
                 return;
             }
 
-            this.pgServiceList.SelectionChanged += this.pgServiceList_SelectionChanged;
-            this.pgServiceList.ShowData("UCServiceView.ConfigParaServiceMap", this._serviceList);
-            this.pgServiceParaList.ShowData("UCServiceView.ConfigParaKeyValue", this._serviceParaList);
+            this.pgServiceList.DataRowSelectionChanged += this.pgServiceList_SelectionChanged;
+            this.pgServiceList.ShowData(this._serviceList, "UCServiceView.ConfigParaServiceMap");
+            this.pgServiceParaList.ShowData(this._serviceParaList, "UCServiceView.ConfigParaKeyValue");
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
                     }
                 }
 
-                this.pgServiceList.SelectionChanged -= this.pgServiceList_SelectionChanged;
+                this.pgServiceList.DataRowSelectionChanged -= this.pgServiceList_SelectionChanged;
                 try
                 {
                     this._serviceList.Clear();
@@ -70,7 +70,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
                         selectedRow.Selected = false;
                     }
 
-                    this.pgServiceList.SelectionChanged += this.pgServiceList_SelectionChanged;
+                    this.pgServiceList.DataRowSelectionChanged += this.pgServiceList_SelectionChanged;
                     if (selectedItem != null)
                     {
                         foreach (DataGridViewRow row in dgv.Rows)
@@ -90,7 +90,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
             }
         }
 
-        private void pgServiceList_SelectionChanged(object sender, Lib.WinformEx.PageGrid.SelectionChangedArgs e)
+        private void pgServiceList_SelectionChanged(object sender, Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs e)
         {
             if (e.Row == null)
             {
@@ -102,7 +102,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
             this._serviceParaList.AddRange(configParas);
         }
 
-        private void pgServiceList_DataRowDoubleClick(object sender, Lib.WinformEx.PageGrid.DataRowDoubleClickArgs e)
+        private void pgServiceList_DataRowDoubleClick(object sender, Lib.Winform.PageGrid.Interface.DataRowClickArgs e)
         {
             if (e.Row == null)
             {
@@ -113,11 +113,11 @@ namespace UtilZ.Components.ConfigManager.UCViews
             var frm = new FServiceConfigParaKeyValueEdit(this._configLogic, serviceMap);
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                this.pgServiceList_SelectionChanged(sender, new Lib.WinformEx.PageGrid.SelectionChangedArgs(-1, -1, e.Row, null, null));
+                this.pgServiceList_SelectionChanged(sender, new Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs(-1, -1, e.Row, null, null));
             }
         }
 
-        private void pgServiceParaList_DataRowDoubleClick(object sender, Lib.WinformEx.PageGrid.DataRowDoubleClickArgs e)
+        private void pgServiceParaList_DataRowDoubleClick(object sender, Lib.Winform.PageGrid.Interface.DataRowClickArgs e)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
                 var frm = new FConfigParaKeyValueEdit(this._configLogic, configParaKeyValue);
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    this.pgServiceList_SelectionChanged(sender, new Lib.WinformEx.PageGrid.SelectionChangedArgs(-1, -1, ((DataGridViewRow)pgServiceList.SelectedRows[0]).DataBoundItem, null, null));
+                    this.pgServiceList_SelectionChanged(sender, new Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs(-1, -1, ((DataGridViewRow)pgServiceList.SelectedRows[0]).DataBoundItem, null, null));
                 }
             }
             catch (Exception ex)

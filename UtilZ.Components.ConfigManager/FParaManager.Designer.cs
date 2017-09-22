@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pgPara = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgPara = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,17 +49,15 @@
             this.pgPara.BackColor = System.Drawing.SystemColors.Control;
             this.pgPara.ColumnSettingVisible = false;
             this.pgPara.ContextMenuStrip = this.contextMenuStrip1;
-            this.pgPara.DataReadOnly = false;
             this.pgPara.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgPara.GridContextMenuStrip = null;
             this.pgPara.Location = new System.Drawing.Point(0, 0);
             this.pgPara.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgPara.MuiltSelect = false;
+            this.pgPara.GridControl.MultiSelect = false;
             this.pgPara.Name = "pgPara";
             this.pgPara.PagingVisible = false;
             this.pgPara.Size = new System.Drawing.Size(762, 372);
             this.pgPara.TabIndex = 0;
-            this.pgPara.SelectionChanged += new System.EventHandler<UtilZ.Lib.WinformEx.PageGrid.SelectionChangedArgs>(this.pgPara_SelectionChanged);
+            this.pgPara.DataRowSelectionChanged += new System.EventHandler<Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs>(this.pgPara_SelectionChanged);
             // 
             // contextMenuStrip1
             // 
@@ -151,7 +149,7 @@
 
         #endregion
 
-        private Lib.WinformEx.PageGrid.PageGridControl pgPara;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgPara;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;

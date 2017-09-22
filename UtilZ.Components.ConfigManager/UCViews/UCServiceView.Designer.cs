@@ -30,9 +30,9 @@
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pgServiceList = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgServiceList = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pgServiceParaList = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgServiceParaList = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -73,17 +73,15 @@
             // 
             this.pgServiceList.BackColor = System.Drawing.SystemColors.Control;
             this.pgServiceList.ColumnSettingVisible = false;
-            this.pgServiceList.DataReadOnly = true;
             this.pgServiceList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgServiceList.GridContextMenuStrip = null;
             this.pgServiceList.Location = new System.Drawing.Point(3, 17);
             this.pgServiceList.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgServiceList.MuiltSelect = false;
+            this.pgServiceList.GridControl.MultiSelect = false;
             this.pgServiceList.Name = "pgServiceList";
             this.pgServiceList.PagingVisible = false;
             this.pgServiceList.Size = new System.Drawing.Size(361, 580);
             this.pgServiceList.TabIndex = 0;
-            this.pgServiceList.DataRowDoubleClick += new System.EventHandler<UtilZ.Lib.WinformEx.PageGrid.DataRowDoubleClickArgs>(this.pgServiceList_DataRowDoubleClick);
+            this.pgServiceList.DataRowDoubleClick += new System.EventHandler<Lib.Winform.PageGrid.Interface.DataRowClickArgs>(this.pgServiceList_DataRowDoubleClick);
             // 
             // groupBox2
             // 
@@ -100,17 +98,15 @@
             // 
             this.pgServiceParaList.BackColor = System.Drawing.SystemColors.Control;
             this.pgServiceParaList.ColumnSettingVisible = false;
-            this.pgServiceParaList.DataReadOnly = true;
             this.pgServiceParaList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgServiceParaList.GridContextMenuStrip = null;
             this.pgServiceParaList.Location = new System.Drawing.Point(3, 17);
             this.pgServiceParaList.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgServiceParaList.MuiltSelect = false;
+            this.pgServiceParaList.GridControl.MultiSelect = false;
             this.pgServiceParaList.Name = "pgServiceParaList";
             this.pgServiceParaList.PagingVisible = false;
             this.pgServiceParaList.Size = new System.Drawing.Size(423, 580);
             this.pgServiceParaList.TabIndex = 1;
-            this.pgServiceParaList.DataRowDoubleClick += new System.EventHandler<UtilZ.Lib.WinformEx.PageGrid.DataRowDoubleClickArgs>(this.pgServiceParaList_DataRowDoubleClick);
+            this.pgServiceParaList.DataRowDoubleClick += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.DataRowClickArgs>(this.pgServiceParaList_DataRowDoubleClick);
             // 
             // UCServiceView
             // 
@@ -133,8 +129,8 @@
 
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.GroupBox groupBox1;
-        private Lib.WinformEx.PageGrid.PageGridControl pgServiceList;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgServiceList;
         private System.Windows.Forms.GroupBox groupBox2;
-        private Lib.WinformEx.PageGrid.PageGridControl pgServiceParaList;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgServiceParaList;
     }
 }

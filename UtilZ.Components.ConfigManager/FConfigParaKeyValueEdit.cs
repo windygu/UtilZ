@@ -40,7 +40,7 @@ namespace UtilZ.Components.ConfigManager
             try
             {
                 this._serviceList.AddRange(this._configLogic.GetConfigParaServiceMap(this._configParaKeyValue.ID));
-                pgValidDomain.ShowData("FConfigParaKeyValueEdit.ConfigParaServiceMap", this._serviceList, null, new string[] { nameof(ConfigParaServiceMap3.IsSelected) });
+                pgValidDomain.ShowData(this._serviceList, "FConfigParaKeyValueEdit.ConfigParaServiceMap", null, null, new string[] { nameof(ConfigParaServiceMap3.IsSelected) });
                 List<ConfigParaGroup> groups = this._configLogic.GetAllConfigParaGroup();
                 DropdownBoxHelper.BindingIEnumerableGenericToComboBox<ConfigParaGroup>(comGroup, groups, nameof(ConfigParaGroup.Name), this._configParaKeyValue.Group);
                 this.txtKey.Text = this._configParaKeyValue.Key;

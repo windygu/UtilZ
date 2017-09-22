@@ -54,7 +54,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
                     this._paraList.Add(new ConfigParaKeyValue2(item, this._srcConfigParaIds.Contains(item.ID)));
                 }
 
-                pgConfigParaKeyValue.ShowData("FServiceConfigParaKeyValueEdit.ConfigParaKeyValue2", this._paraList, null, new string[] { nameof(ConfigParaKeyValue2.IsSelected) });
+                pgConfigParaKeyValue.ShowData(this._paraList, "FServiceConfigParaKeyValueEdit.ConfigParaKeyValue2", null, null, new string[] { nameof(ConfigParaKeyValue2.IsSelected) });
             }
             catch (Exception ex)
             {

@@ -94,7 +94,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
                 }
 
                 List<ConfigParaKeyValue> paras = this._configLogic.GetGroupConfigParaKeyValue(selectedItem);
-                pgConfigParaKeyValue.ShowData("ConfigParaKeyValue", paras);
+                pgConfigParaKeyValue.ShowData(paras, "ConfigParaKeyValue");
             }
             catch (Exception ex)
             {
@@ -102,14 +102,14 @@ namespace UtilZ.Components.ConfigManager.UCViews
             }
         }
 
-        private void pgConfigParaKeyValue_SelectionChanged(object sender, Lib.WinformEx.PageGrid.SelectionChangedArgs e)
+        private void pgConfigParaKeyValue_SelectionChanged(object sender, Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs e)
         {
             try
             {
                 var configParaKeyValue = (ConfigParaKeyValue)e.Row;
                 List<ConfigParaServiceMap> validDomainServices = this._configLogic.GetValidDomainConfigParaServiceMap(configParaKeyValue);
                 var mapList = (from tmpItem in validDomainServices select new ConfigParaServiceMap2(tmpItem)).ToList();
-                pgValidDomain.ShowData("ConfigParaServiceMap2", mapList);
+                pgValidDomain.ShowData(mapList, "ConfigParaServiceMap2");
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
             }
         }
 
-        private void pgConfigParaKeyValue_DataRowDoubleClick(object sender, Lib.WinformEx.PageGrid.DataRowDoubleClickArgs e)
+        private void pgConfigParaKeyValue_DataRowDoubleClick(object sender, Lib.Winform.PageGrid.Interface.DataRowClickArgs e)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace UtilZ.Components.ConfigManager.UCViews
                 var frm = new FConfigParaKeyValueEdit(this._configLogic, configParaKeyValue);
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    this.pgConfigParaKeyValue_SelectionChanged(sender, new Lib.WinformEx.PageGrid.SelectionChangedArgs(-1, -1, configParaKeyValue, null, null));
+                    this.pgConfigParaKeyValue_SelectionChanged(sender, new Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs(-1, -1, configParaKeyValue, null, null));
                 }
             }
             catch (Exception ex)

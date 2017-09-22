@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pgConfigParaKeyValue = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgConfigParaKeyValue = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiCheckAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDirectionCheck = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,12 +69,10 @@
             this.pgConfigParaKeyValue.BackColor = System.Drawing.SystemColors.Control;
             this.pgConfigParaKeyValue.ColumnSettingVisible = false;
             this.pgConfigParaKeyValue.ContextMenuStrip = this.contextMenuStrip1;
-            this.pgConfigParaKeyValue.DataReadOnly = true;
             this.pgConfigParaKeyValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgConfigParaKeyValue.GridContextMenuStrip = null;
             this.pgConfigParaKeyValue.Location = new System.Drawing.Point(3, 17);
             this.pgConfigParaKeyValue.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgConfigParaKeyValue.MuiltSelect = false;
+            this.pgConfigParaKeyValue.GridControl.MultiSelect = false;
             this.pgConfigParaKeyValue.Name = "pgConfigParaKeyValue";
             this.pgConfigParaKeyValue.PagingVisible = false;
             this.pgConfigParaKeyValue.Size = new System.Drawing.Size(682, 279);
@@ -234,7 +232,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private Lib.WinformEx.PageGrid.PageGridControl pgConfigParaKeyValue;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgConfigParaKeyValue;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiCheckAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiDirectionCheck;

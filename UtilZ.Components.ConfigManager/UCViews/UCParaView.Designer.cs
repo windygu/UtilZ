@@ -32,9 +32,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comGroup = new System.Windows.Forms.ComboBox();
-            this.pgConfigParaKeyValue = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgConfigParaKeyValue = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pgValidDomain = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgValidDomain = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -94,22 +94,25 @@
             // 
             // pgConfigParaKeyValue
             // 
+            this.pgConfigParaKeyValue.AdvanceSettingVisible = false;
             this.pgConfigParaKeyValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pgConfigParaKeyValue.BackColor = System.Drawing.SystemColors.Control;
-            this.pgConfigParaKeyValue.ColumnSettingVisible = true;
-            this.pgConfigParaKeyValue.DataReadOnly = true;
-            this.pgConfigParaKeyValue.GridContextMenuStrip = null;
+            this.pgConfigParaKeyValue.ColumnSettingStatus = UtilZ.Lib.Winform.PageGrid.PageGridColumnSettingStatus.Hiden;
+            this.pgConfigParaKeyValue.ColumnSettingVisible = false;
+            this.pgConfigParaKeyValue.ColumnSettingWidth = 20;
+            this.pgConfigParaKeyValue.FocusedRowIndex = -1;
+            this.pgConfigParaKeyValue.IsLastColumnAutoSizeModeFill = false;
             this.pgConfigParaKeyValue.Location = new System.Drawing.Point(3, 51);
             this.pgConfigParaKeyValue.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgConfigParaKeyValue.MuiltSelect = false;
             this.pgConfigParaKeyValue.Name = "pgConfigParaKeyValue";
-            this.pgConfigParaKeyValue.PagingVisible = true;
+            this.pgConfigParaKeyValue.PagingVisible = false;
+            this.pgConfigParaKeyValue.RowNumVisible = true;
             this.pgConfigParaKeyValue.Size = new System.Drawing.Size(551, 546);
             this.pgConfigParaKeyValue.TabIndex = 0;
-            this.pgConfigParaKeyValue.DataRowDoubleClick += new System.EventHandler<UtilZ.Lib.WinformEx.PageGrid.DataRowDoubleClickArgs>(this.pgConfigParaKeyValue_DataRowDoubleClick);
-            this.pgConfigParaKeyValue.SelectionChanged += new System.EventHandler<UtilZ.Lib.WinformEx.PageGrid.SelectionChangedArgs>(this.pgConfigParaKeyValue_SelectionChanged);
+            this.pgConfigParaKeyValue.DataRowDoubleClick += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.DataRowClickArgs>(this.pgConfigParaKeyValue_DataRowDoubleClick);
+            this.pgConfigParaKeyValue.DataRowSelectionChanged += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.DataRowSelectionChangedArgs>(this.pgConfigParaKeyValue_SelectionChanged);
             // 
             // groupBox2
             // 
@@ -124,16 +127,19 @@
             // 
             // pgValidDomain
             // 
+            this.pgValidDomain.AdvanceSettingVisible = true;
             this.pgValidDomain.BackColor = System.Drawing.SystemColors.Control;
+            this.pgValidDomain.ColumnSettingStatus = UtilZ.Lib.Winform.PageGrid.PageGridColumnSettingStatus.Hiden;
             this.pgValidDomain.ColumnSettingVisible = false;
-            this.pgValidDomain.DataReadOnly = true;
+            this.pgValidDomain.ColumnSettingWidth = 20;
             this.pgValidDomain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgValidDomain.GridContextMenuStrip = null;
+            this.pgValidDomain.FocusedRowIndex = -1;
+            this.pgValidDomain.IsLastColumnAutoSizeModeFill = false;
             this.pgValidDomain.Location = new System.Drawing.Point(3, 17);
             this.pgValidDomain.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgValidDomain.MuiltSelect = false;
             this.pgValidDomain.Name = "pgValidDomain";
             this.pgValidDomain.PagingVisible = false;
+            this.pgValidDomain.RowNumVisible = true;
             this.pgValidDomain.Size = new System.Drawing.Size(233, 580);
             this.pgValidDomain.TabIndex = 1;
             // 
@@ -159,9 +165,9 @@
 
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.GroupBox groupBox1;
-        private Lib.WinformEx.PageGrid.PageGridControl pgConfigParaKeyValue;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgConfigParaKeyValue;
         private System.Windows.Forms.GroupBox groupBox2;
-        private Lib.WinformEx.PageGrid.PageGridControl pgValidDomain;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgValidDomain;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comGroup;
     }

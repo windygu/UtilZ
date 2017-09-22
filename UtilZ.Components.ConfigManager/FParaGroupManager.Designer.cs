@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pgGroup = new UtilZ.Lib.WinformEx.PageGrid.PageGridControl();
+            this.pgGroup = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,12 +42,10 @@
             this.pgGroup.BackColor = System.Drawing.SystemColors.Control;
             this.pgGroup.ColumnSettingVisible = false;
             this.pgGroup.ContextMenuStrip = this.contextMenuStrip1;
-            this.pgGroup.DataReadOnly = false;
             this.pgGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgGroup.GridContextMenuStrip = null;
             this.pgGroup.Location = new System.Drawing.Point(0, 0);
             this.pgGroup.MinimumSize = new System.Drawing.Size(30, 30);
-            this.pgGroup.MuiltSelect = true;
+            this.pgGroup.GridControl.MultiSelect = true;
             this.pgGroup.Name = "pgGroup";
             this.pgGroup.PagingVisible = false;
             this.pgGroup.Size = new System.Drawing.Size(561, 355);
@@ -100,7 +98,7 @@
 
         #endregion
 
-        private Lib.WinformEx.PageGrid.PageGridControl pgGroup;
+        private UtilZ.Lib.Winform.PageGrid.UCPageGridControl pgGroup;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
