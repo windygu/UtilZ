@@ -491,7 +491,7 @@ namespace UtilZ.Lib.DBBase.Core
         /// <returns>数据集合</returns>
         public List<T> QueryTPaging<T>(int pageSize, int pageIndex, T query, IEnumerable<string> conditionProperties, string orderProperty = null, bool orderFlag = false) where T : class, new()
         {
-            return QueryTPaging<T>(pageSize, pageIndex, query, conditionProperties, orderProperty, orderFlag);
+            return QueryTPaging<T>(pageSize, pageIndex, query, conditionProperties, null, orderProperty, orderFlag);
         }
 
         /// <summary>

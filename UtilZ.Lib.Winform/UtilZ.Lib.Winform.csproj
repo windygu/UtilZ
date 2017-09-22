@@ -66,6 +66,7 @@
     <Compile Include="OriginalDataShow\IOriginalDataShow.cs" />
     <Compile Include="OriginalDataShow\OriginalDataShowType.cs" />
     <Compile Include="OriginalDataShow\OriginalDataShowTypeCollection.cs" />
+    <Compile Include="PageGrid\DGVBindDataSourceInfo.cs" />
     <Compile Include="PageGrid\FPageGridColumnsSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +77,7 @@
     <Compile Include="PageGrid\Interface\DataRowSelectionChangedArgs.cs" />
     <Compile Include="PageGrid\Interface\IPageDataGrid.cs" />
     <Compile Include="PageGrid\Interface\PageInfo.cs" />
+    <Compile Include="PageGrid\Interface\PageSizeChangedArgs.cs" />
     <Compile Include="PageGrid\Interface\QueryDataArgs.cs" />
     <Compile Include="PageGrid\PageGridColumnSettingStatus.cs" />
     <Compile Include="PageGrid\PageGridControlCommon.cs" />
@@ -210,6 +212,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LoadWait.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\firstPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lastPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nextPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\prePage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

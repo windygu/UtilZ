@@ -54,6 +54,16 @@ namespace TestUtilZ
         {
             ucPageGridControl1.PagingVisible = !ucPageGridControl1.PagingVisible;
         }
+
+        private void ucPageGridControl1_QueryData(object sender, UtilZ.Lib.Winform.PageGrid.Interface.QueryDataArgs e)
+        {
+
+        }
+
+        private void ucPageGridControl1_PageSizeChanged(object sender, UtilZ.Lib.Winform.PageGrid.Interface.PageSizeChangedArgs e)
+        {
+
+        }
     }
 
     public class TestDGVModel

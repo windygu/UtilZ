@@ -56,9 +56,9 @@
             // ucPageGridControl1
             // 
             this.ucPageGridControl1.AdvanceSettingVisible = true;
-            this.ucPageGridControl1.ColumnSettingStatus = UtilZ.Lib.Winform.PageGrid.PageGridColumnSettingStatus.Dock;
+            this.ucPageGridControl1.ColumnSettingStatus = UtilZ.Lib.Winform.PageGrid.PageGridColumnSettingStatus.Hiden;
             this.ucPageGridControl1.ColumnSettingVisible = true;
-            this.ucPageGridControl1.ColumnSettingWidth = 240;
+            this.ucPageGridControl1.ColumnSettingWidth = 20;
             this.ucPageGridControl1.FocusedRowIndex = -1;
             this.ucPageGridControl1.IsLastColumnAutoSizeModeFill = false;
             this.ucPageGridControl1.Location = new System.Drawing.Point(12, 63);
@@ -67,6 +67,8 @@
             this.ucPageGridControl1.RowNumVisible = true;
             this.ucPageGridControl1.Size = new System.Drawing.Size(596, 340);
             this.ucPageGridControl1.TabIndex = 1;
+            this.ucPageGridControl1.QueryData += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.QueryDataArgs>(this.ucPageGridControl1_QueryData);
+            this.ucPageGridControl1.PageSizeChanged += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.PageSizeChangedArgs>(this.ucPageGridControl1_PageSizeChanged);
             // 
             // FTest
             // 

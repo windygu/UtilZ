@@ -30,7 +30,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// </summary>
         private readonly UIBindingList<DataGridViewColumn> _hidenCols;
         private readonly List<DataGridViewColumn> _srcHidenCols;
-        private PageGridColumnSettingStatus _columnSettingStatus = PageGridColumnSettingStatus.Dock;
+        private PageGridColumnSettingStatus _columnSettingStatus = PageGridColumnSettingStatus.Hiden;
 
         private bool _isLoaded = false;
         private Size _lastParentControlSize;
@@ -43,6 +43,11 @@ namespace UtilZ.Lib.Winform.PageGrid
             get { return _columnSettingStatus; }
             set
             {
+                if (_columnSettingStatus == value)
+                {
+                    return;
+                }
+
                 _columnSettingStatus = value;
                 this.SwitchColumnSettingStatus(this._columnSettingStatus);
             }
@@ -122,6 +127,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="hidenCols">隐藏列集合</param>
         public FPageGridColumnsSetting(Control parentControl, Control titleControl, UIBindingList<DataGridViewColumn> hidenCols) : this()
         {
+            this.TopLevel = false;
             this.Dock = DockStyle.Fill;
             this.IsAllowMinimize = false;
             this.IsUseInOutEffect = false;

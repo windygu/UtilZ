@@ -49,6 +49,12 @@
     <Compile Include="FTest.Designer.cs">
       <DependentUpon>FTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="FTestPageGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTestPageGrid.Designer.cs">
+      <DependentUpon>FTestPageGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Stu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +63,9 @@
     <Compile Include="Units\UnitTestBase.cs" />
     <EmbeddedResource Include="FTest.resx">
       <DependentUpon>FTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTestPageGrid.resx">
+      <DependentUpon>FTestPageGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

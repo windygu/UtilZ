@@ -21,6 +21,11 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
         event EventHandler<QueryDataArgs> QueryData;
 
         /// <summary>
+        /// 分页大小改变事件
+        /// </summary>
+        event EventHandler<PageSizeChangedArgs> PageSizeChanged;
+
+        /// <summary>
         /// 数据行单击事件
         /// </summary>
         event EventHandler<DataRowClickArgs> DataRowClick;
@@ -76,11 +81,6 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
         /// 获取表格控件
         /// </summary>
         G GridControl { get; }
-
-        /// <summary>
-        /// 状态栏控件
-        /// </summary>
-        Control StatusControl { get; }
 
         /// <summary>
         /// 获取或设置用户设置数据存放目录

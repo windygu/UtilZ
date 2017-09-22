@@ -6,25 +6,18 @@ using System.Text;
 namespace UtilZ.Lib.Winform.PageGrid.Interface
 {
     /// <summary>
-    /// 查询数据参数
+    /// 分页大小改变事件参数
     /// </summary>
-    public class QueryDataArgs : EventArgs
+    public class PageSizeChangedArgs : EventArgs
     {
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="pageIndex">当前要查询页数</param>
         /// <param name="pageSize">查询页大小</param>
-        public QueryDataArgs(int pageIndex, int pageSize)
+        public PageSizeChangedArgs(int pageSize)
         {
-            this.PageIndex = pageIndex;
             this.PageSize = pageSize;
         }
-
-        /// <summary>
-        /// 获取当前要查询页数
-        /// </summary>
-        public int PageIndex { get; private set; }
 
         /// <summary>
         /// 查询页大小

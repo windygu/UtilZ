@@ -32,6 +32,13 @@ namespace UtilZ.Lib.Winform.PageGrid
         public event EventHandler<QueryDataArgs> QueryData;
 
         /// <summary>
+        /// 分页大小改变事件
+        /// </summary>
+        [Description("分页大小改变事件")]
+        [Category("分页数据显示控件")]
+        public event EventHandler<PageSizeChangedArgs> PageSizeChanged;
+
+        /// <summary>
         /// 数据行单击事件
         /// </summary>
         [Description("数据行单击事件")]
@@ -221,15 +228,6 @@ namespace UtilZ.Lib.Winform.PageGrid
         }
 
         /// <summary>
-        /// 状态栏控件
-        /// </summary>
-        [Browsable(false)]
-        public Control StatusControl
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        /// <summary>
         /// 用户设置数据存放目录
         /// </summary>
         private string _settingDirectory;
@@ -386,13 +384,163 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
         }
 
+        /*
+        private DGVBindDataSourceInfo _currentDGVBindDataSourceInfo = null;
+        /// <summary>
+        /// 显示数据
+        /// </summary>
+        /// <param name="dataSource">数据源</param>
+        /// <param name="dataSourceName">数据源名称</param>
+        /// <param name="hidenColumns">隐藏列集合</param>
+        /// <param name="colHeadInfos">列标题映射字典[key:列名;value:列标题;默认为null]</param>
+        /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
+        public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
+        {
+            if (dataGridView.DataSource == dataSource)
+            {
+                return;
+            }
+
+            this._currentDGVBindDataSourceInfo = new DGVBindDataSourceInfo(dataSource, dataSourceName, hidenColumns, colHeadInfos, allowEditColumns);
+            if (dataGridView.SelectionMode == DataGridViewSelectionMode.FullColumnSelect ||
+                dataGridView.SelectionMode == DataGridViewSelectionMode.ColumnHeaderSelect)
+            {
+                var srcSelectionMode = dataGridView.SelectionMode;
+                dataGridView.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
+                dataGridView.DataSource = dataSource;
+                foreach (DataGridViewColumn col in dataGridView.Columns)
+                {
+                    if (col.SortMode == DataGridViewColumnSortMode.Automatic)
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                }
+
+                dataGridView.SelectionMode = srcSelectionMode;
+            }
+            else
+            {
+                dataGridView.DataSource = dataSource;
+            }
+        }
+
+        private void DataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (this._currentDGVBindDataSourceInfo == null)
+            {
+                return;
+            }
+
+            var dataSourceName = this._currentDGVBindDataSourceInfo.DataSourceName;
+            if (string.Equals(this._dataSourceName, dataSourceName))
+            {
+                return;
+            }
+
+            this.SettingCol(this._currentDGVBindDataSourceInfo.DataSource, this._currentDGVBindDataSourceInfo.HidenColumns, this._currentDGVBindDataSourceInfo.ColHeadInfos, this._currentDGVBindDataSourceInfo.AllowEditColumns);
+
+            this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
+            this._fPageGridColumnsSetting.UpdateAdvanceSetting(this.dataGridView.Columns);
+            this._dataSourceName = dataSourceName;
+
+            if (this._isLastColumnAutoSizeModeFill)
+            {
+                //设置最后一个可见列填充
+                DataGridViewColumn col;
+                for (int i = this.dataGridView.Columns.Count - 1; i >= 0; i--)
+                {
+                    col = this.dataGridView.Columns[i];
+                    if (col.Visible)
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// DataGridView绑定数据
+        /// </summary>
+        /// <param name="dataSource">数据源</param>
+        /// <param name="hidenColumns">隐藏列集合</param>
+        /// <param name="colHeadInfos">列标题映射字典[key:列名;value:列标题;默认为null]</param>
+        /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
+        private void SettingCol(object dataSource, IEnumerable<string> hidenColumns, Dictionary<string, string> colHeadInfos, IEnumerable<string> allowEditColumns)
+        {
+            if (dataSource == null)
+            {
+                return;
+            }
+
+            if (hidenColumns == null)
+            {
+                hidenColumns = new List<string>();
+            }
+
+            if (colHeadInfos == null)
+            {
+                colHeadInfos = new Dictionary<string, string>();
+            }
+
+            if (allowEditColumns == null)
+            {
+                allowEditColumns = new List<string>();
+            }
+
+            string caption = null;
+            string fieldName = null;
+            bool isReadOnly;
+            var dt = dataGridView.DataSource as System.Data.DataTable;
+            dataGridView.ReadOnly = allowEditColumns.Count() == 0;
+
+            foreach (DataGridViewColumn gridColumn in dataGridView.Columns)
+            {
+                //获取字段名
+                fieldName = gridColumn.Name;
+                if (hidenColumns.Contains(fieldName))
+                {
+                    gridColumn.Visible = false;
+                    break;
+                }
+
+                isReadOnly = !allowEditColumns.Contains(fieldName);
+                //设置为可编辑性
+                if (isReadOnly != gridColumn.ReadOnly)
+                {
+                    gridColumn.ReadOnly = isReadOnly;
+                }
+
+                //设置显示标题
+                if (colHeadInfos.ContainsKey(fieldName))
+                {
+                    caption = colHeadInfos[fieldName];
+                }
+                else if (dt != null && dt.Columns.Contains(fieldName))
+                {
+                    caption = dt.Columns[fieldName].Caption;
+                }
+
+                if (!string.IsNullOrEmpty(caption))
+                {
+                    gridColumn.HeaderText = caption;
+                    caption = null;
+                }
+            }
+        }
+        */
+
         /// <summary>
         /// 触发查询数据事件
         /// </summary>
         /// <param name="e">查询参数</param>
         public void OnRaiseQueryData(QueryDataArgs e)
         {
-
+            var handler = this.QueryData;
+            if (handler != null)
+            {
+                this.QueryData(this, e);
+            }
         }
 
         /// <summary>
@@ -401,7 +549,87 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="pageInfo">页信息</param>
         public void SetPageInfo(PageInfo pageInfo)
         {
+            this.InnerSetPageInfo(pageInfo);
 
+            labelPageCount.Text = string.Format("共{0}页", pageInfo == null || pageInfo.PageCount < 1 ? 0 : pageInfo.PageCount);
+            //外部更改查询页，触发分页查询事件
+            if (pageInfo != null && pageInfo.PageCount > 0)
+            {
+                this.OnRaiseQueryData(new QueryDataArgs(1, pageInfo.PageSize));
+            }
+        }
+
+        /// <summary>
+        /// 设置分页
+        /// </summary>
+        /// <param name="pageInfo">页信息</param>
+        private void InnerSetPageInfo(PageInfo pageInfo)
+        {
+            //记录当前分页信息
+            this._pageInfo = pageInfo;
+
+            if (this.numPageSize.Maximum < pageInfo.PageSize)
+            {
+                this.numPageSize.Maximum = pageInfo.PageSize;
+            }
+
+            if (this.numPageSize.Value != pageInfo.PageSize)
+            {
+                this.numPageSize.Value = pageInfo.PageSize;
+            }
+
+            //设置显示信息
+            if (pageInfo == null || pageInfo.PageCount <= 0)
+            {
+                //设置页数选择控件值
+                numPageIndex.Minimum = 0;
+                numPageIndex.Maximum = 0;
+                numPageIndex.Value = 0;
+                numPageIndex.Enabled = false;
+
+                //禁用跳转按钮
+                btnFirstPage.Enabled = false;
+                btnPrePage.Enabled = false;
+                btnNextPage.Enabled = false;
+                btnLastPage.Enabled = false;
+            }
+            else
+            {
+                numPageIndex.Minimum = 1;
+                numPageIndex.Maximum = pageInfo.PageCount;
+                numPageIndex.Value = pageInfo.PageIndex;
+                numPageIndex.Enabled = true;
+
+                //启用跳转按钮
+                btnFirstPage.Enabled = false;
+                btnPrePage.Enabled = false;
+                btnNextPage.Enabled = false;
+                btnLastPage.Enabled = false;
+
+                //如果当前页为小于等于1,则禁首页和用前一页
+                if (pageInfo.PageIndex <= 1)
+                {
+                    btnFirstPage.Enabled = false;
+                    btnPrePage.Enabled = false;
+                }
+                else
+                {
+                    btnFirstPage.Enabled = true;
+                    btnPrePage.Enabled = true;
+                }
+
+                //如果当前页大于等于总页数,则禁用最后一页和下一页
+                if (pageInfo.PageIndex >= pageInfo.PageCount)
+                {
+                    btnNextPage.Enabled = false;
+                    btnLastPage.Enabled = false;
+                }
+                else
+                {
+                    btnNextPage.Enabled = true;
+                    btnLastPage.Enabled = true;
+                }
+            }
         }
 
         /// <summary>
@@ -579,8 +807,120 @@ namespace UtilZ.Lib.Winform.PageGrid
             this.dataGridView.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnDisplayIndexChanged);
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
             this.RowNumVisible = true;
+
+            this.dataGridView.SelectionChanged += GridView_SelectionChanged;
+            this.dataGridView.MouseClick += GridView_MouseClick;
+            this.dataGridView.MouseDoubleClick += GridView_MouseDoubleClick;
         }
 
+        #region 接口事件调用
+        /// <summary>
+        /// 表格控件鼠标双击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridView_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            object row = null;
+            int rowIndex = -1;
+            //DataGridView.HitTestInfo hitTestInfo = this.dataGridView.HitTest(e.X, e.Y);
+            //if (hitTestInfo != null)
+            //{
+            //    rowIndex = hitTestInfo.RowIndex;
+            //    row = this.dataGridView.Rows[rowIndex].DataBoundItem;
+            //}
+
+            if (this.dataGridView.CurrentRow != null)
+            {
+                rowIndex = this.dataGridView.CurrentRow.Index;
+                row = this.dataGridView.CurrentRow.DataBoundItem;
+            }
+
+            var handler = this.DataRowDoubleClick;
+            if (handler != null)
+            {
+                this.DataRowDoubleClick(sender, new DataRowClickArgs(row, rowIndex));
+            }
+        }
+
+        /// <summary>
+        /// 表格控件鼠标单击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridView_MouseClick(object sender, MouseEventArgs e)
+        {
+            object row = null;
+            int rowIndex = -1;
+            if (this.dataGridView.CurrentRow != null)
+            {
+                rowIndex = this.dataGridView.CurrentRow.Index;
+                row = this.dataGridView.CurrentRow.DataBoundItem;
+            }
+
+            var handler = this.DataRowClick;
+            if (handler != null)
+            {
+                this.DataRowClick(sender, new DataRowClickArgs(row, rowIndex));
+            }
+        }
+
+        /// <summary>
+        /// 前次选中的行
+        /// </summary>
+        private DataGridViewRow _prevSelectedRow = null;
+
+        /// <summary>
+        /// 表格选中行改变事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridView_SelectionChanged(object sender, EventArgs e)
+        {
+            int rowHandle = -1;//当前选中行索引
+            int prevRowHandle = -1;//上次选中行索引
+            object row = null;//当前行数据
+            object prevRow = null;//上次行数据
+
+            try
+            {
+                //前一次选中行信息
+                if (this._prevSelectedRow != null)
+                {
+                    prevRowHandle = this._prevSelectedRow.Index;
+                    prevRow = this._prevSelectedRow.DataBoundItem;
+                }
+
+                this._prevSelectedRow = this.dataGridView.CurrentRow;
+                if (this.dataGridView.CurrentRow != null)
+                {
+                    row = this._prevSelectedRow.DataBoundItem;
+                    rowHandle = this._prevSelectedRow.Index;
+                }
+
+                //当前选中行数据集合
+                List<object> selectedRowDatas = new List<object>();
+                object[] selectedRows = this.SelectedRows;
+                foreach (DataGridViewRow selectedRow in selectedRows)
+                {
+                    selectedRowDatas.Add(selectedRow.DataBoundItem);
+                }
+
+                var handler = this.DataRowSelectionChanged;
+                if (handler != null)
+                {
+                    handler(this, new DataRowSelectionChangedArgs(rowHandle, prevRowHandle, row, prevRow, selectedRows.ToList()));
+                }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion 
+
+        #region 显示列设置
         /// <summary>
         /// 列设置保存
         /// </summary>
@@ -700,5 +1040,103 @@ namespace UtilZ.Lib.Winform.PageGrid
         {
             this._fPageGridColumnsSetting.ColumnDisplaySettingChanged = true;
         }
+        #endregion
+
+        #region 分页
+        private void PageQuery(int pageIndex)
+        {
+            this.InnerSetPageInfo(new PageInfo(this._pageInfo.PageCount, this._pageInfo.PageSize, pageIndex));
+            this.OnRaiseQueryData(new QueryDataArgs(pageIndex, this._pageInfo.PageSize));
+        }
+
+        private void btnFirstPage_Click(object sender, EventArgs e)
+        {
+            if (this._pageInfo == null)
+            {
+                return;
+            }
+
+            int pageIndex = 1;
+            if (pageIndex == this._pageInfo.PageIndex)
+            {
+                return;
+            }
+
+            this.PageQuery(pageIndex);
+        }
+
+        private void btnPrePage_Click(object sender, EventArgs e)
+        {
+            if (this._pageInfo == null)
+            {
+                return;
+            }
+
+            int pageIndex = this._pageInfo.PageIndex - 1;
+            if (pageIndex < 1)
+            {
+                return;
+            }
+
+            this.PageQuery(pageIndex);
+        }
+
+        private void btnNextPage_Click(object sender, EventArgs e)
+        {
+            if (this._pageInfo == null)
+            {
+                return;
+            }
+
+            int pageIndex = this._pageInfo.PageIndex + 1;
+            if (pageIndex > this._pageInfo.PageCount)
+            {
+                return;
+            }
+
+            this.PageQuery(pageIndex);
+        }
+
+        private void btnLastPage_Click(object sender, EventArgs e)
+        {
+            if (this._pageInfo == null)
+            {
+                return;
+            }
+
+            int pageIndex = this._pageInfo.PageCount;
+            if (this._pageInfo.PageIndex == pageIndex)
+            {
+                return;
+            }
+
+            this.PageQuery(pageIndex);
+        }
+
+        private void numPageIndex_ValueChanged(object sender, EventArgs e)
+        {
+            if (this._pageInfo == null)
+            {
+                return;
+            }
+
+            int pageIndex = (int)numPageIndex.Value;
+            if (pageIndex == this._pageInfo.PageIndex)
+            {
+                return;
+            }
+
+            this.PageQuery(pageIndex);
+        }
+
+        private void numPageSize_ValueChanged(object sender, EventArgs e)
+        {
+            var handler = this.PageSizeChanged;
+            if (handler != null)
+            {
+                handler(this, new PageSizeChangedArgs((int)numPageSize.Value));
+            }
+        }
+        #endregion
     }
 }

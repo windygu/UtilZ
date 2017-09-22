@@ -73,9 +73,49 @@ namespace UtilZ.Lib.Winform.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap firstPage {
+            get {
+                object obj = ResourceManager.GetObject("firstPage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap lastPage {
+            get {
+                object obj = ResourceManager.GetObject("lastPage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap LoadWait {
             get {
                 object obj = ResourceManager.GetObject("LoadWait", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap nextPage {
+            get {
+                object obj = ResourceManager.GetObject("nextPage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap prePage {
+            get {
+                object obj = ResourceManager.GetObject("prePage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
