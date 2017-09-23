@@ -659,16 +659,6 @@ namespace UtilZ.Lib.Winform.PageGrid
                 //记录当前分页信息
                 this._pageInfo = pageInfo;
 
-                if (this.numPageSize.Maximum < pageInfo.PageSize)
-                {
-                    this.numPageSize.Maximum = pageInfo.PageSize;
-                }
-
-                if (this.numPageSize.Value != pageInfo.PageSize)
-                {
-                    this.numPageSize.Value = pageInfo.PageSize;
-                }
-
                 //设置显示信息
                 if (pageInfo == null || pageInfo.PageCount <= 0)
                 {
@@ -677,6 +667,7 @@ namespace UtilZ.Lib.Winform.PageGrid
                     numPageIndex.Maximum = 0;
                     numPageIndex.Value = 0;
                     numPageIndex.Enabled = false;
+                    numPageSize.Enabled = false;
 
                     //禁用跳转按钮
                     btnFirstPage.Enabled = false;
@@ -686,10 +677,21 @@ namespace UtilZ.Lib.Winform.PageGrid
                 }
                 else
                 {
+                    if (this.numPageSize.Maximum < pageInfo.PageSize)
+                    {
+                        this.numPageSize.Maximum = pageInfo.PageSize;
+                    }
+
+                    if (this.numPageSize.Value != pageInfo.PageSize)
+                    {
+                        this.numPageSize.Value = pageInfo.PageSize;
+                    }
+
                     numPageIndex.Minimum = 1;
                     numPageIndex.Maximum = pageInfo.PageCount;
                     numPageIndex.Value = pageInfo.PageIndex;
                     numPageIndex.Enabled = true;
+                    numPageSize.Enabled = true;
 
                     //启用跳转按钮
                     btnFirstPage.Enabled = false;
@@ -907,6 +909,8 @@ namespace UtilZ.Lib.Winform.PageGrid
             this._dataGridView.SelectionChanged += GridView_SelectionChanged;
             this._dataGridView.MouseClick += GridView_MouseClick;
             this._dataGridView.MouseDoubleClick += GridView_MouseDoubleClick;
+
+            this.SetPageInfo(null);
 
             var pageControls = new List<Control>();
             foreach (Control control in panelPage.Controls)
