@@ -38,6 +38,7 @@
             // 
             // btnMax
             // 
+            this.btnMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMax.Location = new System.Drawing.Point(385, 12);
             this.btnMax.Name = "btnMax";
             this.btnMax.Size = new System.Drawing.Size(75, 23);
@@ -48,6 +49,7 @@
             // 
             // btnMin
             // 
+            this.btnMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMin.Location = new System.Drawing.Point(304, 11);
             this.btnMin.Name = "btnMin";
             this.btnMin.Size = new System.Drawing.Size(75, 24);
@@ -58,6 +60,7 @@
             // 
             // btnNM
             // 
+            this.btnNM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNM.Location = new System.Drawing.Point(304, 61);
             this.btnNM.Name = "btnNM";
             this.btnNM.Size = new System.Drawing.Size(75, 23);
@@ -68,6 +71,7 @@
             // 
             // btnClose
             // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.Location = new System.Drawing.Point(385, 61);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
@@ -78,6 +82,7 @@
             // 
             // cbAllowClose
             // 
+            this.cbAllowClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAllowClose.AutoSize = true;
             this.cbAllowClose.Location = new System.Drawing.Point(385, 107);
             this.cbAllowClose.Name = "cbAllowClose";
@@ -88,6 +93,7 @@
             // 
             // cbFullScreen
             // 
+            this.cbFullScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFullScreen.AutoSize = true;
             this.cbFullScreen.Location = new System.Drawing.Point(295, 107);
             this.cbFullScreen.Name = "cbFullScreen";

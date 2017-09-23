@@ -20,7 +20,8 @@ namespace TestUtilZ
 
         private void FTestNoneBorderForm_Load(object sender, EventArgs e)
         {
-
+            this.FormResizeStyle = ResizeStyle.Right | ResizeStyle.Left | ResizeStyle.Top;
+            //this.FormResizeStyle = ResizeStyle.None;
         }
 
         private void btnMin_Click(object sender, EventArgs e)

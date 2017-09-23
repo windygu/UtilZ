@@ -77,7 +77,13 @@ namespace TestUtilZDB
 
         private void btnSwitchPageSize_Click(object sender, EventArgs e)
         {
-            ucPageGridControl1.PageSizeVisible = !ucPageGridControl1.PageSizeVisible;
+            //ucPageGridControl1.PageSizeVisible = !ucPageGridControl1.PageSizeVisible;
+            ucPageGridControl1.AlignDirection = !ucPageGridControl1.AlignDirection;
+        }
+
+        private void btnColSettingVisible_Click(object sender, EventArgs e)
+        {
+            ucPageGridControl1.ColumnSettingVisible = !ucPageGridControl1.ColumnSettingVisible;
         }
     }
 }

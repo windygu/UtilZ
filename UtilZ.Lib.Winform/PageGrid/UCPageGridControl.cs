@@ -124,8 +124,8 @@ namespace UtilZ.Lib.Winform.PageGrid
         [Category("分页数据显示控件")]
         public int ColumnSettingWidth
         {
-            get { return panelColVisibleSetting.Width; }
-            set { panelColVisibleSetting.Width = value; }
+            get { return _fPageGridColumnsSetting.Width; }
+            set { _fPageGridColumnsSetting.Width = value; }
         }
 
         /// <summary>
@@ -141,8 +141,6 @@ namespace UtilZ.Lib.Winform.PageGrid
             set { panelPage.Visible = value; }
         }
 
-        private bool _columnSettingVisible = true;
-
         /// <summary>
         /// 获取或设置列设置是否可见
         /// </summary>
@@ -152,22 +150,8 @@ namespace UtilZ.Lib.Winform.PageGrid
         [Category("分页数据显示控件")]
         public bool ColumnSettingVisible
         {
-            get { return _columnSettingVisible; }
-            set
-            {
-                if (_columnSettingVisible == value)
-                {
-                    return;
-                }
-
-                _columnSettingVisible = value;
-                if (!_columnSettingVisible && this.ColumnSettingStatus == PageGridColumnSettingStatus.Float)
-                {
-                    this._fPageGridColumnsSetting.SwitchColumnSettingStatus(PageGridColumnSettingStatus.Hiden);
-                }
-
-                panelColVisibleSetting.Visible = value;
-            }
+            get { return this._fPageGridColumnsSetting.Visible; }
+            set { this._fPageGridColumnsSetting.Visible = value; }
         }
 
         /// <summary>
@@ -221,11 +205,11 @@ namespace UtilZ.Lib.Winform.PageGrid
                 _rowNumVisible = value;
                 if (_rowNumVisible)
                 {
-                    this.dataGridView.RowPostPaint += DataGridView_RowPostPaint;
+                    this._dataGridView.RowPostPaint += DataGridView_RowPostPaint;
                 }
                 else
                 {
-                    this.dataGridView.RowPostPaint -= DataGridView_RowPostPaint;
+                    this._dataGridView.RowPostPaint -= DataGridView_RowPostPaint;
                 }
             }
         }
@@ -311,9 +295,9 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="e">e</param>
         private void DataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            var rectangle = new System.Drawing.Rectangle(e.RowBounds.Location.X, e.RowBounds.Location.Y, dataGridView.RowHeadersWidth - 4, e.RowBounds.Height);
-            TextRenderer.DrawText(e.Graphics, (e.RowIndex + 1).ToString(), dataGridView.RowHeadersDefaultCellStyle.Font, rectangle,
-                dataGridView.RowHeadersDefaultCellStyle.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
+            var rectangle = new System.Drawing.Rectangle(e.RowBounds.Location.X, e.RowBounds.Location.Y, _dataGridView.RowHeadersWidth - 4, e.RowBounds.Height);
+            TextRenderer.DrawText(e.Graphics, (e.RowIndex + 1).ToString(), _dataGridView.RowHeadersDefaultCellStyle.Font, rectangle,
+                _dataGridView.RowHeadersDefaultCellStyle.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
         }
 
         /// <summary>
@@ -324,7 +308,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         [Category("分页数据显示控件")]
         public ZDataGridView GridControl
         {
-            get { return dataGridView; }
+            get { return _dataGridView; }
         }
 
         /// <summary>
@@ -366,7 +350,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         [Browsable(false)]
         public object DataSource
         {
-            get { return dataGridView.DataSource; }
+            get { return _dataGridView.DataSource; }
         }
 
         /// <summary>
@@ -391,9 +375,9 @@ namespace UtilZ.Lib.Winform.PageGrid
         {
             get
             {
-                if (this.dataGridView.CurrentRow != null)
+                if (this._dataGridView.CurrentRow != null)
                 {
-                    return this.dataGridView.CurrentRow.Index;
+                    return this._dataGridView.CurrentRow.Index;
                 }
                 else
                 {
@@ -402,19 +386,19 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
             set
             {
-                if (value > this.dataGridView.RowCount - 1)
+                if (value > this._dataGridView.RowCount - 1)
                 {
                     throw new ArgumentOutOfRangeException("value", "焦点行索引值超出行数范围");
                 }
 
-                foreach (DataGridViewRow row in this.dataGridView.SelectedRows)
+                foreach (DataGridViewRow row in this._dataGridView.SelectedRows)
                 {
                     row.Selected = false;
                 }
 
                 if (value >= 0)
                 {
-                    this.dataGridView.Rows[value].Selected = true;
+                    this._dataGridView.Rows[value].Selected = true;
                 }
             }
         }
@@ -430,7 +414,7 @@ namespace UtilZ.Lib.Winform.PageGrid
             get
             {
                 Dictionary<int, DataGridViewRow> dicSelectedRows = new Dictionary<int, DataGridViewRow>();
-                foreach (DataGridViewCell cell in this.dataGridView.SelectedCells)
+                foreach (DataGridViewCell cell in this._dataGridView.SelectedCells)
                 {
                     if (dicSelectedRows.ContainsKey(cell.RowIndex))
                     {
@@ -458,18 +442,18 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
         public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
         {
-            NExtendDataGridView.DataBinding(this.dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
+            NExtendDataGridView.DataBinding(this._dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
             this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
-            this._fPageGridColumnsSetting.UpdateAdvanceSetting(this.dataGridView.Columns);
+            this._fPageGridColumnsSetting.UpdateAdvanceSetting(this._dataGridView.Columns);
             this._dataSourceName = dataSourceName;
 
             if (this._isLastColumnAutoSizeModeFill)
             {
                 //设置最后一个可见列填充
                 DataGridViewColumn col;
-                for (int i = this.dataGridView.Columns.Count - 1; i >= 0; i--)
+                for (int i = this._dataGridView.Columns.Count - 1; i >= 0; i--)
                 {
-                    col = this.dataGridView.Columns[i];
+                    col = this._dataGridView.Columns[i];
                     if (col.Visible)
                     {
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -749,8 +733,8 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// </summary>
         public void Clear()
         {
-            this.dataGridView.DataSource = null;
-            this.dataGridView.Columns.Clear();
+            this._dataGridView.DataSource = null;
+            this._dataGridView.Columns.Clear();
         }
         #endregion
         #endregion
@@ -767,7 +751,7 @@ namespace UtilZ.Lib.Winform.PageGrid
             {
                 if (string.IsNullOrEmpty(dataSourceName) ||
                    string.IsNullOrEmpty(settingDirectory) ||
-                   this.dataGridView.Columns.Count == 0)
+                   this._dataGridView.Columns.Count == 0)
                 {
                     return;
                 }
@@ -781,7 +765,7 @@ namespace UtilZ.Lib.Winform.PageGrid
                 var xdoc = XDocument.Load(columnSettingFilePath);
                 var rootEle = xdoc.Root;
                 int count = int.Parse(NXmlHelper.GetXElementAttributeValue(rootEle, "Count"));
-                if (this.dataGridView.Columns.Count != count)
+                if (this._dataGridView.Columns.Count != count)
                 {
                     //项数不同,同数据源名称,但是内容有变,不加载
                     return;
@@ -800,7 +784,7 @@ namespace UtilZ.Lib.Winform.PageGrid
                         item.Visible = bool.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "Visible"));
                         items.Add(item);
 
-                        if (!this.dataGridView.Columns.Contains(item.Name))
+                        if (!this._dataGridView.Columns.Contains(item.Name))
                         {
                             //不包含该列,同数据源名称,但是内容有变,不加载
                             return;
@@ -817,7 +801,7 @@ namespace UtilZ.Lib.Winform.PageGrid
                 this._hidenCols.Clear();
                 foreach (dynamic item in items)
                 {
-                    DataGridViewColumn col = this.dataGridView.Columns[item.Name];
+                    DataGridViewColumn col = this._dataGridView.Columns[item.Name];
                     col.Width = item.Width;
                     col.DisplayIndex = item.DisplayIndex;
                     col.Visible = item.Visible;
@@ -846,7 +830,7 @@ namespace UtilZ.Lib.Winform.PageGrid
             {
                 if (string.IsNullOrWhiteSpace(dataSourceName) ||
                     string.IsNullOrWhiteSpace(settingDirectory) ||
-                    this.dataGridView.Columns.Count == 0)
+                    this._dataGridView.Columns.Count == 0)
                 {
                     return;
                 }
@@ -854,9 +838,9 @@ namespace UtilZ.Lib.Winform.PageGrid
                 string columnSettingFilePath = PageGridControlCommon.GetGridColumnSettingFilePath(settingDirectory, dataSourceName);
                 var xdoc = new XDocument();
                 var rootEle = new XElement("DGVColumnsLayout");//NXmlHelper.
-                rootEle.Add(new XAttribute("Count", this.dataGridView.Columns.Count));
+                rootEle.Add(new XAttribute("Count", this._dataGridView.Columns.Count));
 
-                foreach (DataGridViewColumn col in this.dataGridView.Columns)
+                foreach (DataGridViewColumn col in this._dataGridView.Columns)
                 {
                     var itemEle = new XElement("Item");
                     itemEle.Add(new XAttribute("Name", col.Name));
@@ -888,6 +872,8 @@ namespace UtilZ.Lib.Winform.PageGrid
         }
         #endregion
 
+        private readonly ZDataGridView _dataGridView;
+
         /// <summary>
         /// 隐藏列绑定列表
         /// </summary>
@@ -910,6 +896,18 @@ namespace UtilZ.Lib.Winform.PageGrid
         {
             InitializeComponent();
 
+            this._dataGridView = this.CreateDataGridView();
+            this._fPageGridColumnsSetting = this.CreateColSetting();
+
+            this.panelContent.Controls.Add(this._dataGridView);
+            this.panelContent.Controls.Add(this._fPageGridColumnsSetting);
+
+            this._dataGridView.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnDisplayIndexChanged);
+            this._dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
+            this._dataGridView.SelectionChanged += GridView_SelectionChanged;
+            this._dataGridView.MouseClick += GridView_MouseClick;
+            this._dataGridView.MouseDoubleClick += GridView_MouseDoubleClick;
+
             var pageControls = new List<Control>();
             foreach (Control control in panelPage.Controls)
             {
@@ -917,21 +915,41 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
 
             this._pageControls = new ReadOnlyCollection<Control>(pageControls);
-
-            this.numPageIndex.ValueChanged += this.numPageIndex_ValueChanged;
-
             //初始化列设置存放目录
             this._settingDirectory = PageGridControlCommon.GetDefaultSettingDirectory();
-            this._fPageGridColumnsSetting = new FPageGridColumnsSetting(this.panelColVisibleSetting, this.labelTitle, this._hidenCols);
-            this._fPageGridColumnsSetting.SaveColumnDisplaySetting += _fPageGridColumnsSetting_SaveColumnDisplaySetting;
-
-            this.dataGridView.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnDisplayIndexChanged);
-            this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
+            this.numPageIndex.ValueChanged += this.numPageIndex_ValueChanged;
             this.RowNumVisible = true;
+        }
 
-            this.dataGridView.SelectionChanged += GridView_SelectionChanged;
-            this.dataGridView.MouseClick += GridView_MouseClick;
-            this.dataGridView.MouseDoubleClick += GridView_MouseDoubleClick;
+        private FPageGridColumnsSetting CreateColSetting()
+        {
+            var fPageGridColumnsSetting = new FPageGridColumnsSetting(this.panelContent, this._hidenCols);
+            fPageGridColumnsSetting.Dock = DockStyle.Right;
+            fPageGridColumnsSetting.SaveColumnDisplaySetting += _fPageGridColumnsSetting_SaveColumnDisplaySetting;
+            fPageGridColumnsSetting.TopLevel = false;
+            fPageGridColumnsSetting.Show();
+            return fPageGridColumnsSetting;
+        }
+
+        private ZDataGridView CreateDataGridView()
+        {
+            var dgv = new ZDataGridView();
+            dgv.AllowDrop = true;
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.AllowUserToOrderColumns = true;
+            dgv.AllowUserToResizeRows = false;
+            dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgv.Location = new System.Drawing.Point(0, 0);
+            dgv.MouseRightButtonChangeSelectedRow = false;
+            dgv.Name = "dataGridView";
+            dgv.ReadOnly = true;
+            dgv.RowTemplate.Height = 23;
+            dgv.Size = new System.Drawing.Size(225, 86);
+            dgv.TabIndex = 2;
+            dgv.VirtualMode = true;
+            return dgv;
         }
 
         #region 接口事件调用
@@ -951,10 +969,10 @@ namespace UtilZ.Lib.Winform.PageGrid
             //    row = this.dataGridView.Rows[rowIndex].DataBoundItem;
             //}
 
-            if (this.dataGridView.CurrentRow != null)
+            if (this._dataGridView.CurrentRow != null)
             {
-                rowIndex = this.dataGridView.CurrentRow.Index;
-                row = this.dataGridView.CurrentRow.DataBoundItem;
+                rowIndex = this._dataGridView.CurrentRow.Index;
+                row = this._dataGridView.CurrentRow.DataBoundItem;
             }
 
             var handler = this.DataRowDoubleClick;
@@ -973,10 +991,10 @@ namespace UtilZ.Lib.Winform.PageGrid
         {
             object row = null;
             int rowIndex = -1;
-            if (this.dataGridView.CurrentRow != null)
+            if (this._dataGridView.CurrentRow != null)
             {
-                rowIndex = this.dataGridView.CurrentRow.Index;
-                row = this.dataGridView.CurrentRow.DataBoundItem;
+                rowIndex = this._dataGridView.CurrentRow.Index;
+                row = this._dataGridView.CurrentRow.DataBoundItem;
             }
 
             var handler = this.DataRowClick;
@@ -1012,8 +1030,8 @@ namespace UtilZ.Lib.Winform.PageGrid
                     prevRow = this._prevSelectedRow.DataBoundItem;
                 }
 
-                this._prevSelectedRow = this.dataGridView.CurrentRow;
-                if (this.dataGridView.CurrentRow != null)
+                this._prevSelectedRow = this._dataGridView.CurrentRow;
+                if (this._dataGridView.CurrentRow != null)
                 {
                     row = this._prevSelectedRow.DataBoundItem;
                     rowHandle = this._prevSelectedRow.Index;
@@ -1072,8 +1090,6 @@ namespace UtilZ.Lib.Winform.PageGrid
             {
                 return;
             }
-
-            this._fPageGridColumnsSetting.Show();
         }
 
         /// <summary>
@@ -1086,9 +1102,9 @@ namespace UtilZ.Lib.Winform.PageGrid
             try
             {
                 if (e.Button == System.Windows.Forms.MouseButtons.Right && e.Clicks == 1 &&
-                   this._columnSettingVisible)
+                   this.ColumnSettingVisible)
                 {
-                    this._targetCol = this.dataGridView.Columns[e.ColumnIndex];
+                    this._targetCol = this._dataGridView.Columns[e.ColumnIndex];
                     //cms.Show(MousePosition.X, MousePosition.Y);
                     this.cmsColVisibleSetting.Show(Cursor.Position);
                 }
@@ -1120,36 +1136,6 @@ namespace UtilZ.Lib.Winform.PageGrid
                 Loger.Error(ex);
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        /// <summary>
-        /// 显示隐藏列列表
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmiShowHidenColList_Click(object sender, EventArgs e)
-        {
-            panelColVisibleSetting.Visible = true;
-        }
-
-        /// <summary>
-        /// 隐藏隐藏列列表
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmiHidenHidenColList_Click(object sender, EventArgs e)
-        {
-            panelColVisibleSetting.Visible = false;
-        }
-
-        /// <summary>
-        /// 列隐藏列表隐藏时的标题单击事件处理
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void labelTitle_Click(object sender, EventArgs e)
-        {
-            this._fPageGridColumnsSetting.SwitchColumnSettingStatus(PageGridColumnSettingStatus.Dock);
         }
 
         /// <summary>

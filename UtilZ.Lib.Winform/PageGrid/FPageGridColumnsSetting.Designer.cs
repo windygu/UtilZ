@@ -30,20 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             this.listBoxCol = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.pictureBoxMenu = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiHiden = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFloat = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDock = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tpHidenCol = new System.Windows.Forms.TabPage();
             this.tpColSetting = new System.Windows.Forms.TabPage();
             this.dgvColumnSetting = new System.Windows.Forms.DataGridView();
+            this.labelTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMenu)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tpHidenCol.SuspendLayout();
             this.tpColSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumnSetting)).BeginInit();
@@ -58,15 +58,6 @@
             this.listBoxCol.Name = "listBoxCol";
             this.listBoxCol.Size = new System.Drawing.Size(182, 140);
             this.listBoxCol.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "显示设置";
             // 
             // pictureBoxMenu
             // 
@@ -119,18 +110,18 @@
             this.tsmiSave.Text = "保存";
             this.tsmiSave.Click += new System.EventHandler(this.tsmiSave_Click);
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tpHidenCol);
-            this.tabControl1.Controls.Add(this.tpColSetting);
-            this.tabControl1.Location = new System.Drawing.Point(2, 28);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(196, 172);
-            this.tabControl1.TabIndex = 3;
+            this.tabControl.Controls.Add(this.tpHidenCol);
+            this.tabControl.Controls.Add(this.tpColSetting);
+            this.tabControl.Location = new System.Drawing.Point(2, 28);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(196, 172);
+            this.tabControl.TabIndex = 3;
             // 
             // tpHidenCol
             // 
@@ -170,17 +161,27 @@
             this.dgvColumnSetting.Size = new System.Drawing.Size(182, 140);
             this.dgvColumnSetting.TabIndex = 0;
             // 
+            // labelTitle
+            // 
+            this.labelTitle.Location = new System.Drawing.Point(3, 3);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(53, 12);
+            this.labelTitle.TabIndex = 4;
+            this.labelTitle.Text = "显示设置";
+            this.labelTitle.Click += new System.EventHandler(this.labelTitle_Click);
+            // 
             // FPageGridColumnsSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(200, 200);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.labelTitle);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.pictureBoxMenu);
-            this.Controls.Add(this.label1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(20, 0);
             this.Name = "FPageGridColumnsSetting";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -188,28 +189,27 @@
             this.Load += new System.EventHandler(this.FPageGridColumnsSetting_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMenu)).EndInit();
             this.contextMenuStrip.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tpHidenCol.ResumeLayout(false);
             this.tpColSetting.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumnSetting)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.ListBox listBoxCol;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBoxMenu;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tsmiHiden;
         private System.Windows.Forms.ToolStripMenuItem tsmiFloat;
         private System.Windows.Forms.ToolStripMenuItem tsmiDock;
         private System.Windows.Forms.ToolStripMenuItem tsmiSave;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tpHidenCol;
         private System.Windows.Forms.TabPage tpColSetting;
         private System.Windows.Forms.DataGridView dgvColumnSetting;
+        private System.Windows.Forms.Label labelTitle;
     }
 }

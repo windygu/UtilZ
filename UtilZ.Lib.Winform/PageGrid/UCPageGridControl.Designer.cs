@@ -38,22 +38,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnFirstPage = new System.Windows.Forms.Button();
             this.numPageIndex = new System.Windows.Forms.NumericUpDown();
-            this.panelColVisibleSetting = new System.Windows.Forms.Panel();
-            this.labelTitle = new System.Windows.Forms.Label();
             this.cmsColVisibleSetting = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiHidenCol = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiShowModel = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiShowHidenColList = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiHidenHidenColList = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContent = new System.Windows.Forms.Panel();
-            this.dataGridView = new UtilZ.Lib.Winform.ZDataGridView();
             this.panelPage = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).BeginInit();
-            this.panelColVisibleSetting.SuspendLayout();
             this.cmsColVisibleSetting.SuspendLayout();
-            this.panelContent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -171,92 +162,28 @@
             this.numPageIndex.Size = new System.Drawing.Size(39, 21);
             this.numPageIndex.TabIndex = 11;
             // 
-            // panelColVisibleSetting
-            // 
-            this.panelColVisibleSetting.BackColor = System.Drawing.SystemColors.Control;
-            this.panelColVisibleSetting.Controls.Add(this.labelTitle);
-            this.panelColVisibleSetting.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelColVisibleSetting.Location = new System.Drawing.Point(225, 0);
-            this.panelColVisibleSetting.MinimumSize = new System.Drawing.Size(20, 0);
-            this.panelColVisibleSetting.Name = "panelColVisibleSetting";
-            this.panelColVisibleSetting.Size = new System.Drawing.Size(140, 86);
-            this.panelColVisibleSetting.TabIndex = 4;
-            // 
-            // labelTitle
-            // 
-            this.labelTitle.Location = new System.Drawing.Point(2, 2);
-            this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(15, 50);
-            this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "显示设置";
-            this.labelTitle.Click += new System.EventHandler(this.labelTitle_Click);
-            // 
             // cmsColVisibleSetting
             // 
             this.cmsColVisibleSetting.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiHidenCol,
-            this.tsmiShowModel,
-            this.tsmiShowHidenColList,
-            this.tsmiHidenHidenColList});
+            this.tsmiHidenCol});
             this.cmsColVisibleSetting.Name = "cmsColVisibleSetting";
-            this.cmsColVisibleSetting.Size = new System.Drawing.Size(159, 92);
+            this.cmsColVisibleSetting.Size = new System.Drawing.Size(153, 48);
             // 
             // tsmiHidenCol
             // 
             this.tsmiHidenCol.Name = "tsmiHidenCol";
-            this.tsmiHidenCol.Size = new System.Drawing.Size(158, 22);
-            this.tsmiHidenCol.Text = "隐藏列";
+            this.tsmiHidenCol.Size = new System.Drawing.Size(152, 22);
+            this.tsmiHidenCol.Text = "隐藏";
             this.tsmiHidenCol.Click += new System.EventHandler(this.tsmiHidenCol_Click);
-            // 
-            // tsmiShowModel
-            // 
-            this.tsmiShowModel.Name = "tsmiShowModel";
-            this.tsmiShowModel.Size = new System.Drawing.Size(158, 22);
-            this.tsmiShowModel.Text = "列显示模式";
-            this.tsmiShowModel.Visible = false;
-            // 
-            // tsmiShowHidenColList
-            // 
-            this.tsmiShowHidenColList.Name = "tsmiShowHidenColList";
-            this.tsmiShowHidenColList.Size = new System.Drawing.Size(158, 22);
-            this.tsmiShowHidenColList.Text = "显示隐藏列列表";
-            this.tsmiShowHidenColList.Click += new System.EventHandler(this.tsmiShowHidenColList_Click);
-            // 
-            // tsmiHidenHidenColList
-            // 
-            this.tsmiHidenHidenColList.Name = "tsmiHidenHidenColList";
-            this.tsmiHidenHidenColList.Size = new System.Drawing.Size(158, 22);
-            this.tsmiHidenHidenColList.Text = "隐藏隐藏列列表";
-            this.tsmiHidenHidenColList.Click += new System.EventHandler(this.tsmiHidenHidenColList_Click);
             // 
             // panelContent
             // 
-            this.panelContent.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panelContent.Controls.Add(this.dataGridView);
-            this.panelContent.Controls.Add(this.panelColVisibleSetting);
+            this.panelContent.BackColor = System.Drawing.SystemColors.Control;
             this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContent.Location = new System.Drawing.Point(0, 0);
             this.panelContent.Name = "panelContent";
             this.panelContent.Size = new System.Drawing.Size(365, 86);
             this.panelContent.TabIndex = 5;
-            // 
-            // dataGridView
-            // 
-            this.dataGridView.AllowDrop = true;
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.AllowUserToOrderColumns = true;
-            this.dataGridView.AllowUserToResizeRows = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView.MouseRightButtonChangeSelectedRow = false;
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.RowTemplate.Height = 23;
-            this.dataGridView.Size = new System.Drawing.Size(225, 86);
-            this.dataGridView.TabIndex = 2;
-            this.dataGridView.VirtualMode = true;
             // 
             // panelPage
             // 
@@ -286,10 +213,7 @@
             this.Load += new System.EventHandler(this.UCPageGridControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).EndInit();
-            this.panelColVisibleSetting.ResumeLayout(false);
             this.cmsColVisibleSetting.ResumeLayout(false);
-            this.panelContent.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panelPage.ResumeLayout(false);
             this.panelPage.PerformLayout();
             this.ResumeLayout(false);
@@ -297,18 +221,11 @@
         }
 
         #endregion
-
-        private ZDataGridView dataGridView;
         private System.Windows.Forms.Button btnFirstPage;
         private System.Windows.Forms.NumericUpDown numPageIndex;
-        private System.Windows.Forms.Panel panelColVisibleSetting;
         private System.Windows.Forms.ContextMenuStrip cmsColVisibleSetting;
         private System.Windows.Forms.ToolStripMenuItem tsmiHidenCol;
-        private System.Windows.Forms.ToolStripMenuItem tsmiShowHidenColList;
-        private System.Windows.Forms.ToolStripMenuItem tsmiHidenHidenColList;
         private System.Windows.Forms.Panel panelContent;
-        private System.Windows.Forms.Label labelTitle;
-        private System.Windows.Forms.ToolStripMenuItem tsmiShowModel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numPageSize;
         private System.Windows.Forms.Label label2;

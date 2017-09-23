@@ -18,7 +18,6 @@ namespace UtilZ.Lib.Winform.PageGrid
     public partial class FPageGridColumnsSetting : NoneBorderForm
     {
         private readonly Control _parentControl;
-        private readonly Control _titleControl;
 
         /// <summary>
         /// 当前绑定的全部列集合
@@ -32,7 +31,6 @@ namespace UtilZ.Lib.Winform.PageGrid
         private readonly List<DataGridViewColumn> _srcHidenCols;
         private PageGridColumnSettingStatus _columnSettingStatus = PageGridColumnSettingStatus.Hiden;
 
-        private bool _isLoaded = false;
         private Size _lastParentControlSize;
 
         /// <summary>
@@ -48,8 +46,9 @@ namespace UtilZ.Lib.Winform.PageGrid
                     return;
                 }
 
+                PageGridColumnSettingStatus oldStatus = _columnSettingStatus;
                 _columnSettingStatus = value;
-                this.SwitchColumnSettingStatus(this._columnSettingStatus);
+                this.SwitchColumnSettingStatus(this._columnSettingStatus, oldStatus);
             }
         }
 
@@ -83,25 +82,25 @@ namespace UtilZ.Lib.Winform.PageGrid
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AdvanceSettingVisible
         {
-            get { return this.tabControl1.TabPages.Contains(this.tpColSetting); }
+            get { return this.tabControl.TabPages.Contains(this.tpColSetting); }
             set
             {
                 if (value)
                 {
-                    if (this.tabControl1.TabPages.Contains(this.tpColSetting))
+                    if (this.tabControl.TabPages.Contains(this.tpColSetting))
                     {
                         return;
                     }
                     else
                     {
-                        this.tabControl1.TabPages.Add(this.tpColSetting);
+                        this.tabControl.TabPages.Add(this.tpColSetting);
                     }
                 }
                 else
                 {
-                    if (this.tabControl1.TabPages.Contains(this.tpColSetting))
+                    if (this.tabControl.TabPages.Contains(this.tpColSetting))
                     {
-                        this.tabControl1.TabPages.Remove(this.tpColSetting);
+                        this.tabControl.TabPages.Remove(this.tpColSetting);
                     }
                     else
                     {
@@ -123,18 +122,16 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// 构造函数
         /// </summary>
         /// <param name="parentControl">父控件</param>
-        /// <param name="titleControl">隐藏时的标题控件</param>
         /// <param name="hidenCols">隐藏列集合</param>
-        public FPageGridColumnsSetting(Control parentControl, Control titleControl, UIBindingList<DataGridViewColumn> hidenCols) : this()
+        public FPageGridColumnsSetting(Control parentControl, UIBindingList<DataGridViewColumn> hidenCols) : this()
         {
             this.TopLevel = false;
             this.Dock = DockStyle.Fill;
             this.IsAllowMinimize = false;
             this.IsUseInOutEffect = false;
             this._parentControl = parentControl;
-            this._titleControl = titleControl;
             this._hidenCols = hidenCols;
-            this._lastParentControlSize = parentControl.Size;
+            this._lastParentControlSize = new Size(100, 100);
 
             this._srcHidenCols = this._hidenCols.ToList();
             this.listBoxCol.DataSource = this._hidenCols;
@@ -142,8 +139,10 @@ namespace UtilZ.Lib.Winform.PageGrid
             this.listBoxCol.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxCol_MouseDoubleClick);
 
             this.dgvColumnSetting.DataSource = this._columnSettingInfos;
+            this.dgvColumnSetting.Columns[this.dgvColumnSetting.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            this.SwitchColumnSettingStatus(this._columnSettingStatus);
+            this.Visible = true;
+            this.SwitchColumnSettingStatus(this._columnSettingStatus, PageGridColumnSettingStatus.Dock);
         }
 
         private void FPageGridColumnsSetting_Load(object sender, EventArgs e)
@@ -153,7 +152,6 @@ namespace UtilZ.Lib.Winform.PageGrid
                 return;
             }
 
-            this._isLoaded = true;
         }
 
         private void listBoxCol_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -200,63 +198,80 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// 切换列设置状态
         /// </summary>
         /// <param name="status">列设置状态</param>
-        public void SwitchColumnSettingStatus(PageGridColumnSettingStatus status)
+        /// <param name="oldStatus">旧状态</param>
+        private void SwitchColumnSettingStatus(PageGridColumnSettingStatus status, PageGridColumnSettingStatus oldStatus)
         {
+            if (!this.Visible)
+            {
+                return;
+            }
+
             this._columnSettingStatus = status;
             switch (status)
             {
                 case PageGridColumnSettingStatus.Dock:
-                    this.StatusDock();
+                    this.StatusDock(oldStatus, status);
                     break;
                 case PageGridColumnSettingStatus.Float:
-                    this.StatusFloat();
+                    this.StatusFloat(oldStatus, status);
                     break;
                 case PageGridColumnSettingStatus.Hiden:
-                    this.StatusHiden();
+                    this.StatusHiden(oldStatus, status);
                     break;
                 default:
                     MessageBox.Show(string.Format("不识别的状态:{0}", status.ToString()));
                     return;
             }
+        }
 
-            if (!this._isLoaded)
+        private readonly Size _labelTitleSizeH = new Size(53, 12);
+        private readonly Size _labelTitleSizeV = new Size(15, 50);
+        private void StatusHiden(PageGridColumnSettingStatus oldStatus, PageGridColumnSettingStatus newStatus)
+        {
+            this._lastParentControlSize = this.Size;
+            this.labelTitle.Size = this._labelTitleSizeV;
+            this.Width = this._parentControl.MinimumSize.Width;
+            this.tabControl.Visible = false;
+            this.IsDisableDragMoveForm = true;
+            this.FormResizeStyle = ResizeStyle.None;
+
+            if (oldStatus == PageGridColumnSettingStatus.Float)
             {
-                this.Show();
+                this.TopLevel = false;
+                this._parentControl.Controls.Add(this);
             }
         }
 
-        private void StatusHiden()
-        {
-            this._lastParentControlSize = this._parentControl.Size;
-            this._parentControl.Visible = true;
-            this._parentControl.Controls.Remove(this);
-            this.Visible = false;
-            this._titleControl.Visible = true;
-            this._parentControl.Width = this._parentControl.MinimumSize.Width;
-        }
-
-        private void StatusFloat()
+        private void StatusFloat(PageGridColumnSettingStatus oldStatus, PageGridColumnSettingStatus newStatus)
         {
             this._parentControl.Controls.Remove(this);
-            this._parentControl.Visible = false;
             this.TopLevel = true;
             this.TopMost = true;
             this.ShowInTaskbar = true;
             this.ShowInTaskbar = false;
-            this._titleControl.Visible = false;
             this.IsDisableDragMoveForm = false;
             this.Location = Cursor.Position;
+            this.FormResizeStyle = ResizeStyle.All;
+            if (oldStatus == PageGridColumnSettingStatus.Hiden)
+            {
+                this.Size = this._lastParentControlSize;
+                this.labelTitle.Size = this._labelTitleSizeH;
+                this.tabControl.Visible = true;
+            }
         }
 
-        private void StatusDock()
+        private void StatusDock(PageGridColumnSettingStatus oldStatus, PageGridColumnSettingStatus newStatus)
         {
             this.TopLevel = false;
-            this.Visible = true;
-            this.IsDisableDragMoveForm = true;
-            this._titleControl.Visible = false;
-            this._parentControl.Size = this._lastParentControlSize;
+            this.IsDisableDragMoveForm = false;
             this._parentControl.Controls.Add(this);
-            this._parentControl.Visible = true;
+            this.FormResizeStyle = ResizeStyle.Left;
+            if (oldStatus == PageGridColumnSettingStatus.Hiden)
+            {
+                this.Size = this._lastParentControlSize;
+                this.labelTitle.Size = this._labelTitleSizeH;
+                this.tabControl.Visible = true;
+            }
         }
 
         private void tsmiSave_Click(object sender, EventArgs e)
@@ -358,6 +373,25 @@ namespace UtilZ.Lib.Winform.PageGrid
                     this._hidenCols.Add(col);
                 }
             }
+        }
+
+        private void labelTitle_Click(object sender, EventArgs e)
+        {
+            PageGridColumnSettingStatus newStatus;
+            if (this._columnSettingStatus == PageGridColumnSettingStatus.Hiden)
+            {
+                newStatus = PageGridColumnSettingStatus.Dock;
+            }
+            else if (this._columnSettingStatus == PageGridColumnSettingStatus.Dock)
+            {
+                newStatus = PageGridColumnSettingStatus.Hiden;
+            }
+            else
+            {
+                return;
+            }
+
+            this.SwitchColumnSettingStatus(newStatus, this._columnSettingStatus);
         }
     }
 
