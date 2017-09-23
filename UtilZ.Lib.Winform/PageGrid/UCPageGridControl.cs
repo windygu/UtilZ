@@ -549,9 +549,17 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="pageInfo">页信息</param>
         public void SetPageInfo(PageInfo pageInfo)
         {
+            if (pageInfo == null || pageInfo.PageCount < 1)
+            {
+                labelPageCount.Text = "0页|共0条记录";
+            }
+            else
+            {
+                labelPageCount.Text = string.Format("{0}页|共{0}条记录", pageInfo.PageCount, pageInfo.TotalCount);
+            }
+
             this.InnerSetPageInfo(pageInfo);
 
-            labelPageCount.Text = string.Format("共{0}页", pageInfo == null || pageInfo.PageCount < 1 ? 0 : pageInfo.PageCount);
             //外部更改查询页，触发分页查询事件
             if (pageInfo != null && pageInfo.PageCount > 0)
             {
@@ -565,70 +573,79 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="pageInfo">页信息</param>
         private void InnerSetPageInfo(PageInfo pageInfo)
         {
-            //记录当前分页信息
-            this._pageInfo = pageInfo;
+            this.numPageIndex.ValueChanged -= this.numPageIndex_ValueChanged;
 
-            if (this.numPageSize.Maximum < pageInfo.PageSize)
+            try
             {
-                this.numPageSize.Maximum = pageInfo.PageSize;
-            }
+                //记录当前分页信息
+                this._pageInfo = pageInfo;
 
-            if (this.numPageSize.Value != pageInfo.PageSize)
-            {
-                this.numPageSize.Value = pageInfo.PageSize;
-            }
-
-            //设置显示信息
-            if (pageInfo == null || pageInfo.PageCount <= 0)
-            {
-                //设置页数选择控件值
-                numPageIndex.Minimum = 0;
-                numPageIndex.Maximum = 0;
-                numPageIndex.Value = 0;
-                numPageIndex.Enabled = false;
-
-                //禁用跳转按钮
-                btnFirstPage.Enabled = false;
-                btnPrePage.Enabled = false;
-                btnNextPage.Enabled = false;
-                btnLastPage.Enabled = false;
-            }
-            else
-            {
-                numPageIndex.Minimum = 1;
-                numPageIndex.Maximum = pageInfo.PageCount;
-                numPageIndex.Value = pageInfo.PageIndex;
-                numPageIndex.Enabled = true;
-
-                //启用跳转按钮
-                btnFirstPage.Enabled = false;
-                btnPrePage.Enabled = false;
-                btnNextPage.Enabled = false;
-                btnLastPage.Enabled = false;
-
-                //如果当前页为小于等于1,则禁首页和用前一页
-                if (pageInfo.PageIndex <= 1)
+                if (this.numPageSize.Maximum < pageInfo.PageSize)
                 {
+                    this.numPageSize.Maximum = pageInfo.PageSize;
+                }
+
+                if (this.numPageSize.Value != pageInfo.PageSize)
+                {
+                    this.numPageSize.Value = pageInfo.PageSize;
+                }
+
+                //设置显示信息
+                if (pageInfo == null || pageInfo.PageCount <= 0)
+                {
+                    //设置页数选择控件值
+                    numPageIndex.Minimum = 0;
+                    numPageIndex.Maximum = 0;
+                    numPageIndex.Value = 0;
+                    numPageIndex.Enabled = false;
+
+                    //禁用跳转按钮
                     btnFirstPage.Enabled = false;
                     btnPrePage.Enabled = false;
-                }
-                else
-                {
-                    btnFirstPage.Enabled = true;
-                    btnPrePage.Enabled = true;
-                }
-
-                //如果当前页大于等于总页数,则禁用最后一页和下一页
-                if (pageInfo.PageIndex >= pageInfo.PageCount)
-                {
                     btnNextPage.Enabled = false;
                     btnLastPage.Enabled = false;
                 }
                 else
                 {
-                    btnNextPage.Enabled = true;
-                    btnLastPage.Enabled = true;
+                    numPageIndex.Minimum = 1;
+                    numPageIndex.Maximum = pageInfo.PageCount;
+                    numPageIndex.Value = pageInfo.PageIndex;
+                    numPageIndex.Enabled = true;
+
+                    //启用跳转按钮
+                    btnFirstPage.Enabled = false;
+                    btnPrePage.Enabled = false;
+                    btnNextPage.Enabled = false;
+                    btnLastPage.Enabled = false;
+
+                    //如果当前页为小于等于1,则禁首页和用前一页
+                    if (pageInfo.PageIndex <= 1)
+                    {
+                        btnFirstPage.Enabled = false;
+                        btnPrePage.Enabled = false;
+                    }
+                    else
+                    {
+                        btnFirstPage.Enabled = true;
+                        btnPrePage.Enabled = true;
+                    }
+
+                    //如果当前页大于等于总页数,则禁用最后一页和下一页
+                    if (pageInfo.PageIndex >= pageInfo.PageCount)
+                    {
+                        btnNextPage.Enabled = false;
+                        btnLastPage.Enabled = false;
+                    }
+                    else
+                    {
+                        btnNextPage.Enabled = true;
+                        btnLastPage.Enabled = true;
+                    }
                 }
+            }
+            finally
+            {
+                this.numPageIndex.ValueChanged += this.numPageIndex_ValueChanged;
             }
         }
 
@@ -798,6 +815,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         {
             InitializeComponent();
 
+            this.numPageIndex.ValueChanged += this.numPageIndex_ValueChanged;
 
             //初始化列设置存放目录
             this._settingDirectory = PageGridControlCommon.GetDefaultSettingDirectory();
@@ -1045,7 +1063,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         #region 分页
         private void PageQuery(int pageIndex)
         {
-            this.InnerSetPageInfo(new PageInfo(this._pageInfo.PageCount, this._pageInfo.PageSize, pageIndex));
+            this.InnerSetPageInfo(new PageInfo(this._pageInfo.PageCount, this._pageInfo.PageSize, pageIndex, this._pageInfo.TotalCount));
             this.OnRaiseQueryData(new QueryDataArgs(pageIndex, this._pageInfo.PageSize));
         }
 
@@ -1138,5 +1156,12 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
         }
         #endregion
+
+        public void Test(bool visible)
+        {
+            label2.Visible = visible;
+            label4.Visible = visible;
+            numPageSize.Visible = visible;
+        }
     }
 }

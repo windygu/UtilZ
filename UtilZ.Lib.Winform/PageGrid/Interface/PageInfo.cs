@@ -16,11 +16,13 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
         /// <param name="pageCount">页数</param>
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">页索引</param>
-        public PageInfo(int pageCount, int pageSize, int pageIndex)
+        /// <param name="totalCount">总数据记录数</param>
+        public PageInfo(int pageCount, int pageSize, int pageIndex, long totalCount)
         {
             this.PageCount = pageCount;
             this.PageSize = pageSize;
             this.PageIndex = pageIndex;
+            this.TotalCount = totalCount;
         }
 
         /// <summary>
@@ -37,5 +39,10 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
         /// 页索引
         /// </summary>
         public int PageIndex { get; private set; }
+
+        /// <summary>
+        /// 总数据记录数
+        /// </summary>
+        public long TotalCount { get; private set; }
     }
 }
