@@ -23,14 +23,50 @@ namespace UtilZ.Lib.Winform
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
         }
 
-        private const int Guying_HTLEFT = 10;
-        private const int Guying_HTRIGHT = 11;
-        private const int Guying_HTTOP = 12;
-        private const int Guying_HTTOPLEFT = 13;
-        private const int Guying_HTTOPRIGHT = 14;
-        private const int Guying_HTBOTTOM = 15;
-        private const int Guying_HTBOTTOMLEFT = 0x10;
-        private const int Guying_HTBOTTOMRIGHT = 17;
+        /// <summary>
+        /// 空
+        /// </summary>
+        protected const int NONE = 0;
+
+        /// <summary>
+        /// 左边缘
+        /// </summary>
+        protected const int TLEFT = 10;
+
+        /// <summary>
+        /// 右边缘
+        /// </summary>
+        protected const int RIGHT = 11;
+
+        /// <summary>
+        /// 上边缘
+        /// </summary>
+        protected const int TOP = 12;
+
+        /// <summary>
+        /// 下边缘
+        /// </summary>
+        protected const int BOTTOM = 15;
+
+        /// <summary>
+        /// 左上边缘
+        /// </summary>
+        protected const int LEFTTOP = 13;
+
+        /// <summary>
+        /// 右上边缘
+        /// </summary>
+        protected const int RIGHTTOP = 14;
+
+        /// <summary>
+        /// 左下边缘
+        /// </summary>
+        protected const int LEFTBOTTOM = 0x10;
+
+        /// <summary>
+        /// 右下边缘
+        /// </summary>
+        protected const int RIGHTBOTTOM = 17;
 
         private bool _isDisableDragMoveForm = false;
 
@@ -55,6 +91,20 @@ namespace UtilZ.Lib.Winform
         }
 
         /// <summary>
+        /// 窗口修改大小样式
+        /// </summary>
+        private ResizeStyle _formResizeStyle = ResizeStyle.All;
+
+        /// <summary>
+        /// 窗口修改大小样式
+        /// </summary>
+        public ResizeStyle FormResizeStyle
+        {
+            get { return _formResizeStyle; }
+            set { _formResizeStyle = value; }
+        }
+
+        /// <summary>
         /// 重写WndProc函数实现可调整大小
         /// </summary>
         /// <param name="m">消息对象</param>
@@ -70,45 +120,66 @@ namespace UtilZ.Lib.Winform
                     }
 
                     base.WndProc(ref m);
+
+                    ResizeStyle tmpStyle;
+                    int result;
                     var vPoint = new Point((int)m.LParam & 0xFFFF, (int)m.LParam >> 16 & 0xFFFF);
                     vPoint = PointToClient(vPoint);
                     if (vPoint.X <= 5)
                     {
                         if (vPoint.Y <= 5)
                         {
-                            m.Result = (IntPtr)Guying_HTTOPLEFT;
+                            result = LEFTTOP;
+                            tmpStyle = ResizeStyle.LeftTop;
                         }
                         else if (vPoint.Y >= ClientSize.Height - 5)
                         {
-                            m.Result = (IntPtr)Guying_HTBOTTOMLEFT;
+                            result = LEFTBOTTOM;
+                            tmpStyle = ResizeStyle.LeftBottom;
                         }
                         else
                         {
-                            m.Result = (IntPtr)Guying_HTLEFT;
+                            result = TLEFT;
+                            tmpStyle = ResizeStyle.Left;
                         }
                     }
                     else if (vPoint.X >= ClientSize.Width - 5)
                     {
                         if (vPoint.Y <= 5)
                         {
-                            m.Result = (IntPtr)Guying_HTTOPRIGHT;
+                            result = RIGHTTOP;
+                            tmpStyle = ResizeStyle.RightTop;
                         }
                         else if (vPoint.Y >= ClientSize.Height - 5)
                         {
-                            m.Result = (IntPtr)Guying_HTBOTTOMRIGHT;
+                            result = RIGHTBOTTOM;
+                            tmpStyle = ResizeStyle.RightBottom;
                         }
                         else
                         {
-                            m.Result = (IntPtr)Guying_HTRIGHT;
+                            result = RIGHT;
+                            tmpStyle = ResizeStyle.Right;
                         }
                     }
                     else if (vPoint.Y <= 5)
                     {
-                        m.Result = (IntPtr)Guying_HTTOP;
+                        result = TOP;
+                        tmpStyle = ResizeStyle.Top;
                     }
                     else if (vPoint.Y >= ClientSize.Height - 5)
                     {
-                        m.Result = (IntPtr)Guying_HTBOTTOM;
+                        result = BOTTOM;
+                        tmpStyle = ResizeStyle.Bottom;
+                    }
+                    else
+                    {
+                        result = NONE;
+                        tmpStyle = ResizeStyle.None;
+                    }
+
+                    if (result != NONE && tmpStyle == (tmpStyle & this._formResizeStyle))
+                    {
+                        m.Result = (IntPtr)result;
                     }
                     break;
                 case 0x0201:                //鼠标左键按下的消息 
@@ -284,5 +355,63 @@ namespace UtilZ.Lib.Winform
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 无边框窗口大小重设样式
+    /// </summary>
+    //[Editor("System.Windows.Forms.Design.AnchorEditor, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(System.Drawing.Design.UITypeEditor))]
+    [Flags]
+    public enum ResizeStyle
+    {
+        /// <summary>
+        /// 不允许调整
+        /// </summary>
+        None = 1,
+
+        /// <summary>
+        /// 上边缘
+        /// </summary>
+        Top = 2,
+
+        /// <summary>
+        /// 下边缘
+        /// </summary>
+        Bottom = 4,
+
+        /// <summary>
+        /// 左边缘
+        /// </summary>
+        Left = 8,
+
+        /// <summary>
+        /// 右边缘
+        /// </summary>
+        Right = 16,
+
+        /// <summary>
+        /// 左上边缘
+        /// </summary>
+        LeftTop = 32,
+
+        /// <summary>
+        /// 左下边缘
+        /// </summary>
+        LeftBottom = 64,
+
+        /// <summary>
+        /// 右上边缘
+        /// </summary>
+        RightTop = 128,
+
+        /// <summary>
+        /// 右下边缘
+        /// </summary>
+        RightBottom = 256,
+
+        /// <summary>
+        /// 全部八个方向
+        /// </summary>
+        All = Left | Top | Right | Bottom | LeftTop | LeftBottom | RightTop | RightBottom
     }
 }
