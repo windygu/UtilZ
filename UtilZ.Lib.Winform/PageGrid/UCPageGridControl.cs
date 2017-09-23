@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml.Linq;
 using UtilZ.Lib.Base.Extend;
 using System.Dynamic;
+using System.Collections.ObjectModel;
 
 namespace UtilZ.Lib.Winform.PageGrid
 {
@@ -69,6 +70,49 @@ namespace UtilZ.Lib.Winform.PageGrid
         public bool UIDesignMode
         {
             get { return this.DesignMode; }
+        }
+
+        private readonly ReadOnlyCollection<Control> _pageControls;
+
+        private bool _alignDirection = true;
+
+        /// <summary>
+        /// 获取或设置分页控件对齐方向[true:靠左;false:靠右]
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Description("分页控件对齐方向")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Category("分页数据显示控件")]
+        public bool AlignDirection
+        {
+            get { return _alignDirection; }
+            set
+            {
+                if (_alignDirection == value)
+                {
+                    return;
+                }
+
+                _alignDirection = value;
+
+                Control[] pageControls;
+                FlowDirection flowDirection;
+                if (_alignDirection)
+                {
+                    pageControls = _pageControls.ToArray();
+                    flowDirection = FlowDirection.LeftToRight;
+
+                }
+                else
+                {
+                    pageControls = _pageControls.Reverse().ToArray();
+                    flowDirection = FlowDirection.RightToLeft;
+                }
+
+                panelPage.Controls.Clear();
+                panelPage.FlowDirection = flowDirection;
+                panelPage.Controls.AddRange(pageControls);
+            }
         }
 
         /// <summary>
@@ -415,11 +459,6 @@ namespace UtilZ.Lib.Winform.PageGrid
         public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
         {
             NExtendDataGridView.DataBinding(this.dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
-            if (string.Equals(this._dataSourceName, dataSourceName))
-            {
-                return;
-            }
-
             this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
             this._fPageGridColumnsSetting.UpdateAdvanceSetting(this.dataGridView.Columns);
             this._dataSourceName = dataSourceName;
@@ -870,6 +909,14 @@ namespace UtilZ.Lib.Winform.PageGrid
         public UCPageGridControl()
         {
             InitializeComponent();
+
+            var pageControls = new List<Control>();
+            foreach (Control control in panelPage.Controls)
+            {
+                pageControls.Add(control);
+            }
+
+            this._pageControls = new ReadOnlyCollection<Control>(pageControls);
 
             this.numPageIndex.ValueChanged += this.numPageIndex_ValueChanged;
 

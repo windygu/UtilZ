@@ -43,7 +43,12 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
 
         #region 属性
         /// <summary>
-        /// 列设置区域宽度
+        /// 获取或设置分页控件对齐方向
+        /// </summary>
+        bool AlignDirection { get; set; }
+
+        /// <summary>
+        /// 获取或设置列设置区域宽度
         /// </summary>
         int ColumnSettingWidth { get; set; }
 

@@ -46,22 +46,22 @@
             this.tsmiShowHidenColList = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHidenHidenColList = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContent = new System.Windows.Forms.Panel();
-            this.panelPage = new System.Windows.Forms.FlowLayoutPanel();
             this.dataGridView = new UtilZ.Lib.Winform.ZDataGridView();
+            this.panelPage = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).BeginInit();
             this.panelColVisibleSetting.SuspendLayout();
             this.cmsColVisibleSetting.SuspendLayout();
             this.panelContent.SuspendLayout();
-            this.panelPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.panelPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelPageCount
             // 
             this.labelPageCount.AutoSize = true;
-            this.labelPageCount.Location = new System.Drawing.Point(196, 6);
-            this.labelPageCount.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.labelPageCount.Location = new System.Drawing.Point(199, 6);
+            this.labelPageCount.Margin = new System.Windows.Forms.Padding(0, 6, 3, 0);
             this.labelPageCount.Name = "labelPageCount";
             this.labelPageCount.Size = new System.Drawing.Size(83, 12);
             this.labelPageCount.TabIndex = 21;
@@ -73,7 +73,7 @@
             this.btnLastPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnLastPage.FlatAppearance.BorderSize = 0;
             this.btnLastPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLastPage.Location = new System.Drawing.Point(181, 5);
+            this.btnLastPage.Location = new System.Drawing.Point(184, 5);
             this.btnLastPage.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnLastPage.Name = "btnLastPage";
             this.btnLastPage.Size = new System.Drawing.Size(15, 15);
@@ -87,7 +87,7 @@
             this.btnNextPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnNextPage.FlatAppearance.BorderSize = 0;
             this.btnNextPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNextPage.Location = new System.Drawing.Point(166, 5);
+            this.btnNextPage.Location = new System.Drawing.Point(169, 5);
             this.btnNextPage.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(15, 15);
@@ -101,7 +101,7 @@
             this.btnPrePage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnPrePage.FlatAppearance.BorderSize = 0;
             this.btnPrePage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPrePage.Location = new System.Drawing.Point(106, 5);
+            this.btnPrePage.Location = new System.Drawing.Point(109, 5);
             this.btnPrePage.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnPrePage.Name = "btnPrePage";
             this.btnPrePage.Size = new System.Drawing.Size(15, 15);
@@ -112,7 +112,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(74, 6);
+            this.label4.Location = new System.Drawing.Point(77, 6);
             this.label4.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(17, 12);
@@ -122,7 +122,7 @@
             // numPageSize
             // 
             this.numPageSize.AutoSize = true;
-            this.numPageSize.Location = new System.Drawing.Point(32, 2);
+            this.numPageSize.Location = new System.Drawing.Point(35, 2);
             this.numPageSize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 3);
             this.numPageSize.Minimum = new decimal(new int[] {
             1,
@@ -142,8 +142,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(0, 6);
-            this.label2.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label2.Location = new System.Drawing.Point(3, 6);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 6, 0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 5;
@@ -155,7 +155,7 @@
             this.btnFirstPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnFirstPage.FlatAppearance.BorderSize = 0;
             this.btnFirstPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFirstPage.Location = new System.Drawing.Point(91, 5);
+            this.btnFirstPage.Location = new System.Drawing.Point(94, 5);
             this.btnFirstPage.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.btnFirstPage.Name = "btnFirstPage";
             this.btnFirstPage.Size = new System.Drawing.Size(15, 15);
@@ -166,7 +166,7 @@
             // numPageIndex
             // 
             this.numPageIndex.AutoSize = true;
-            this.numPageIndex.Location = new System.Drawing.Point(124, 3);
+            this.numPageIndex.Location = new System.Drawing.Point(127, 3);
             this.numPageIndex.Name = "numPageIndex";
             this.numPageIndex.Size = new System.Drawing.Size(39, 21);
             this.numPageIndex.TabIndex = 11;
@@ -240,23 +240,6 @@
             this.panelContent.Size = new System.Drawing.Size(365, 86);
             this.panelContent.TabIndex = 5;
             // 
-            // panelPage
-            // 
-            this.panelPage.Controls.Add(this.label2);
-            this.panelPage.Controls.Add(this.numPageSize);
-            this.panelPage.Controls.Add(this.label4);
-            this.panelPage.Controls.Add(this.btnFirstPage);
-            this.panelPage.Controls.Add(this.btnPrePage);
-            this.panelPage.Controls.Add(this.numPageIndex);
-            this.panelPage.Controls.Add(this.btnNextPage);
-            this.panelPage.Controls.Add(this.btnLastPage);
-            this.panelPage.Controls.Add(this.labelPageCount);
-            this.panelPage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelPage.Location = new System.Drawing.Point(0, 86);
-            this.panelPage.Name = "panelPage";
-            this.panelPage.Size = new System.Drawing.Size(365, 24);
-            this.panelPage.TabIndex = 6;
-            // 
             // dataGridView
             // 
             this.dataGridView.AllowDrop = true;
@@ -275,6 +258,23 @@
             this.dataGridView.TabIndex = 2;
             this.dataGridView.VirtualMode = true;
             // 
+            // panelPage
+            // 
+            this.panelPage.Controls.Add(this.label2);
+            this.panelPage.Controls.Add(this.numPageSize);
+            this.panelPage.Controls.Add(this.label4);
+            this.panelPage.Controls.Add(this.btnFirstPage);
+            this.panelPage.Controls.Add(this.btnPrePage);
+            this.panelPage.Controls.Add(this.numPageIndex);
+            this.panelPage.Controls.Add(this.btnNextPage);
+            this.panelPage.Controls.Add(this.btnLastPage);
+            this.panelPage.Controls.Add(this.labelPageCount);
+            this.panelPage.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelPage.Location = new System.Drawing.Point(0, 86);
+            this.panelPage.Name = "panelPage";
+            this.panelPage.Size = new System.Drawing.Size(365, 24);
+            this.panelPage.TabIndex = 6;
+            // 
             // UCPageGridControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -289,9 +289,9 @@
             this.panelColVisibleSetting.ResumeLayout(false);
             this.cmsColVisibleSetting.ResumeLayout(false);
             this.panelContent.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panelPage.ResumeLayout(false);
             this.panelPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
