@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.dataGridView = new UtilZ.Lib.Winform.ZDataGridView();
             this.labelPageCount = new System.Windows.Forms.Label();
             this.btnLastPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
@@ -48,32 +47,15 @@
             this.tsmiHidenHidenColList = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContent = new System.Windows.Forms.Panel();
             this.panelPage = new System.Windows.Forms.FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.dataGridView = new UtilZ.Lib.Winform.ZDataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).BeginInit();
             this.panelColVisibleSetting.SuspendLayout();
             this.cmsColVisibleSetting.SuspendLayout();
             this.panelContent.SuspendLayout();
             this.panelPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dataGridView
-            // 
-            this.dataGridView.AllowDrop = true;
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.AllowUserToOrderColumns = true;
-            this.dataGridView.AllowUserToResizeRows = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView.MouseRightButtonChangeSelectedRow = false;
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.RowTemplate.Height = 23;
-            this.dataGridView.Size = new System.Drawing.Size(225, 86);
-            this.dataGridView.TabIndex = 2;
-            this.dataGridView.VirtualMode = true;
             // 
             // labelPageCount
             // 
@@ -142,8 +124,8 @@
             this.numPageSize.AutoSize = true;
             this.numPageSize.Location = new System.Drawing.Point(32, 2);
             this.numPageSize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 3);
-            this.numPageSize.Maximum = new decimal(new int[] {
-            999,
+            this.numPageSize.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -275,6 +257,24 @@
             this.panelPage.Size = new System.Drawing.Size(365, 24);
             this.panelPage.TabIndex = 6;
             // 
+            // dataGridView
+            // 
+            this.dataGridView.AllowDrop = true;
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AllowUserToOrderColumns = true;
+            this.dataGridView.AllowUserToResizeRows = false;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView.MouseRightButtonChangeSelectedRow = false;
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
+            this.dataGridView.RowTemplate.Height = 23;
+            this.dataGridView.Size = new System.Drawing.Size(225, 86);
+            this.dataGridView.TabIndex = 2;
+            this.dataGridView.VirtualMode = true;
+            // 
             // UCPageGridControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -284,7 +284,6 @@
             this.Name = "UCPageGridControl";
             this.Size = new System.Drawing.Size(365, 110);
             this.Load += new System.EventHandler(this.UCPageGridControl_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).EndInit();
             this.panelColVisibleSetting.ResumeLayout(false);
@@ -292,6 +291,7 @@
             this.panelContent.ResumeLayout(false);
             this.panelPage.ResumeLayout(false);
             this.panelPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }

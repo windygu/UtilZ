@@ -54,12 +54,12 @@ namespace TestUtilZDB
             var dal = GetDBAccess();
             //var dbPageInfo = dal.QueryPageInfo(pageSize, "select count(0) from Stu");
             var dbPageInfo = dal.QueryPageInfoT<Stu>(pageSize);
-            ucPageGridControl1.SetPageInfo(new PageInfo(dbPageInfo.PageCount, dbPageInfo.PageSize, 1));
+            ucPageGridControl1.SetPageInfo(new PageInfo(dbPageInfo.PageCount, dbPageInfo.PageSize, 1, dbPageInfo.TotalCount));
         }
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            this.QueryPageInfo(10);
+            this.QueryPageInfo(ucPageGridControl1.PageSizeMaximum);
         }
 
         private void ucPageGridControl1_PageSizeChanged(object sender, UtilZ.Lib.Winform.PageGrid.Interface.PageSizeChangedArgs e)
@@ -73,6 +73,11 @@ namespace TestUtilZDB
             var dal = GetDBAccess();
             var stus = dal.QueryTPaging<Stu>(e.PageSize, e.PageIndex, "ID", true);
             ucPageGridControl1.ShowData(stus, "TestUtilZDB.FTestPageGrid.ucPageGridControl1_QueryData");
+        }
+
+        private void btnSwitchPageSize_Click(object sender, EventArgs e)
+        {
+            ucPageGridControl1.PageSizeVisible = !ucPageGridControl1.PageSizeVisible;
         }
     }
 }

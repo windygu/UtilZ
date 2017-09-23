@@ -73,6 +73,16 @@ namespace UtilZ.Lib.Winform.PageGrid.Interface
         bool RowNumVisible { get; set; }
 
         /// <summary>
+        /// 获取或设置分页大小是否可见
+        /// </summary>
+        bool PageSizeVisible { get; set; }
+
+        /// <summary>
+        /// 获取或设置用户可选择的最大分页大小
+        /// </summary>
+        int PageSizeMaximum { get; set; }
+
+        /// <summary>
         /// 最后一列显示模式是否默认Fill[true:Fill;false:系统默认;默认值:false]
         /// </summary>
         bool IsLastColumnAutoSizeModeFill { get; set; }

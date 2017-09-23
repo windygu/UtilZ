@@ -32,6 +32,7 @@
             this.comDB = new System.Windows.Forms.ComboBox();
             this.ucPageGridControl1 = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
             this.btnTest = new System.Windows.Forms.Button();
+            this.btnSwitchPageSize = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -65,6 +66,8 @@
             this.ucPageGridControl1.IsLastColumnAutoSizeModeFill = false;
             this.ucPageGridControl1.Location = new System.Drawing.Point(20, 54);
             this.ucPageGridControl1.Name = "ucPageGridControl1";
+            this.ucPageGridControl1.PageSizeMaximum = 5;
+            this.ucPageGridControl1.PageSizeVisible = true;
             this.ucPageGridControl1.PagingVisible = true;
             this.ucPageGridControl1.RowNumVisible = true;
             this.ucPageGridControl1.Size = new System.Drawing.Size(557, 381);
@@ -74,7 +77,7 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(195, 6);
+            this.btnTest.Location = new System.Drawing.Point(195, 12);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 43;
@@ -82,11 +85,22 @@
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
+            // btnSwitchPageSize
+            // 
+            this.btnSwitchPageSize.Location = new System.Drawing.Point(286, 8);
+            this.btnSwitchPageSize.Name = "btnSwitchPageSize";
+            this.btnSwitchPageSize.Size = new System.Drawing.Size(75, 23);
+            this.btnSwitchPageSize.TabIndex = 44;
+            this.btnSwitchPageSize.Text = "SwitchPageSize";
+            this.btnSwitchPageSize.UseVisualStyleBackColor = true;
+            this.btnSwitchPageSize.Click += new System.EventHandler(this.btnSwitchPageSize_Click);
+            // 
             // FTestPageGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 447);
+            this.Controls.Add(this.btnSwitchPageSize);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.ucPageGridControl1);
             this.Controls.Add(this.label1);
@@ -105,5 +119,6 @@
         private System.Windows.Forms.ComboBox comDB;
         private UtilZ.Lib.Winform.PageGrid.UCPageGridControl ucPageGridControl1;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Button btnSwitchPageSize;
     }
 }

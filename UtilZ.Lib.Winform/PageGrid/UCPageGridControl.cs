@@ -186,6 +186,62 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
         }
 
+        private bool _pageSizeVisible = true;
+
+        /// <summary>
+        /// 获取或设置分页大小是否可见
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Description("行号是否显示[true:显示行号;false:不显示行号]")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Category("分页数据显示控件")]
+        public bool PageSizeVisible
+        {
+            get { return _pageSizeVisible; }
+            set
+            {
+                if (_pageSizeVisible == value)
+                {
+                    return;
+                }
+
+                _pageSizeVisible = value;
+                this.SwitchPageSizeVisible(_pageSizeVisible);
+            }
+        }
+
+        /// <summary>
+        /// 切换分页大小可见性
+        /// </summary>
+        /// <param name="visible">分页大小可见性</param>
+        private void SwitchPageSizeVisible(bool visible)
+        {
+            label2.Visible = visible;
+            label4.Visible = visible;
+            numPageSize.Visible = visible;
+        }
+
+        /// <summary>
+        /// 获取或设置用户可选择的最大分页大小
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Description("行号是否显示[true:显示行号;false:不显示行号]")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Category("分页数据显示控件")]
+        public int PageSizeMaximum
+        {
+            get { return (int)numPageSize.Maximum; }
+            set
+            {
+                if (numPageSize.Maximum == value)
+                {
+                    return;
+                }
+
+                numPageSize.Maximum = value;
+            }
+        }
+
         /// <summary>
         /// 最后一列显示模式是否默认Fill[true:Fill;false:系统默认;默认值:false]
         /// </summary>
@@ -555,7 +611,7 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
             else
             {
-                labelPageCount.Text = string.Format("{0}页|共{0}条记录", pageInfo.PageCount, pageInfo.TotalCount);
+                labelPageCount.Text = string.Format("{0}页|共{1}条记录", pageInfo.PageCount, pageInfo.TotalCount);
             }
 
             this.InnerSetPageInfo(pageInfo);
@@ -1156,12 +1212,5 @@ namespace UtilZ.Lib.Winform.PageGrid
             }
         }
         #endregion
-
-        public void Test(bool visible)
-        {
-            label2.Visible = visible;
-            label4.Visible = visible;
-            numPageSize.Visible = visible;
-        }
     }
 }
