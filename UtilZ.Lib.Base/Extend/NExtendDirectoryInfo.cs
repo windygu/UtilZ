@@ -15,10 +15,36 @@ namespace UtilZ.Lib.Base.Extend
         /// <summary>
         /// 复制文件夹内容到指定目录
         /// </summary>
-        /// <param name="srcDirInfo">原目录</param>
+        /// <param name="srcDir">原目录</param>
+        /// <param name="dstDir">目标目录</param>
+        public static void CopyFolder(string srcDir, string dstDir)
+        {
+            if (string.IsNullOrWhiteSpace(srcDir))
+            {
+                throw new ArgumentNullException("srcDir");
+            }
+
+            CopyFolder(new DirectoryInfo(srcDir), dstDir);
+        }
+
+
+        /// <summary>
+        /// 复制文件夹内容到指定目录
+        /// </summary>
+        /// <param name="srcDirInfo">原目录信息</param>
         /// <param name="dstDir">目标目录</param>
         public static void CopyFolder(this DirectoryInfo srcDirInfo, string dstDir)
         {
+            if (srcDirInfo == null)
+            {
+                throw new ArgumentNullException("srcDirInfo");
+            }
+
+            if (!srcDirInfo.Exists)
+            {
+                throw new ArgumentException("源目录不存在");
+            }
+
             string srcFullName = srcDirInfo.FullName;
             if (srcFullName.EndsWith(@"\"))
             {

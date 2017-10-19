@@ -31,6 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.ucPageGridControl1 = new UtilZ.Lib.Winform.PageGrid.UCPageGridControl();
+            this.btnTestRar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -56,6 +57,7 @@
             // ucPageGridControl1
             // 
             this.ucPageGridControl1.AdvanceSettingVisible = true;
+            this.ucPageGridControl1.AlignDirection = true;
             this.ucPageGridControl1.ColumnSettingStatus = UtilZ.Lib.Winform.PageGrid.PageGridColumnSettingStatus.Hiden;
             this.ucPageGridControl1.ColumnSettingVisible = true;
             this.ucPageGridControl1.ColumnSettingWidth = 20;
@@ -63,6 +65,8 @@
             this.ucPageGridControl1.IsLastColumnAutoSizeModeFill = false;
             this.ucPageGridControl1.Location = new System.Drawing.Point(12, 63);
             this.ucPageGridControl1.Name = "ucPageGridControl1";
+            this.ucPageGridControl1.PageSizeMaximum = 100;
+            this.ucPageGridControl1.PageSizeVisible = true;
             this.ucPageGridControl1.PagingVisible = true;
             this.ucPageGridControl1.RowNumVisible = true;
             this.ucPageGridControl1.Size = new System.Drawing.Size(596, 340);
@@ -70,12 +74,23 @@
             this.ucPageGridControl1.QueryData += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.QueryDataArgs>(this.ucPageGridControl1_QueryData);
             this.ucPageGridControl1.PageSizeChanged += new System.EventHandler<UtilZ.Lib.Winform.PageGrid.Interface.PageSizeChangedArgs>(this.ucPageGridControl1_PageSizeChanged);
             // 
+            // btnTestRar
+            // 
+            this.btnTestRar.Location = new System.Drawing.Point(240, 22);
+            this.btnTestRar.Name = "btnTestRar";
+            this.btnTestRar.Size = new System.Drawing.Size(75, 23);
+            this.btnTestRar.TabIndex = 3;
+            this.btnTestRar.Text = "TestRar";
+            this.btnTestRar.UseVisualStyleBackColor = true;
+            this.btnTestRar.Click += new System.EventHandler(this.btnTestRar_Click);
+            // 
             // FTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(620, 415);
+            this.Controls.Add(this.btnTestRar);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.ucPageGridControl1);
             this.Controls.Add(this.button1);
@@ -91,5 +106,6 @@
         private System.Windows.Forms.Button button1;
         private UtilZ.Lib.Winform.PageGrid.UCPageGridControl ucPageGridControl1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnTestRar;
     }
 }

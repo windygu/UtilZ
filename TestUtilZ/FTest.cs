@@ -5,10 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Lib.Base.DataStruct.UIBinding;
 using UtilZ.Lib.Base.Extend;
 using UtilZ.Lib.Base.Log;
+using UtilZ.Lib.BaseEx.NCompress;
 
 namespace TestUtilZ
 {
@@ -63,6 +65,14 @@ namespace TestUtilZ
         private void ucPageGridControl1_PageSizeChanged(object sender, UtilZ.Lib.Winform.PageGrid.Interface.PageSizeChangedArgs e)
         {
 
+        }
+
+        private void btnTestRar_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                //CompressHelper.DecompressRar();
+            });
         }
     }
 
