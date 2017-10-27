@@ -45,6 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extend\ElementExtend.cs" />
+    <Compile Include="GifImage\GifAnimation.cs" />
+    <Compile Include="GifImage\GifFrame.cs" />
+    <Compile Include="GifImage\GifImage.xaml.cs">
+      <DependentUpon>GifImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GifImage\GifImageExceptionRoutedEventArgs.cs" />
+    <Compile Include="GifImage\WebReadState.cs" />
     <Compile Include="NumericTextBox.xaml.cs">
       <DependentUpon>NumericTextBox.xaml</DependentUpon>
     </Compile>
@@ -68,6 +75,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="GifImage\GifImage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="NumericTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

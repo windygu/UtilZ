@@ -69,9 +69,25 @@ namespace TestUtilZ
 
         private void btnTestRar_Click(object sender, EventArgs e)
         {
+            label1.Text = "DecompressRar...";
             Task.Factory.StartNew(() =>
             {
-                //CompressHelper.DecompressRar();
+                try
+                {
+                    string rarFile = @"G:\Tmp\Tmp.rar";
+                    CompressHelper.DecompressRar(rarFile, @"G:\Tmp\test");
+                    this.Invoke(new Action(() =>
+                    {
+                        label1.Text = "OK";
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        label1.Text = ex.Message;
+                    }));
+                }
             });
         }
     }
