@@ -69,13 +69,22 @@ namespace TestUtilZ
 
         private void btnTestRar_Click(object sender, EventArgs e)
         {
+            var openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            string filePath = openFile.FileName;
             label1.Text = "DecompressRar...";
             Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    string rarFile = @"G:\Tmp\Tmp.rar";
-                    CompressHelper.DecompressRar(rarFile, @"G:\Tmp\test");
+                    //CompressHelper.DecompressRar(filePath, @"G:\Tmp\test", true);
+                    var files = CompressHelper.GetRarFileList(filePath);
+                    CompressHelper.DecompressRar(filePath, files.Take(3), @"G:\Tmp\test", true);
+
                     this.Invoke(new Action(() =>
                     {
                         label1.Text = "OK";

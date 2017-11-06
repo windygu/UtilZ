@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Collections;
-using System.Reflection;
 
 
 /*  Author:  Michael A. McCloskey
@@ -54,7 +53,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
     /// Calls unrar DLL via platform invocation services (pinvoke).
     /// DLL is available at http://www.rarlab.com/rar/UnRARDLL.exe
     /// </summary>
-    internal class Unrar : IDisposable
+    public class Unrar : IDisposable
     {
         #region Unrar DLL enumerations
 
@@ -105,15 +104,15 @@ namespace UtilZ.Lib.BaseEx.NCompress
         [Flags]
         private enum ArchiveFlags : uint
         {
-            Volume = 0x1,										// Volume attribute (archive volume)
-            CommentPresent = 0x2,						// Archive comment present
-            Lock = 0x4,											// Archive lock attribute
-            SolidArchive = 0x8,							// Solid attribute (solid archive)
-            NewNamingScheme = 0x10,					// New volume naming scheme ('volname.partN.rar')
-            AuthenticityPresent = 0x20,			// Authenticity information present
-            RecoveryRecordPresent = 0x40,		// Recovery record present
-            EncryptedHeaders = 0x80,				// Block headers are encrypted
-            FirstVolume = 0x100							// 0x0100  - First volume (set only by RAR 3.0 and later)
+            Volume = 0x1,                                       // Volume attribute (archive volume)
+            CommentPresent = 0x2,                       // Archive comment present
+            Lock = 0x4,                                         // Archive lock attribute
+            SolidArchive = 0x8,                         // Solid attribute (solid archive)
+            NewNamingScheme = 0x10,                 // New volume naming scheme ('volname.partN.rar')
+            AuthenticityPresent = 0x20,         // Authenticity information present
+            RecoveryRecordPresent = 0x40,       // Recovery record present
+            EncryptedHeaders = 0x80,                // Block headers are encrypted
+            FirstVolume = 0x100                         // 0x0100  - First volume (set only by RAR 3.0 and later)
         }
 
         private enum CallbackMessages : uint
@@ -242,18 +241,16 @@ namespace UtilZ.Lib.BaseEx.NCompress
         #endregion
 
         #region Unrar function declarations
-        // Unrar callback delegate signature
-        private delegate int UNRARCallback(uint msg, int UserData, IntPtr p1, int p2);
 
         /// <summary>
-        /// 32位进程调用
+        /// 64位进程调用
         /// </summary>
         private static class x86
         {
             [DllImport(@"x86\unrar.dll")]
             internal static extern IntPtr RAROpenArchive(ref RAROpenArchiveData archiveData);
 
-            [DllImport(@"x86\unrar.DLL")]
+            [DllImport(@"x86\unrar.dll")]
             internal static extern IntPtr RAROpenArchiveEx(ref RAROpenArchiveDataEx archiveData);
 
             [DllImport(@"x86\unrar.dll")]
@@ -271,7 +268,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
             [DllImport(@"x86\unrar.dll")]
             internal static extern void RARSetCallback(IntPtr hArcData, UNRARCallback callback, int userData);
 
-            [DllImport(@"x86\unrar.dll", CharSet = CharSet.Unicode)]
+            [DllImport(@"x86\unrar.dll")]
             internal static extern void RARSetPassword(IntPtr hArcData, [MarshalAs(UnmanagedType.LPStr)] string password);
         }
 
@@ -283,7 +280,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
             [DllImport(@"x64\unrar.dll")]
             internal static extern IntPtr RAROpenArchive(ref RAROpenArchiveData archiveData);
 
-            [DllImport(@"x64\unrar.DLL")]
+            [DllImport(@"x64\unrar.dll")]
             internal static extern IntPtr RAROpenArchiveEx(ref RAROpenArchiveDataEx archiveData);
 
             [DllImport(@"x64\unrar.dll")]
@@ -295,7 +292,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
             [DllImport(@"x64\unrar.dll")]
             internal static extern int RARReadHeaderEx(IntPtr hArcData, ref RARHeaderDataEx headerData);
 
-            [DllImport(@"x64\unrar.dll", CharSet = CharSet.Unicode)]
+            [DllImport(@"x64\unrar.dll")]
             internal static extern int RARProcessFile(IntPtr hArcData, int operation, [MarshalAs(UnmanagedType.LPStr)] string destPath, [MarshalAs(UnmanagedType.LPStr)] string destName);
 
             [DllImport(@"x64\unrar.dll")]
@@ -304,6 +301,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
             [DllImport(@"x64\unrar.dll")]
             internal static extern void RARSetPassword(IntPtr hArcData, [MarshalAs(UnmanagedType.LPStr)] string password);
         }
+
         private static IntPtr RAROpenArchive(ref RAROpenArchiveData archiveData)
         {
             if (Environment.Is64BitProcess)
@@ -315,7 +313,6 @@ namespace UtilZ.Lib.BaseEx.NCompress
                 return x86.RAROpenArchive(ref archiveData);
             }
         }
-
 
         private static IntPtr RAROpenArchiveEx(ref RAROpenArchiveDataEx archiveData)
         {
@@ -400,6 +397,10 @@ namespace UtilZ.Lib.BaseEx.NCompress
                 x86.RARSetPassword(hArcData, password);
             }
         }
+
+        // Unrar callback delegate signature
+        private delegate int UNRARCallback(uint msg, int UserData, IntPtr p1, int p2);
+
         #endregion
 
         #region Public event declarations
@@ -453,8 +454,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
             this.callback = new UNRARCallback(RARCallback);
         }
 
-        public Unrar(string archivePathName)
-            : this()
+        public Unrar(string archivePathName) : this()
         {
             this.archivePathName = archivePathName;
         }
@@ -720,7 +720,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
                 currentFile.Method = (int)header.Method;
                 currentFile.FileAttributes = (int)header.FileAttr;
                 currentFile.BytesExtracted = 0;
-                if ((header.Flags & 0xE0) == 0xE0)
+                if ((header.Flags & 0x20) == 0x20)
                     currentFile.IsDirectory = true;
                 this.OnNewFile();
             }
@@ -1008,221 +1008,80 @@ namespace UtilZ.Lib.BaseEx.NCompress
     }
 
     #region Event Argument Classes
-    /// <summary>
-    /// 新加卷参数
-    /// </summary>
-    public class NewVolumeEventArgs : EventArgs
-    {
-        /// <summary>
-        /// 卷
-        /// </summary>
-        public string VolumeName;
 
-        /// <summary>
-        /// 是否继续
-        /// </summary>
+    public class NewVolumeEventArgs
+    {
+        public string VolumeName;
         public bool ContinueOperation = true;
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="volumeName">卷</param>
         public NewVolumeEventArgs(string volumeName)
         {
             this.VolumeName = volumeName;
         }
     }
 
-    /// <summary>
-    /// 跳过卷参数
-    /// </summary>
-    public class MissingVolumeEventArgs : EventArgs
+    public class MissingVolumeEventArgs
     {
-        /// <summary>
-        /// 卷
-        /// </summary>
         public string VolumeName;
-
-        /// <summary>
-        /// 是否继续
-        /// </summary>
         public bool ContinueOperation = false;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="volumeName">卷</param>
         public MissingVolumeEventArgs(string volumeName)
         {
             this.VolumeName = volumeName;
         }
     }
 
-    /// <summary>
-    /// 数据可用事件参数
-    /// </summary>
-    public class DataAvailableEventArgs : EventArgs
+    public class DataAvailableEventArgs
     {
-        /// <summary>
-        /// 数据
-        /// </summary>
         public readonly byte[] Data;
-
-        /// <summary>
-        /// 是否继续
-        /// </summary>
         public bool ContinueOperation = true;
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="data">数据</param>
         public DataAvailableEventArgs(byte[] data)
         {
             this.Data = data;
         }
     }
 
-    /// <summary>
-    /// 密码请求参数
-    /// </summary>
-    public class PasswordRequiredEventArgs : EventArgs
+    public class PasswordRequiredEventArgs
     {
-        /// <summary>
-        /// 密码
-        /// </summary>
         public string Password = string.Empty;
-
-        /// <summary>
-        /// 是否继续
-        /// </summary>
         public bool ContinueOperation = true;
     }
 
-    /// <summary>
-    /// 新文件参数
-    /// </summary>
-    public class NewFileEventArgs : EventArgs
+    public class NewFileEventArgs
     {
-        /// <summary>
-        /// 压缩文件
-        /// </summary>
         public RARFileInfo fileInfo;
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="fileInfo">压缩文件</param>
         public NewFileEventArgs(RARFileInfo fileInfo)
         {
             this.fileInfo = fileInfo;
         }
     }
 
-    /// <summary>
-    /// 解压进度参数
-    /// </summary>
-    public class ExtractionProgressEventArgs : EventArgs
+    public class ExtractionProgressEventArgs
     {
-        /// <summary>
-        /// 文件名
-        /// </summary>
         public string FileName;
-
-        /// <summary>
-        /// 文件大小
-        /// </summary>
         public long FileSize;
-
-        /// <summary>
-        /// 展开字节数
-        /// </summary>
         public long BytesExtracted;
-
-        /// <summary>
-        /// 完成百分比
-        /// </summary>
         public double PercentComplete;
-
-        /// <summary>
-        /// 是否继续
-        /// </summary>
         public bool ContinueOperation = true;
     }
 
-    /// <summary>
-    /// 压缩文件信息
-    /// </summary>
     public class RARFileInfo
     {
-        /// <summary>
-        /// 文件名
-        /// </summary>
         public string FileName;
-
-        /// <summary>
-        /// 是否从前一个开始
-        /// </summary>
         public bool ContinuedFromPrevious = false;
-
-        /// <summary>
-        /// 是否继续下一下
-        /// </summary>
         public bool ContinuedOnNext = false;
-
-        /// <summary>
-        /// 是否解压到新目录
-        /// </summary>
         public bool IsDirectory = false;
-
-        /// <summary>
-        /// 压缩包大小
-        /// </summary>
         public long PackedSize = 0;
-
-        /// <summary>
-        /// 解压包大小
-        /// </summary>
         public long UnpackedSize = 0;
-
-        /// <summary>
-        /// 主机
-        /// </summary>
         public int HostOS = 0;
-
-        /// <summary>
-        /// CRC校验
-        /// </summary>
         public long FileCRC = 0;
-
-        /// <summary>
-        /// 文件压缩时间
-        /// </summary>
         public DateTime FileTime;
-
-        /// <summary>
-        /// 版本
-        /// </summary>
         public int VersionToUnpack = 0;
-
-        /// <summary>
-        /// 压缩方式
-        /// </summary>
         public int Method = 0;
-
-        /// <summary>
-        /// 文件特征
-        /// </summary>
         public int FileAttributes = 0;
-
-        /// <summary>
-        /// 解压大小 
-        /// </summary>
         public long BytesExtracted = 0;
 
-        /// <summary>
-        /// 完成百分比
-        /// </summary>
         public double PercentComplete
         {
             get
@@ -1234,5 +1093,6 @@ namespace UtilZ.Lib.BaseEx.NCompress
             }
         }
     }
+
     #endregion
 }

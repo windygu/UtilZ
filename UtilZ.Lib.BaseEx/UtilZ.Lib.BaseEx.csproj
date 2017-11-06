@@ -130,8 +130,12 @@
     <Content Include="lib\NExtendExcel\NPOI.OpenXmlFormats.dll" />
     <Content Include="lib\NExtendExcel\NPOI.XML" />
     <Content Include="lib\SharpCompress.dll" />
-    <Content Include="x64\unrar.dll" />
-    <Content Include="x86\unrar.dll" />
+    <None Include="x64\unrar.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\unrar.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

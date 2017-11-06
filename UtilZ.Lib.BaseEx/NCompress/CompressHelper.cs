@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using SharpCompress.Common;
 using SharpCompress.Reader;
 using UtilZ.Lib.Base.Extend;
@@ -169,6 +170,7 @@ namespace UtilZ.Lib.BaseEx.NCompress
             GC.Collect();
         }
 
+        #region DecompressRar
         /// <summary>
         /// 解压rar压缩文件
         /// </summary>
@@ -182,29 +184,109 @@ namespace UtilZ.Lib.BaseEx.NCompress
                 throw new FileNotFoundException("不能找到需要解压的文件", rarFile);
             }
 
-            Unrar unrar = new Unrar(rarFile);
-            unrar.Open(Unrar.OpenMode.Extract);
-            unrar.DestinationPath = decompressDir;
-
-            while (unrar.ReadHeader())
+            using (Unrar unrar = new Unrar(rarFile))
             {
-                if (unrar.CurrentFile.IsDirectory)
+                unrar.Open(Unrar.OpenMode.Extract);
+                unrar.DestinationPath = decompressDir;
+
+                while (unrar.ReadHeader())
                 {
-                    unrar.Skip();
-                }
-                else
-                {
-                    if (isCreateDir)
+                    if (unrar.CurrentFile.IsDirectory)
                     {
-                        unrar.Extract();
+                        unrar.Skip();
                     }
                     else
                     {
-                        unrar.Extract(decompressDir + Path.GetFileName(unrar.CurrentFile.FileName));
+                        if (isCreateDir)
+                        {
+                            unrar.Extract();
+                        }
+                        else
+                        {
+                            unrar.Extract(Path.Combine(decompressDir, Path.GetFileName(unrar.CurrentFile.FileName)));
+                        }
                     }
                 }
             }
-            unrar.Close();
         }
+
+        /// <summary>
+        /// 解压rar压缩文件
+        /// </summary>
+        /// <param name="rarFile">rar压缩文件路径</param>
+        /// <param name="files">目标文件名集合,不包含路径</param>
+        /// <param name="decompressDir">解压目录</param>
+        /// <param name="isCreateDir">是否创建压缩文件中的目录,true:按照压缩文件中的文件目录结构解压,false:压缩文件中的所有文件全部解压到解压目录中[默认为true]</param>
+        public static void DecompressRar(string rarFile, IEnumerable<string> files, string decompressDir, bool isCreateDir = true)
+        {
+            if (!File.Exists(rarFile))
+            {
+                throw new FileNotFoundException("不能找到需要解压的文件", rarFile);
+            }
+
+            using (Unrar unrar = new Unrar(rarFile))
+            {
+                unrar.Open(Unrar.OpenMode.Extract);
+                unrar.DestinationPath = decompressDir;
+                bool notFind;
+                while (unrar.ReadHeader())
+                {
+                    if (unrar.CurrentFile.IsDirectory)
+                    {
+                        unrar.Skip();
+                    }
+                    else
+                    {
+                        notFind = (from tmpItem in files where string.Equals(unrar.CurrentFile.FileName, tmpItem, StringComparison.OrdinalIgnoreCase) select tmpItem).Count() == 0;
+                        if (notFind)
+                        {
+                            unrar.Skip();
+                            continue;
+                        }
+
+                        if (isCreateDir)
+                        {
+                            unrar.Extract();
+                        }
+                        else
+                        {
+                            unrar.Extract(Path.Combine(decompressDir, Path.GetFileName(unrar.CurrentFile.FileName)));
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取rar文件内的文件列表
+        /// </summary>
+        /// <param name="rarFile">rar压缩文件路径</param>
+        /// <returns>rar文件内的文件列表</returns>
+        public static List<string> GetRarFileList(string rarFile)
+        {
+            if (!File.Exists(rarFile))
+            {
+                throw new FileNotFoundException("不能找到需要解压的文件", rarFile);
+            }
+
+            var files = new List<string>();
+            using (Unrar unrar = new Unrar(rarFile))
+            {
+                unrar.Open(Unrar.OpenMode.Extract);
+                unrar.DestinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Templates), "TmpRar");
+                while (unrar.ReadHeader())
+                {
+                    if (!unrar.CurrentFile.IsDirectory)
+                    {
+                        files.Add(unrar.CurrentFile.FileName);
+                    }
+
+                    unrar.Skip();
+                }
+            }
+
+            return files;
+        }
+        #endregion
     }
 }
