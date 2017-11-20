@@ -19,7 +19,7 @@ namespace UtilZ.Lib.Base.Extend
         /// </summary>
         /// <param name="dllPath">dll路径</param>
         /// <returns>库句柄</returns>
-        public static int LoadLibrary(string dllPath)
+        public static IntPtr LoadLibrary(string dllPath)
         {
             return NativeMethods.LoadLibrary(dllPath);
         }
@@ -31,7 +31,7 @@ namespace UtilZ.Lib.Base.Extend
         /// <param name="hFile">This parameter is reserved for future use. It must be NULL.</param>
         /// <param name="dwFlags">The action to be taken when loading the module. If no flags are specified, the behavior of this function is identical to that of the LoadLibrary function. This parameter can be one of the following values.</param>
         /// <returns>库句柄</returns>
-        public static int LoadLibraryEx(string dllPath, int hFile = 0, int dwFlags = 0x00000008)
+        public static IntPtr LoadLibraryEx(string dllPath, int hFile = 0, int dwFlags = 0x00000008)
         {
             return NativeMethods.LoadLibraryEx(dllPath, hFile, dwFlags);
         }
@@ -43,17 +43,17 @@ namespace UtilZ.Lib.Base.Extend
         /// <param name="funcName">方法名称</param>
         /// <param name="delegateType">与非托管dll中方法定义对应的委托类型</param>
         /// <returns>方法句柄</returns>
-        public static Delegate GetProcDelegate(int libHandle, string funcName, Type delegateType)
+        public static Delegate GetProcDelegate(IntPtr libHandle, string funcName, Type delegateType)
         {
             //通过非托管函数名转换为对应的委托
-            int address = NativeMethods.GetProcAddress(libHandle, funcName);
-            if (address == 0)
+            IntPtr address = NativeMethods.GetProcAddress(libHandle, funcName);
+            if (address == IntPtr.Zero)
             {
                 return null;
             }
             else
             {
-                return Marshal.GetDelegateForFunctionPointer(new IntPtr(address), delegateType);
+                return Marshal.GetDelegateForFunctionPointer(address, delegateType);
             }
         }
 
@@ -62,7 +62,7 @@ namespace UtilZ.Lib.Base.Extend
         /// </summary>
         /// <param name="libHandle">库句柄</param>
         /// <returns>释放结果</returns>
-        public static int FreeLibrary(int libHandle)
+        public static int FreeLibrary(IntPtr libHandle)
         {
             return NativeMethods.FreeLibrary(libHandle);
         }

@@ -72,7 +72,7 @@ namespace UtilZ.Lib.Base
         /// <param name="dllPath">dll路径</param>
         /// <returns>库句柄</returns>
         [DllImport("Kernel32", CharSet = CharSet.Unicode)]
-        public static extern int LoadLibrary(string dllPath);
+        public static extern IntPtr LoadLibrary(string dllPath);
 
         //https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx
         /// <summary>
@@ -83,7 +83,7 @@ namespace UtilZ.Lib.Base
         /// <param name="dwFlags">The action to be taken when loading the module. If no flags are specified, the behavior of this function is identical to that of the LoadLibrary function. This parameter can be one of the following values.</param>
         /// <returns>库句柄</returns>
         [DllImport("Kernel32", CharSet = CharSet.Unicode)]
-        public static extern int LoadLibraryEx(string dllPath, int hFile = 0, int dwFlags = 0x00000008);
+        public static extern IntPtr LoadLibraryEx(string dllPath, int hFile = 0, int dwFlags = 0x00000008);
 
         /// <summary>
         /// 获取方法句柄
@@ -92,7 +92,7 @@ namespace UtilZ.Lib.Base
         /// <param name="funcName">方法名称</param>
         /// <returns>方法句柄</returns>
         [DllImport("Kernel32", CharSet = CharSet.Unicode)]
-        public static extern int GetProcAddress(int libHandle, string funcName);
+        public static extern IntPtr GetProcAddress(IntPtr libHandle, string funcName);
 
         /// <summary>
         /// 释放库
@@ -100,7 +100,7 @@ namespace UtilZ.Lib.Base
         /// <param name="libHandle">库句柄</param>
         /// <returns>释放结果</returns>
         [DllImport("Kernel32")]
-        public static extern int FreeLibrary(int libHandle);
+        public static extern int FreeLibrary(IntPtr libHandle);
         #endregion
 
         /// <summary>
