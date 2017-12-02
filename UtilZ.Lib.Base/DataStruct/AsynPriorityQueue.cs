@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Base.DataStruct;
-using UtilZ.Lib.Base.Threading;
+using UtilZ.Lib.Base.DataStruct.Threading;
 
 namespace UtilZ.Lib.Base.DataStruct
 {
@@ -13,14 +13,16 @@ namespace UtilZ.Lib.Base.DataStruct
     /// 异步优先级队列
     /// </summary>
     /// <typeparam name="T">数据类型</typeparam>
-    public class PriorityQueueThread<T> : NThread, IEnumerable<KeyValuePair<int, Queue<T>>>
+    public class PriorityQueueThread<T> : IEnumerable<KeyValuePair<int, Queue<T>>>, IDisposable
     {
+        private readonly IThreadEx _ext = null;
+
         /// <summary>
         /// 构造函数
         /// </summary>
         public PriorityQueueThread()
         {
-            this.IsBackground = true;
+            _ext = new ThreadEx(this.ExcuteThreadMethod);
         }
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace UtilZ.Lib.Base.DataStruct
         /// 重写执行线程方法
         /// </summary>
         /// <param name="token">线程取消通知参数</param>
-        protected override void ExcuteThreadMethod(CancellationToken token)
+        private void ExcuteThreadMethod(CancellationToken token)
         {
             //执行数据处理方法
             this.DataProcessThreadMethod(token);
@@ -109,13 +111,19 @@ namespace UtilZ.Lib.Base.DataStruct
         }
 
         /// <summary>
-        /// 停止工作线程
+        /// 启动输出
         /// </summary>
-        /// <param name="forcesCancellFlag">是否强制结束标示,true:将调用线程的Abort方法强制终止线程,false:通过线程取消通知来终止,但需要线程方法中对此作判断[默认为false]</param>
-        /// <param name="throwOnfirtException">指示是否立即传播异常[默认为false]</param>
-        public override void Stop(bool forcesCancellFlag = false, bool throwOnfirtException = false)
+        public void Start()
         {
-            base.Stop(forcesCancellFlag, throwOnfirtException);
+            this._ext.Start();
+        }
+
+        /// <summary>
+        /// 停止输出
+        /// </summary>
+        public void Stop()
+        {
+            this._ext.Stop();
             this._autoResetEvent.Set();
         }
 
@@ -192,15 +200,24 @@ namespace UtilZ.Lib.Base.DataStruct
             get { return this._priorityQueue.PriorityCount; }
         }
 
+        #region IDisposable
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         /// <summary>
         /// 释放资源方法
         /// </summary>
         /// <param name="isDispose">是否释放标识</param>
-        protected override void Dispose(bool isDispose)
+        protected virtual void Dispose(bool isDispose)
         {
-            base.Dispose(isDispose);
             this._autoResetEvent.Dispose();
         }
+        #endregion
 
         /// <summary>
         /// 返回循环的遍历枚举

@@ -197,12 +197,6 @@
     <Compile Include="ZMemoryCache\NMemoryStoreMode.cs" />
     <Compile Include="ZMemoryCache\NMemoryTimeOutType.cs" />
     <Compile Include="ZMemoryCache\NSysMemoryCache.cs" />
-    <Compile Include="Threading\NActionParaThread.cs" />
-    <Compile Include="Threading\NActionThread.cs" />
-    <Compile Include="Threading\NParallelTask.cs" />
-    <Compile Include="Threading\NParallelThread.cs" />
-    <Compile Include="Threading\NThread.cs" />
-    <Compile Include="Threading\NThreadWaitPara.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">

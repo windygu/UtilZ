@@ -1,9 +1,9 @@
-﻿using UtilZ.Lib.Base.Threading;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using UtilZ.Lib.Base.DataStruct.Threading;
 
 namespace UtilZ.Lib.Base.ZMemoryCache
 {
@@ -17,15 +17,14 @@ namespace UtilZ.Lib.Base.ZMemoryCache
         /// </summary>
         static NMemoryCacher()
         {
-            NMemoryCacher._validThread = NThread.Create(NMemoryCacher.ValueValidThreadMethod, true);
-            NMemoryCacher._validThread.Name = "内存缓存器线程";
-            NMemoryCacher._validThread.Start();
+            _validThread = new ThreadEx(NMemoryCacher.ValueValidThreadMethod, "内存缓存器线程", true);
+            _validThread.Start();
         }
 
         /// <summary>
         /// 胡交性验证线程
         /// </summary>
-        private readonly static NThread _validThread = null;
+        private readonly static IThreadEx _validThread = null;
 
         /// <summary>
         /// 线程锁
@@ -134,7 +133,7 @@ namespace UtilZ.Lib.Base.ZMemoryCache
                 { }
                 finally
                 {
-                    NThread.Sleep(NMemoryCacher.interval);
+                    Thread.Sleep(NMemoryCacher.interval);
                 }
             }
         }

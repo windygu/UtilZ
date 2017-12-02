@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Lib.Base.Threading;
+using UtilZ.Lib.Base.DataStruct.Threading;
 
 namespace UtilZ.Lib.Base.DataStruct
 {
@@ -28,8 +28,7 @@ namespace UtilZ.Lib.Base.DataStruct
         /// </summary>
         public AlarmClock()
         {
-            this._timingThread = NThread.Create(new Action<CancellationToken>((token) => { this.Timing(token); }), true);
-            this._timingThread.Name = "闹钟线程";
+            this._timingThread = new ThreadEx(new Action<CancellationToken>((token) => { this.Timing(token); }), "闹钟线程", true);
         }
 
         /// <summary>
@@ -101,7 +100,7 @@ namespace UtilZ.Lib.Base.DataStruct
         {
             lock (this)
             {
-                if (this._timingThread.IsAlive)
+                if (this._timingThread.IsRuning)
                 {
                     throw new Exception("闹钟处于工作状态时不能添加时间点");
                 }
@@ -156,7 +155,7 @@ namespace UtilZ.Lib.Base.DataStruct
         /// <summary>
         /// 闹钟执行线程
         /// </summary>
-        private NThread _timingThread = null;
+        private IThreadEx _timingThread = null;
 
         /// <summary>
         /// 创建时刻点环形链表
@@ -245,12 +244,6 @@ namespace UtilZ.Lib.Base.DataStruct
         /// </summary>
         public void Start()
         {
-            if (this._timingThread.IsAlive)
-            {
-                return;
-            }
-
-            this._timingThread.Name = string.Format("AlarmClock.{0}", this.Ring.Method.Name);
             this._timingThread.Start();
         }
 

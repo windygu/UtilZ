@@ -283,6 +283,20 @@ namespace UtilZ.Lib.Base.DataStruct.Threading
         }
 
         /// <summary>
+        /// 当前线程是否正在运行
+        /// </summary>
+        public bool IsRuning
+        {
+            get
+            {
+                lock (this._lock)
+                {
+                    return this._isRuning;
+                }
+            }
+        }
+
+        /// <summary>
         /// 启动线程
         /// </summary>
         /// <param name="obj">线程启动参数</param>

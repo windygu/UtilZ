@@ -43,5 +43,10 @@ namespace UtilZ.Lib.Base.DataStruct.Threading
         /// 获取当前托管线程的唯一标识符
         /// </summary>
         int ManagedThreadId { get; }
+
+        /// <summary>
+        /// 当前线程是否正在运行
+        /// </summary>
+        bool IsRuning { get; }
     }
 }
