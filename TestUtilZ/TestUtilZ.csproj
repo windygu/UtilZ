@@ -61,6 +61,12 @@
     <Compile Include="FTestNoneBorderForm.designer.cs">
       <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FTestThread.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTestThread.Designer.cs">
+      <DependentUpon>FTestThread.cs</DependentUpon>
+    </Compile>
     <Compile Include="FWave.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FTestNoneBorderForm.resx">
       <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTestThread.resx">
+      <DependentUpon>FTestThread.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FWave.resx">
       <DependentUpon>FWave.cs</DependentUpon>

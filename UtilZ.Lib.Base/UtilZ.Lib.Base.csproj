@@ -53,8 +53,12 @@
     <Compile Include="DataStruct\ConcurrentList.cs" />
     <Compile Include="DataStruct\LoopLinked.cs" />
     <Compile Include="DataStruct\NSortedList.cs" />
+    <Compile Include="DataStruct\Threading\ThreadEx.cs" />
     <Compile Include="DataStruct\PriorityQueue.cs" />
     <Compile Include="DataStruct\ReadOnlyDictionary.cs" />
+    <Compile Include="DataStruct\Threading\IThreadEx.cs" />
+    <Compile Include="DataStruct\Threading\ThreadExCompletedArgs.cs" />
+    <Compile Include="DataStruct\Threading\ThreadExCompletedType.cs" />
     <Compile Include="DataStruct\UIBinding\BindingListChangedArgs.cs" />
     <Compile Include="DataStruct\UIBinding\BindingListChangedType.cs" />
     <Compile Include="DataStruct\UIBinding\ComparerResultType.cs" />
