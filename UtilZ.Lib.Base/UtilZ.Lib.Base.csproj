@@ -105,6 +105,10 @@
     <Compile Include="Expression\Exceptions.cs" />
     <Compile Include="Expression\ExpressionCalculator.cs" />
     <Compile Include="Expression\Models.cs" />
+    <Compile Include="LocalMeseageReqRes\LMReqResCenter.cs" />
+    <Compile Include="LocalMeseageReqRes\LMReq.cs" />
+    <Compile Include="LocalMeseageReqRes\LMReqResBase.cs" />
+    <Compile Include="LocalMeseageReqRes\LMRes.cs" />
     <Compile Include="Log\Security\XSecurityPolicy.cs" />
     <Compile Include="PartAsynWait\Excute\PartAsynExcuteBase.cs" />
     <Compile Include="PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />

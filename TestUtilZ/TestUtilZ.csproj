@@ -49,6 +49,12 @@
     <Compile Include="FTest.Designer.cs">
       <DependentUpon>FTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="FTestLMReqResCenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTestLMReqResCenter.Designer.cs">
+      <DependentUpon>FTestLMReqResCenter.cs</DependentUpon>
+    </Compile>
     <Compile Include="FTestPRopertyGrid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     </Compile>
     <EmbeddedResource Include="FTest.resx">
       <DependentUpon>FTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTestLMReqResCenter.resx">
+      <DependentUpon>FTestLMReqResCenter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FTestPRopertyGrid.resx">
       <DependentUpon>FTestPRopertyGrid.cs</DependentUpon>
