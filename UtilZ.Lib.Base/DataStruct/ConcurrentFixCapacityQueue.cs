@@ -29,33 +29,36 @@ namespace UtilZ.Lib.Base.DataStruct
         private int _capacity;
 
         /// <summary>
-        /// 当队列生产大于消费时,队列超出容量之后会将最先入队列的项溢出通知
+        /// 获取或设置集合容量
         /// </summary>
-        private Action<T> _overflowedNotify;
-
-        /// <summary>
-        /// 触发队列溢出通知
-        /// </summary>
-        /// <param name="item">溢出项</param>
-        private void OnRaiseOverflowedNotify(T item)
+        public int Capacity
         {
-            var handler = this._overflowedNotify;
-            if (handler != null)
+            get { return _capacity; }
+            set
             {
-                handler(item);
+                lock (this._syncRoot)
+                {
+                    this._capacity = value;
+                    this.CheckCapcity();
+                }
             }
         }
 
         /// <summary>
-        /// 修改集合容易
+        /// 当队列生产大于消费时,队列超出容量之后会将最先入队列的项溢出通知
         /// </summary>
-        /// <param name="capacity">集合容量</param>
-        public void UpdateCapacity(int capacity)
+        private Action<List<T>> _overflowedNotify;
+
+        /// <summary>
+        /// 触发队列溢出通知
+        /// </summary>
+        /// <param name="items">溢出项集合</param>
+        private void OnRaiseOverflowedNotify(List<T> items)
         {
-            lock (this._syncRoot)
+            var handler = this._overflowedNotify;
+            if (handler != null)
             {
-                this._capacity = capacity;
-                this.CheckCapcity();
+                handler(items);
             }
         }
 
@@ -74,7 +77,7 @@ namespace UtilZ.Lib.Base.DataStruct
         /// </summary>
         /// <param name="capacity">集合容量</param>
         /// <param name="overflowedNotify">当队列生产大于消费时,队列超出容量之后会将最先入队列的项溢出通知</param>
-        public ConcurrentFixCapacityQueue(int capacity, Action<T> overflowedNotify)
+        public ConcurrentFixCapacityQueue(int capacity, Action<List<T>> overflowedNotify)
             : this(capacity, null, overflowedNotify)
         {
 
@@ -86,7 +89,7 @@ namespace UtilZ.Lib.Base.DataStruct
         /// <param name="capacity">集合容量</param>
         /// <param name="items">初始化集合</param>
         /// <param name="overflowedNotify">当队列生产大于消费时,队列超出容量之后会将最先入队列的项溢出通知</param>
-        public ConcurrentFixCapacityQueue(int capacity, IEnumerable<T> items, Action<T> overflowedNotify)
+        public ConcurrentFixCapacityQueue(int capacity, IEnumerable<T> items, Action<List<T>> overflowedNotify)
         {
             if (items != null)
             {
@@ -184,11 +187,14 @@ namespace UtilZ.Lib.Base.DataStruct
         /// </summary>
         private void CheckCapcity()
         {
-            if (this._queue.Count > this._capacity)
+            var overflowedItems = new List<T>();
+            while (this._queue.Count > this._capacity)
             {
                 var overflowedItem = this._queue.Dequeue();
-                this.OnRaiseOverflowedNotify(overflowedItem);
+                overflowedItems.Add(overflowedItem);
             }
+
+            this.OnRaiseOverflowedNotify(overflowedItems);
         }
 
         /// <summary>
@@ -204,11 +210,7 @@ namespace UtilZ.Lib.Base.DataStruct
                     this._queue.Enqueue(item);
                 }
 
-                if (this._queue.Count > this._capacity)
-                {
-                    var overflowedItem = this._queue.Dequeue();
-                    this.OnRaiseOverflowedNotify(overflowedItem);
-                }
+                this.CheckCapcity();
             }
         }
 
