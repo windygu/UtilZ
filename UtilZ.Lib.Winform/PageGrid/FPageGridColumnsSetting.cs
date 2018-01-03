@@ -409,7 +409,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// 目标列
         /// </summary>
         [Browsable(false)]
-        public DataGridViewColumn Column { get; }
+        public DataGridViewColumn Column { get; private set; }
 
         /// <summary>
         /// 是否显示

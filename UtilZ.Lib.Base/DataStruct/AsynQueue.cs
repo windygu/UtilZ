@@ -74,38 +74,25 @@ namespace UtilZ.Lib.Base.DataStruct
         /// <summary>
         /// 构造函数
         /// </summary>
-        public AsynQueue()
-            : this(string.Empty, true)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="name">异步队列名称</param>
-        public AsynQueue(string name)
-            : this(name, true)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
-        public AsynQueue(bool isBackground)
-              : this(string.Empty, isBackground)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         /// <param name="name">异步队列名称</param>
         /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
-        public AsynQueue(string name, bool isBackground)
+        /// <param name="isAutoStart">是否自动启动线程</param>
+        public AsynQueue(string name = null, bool isBackground = true, bool isAutoStart = false)
         {
             this._isBackground = isBackground;
-            this._threadName = name;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                this._threadName = string.Empty;
+            }
+            else
+            {
+                this._threadName = name;
+            }
+
+            if (isAutoStart)
+            {
+                this.Start();
+            }
         }
 
         /// <summary>
