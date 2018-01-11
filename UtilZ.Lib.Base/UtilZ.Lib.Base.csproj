@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\PropertyNameMapAttribute.cs" />
     <Compile Include="DataStruct\AlarmClock.cs" />
     <Compile Include="DataStruct\AsynPriorityQueue.cs" />
     <Compile Include="DataStruct\AsynQueue.cs" />

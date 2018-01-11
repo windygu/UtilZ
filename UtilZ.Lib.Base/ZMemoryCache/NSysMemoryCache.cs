@@ -1,5 +1,4 @@
-﻿using UtilZ.Lib.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
@@ -39,12 +38,12 @@ namespace UtilZ.Lib.Base.ZMemoryCache
         /// <param name="value">缓存项</param>
         public static void Add(string key, object value)
         {
-            if (NSysMemoryCache.Exist(key))
+            if (Exist(key))
             {
                 throw new ArgumentException(string.Format("key:{0}已存在", key));
             }
 
-            NSysMemoryCache.Set(key, value);
+            Set(key, value);
         }
 
         /// <summary>
@@ -55,12 +54,12 @@ namespace UtilZ.Lib.Base.ZMemoryCache
         /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
         public static void Add(string key, object value, int expiration)
         {
-            if (NSysMemoryCache.Exist(key))
+            if (Exist(key))
             {
                 throw new ArgumentException(string.Format("key:{0}已存在", key));
             }
 
-            NSysMemoryCache.Set(key, value, expiration);
+            Set(key, value, expiration);
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ namespace UtilZ.Lib.Base.ZMemoryCache
         /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
         public static void AddWeakReference(string key, object value, int expiration)
         {
-            if (NSysMemoryCache.Exist(key))
+            if (Exist(key))
             {
                 throw new ArgumentException(string.Format("key:{0}已存在", key));
             }
@@ -161,7 +160,7 @@ namespace UtilZ.Lib.Base.ZMemoryCache
             else
             {
                 //对象已消亡,从缓存中将弱引用对象移除
-                NSysMemoryCache.Remove(key);
+                Remove(key);
                 return null;
             }
         }
@@ -173,7 +172,7 @@ namespace UtilZ.Lib.Base.ZMemoryCache
         /// <returns>存在返回true;不存在返回false</returns>
         public static bool Exist(string key)
         {
-            return NSysMemoryCache.Get(key) != null;
+            return Get(key) != null;
         }
     }
 }
