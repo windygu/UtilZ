@@ -36,9 +36,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
             : base(topic)
         {
             string name = string.Format("本地消息队列主题{0}数据消息发布线程", topic);
-            this._asynPublishParaQueueThread = new AsynQueue<LMQDataMessage>(name, true);
-            this._asynPublishParaQueueThread.ProcessAction = this.PublishThreadMethod;
-            this._asynPublishParaQueueThread.Start();
+            this._asynPublishParaQueueThread = new AsynQueue<LMQDataMessage>(this.PublishThreadMethod, name, true, true);
         }
 
         /// <summary>

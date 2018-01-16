@@ -82,6 +82,7 @@
     <Compile Include="Extend\NExtendMail.cs" />
     <Compile Include="Extend\NExtendNumber.cs" />
     <Compile Include="Extend\NExtendObject.cs" />
+    <Compile Include="Extend\NExtendProcess.cs" />
     <Compile Include="Extend\NExtendRegistryKey.cs" />
     <Compile Include="Extend\NExtendSerialize.cs" />
     <Compile Include="Extend\NExtendString.cs" />
@@ -95,7 +96,6 @@
     <Compile Include="Extend\NJScript.cs" />
     <Compile Include="Extend\NXmlHelper.cs" />
     <Compile Include="Extend\ShortcutHelper.cs" />
-    <Compile Include="Extend\TResult.cs" />
     <Compile Include="LocalMeseageQueue\LMQBase.cs" />
     <Compile Include="LocalMeseageQueue\LMQCenter.cs" />
     <Compile Include="LocalMeseageQueue\LMQConfigManager.cs" />

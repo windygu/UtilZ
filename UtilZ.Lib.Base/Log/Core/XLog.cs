@@ -411,6 +411,7 @@ namespace UtilZ.Lib.Base.Log.Core
                 {
                     if (this._logQueue.Count == 0)
                     {
+                        this._logQueueThread.IsBackground = true;
                         this._autoResetEvent.WaitOne();
                     }
 
@@ -475,6 +476,11 @@ namespace UtilZ.Lib.Base.Log.Core
                 else
                 {
                     logInfo = new LogItem(DateTime.Now, Thread.CurrentThread, ex.StackTrace, e.Level, e.Message, e.Exception, e.Name, e.EventID, e.ExtendInfo);
+                }
+
+                if (!this._logQueueThread.IsBackground)
+                {
+                    this._logQueueThread.IsBackground = true;
                 }
 
                 this._logQueue.Enqueue(logInfo);

@@ -210,8 +210,7 @@ namespace UtilZ.Lib.DBSqlite.Core
             }
 
             string name = string.Format("{0}写线程", string.IsNullOrEmpty(this.Config.ConName) ? "数据库编号" + this.Config.DBID.ToString() : this.Config.ConName);
-            this._writeQueue = new AsynQueue<SQLiteWriteBase>(name,true);
-            this._writeQueue.ProcessAction = this.WriteThreadMethod;
+            this._writeQueue = new AsynQueue<SQLiteWriteBase>(this.WriteThreadMethod, name, true, false);
         }
 
         /// <summary>

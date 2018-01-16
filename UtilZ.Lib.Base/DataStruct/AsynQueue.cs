@@ -65,20 +65,23 @@ namespace UtilZ.Lib.Base.DataStruct
         /// <param name="item">待处理数据项</param>
         private void OnRaiseProcess(T item)
         {
-            if (this.ProcessAction != null)
+            var handler = this.ProcessAction;
+            if (handler != null)
             {
-                this.ProcessAction(item);
+                handler(item);
             }
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="processAction">数据处理委托</param>
         /// <param name="name">异步队列名称</param>
         /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
         /// <param name="isAutoStart">是否自动启动线程</param>
-        public AsynQueue(string name = null, bool isBackground = true, bool isAutoStart = false)
+        public AsynQueue(Action<T> processAction, string name = null, bool isBackground = true, bool isAutoStart = false)
         {
+            this.ProcessAction = processAction;
             this._isBackground = isBackground;
             if (string.IsNullOrWhiteSpace(name))
             {
