@@ -145,8 +145,17 @@ namespace UtilZ.Lib.Base.Base
                         continue;
                     }
 
-                    pnm = (PropertyNameMapAttribute)pnmAttri[0];
-                    if (pnm.SourceType != null && pnm.SourceType != sourceType)
+                    pnm = null;
+                    foreach (PropertyNameMapAttribute pnmAttriItem in pnmAttri)
+                    {
+                        if (pnmAttriItem.SourceType != null && pnmAttriItem.SourceType == sourceType)
+                        {
+                            pnm = pnmAttriItem;
+                            break;
+                        }
+                    }
+
+                    if (pnm == null)
                     {
                         continue;
                     }

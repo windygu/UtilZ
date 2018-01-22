@@ -197,6 +197,42 @@ namespace UtilZ.Lib.Base
             return dbiItems;
         }
 
+        /// <summary>
+        /// 获取枚举特性转换成的字典集合[key:枚举值;value:枚举项上标记的特性(多项取第一项)]
+        /// </summary>
+        /// <typeparam name="ET">枚举类型</typeparam>
+        /// <typeparam name="AT">枚举上对应的特性类型</typeparam>
+        /// <returns>枚举特性转换成的字典集合</returns>
+        public static Dictionary<ET, AT> GetEnumItemAttribute<ET, AT>() where AT : Attribute
+        {
+            Type enumType = typeof(ET);
+            AssertEnum(enumType);
+
+            var fields = enumType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            Type attriType = typeof(AT);
+            object[] csAttris = null;
+            ET value;
+            AT attri;
+            var itemAttriDic = new Dictionary<ET, AT>();
+            foreach (var field in fields)
+            {
+                csAttris = field.GetCustomAttributes(attriType, false);
+                value = (ET)field.GetValue(null);
+                if (csAttris.Length == 0)
+                {
+                    attri = null;
+                }
+                else
+                {
+                    attri = (AT)csAttris[0];
+                }
+
+                itemAttriDic.Add(value, attri);
+            }
+
+            return itemAttriDic;
+        }
+
         #region 获取枚举项上的标识
         /// <summary>
         /// 获取枚举项上的标识
