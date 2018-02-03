@@ -92,7 +92,7 @@
     <Compile Include="Extend\NExtendUnmanagedDll.cs" />
     <Compile Include="Extend\NExtendUtil.cs" />
     <Compile Include="Extend\NFileStringCoding.cs" />
-    <Compile Include="Extend\NFTP.cs" />
+    <Compile Include="Extend\NExtendFTP.cs" />
     <Compile Include="Extend\NJScript.cs" />
     <Compile Include="Extend\NXmlHelper.cs" />
     <Compile Include="Extend\ShortcutHelper.cs" />
