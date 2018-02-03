@@ -44,6 +44,11 @@ namespace UtilZ.Lib.Base.Extend
         private readonly string _ftpDirRegStr = @"(?<pre>^(?<year>\d{2}-\d{2}-\d{2})\s+(?<time>\d{2}:\d{2}[A,P,a,p]{1}[M,m]{1})\s+<[D,d]{1}[I,i]{1}[R,r]{1}>\s+)";
 
         /// <summary>
+        /// FTP文件信息匹配正则表达式
+        /// </summary>
+        private readonly string _ftpFileRegStr = @"(?<pre>^(?<year>\d{2}-\d{2}-\d{2})\s+(?<time>\d{2}:\d{2}[A,P,a,p]{1}[M,m]{1})\s+(?<length>\d+)\s+)";
+
+        /// <summary>
         /// 拆分文件或目录列表字符数组
         /// </summary>
         private readonly char[] _splitFileInfoChs = { ' ' };
@@ -493,7 +498,6 @@ namespace UtilZ.Lib.Base.Extend
             DateTime createTime;
             long length;
             FtpWebRequest ftp = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.ListDirectoryDetails);
-            const string regStr = @"(?<pre>^(?<year>\d{2}-\d{2}-\d{2})\s+(?<time>\d{2}:\d{2}[A,P,a,p]{1}[M,m]{1})\s+(?<length>\d+)\s+)";
             Match match;
             using (Stream stream = ftp.GetResponse().GetResponseStream())
             {
@@ -502,7 +506,7 @@ namespace UtilZ.Lib.Base.Extend
                 string name;
                 while (!string.IsNullOrEmpty(line))
                 {
-                    match = Regex.Match(line, regStr);
+                    match = Regex.Match(line, this._ftpFileRegStr);
                     if (match.Success)
                     {
                         createTime = this.ConvertFTPCreateTime(match.Groups["year"].Value, match.Groups["time"].Value);
