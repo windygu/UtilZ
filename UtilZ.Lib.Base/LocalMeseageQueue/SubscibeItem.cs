@@ -15,7 +15,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
         /// <summary>
         /// 消息通知委托
         /// </summary>
-        public Action<SubscibeItem, LMQDataMessage> MessageNotify;
+        public Action<SubscibeItem, object> MessageNotify;
 
         /// <summary>
         /// 构造函数
@@ -32,7 +32,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
         /// </summary>
         /// <param name="topic">主题</param>
         /// <param name="messageNotify">消息通知委托</param>
-        public SubscibeItem(string topic, Action<SubscibeItem, LMQDataMessage> messageNotify)
+        public SubscibeItem(string topic, Action<SubscibeItem, object> messageNotify)
             : base(topic)
         {
             this.MessageNotify = messageNotify;
@@ -49,7 +49,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
                 var handler = this.MessageNotify;
                 if (handler != null)
                 {
-                    handler(this, message as LMQDataMessage);
+                    handler(this, message);
                 }
             }
             catch (Exception ex)

@@ -24,6 +24,14 @@ namespace UtilZ.Lib.Base
         } 
 
         /// <summary>
+        /// 构造函数
+        /// </summary>
+        public DateTimeFormatProvider()
+        {
+
+        }
+
+        /// <summary>
         /// 获取格式类型
         /// </summary>
         /// <param name="formatType"></param>

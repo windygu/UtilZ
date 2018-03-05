@@ -99,7 +99,6 @@
     <Compile Include="LocalMeseageQueue\LMQBase.cs" />
     <Compile Include="LocalMeseageQueue\LMQCenter.cs" />
     <Compile Include="LocalMeseageQueue\LMQConfigManager.cs" />
-    <Compile Include="LocalMeseageQueue\LMQDataMessage.cs" />
     <Compile Include="LocalMeseageQueue\SubscibeGroup.cs" />
     <Compile Include="LocalMeseageQueue\SubscibeItem.cs" />
     <Compile Include="Expression\BaseCalate.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="Base\DropdownBindingItem.cs" />
     <Compile Include="Base\EnumHelper.cs" />
     <Compile Include="Base\IPropertyValueVerify.cs" />
-    <Compile Include="Base\LogicOperator.cs" />
     <Compile Include="Base\NativeApiBase.cs" />
     <Compile Include="Base\NativeMethods.cs" />
     <Compile Include="Base\NBaseHepler.cs" />

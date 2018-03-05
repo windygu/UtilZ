@@ -15,6 +15,30 @@ namespace UtilZ.Lib.Base.Extend
         //帮助文章:http://www.cnblogs.com/fdyang/p/4015396.html
 
         /// <summary>
+        /// 添加目录到DLL搜索路径[代码中第一行一般都是SetDllDirectory(""),目的是为了防DLL挟持]
+        /// The SetDllDirectory function affects all subsequent calls to the LoadLibrary and LoadLibraryEx functions.It also effectively disables safe DLL search mode while the specified directory is in the search path.
+        /// After calling SetDllDirectory, the standard DLL search path is:
+        /// The directory from which the application loaded.
+        /// The directory specified by the lpPathName parameter.
+        /// The system directory.Use the GetSystemDirectory function to get the path of this directory.The name of this directory is System32.
+        /// The 16-bit system directory.There is no function that obtains the path of this directory, but it is searched.The name of this directory is System.
+        /// The Windows directory.Use the GetWindowsDirectory function to get the path of this directory.
+        /// The directories that are listed in the PATH environment variable.
+        /// </summary>
+        /// <param name="dir">The directory to be added to the search path. 
+        /// If this parameter is an empty string (""), 
+        /// the call removes the current directory from the default DLL search order. 
+        /// If this parameter is NULL, the function restores the default search order</param>
+        /// <returns>If the function succeeds, the return value is nonzero.
+        /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+        public static bool SetDllDirectory(string dir)
+        {
+            //https://msdn.microsoft.com/en-us/library/windows/desktop/ms686203(v=vs.85).aspx
+            //http://blog.csdn.net/zvall/article/details/51770853
+            return NativeMethods.SetDllDirectory(dir);
+        }
+
+        /// <summary>
         /// 加载C++ dll
         /// </summary>
         /// <param name="dllPath">dll路径</param>

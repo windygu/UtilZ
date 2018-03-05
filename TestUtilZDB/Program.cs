@@ -15,7 +15,7 @@ namespace TestUtilZDB
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestPageGrid());
+            Application.Run(new FTest());
         }
     }
 }

@@ -26,7 +26,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
         /// <summary>
         /// 异步发布消息队列线程
         /// </summary>
-        private readonly AsynQueue<LMQDataMessage> _asynPublishParaQueueThread;
+        private readonly AsynQueue<object> _asynPublishParaQueueThread;
 
         /// <summary>
         /// 构造函数
@@ -36,14 +36,14 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
             : base(topic)
         {
             string name = string.Format("本地消息队列主题{0}数据消息发布线程", topic);
-            this._asynPublishParaQueueThread = new AsynQueue<LMQDataMessage>(this.PublishThreadMethod, name, true, true);
+            this._asynPublishParaQueueThread = new AsynQueue<object>(this.PublishThreadMethod, name, true, true);
         }
 
         /// <summary>
         /// 发布消息线程方法
         /// </summary>
         /// <param name="dataMessage">数据消息</param>
-        private void PublishThreadMethod(LMQDataMessage dataMessage)
+        private void PublishThreadMethod(object dataMessage)
         {
             List<SubscibeItem> items;
             lock (this._itemsMonitor)
@@ -75,7 +75,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
         /// 发布消息
         /// </summary>
         /// <param name="dataMessage">数据消息</param>
-        public void Publish(LMQDataMessage dataMessage)
+        public void Publish(object dataMessage)
         {
             this._asynPublishParaQueueThread.Enqueue(dataMessage);
         }

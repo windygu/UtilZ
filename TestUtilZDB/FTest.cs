@@ -43,7 +43,7 @@ namespace TestUtilZDB
             }
         }
 
-        void MessageNotify(SubscibeItem subscibeItem, LMQDataMessage obj)
+        void MessageNotify(SubscibeItem subscibeItem, object obj)
         {
             if (obj == null)
             {
@@ -56,7 +56,7 @@ namespace TestUtilZDB
             }
             else
             {
-                listBox1.Items.Add(obj.Data.ToString());
+                listBox1.Items.Add(obj.ToString());
             }
         }
 

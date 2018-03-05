@@ -203,7 +203,7 @@ namespace UtilZ.Lib.Base.Extend
             try
             {
                 string ftpUrl = Path.Combine(this._ftpUrl, remoteFilePath);
-                FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.GetFileSize);
+                FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.GetDateTimestamp);
                 using (FtpWebResponse ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse())
                 {
                     //return ftpWebResponse.ContentLength > 0;

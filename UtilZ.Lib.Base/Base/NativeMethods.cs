@@ -11,6 +11,46 @@ namespace UtilZ.Lib.Base
     /// </summary>
     public class NativeMethods
     {
+        //https://msdn.microsoft.com/en-us/library/windows/desktop/ms633499(v=vs.85).aspx
+        /// <summary>
+        /// Retrieves a handle to the top-level window whose class name and window name match the specified strings. This function does not search child windows. This function does not perform a case-sensitive search.
+        /// To search child windows, beginning with a specified child window, use the FindWindowEx function.
+        /// If the lpWindowName parameter is not NULL, FindWindow calls the GetWindowText function to retrieve the window name for comparison. For a description of a potential problem that can arise, see the Remarks for GetWindowText.
+        /// </summary>
+        /// <param name="lpClassName">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero.
+        /// If lpClassName points to a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names.
+        /// If lpClassName is NULL, it finds any window whose title matches the lpWindowName parameter.</param>
+        /// <param name="lpWindowName">The window name (the window's title). If this parameter is NULL, all window names match</param>
+        /// <returns>Type:
+        /// Type: HWND
+        /// If the function succeeds, the return value is a handle to the window that has the specified class name and window name.
+        /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+        [DllImport("User32.dll", EntryPoint = "FindWindow")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        /// <summary>
+        /// Retrieves a handle to a window whose class name and window name match the specified strings. The function searches child windows, beginning with the one following the specified child window. This function does not perform a case-sensitive search.
+        /// If the lpszWindow parameter is not NULL, FindWindowEx calls the GetWindowText function to retrieve the window name for comparison. For a description of a potential problem that can arise, see the Remarks section of GetWindowText.
+        /// An application can call this function in the following way.
+        /// FindWindowEx(NULL, NULL, MAKEINTATOM(0x8000), NULL );
+        /// Note that 0x8000 is the atom for a menu class. When an application calls this function, the function checks whether a context menu is being displayed that the application created.
+        /// </summary>
+        /// <param name="hwndParent">A handle to the parent window whose child windows are to be searched.
+        /// If hwndParent is NULL, the function uses the desktop window as the parent window.The function searches among windows that are child windows of the desktop.
+        /// If hwndParent is HWND_MESSAGE, the function searches all message-only windows.</param>
+        /// <param name="hwndChildAfter">A handle to a child window. The search begins with the next child window in the Z order. The child window must be a direct child window of hwndParent, not just a descendant window.
+        /// If hwndChildAfter is NULL, the search begins with the first child window of hwndParent.
+        /// Note that if both hwndParent and hwndChildAfter are NULL, the function searches all top-level and message-only windows</param>
+        /// <param name="lpszClass">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be placed in the low-order word of lpszClass; the high-order word must be zero.
+        /// If lpszClass is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names, or it can be MAKEINTATOM(0x8000). In this latter case, 0x8000 is the atom for a menu class. For more information, see the Remarks section of this topic</param>
+        /// <param name="lpszWindow">The window name (the window's title). If this parameter is NULL, all window names match.</param>
+        /// <returns>ype:
+        /// Type: HWND
+        ///  If the function succeeds, the return value is a handle to the window that has the specified class and window names.
+        ///  If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+        [DllImport("user32.dll", EntryPoint = "FindWindow")]
+        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
         /// <summary>
         /// 刷新系统缓存图标
         /// Notifies the system of an event that an application has performed. An application should use this function if it performs an action that may affect the Shell. 
@@ -66,6 +106,18 @@ namespace UtilZ.Lib.Base
         public static extern IntPtr GetCurrentThread();
 
         #region C#动态调用C++编写的DLL函数
+        /// <summary>
+        /// 添加目录到DLL搜索路径
+        /// </summary>
+        /// <param name="dir">The directory to be added to the search path. 
+        /// If this parameter is an empty string (""), 
+        /// the call removes the current directory from the default DLL search order. 
+        /// If this parameter is NULL, the function restores the default search order</param>
+        /// <returns>If the function succeeds, the return value is nonzero.
+        /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+        [DllImport("Kernel32", CharSet = CharSet.Unicode)]
+        public static extern bool SetDllDirectory(string dir);
+
         /// <summary>
         /// 加载C++ dll
         /// </summary>

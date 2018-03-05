@@ -120,7 +120,7 @@ namespace UtilZ.Lib.Base.LocalMeseageQueue
             var subscibeGroup = _htSubscibeItems[topic] as SubscibeGroup;
             if (subscibeGroup != null)
             {
-                subscibeGroup.Publish(new LMQDataMessage(topic, message));
+                subscibeGroup.Publish(message);
             }
         }
     }
