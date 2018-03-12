@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.WPF.WaitingControls
 {
@@ -93,7 +94,7 @@ namespace UtilZ.Lib.WPF.WaitingControls
     /// <summary>
     /// 动画段对象
     /// </summary>
-    public class AnimalSegmentSize : NBaseModel
+    public class AnimalSegmentSize : BaseModel
     {
         private double _segment1 = 200;
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using UtilZ.Lib.Base;
 using UtilZ.Lib.Base.DataStruct.UIBinding;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.Base.Log;
 
 namespace UtilZ.Lib.Winform.PageGrid
@@ -398,7 +399,7 @@ namespace UtilZ.Lib.Winform.PageGrid
     /// <summary>
     /// 列设置类
     /// </summary>
-    public class ColumnSettingInfo : NBaseModel
+    public class ColumnSettingInfo : BaseModel
     {
         /// <summary>
         /// 列可见性改变通知委托

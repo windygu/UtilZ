@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilZ.Lib.Base.Log;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using System.IO;
 
 namespace UtilZ.Lib.WinformEx.PageGrid

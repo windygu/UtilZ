@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using UtilZ.Lib.DBModel.Constant;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.DBModel.Config
 {

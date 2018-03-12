@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.DBBase.Core;
 using UtilZ.Lib.DBBase.Factory;
 using UtilZ.Lib.DBModel.DBInfo;
@@ -178,7 +178,7 @@ namespace UtilZ.Lib.DBOracle.Core
                     value = data.ElementAt(j)[i];
                     if (value != DBNull.Value && value.GetType() != dbFieldInfo.DataType)
                     {
-                        value = NExtendConvert.ToObject(dbFieldInfo.DataType, value);
+                        value = ConvertEx.ToObject(dbFieldInfo.DataType, value);
                     }
 
                     newRowData.SetValue(value, j);

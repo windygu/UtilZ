@@ -22,7 +22,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid
         /// <param name="targetObj">目标对象</param>
         public static void UpdateValue<T>(T valueObj, T targetObj) where T : class
         {
-            UtilZ.Lib.Base.Extend.NAttributeHelper.UpdateValue<T, PropertyGridAttribute>(valueObj, targetObj);
+            UtilZ.Lib.Base.Ex.AttributeEx.UpdateValue<T, PropertyGridAttribute>(valueObj, targetObj);
         }
 
         /// <summary>

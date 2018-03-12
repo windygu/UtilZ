@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Foundation;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.DBModel.Interface;
 
 namespace UtilZ.Lib.DBSqlite.Write

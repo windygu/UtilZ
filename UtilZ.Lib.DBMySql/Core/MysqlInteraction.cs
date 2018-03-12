@@ -13,7 +13,7 @@ namespace UtilZ.Lib.DBMySql.Core
     /// <summary>
     /// Mysql数据库交互类
     /// </summary>
-    public class MysqlInteraction : DBInteractionBase
+    public class MysqlInteraction : DBInteractioBase
     {
         /// <summary>
         /// 创建DbDataAdapter

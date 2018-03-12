@@ -1,10 +1,11 @@
 ﻿using UtilZ.Lib.Base;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.DropdownBox
 {
@@ -28,7 +29,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             EnumHelper.AssertEnum(enumType);
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             if (ignoreList == null)
@@ -84,7 +85,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             EnumHelper.AssertEnum(enumType);
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             if (combox.Items.Count == 0)
@@ -122,7 +123,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             EnumHelper.AssertEnum<T>();
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             try
@@ -150,7 +151,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             try
@@ -189,7 +190,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             if (combox.Items.Count == 0)
@@ -228,7 +229,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             if (combox.SelectedIndex == -1)
@@ -259,7 +260,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             try
@@ -317,7 +318,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             if (combox.Items.Count == 0)
@@ -378,7 +379,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
             }
 
             if (combox.SelectedIndex == -1)

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.DBBase.Base;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.DBModel.Common;
 using UtilZ.Lib.DBModel.Config;
 using UtilZ.Lib.DBModel.Constant;
@@ -18,7 +18,7 @@ namespace UtilZ.Lib.DBSqlite.Core
     /// <summary>
     /// SQLite数据库交互类
     /// </summary>
-    public class SQLiteInteraction : DBInteractionBase
+    public class SQLiteInteraction : DBInteractioBase
     {
         /// <summary>
         /// 数据库程序集名称
@@ -85,7 +85,7 @@ namespace UtilZ.Lib.DBSqlite.Core
             {
                 scsb = new SQLiteConnectionStringBuilder();
                 scsb.Pooling = true;
-                scsb.DataSource = NExtendDirectoryInfo.GetFullPath(config.DatabaseName);
+                scsb.DataSource = DirectoryInfoEx.GetFullPath(config.DatabaseName);
                 if (!string.IsNullOrEmpty(config.Password))
                 {
                     scsb.Password = config.Password;

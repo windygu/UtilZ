@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using UtilZ.Lib.DBBase.Factory;
 using UtilZ.Lib.DBModel.Constant;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.DBBase.Interface;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.DBBase.Core
 {
@@ -54,7 +55,7 @@ namespace UtilZ.Lib.DBBase.Core
                 {
                     dbAccess = DBFactoryManager.GetDBFactory(dbid).GetDBAccess(dbid);
                     dbAccess.Init();
-                    bool ret = NExtendUtil.Add<int, IDBAccess>(_dicDBAccess, dbid, dbAccess, DBConstant.AddConcurrentDictionaryRepatCount);
+                    bool ret = Util.Add<int, IDBAccess>(_dicDBAccess, dbid, dbAccess, DBConstant.AddConcurrentDictionaryRepatCount);
                     if (!ret)
                     {
                         Console.WriteLine(string.Format("添加数据库编号ID为{0}数据库访问实例失败", dbid));

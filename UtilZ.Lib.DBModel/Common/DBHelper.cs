@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.DBModel.DBInfo;
 
@@ -41,36 +42,36 @@ namespace UtilZ.Lib.DBModel.Common
 
             //数值类型
             List<Type> numTypes = new List<Type>();
-            numTypes.Add(NClrSystemType.BoolType);
-            numTypes.Add(NClrSystemType.ByteType);
-            numTypes.Add(NClrSystemType.DecimalType);
-            numTypes.Add(NClrSystemType.DoubleType);
-            numTypes.Add(NClrSystemType.Int16Type);
-            numTypes.Add(NClrSystemType.Int32Type);
-            numTypes.Add(NClrSystemType.Int64Type);
-            numTypes.Add(NClrSystemType.SbyteType);
-            numTypes.Add(NClrSystemType.FloatType);
-            numTypes.Add(NClrSystemType.UInt16Type);
-            numTypes.Add(NClrSystemType.UInt32Type);
-            numTypes.Add(NClrSystemType.UInt64Type);
+            numTypes.Add(ClrSystemType.BoolType);
+            numTypes.Add(ClrSystemType.ByteType);
+            numTypes.Add(ClrSystemType.DecimalType);
+            numTypes.Add(ClrSystemType.DoubleType);
+            numTypes.Add(ClrSystemType.Int16Type);
+            numTypes.Add(ClrSystemType.Int32Type);
+            numTypes.Add(ClrSystemType.Int64Type);
+            numTypes.Add(ClrSystemType.SbyteType);
+            numTypes.Add(ClrSystemType.FloatType);
+            numTypes.Add(ClrSystemType.UInt16Type);
+            numTypes.Add(ClrSystemType.UInt32Type);
+            numTypes.Add(ClrSystemType.UInt64Type);
             DBHelper._dicFieldClrDbTypes.Add(DBFieldType.Number, numTypes);
 
             //二进制类型
             List<Type> binaryTypes = new List<Type>();
-            binaryTypes.Add(NClrSystemType.BytesType);
+            binaryTypes.Add(ClrSystemType.BytesType);
             DBHelper._dicFieldClrDbTypes.Add(DBFieldType.Binary, binaryTypes);
 
             //日期时间类型
             List<Type> dateTypes = new List<Type>();
-            dateTypes.Add(NClrSystemType.DateTimeType);
-            dateTypes.Add(NClrSystemType.TimeSpanType);
-            dateTypes.Add(NClrSystemType.DateTimeOffsetType);
+            dateTypes.Add(ClrSystemType.DateTimeType);
+            dateTypes.Add(ClrSystemType.TimeSpanType);
+            dateTypes.Add(ClrSystemType.DateTimeOffsetType);
             DBHelper._dicFieldClrDbTypes.Add(DBFieldType.DateTime, dateTypes);
 
             //字符串类型
             List<Type> stringTypes = new List<Type>();
-            stringTypes.Add(NClrSystemType.StringType);
-            stringTypes.Add(NClrSystemType.GuidType);
+            stringTypes.Add(ClrSystemType.StringType);
+            stringTypes.Add(ClrSystemType.GuidType);
             DBHelper._dicFieldClrDbTypes.Add(DBFieldType.String, stringTypes);
         }
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.Winform.Extend;
 
 namespace UtilZ.Lib.Winform

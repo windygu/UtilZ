@@ -6,7 +6,6 @@ using System.Text;
 using UtilZ.Lib.DBBase.Base;
 using UtilZ.Lib.DBBase.Factory;
 using UtilZ.Lib.DBBase.Core;
-using UtilZ.Lib.DBBase.Factory;
 using UtilZ.Lib.DBBase.Interface;
 using UtilZ.Lib.DBModel.Config;
 
@@ -20,7 +19,7 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// <summary>
         /// 数据库交互实例字典集合[key:数据库编号ID;value:数据库交互实例]
         /// </summary>
-        private readonly ConcurrentDictionary<int, DBInteractionBase> _dicWriteConsDBInteractions = new ConcurrentDictionary<int, DBInteractionBase>();
+        private readonly ConcurrentDictionary<int, DBInteractioBase> _dicWriteConsDBInteractions = new ConcurrentDictionary<int, DBInteractioBase>();
 
         /// <summary>
         /// 数据库交互实例字典集合锁
@@ -40,9 +39,9 @@ namespace UtilZ.Lib.DBSqlite.Core
         /// </summary>
         /// <param name="config">数据库配置</param>
         /// <returns>数据库交互实例</returns>
-        public override DBInteractionBase GetDBInteraction(DBConfigElement config)
+        public override DBInteractioBase GetDBInteraction(DBConfigElement config)
         {
-            DBInteractionBase dbInteraction;
+            DBInteractioBase dbInteraction;
             int dbid = config.DBID;
             if (this._dicWriteConsDBInteractions.ContainsKey(dbid))
             {

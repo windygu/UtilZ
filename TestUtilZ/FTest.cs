@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Lib.Base.DataStruct.Threading;
 using UtilZ.Lib.Base.DataStruct.UIBinding;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.Base.Log;
-using UtilZ.Lib.BaseEx.NCompress;
+using UtilZ.Lib.BaseEx.Compress;
 
 namespace TestUtilZ
 {

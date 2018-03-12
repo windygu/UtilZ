@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 {
@@ -14,13 +15,13 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <summary>
         /// 左
         /// </summary>
-        [NDisplayNameAttribute(DisplayName = "左")]
+        [DisplayNameExAttribute(DisplayName = "左")]
         Left,
 
         /// <summary>
         /// 右
         /// </summary>
-        [NDisplayNameAttribute(DisplayName = "右")]
+        [DisplayNameExAttribute(DisplayName = "右")]
         Right,
 
         /// <summary>

@@ -88,7 +88,7 @@ namespace UtilZ.Lib.DBBase.Core
         {
             if (_enableCache)
             {
-                NSysMemoryCache.Set(key, value);
+                MemoryCacheEx.Set(key, value);
             }
         }
 
@@ -102,7 +102,7 @@ namespace UtilZ.Lib.DBBase.Core
         {
             if (_enableCache)
             {
-                NSysMemoryCache.Set(key, value, expiration);
+                MemoryCacheEx.Set(key, value, expiration);
             }
         }
 
@@ -115,7 +115,7 @@ namespace UtilZ.Lib.DBBase.Core
         {
             if (_enableCache)
             {
-                return NSysMemoryCache.Get(key);
+                return MemoryCacheEx.Get(key);
             }
             else
             {

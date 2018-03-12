@@ -4,26 +4,27 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 
 namespace TestUtilZ
 {
     public partial class FTestFTP : Form
     {
-        private readonly NExtendFTP _extendFTP;
+        private readonly FTPEx _extendFTP;
         public FTestFTP()
         {
             InitializeComponent();
 
-            string ftpUrl = @"ftp://192.168.2.6/";
+            string ftpUrl = @"ftp://192.168.2.9/";
             string ftpUserName = string.Empty;
             string ftpPassword = string.Empty;
-            this._extendFTP = new NExtendFTP(ftpUrl, ftpUserName, ftpPassword);
+            this._extendFTP = new FTPEx(ftpUrl, ftpUserName, ftpPassword);
         }
 
         private void FTestFTP_Load(object sender, EventArgs e)
@@ -127,7 +128,7 @@ namespace TestUtilZ
             {
                 string localFilePath, remoteFilePath;
 
-                localFilePath = @"F:\Soft\KKSetup_2000.exe";
+                /*localFilePath = @"F:\Soft\KKSetup_2000.exe";
                 remoteFilePath = @"KKSetup_2000.exe";
                 this._extendFTP.UploadFile(localFilePath, remoteFilePath, 2048, true);
 
@@ -139,7 +140,36 @@ namespace TestUtilZ
 
                 localFilePath = @"F:\Soft\feiq.rar";
                 remoteFilePath = @"feiq.rar";
-                this._extendFTP.UploadFile(localFilePath, remoteFilePath, 2048, true);
+                this._extendFTP.UploadFile(localFilePath, remoteFilePath, 2048, true);*/
+
+                remoteFilePath = @"P5010035.JPG";
+                localFilePath = @"G:\Tmp\P5010035.JPG";
+
+                remoteFilePath = @"刀剑心.mp3";
+                localFilePath = @"G:\Tmp\刀剑心.mp3";
+                using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    int bufferSize = 1024;
+                    int offset = 0;
+                    byte[] buffer = new byte[bufferSize];
+                    this._extendFTP.UploadFile(remoteFilePath, fs.Length, () =>
+                    {
+                        if (offset == fs.Length)
+                        {
+                            return null;
+                        }
+
+                        if (offset + bufferSize > fs.Length)
+                        {
+                            bufferSize = (int)(fs.Length - offset);
+                            buffer = new byte[bufferSize];
+                        }
+
+                        fs.Read(buffer, 0, bufferSize);
+                        offset += bufferSize;
+                        return buffer;
+                    }, true);
+                }
             }
             catch (Exception ex)
             {

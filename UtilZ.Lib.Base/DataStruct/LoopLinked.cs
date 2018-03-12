@@ -1,4 +1,4 @@
-﻿using UtilZ.Lib.Base.Extend;
+﻿using UtilZ.Lib.Base.Ex;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -126,7 +126,7 @@ namespace UtilZ.Lib.Base.DataStruct
         {
             if (item == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => item));
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => item));
             }
 
             var delNode = this.Find(item);
@@ -146,7 +146,7 @@ namespace UtilZ.Lib.Base.DataStruct
         {
             if (node == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => node));
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => node));
             }
 
             if (this.ExistNode(node))

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 {
@@ -21,7 +22,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <returns>如果该转换器能够执行转换，则为 true；否则为 false</returns>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (context.PropertyDescriptor.PropertyType == NClrSystemType.DoubleType)
+            if (context.PropertyDescriptor.PropertyType == ClrSystemType.DoubleType)
             {
                 return true;
             }
@@ -40,7 +41,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
-            if (context.PropertyDescriptor.PropertyType == NClrSystemType.DoubleType)
+            if (context.PropertyDescriptor.PropertyType == ClrSystemType.DoubleType)
             {
                 double realValue;
                 if (PostureCommon.ConvertCoordStrToCoord(value, out realValue))
@@ -66,7 +67,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <returns>如果该转换器能够执行转换，则为 true；否则为 false</returns>
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            if (context.PropertyDescriptor.PropertyType == NClrSystemType.DoubleType)
+            if (context.PropertyDescriptor.PropertyType == ClrSystemType.DoubleType)
             {
                 return true;
             }
@@ -86,7 +87,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
         {
-            if (context.PropertyDescriptor.PropertyType == NClrSystemType.DoubleType)
+            if (context.PropertyDescriptor.PropertyType == ClrSystemType.DoubleType)
             {
                 return PostureCommon.ConvertToCoorString(Convert.ToDouble(value));
             }

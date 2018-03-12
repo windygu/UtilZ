@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.Data;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.DropdownBox
 {

@@ -12,7 +12,7 @@ using UtilZ.Lib.Winform.PageGrid.Interface;
 using UtilZ.Lib.Winform.Extend;
 using System.IO;
 using System.Xml.Linq;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using System.Dynamic;
 using System.Collections.ObjectModel;
 
@@ -21,7 +21,7 @@ namespace UtilZ.Lib.Winform.PageGrid
     /// <summary>
     /// 分页数据表格
     /// </summary>
-    public partial class UCPageGridControl : UserControl, IPageDataGrid<DataGridViewRow, ZDataGridView>
+    public partial class UCPageGridControl : UserControl, IPageDataGrid<DataGridViewRow, DataGridViewEx>
     {
         #region IPageDataGrid接口
         #region 事件
@@ -306,7 +306,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         [Description("表格控件")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Category("分页数据显示控件")]
-        public ZDataGridView GridControl
+        public DataGridViewEx GridControl
         {
             get { return _dataGridView; }
         }
@@ -442,7 +442,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
         public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
         {
-            NExtendDataGridView.DataBinding(this._dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
+            DataGridViewEx.DataBinding(this._dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
             this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
             this._fPageGridColumnsSetting.UpdateAdvanceSetting(this._dataGridView.Columns);
             this._dataSourceName = dataSourceName;
@@ -766,7 +766,7 @@ namespace UtilZ.Lib.Winform.PageGrid
 
                 var xdoc = XDocument.Load(columnSettingFilePath);
                 var rootEle = xdoc.Root;
-                int count = int.Parse(NXmlHelper.GetXElementAttributeValue(rootEle, "Count"));
+                int count = int.Parse(XmlEx.GetXElementAttributeValue(rootEle, "Count"));
                 if (this._dataGridView.Columns.Count != count)
                 {
                     //项数不同,同数据源名称,但是内容有变,不加载
@@ -780,10 +780,10 @@ namespace UtilZ.Lib.Winform.PageGrid
                     foreach (var itemEle in rootEle.Elements("Item"))
                     {
                         dynamic item = new ExpandoObject();
-                        item.Name = NXmlHelper.GetXElementAttributeValue(itemEle, "Name");
-                        item.Width = int.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "Width"));
-                        item.DisplayIndex = int.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "DisplayIndex"));
-                        item.Visible = bool.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "Visible"));
+                        item.Name = XmlEx.GetXElementAttributeValue(itemEle, "Name");
+                        item.Width = int.Parse(XmlEx.GetXElementAttributeValue(itemEle, "Width"));
+                        item.DisplayIndex = int.Parse(XmlEx.GetXElementAttributeValue(itemEle, "DisplayIndex"));
+                        item.Visible = bool.Parse(XmlEx.GetXElementAttributeValue(itemEle, "Visible"));
                         items.Add(item);
 
                         if (!this._dataGridView.Columns.Contains(item.Name))
@@ -874,7 +874,7 @@ namespace UtilZ.Lib.Winform.PageGrid
         }
         #endregion
 
-        private readonly ZDataGridView _dataGridView;
+        private readonly DataGridViewEx _dataGridView;
 
         /// <summary>
         /// 隐藏列绑定列表
@@ -935,9 +935,9 @@ namespace UtilZ.Lib.Winform.PageGrid
             return fPageGridColumnsSetting;
         }
 
-        private ZDataGridView CreateDataGridView()
+        private DataGridViewEx CreateDataGridView()
         {
-            var dgv = new ZDataGridView();
+            var dgv = new DataGridViewEx();
             dgv.AllowDrop = true;
             dgv.AllowUserToAddRows = false;
             dgv.AllowUserToDeleteRows = false;

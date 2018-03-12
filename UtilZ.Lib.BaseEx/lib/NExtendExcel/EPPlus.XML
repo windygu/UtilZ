@@ -26496,45 +26496,45 @@
             The value of the attribute without any double quotes.
             </summary>
         </member>
-        <member name="T:OfficeOpenXml.VBA.ExcelVBACollectionBase`1">
+        <member name="T:OfficeOpenXml.VBA.ExcelVBACollectioBase`1">
             <summary>
             Base class for VBA collections
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:OfficeOpenXml.VBA.ExcelVBACollectionBase`1.Item(System.String)">
+        <member name="P:OfficeOpenXml.VBA.ExcelVBACollectioBase`1.Item(System.String)">
             <summary>
             Indexer
             </summary>
             <param name="Name">Name</param>
             <returns></returns>
         </member>
-        <member name="P:OfficeOpenXml.VBA.ExcelVBACollectionBase`1.Item(System.Int32)">
+        <member name="P:OfficeOpenXml.VBA.ExcelVBACollectioBase`1.Item(System.Int32)">
             <summary>
             Indexer
             </summary>
             <param name="Index">Position</param>
             <returns></returns>
         </member>
-        <member name="P:OfficeOpenXml.VBA.ExcelVBACollectionBase`1.Count">
+        <member name="P:OfficeOpenXml.VBA.ExcelVBACollectioBase`1.Count">
             <summary>
             Number of items in the collection
             </summary>
         </member>
-        <member name="M:OfficeOpenXml.VBA.ExcelVBACollectionBase`1.Exists(System.String)">
+        <member name="M:OfficeOpenXml.VBA.ExcelVBACollectioBase`1.Exists(System.String)">
             <summary>
             If a specific name exists in the collection
             </summary>
             <param name="Name">The name</param>
             <returns>True if the name exists</returns>
         </member>
-        <member name="M:OfficeOpenXml.VBA.ExcelVBACollectionBase`1.Remove(`0)">
+        <member name="M:OfficeOpenXml.VBA.ExcelVBACollectioBase`1.Remove(`0)">
             <summary>
             Removes the item
             </summary>
             <param name="Item"></param>
         </member>
-        <member name="M:OfficeOpenXml.VBA.ExcelVBACollectionBase`1.RemoveAt(System.Int32)">
+        <member name="M:OfficeOpenXml.VBA.ExcelVBACollectioBase`1.RemoveAt(System.Int32)">
             <summary>
             Removes the item at the specified index
             </summary>
@@ -28083,7 +28083,7 @@
             Type of aggregate function
             </summary>
         </member>
-        <member name="T:OfficeOpenXml.Table.PivotTable.ExcelPivotTableFieldCollectionBase`1">
+        <member name="T:OfficeOpenXml.Table.PivotTable.ExcelPivotTableFieldCollectioBase`1">
             <summary>
             Base collection class for pivottable fields
             </summary>

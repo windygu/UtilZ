@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.OriginalDataShow
 {
@@ -14,25 +15,25 @@ namespace UtilZ.Lib.Winform.OriginalDataShow
         /// <summary>
         /// ASC编码
         /// </summary>
-        [NDisplayNameAttribute("ASC编码")]
+        [DisplayNameExAttribute("ASC编码")]
         ASC,
 
         /// <summary>
         /// Unicode编码
         /// </summary>
-        [NDisplayNameAttribute("Unicode编码")]
+        [DisplayNameExAttribute("Unicode编码")]
         Unicode,
 
         /// <summary>
         /// 二进制
         /// </summary>
-        [NDisplayNameAttribute("二进制")]
+        [DisplayNameExAttribute("二进制")]
         Bin,
 
         /// <summary>
         /// 十六进制
         /// </summary>
-        [NDisplayNameAttribute("十六进制")]
+        [DisplayNameExAttribute("十六进制")]
         Hex
     }
 }

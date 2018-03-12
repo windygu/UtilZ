@@ -17,7 +17,7 @@ namespace UtilZ.Lib.DBOracle.Core
         /// <summary>
         /// 数据库交互实例 数据库访问实例字典[key:dbid;value:数据库访问实例]
         /// </summary>
-        private readonly DBInteractionBase _dbAccess = new OracleInteraction();
+        private readonly DBInteractioBase _dbAccess = new OracleInteraction();
 
         /// <summary>
         /// 构造函数
@@ -32,7 +32,7 @@ namespace UtilZ.Lib.DBOracle.Core
         /// </summary>
         /// <param name="config">数据库配置</param>
         /// <returns>数据库交互实例</returns>
-        public override DBInteractionBase GetDBInteraction(DBConfigElement config)
+        public override DBInteractioBase GetDBInteraction(DBConfigElement config)
         {
             return this._dbAccess;
         }

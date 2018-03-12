@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilZ.Lib.Base;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.Winform.DropdownBox;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 {
@@ -26,7 +27,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
 
             if (value == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => value));
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => value));
             }
 
             Type valueType = value.GetType();

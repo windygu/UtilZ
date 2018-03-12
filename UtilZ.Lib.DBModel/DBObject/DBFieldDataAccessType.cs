@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.DBModel.DBObject
 {
@@ -16,37 +17,37 @@ namespace UtilZ.Lib.DBModel.DBObject
         /// <summary>
         /// 读写改
         /// </summary>
-        [NDisplayNameAttribute("读写改")]
+        [DisplayNameExAttribute("读写改")]
         RIM,
 
         /// <summary>
         /// 读改
         /// </summary>
-        [NDisplayNameAttribute("读改")]
+        [DisplayNameExAttribute("读改")]
         RM,
 
         /// <summary>
         /// 只读
         /// </summary>
-        [NDisplayNameAttribute("只读")]
+        [DisplayNameExAttribute("只读")]
         R,
 
         /// <summary>
         /// 插入读
         /// </summary>
-        [NDisplayNameAttribute("插入读")]
+        [DisplayNameExAttribute("插入读")]
         IR,
 
         /// <summary>
         /// 只写
         /// </summary>
-        [NDisplayNameAttribute("只写")]
+        [DisplayNameExAttribute("只写")]
         I,
 
         /// <summary>
         /// 改写
         /// </summary>
-        [NDisplayNameAttribute("改写")]
+        [DisplayNameExAttribute("改写")]
         IM
     }
 }

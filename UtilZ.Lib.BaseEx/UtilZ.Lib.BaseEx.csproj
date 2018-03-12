@@ -85,19 +85,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="LogExtend\Log4ExtendInfo.cs" />
     <Compile Include="LogExtend\Log4InnerLogAddedILogerArgs.cs" />
     <Compile Include="LogExtend\Log4Log.cs" />
     <Compile Include="LogExtend\Log4Loger.cs" />
-    <Compile Include="NCompress\CompressHelper.cs" />
-    <Compile Include="NCompress\Unrar.cs" />
-    <Compile Include="NExtendExcel\ExcelNpoiHelper.cs" />
-    <Compile Include="NExtendExcel\NExtendEPPlusExcel.cs" />
-    <Compile Include="NExtendExcel\NExtendMyXlsExcel.cs" />
-    <Compile Include="NExtendExcel\NExtendNPOIExcel.cs" />
-    <Compile Include="NExtendNDatabase\NDatabaseExtend.cs" />
-    <Compile Include="NExtendNDatabase\NDatabaseHelper.cs" />
+    <Compile Include="Compress\CompressHelper.cs" />
+    <Compile Include="Compress\Unrar.cs" />
+    <Compile Include="Excel\NpoiEx2.cs" />
+    <Compile Include="Excel\EPPlusEx.cs" />
+    <Compile Include="Excel\MSExcelEx.cs" />
+    <Compile Include="Excel\MyXlsEx.cs" />
+    <Compile Include="Excel\NPOIEx.cs" />
+    <Compile Include="NDatabaseExtend\NDatabaseExtend.cs" />
+    <Compile Include="NDatabaseExtend\NDatabaseHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

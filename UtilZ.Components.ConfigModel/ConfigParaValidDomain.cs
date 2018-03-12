@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.DBModel.DBObject;
 
 namespace UtilZ.Components.ConfigModel
@@ -12,7 +13,7 @@ namespace UtilZ.Components.ConfigModel
     /// </summary>
     [Serializable]
     [DBTable("ConfigParaValidDomain")]
-    public class ConfigParaValidDomain : NBaseModel
+    public class ConfigParaValidDomain : BaseModel
     {
         /// <summary>
         /// 构造函数

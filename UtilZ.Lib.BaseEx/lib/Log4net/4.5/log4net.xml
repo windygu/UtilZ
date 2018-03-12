@@ -30092,7 +30092,7 @@
             </para>
             </remarks>
         </member>
-        <member name="P:log4net.Util.SystemInfo.ApplicationBaseDirectory">
+        <member name="P:log4net.Util.SystemInfo.ApplicatioBaseDirectory">
             <summary>
             Gets the base directory for this <see cref="T:System.AppDomain"/>.
             </summary>

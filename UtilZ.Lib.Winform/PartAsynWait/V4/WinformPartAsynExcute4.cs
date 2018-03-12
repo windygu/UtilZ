@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Base.PartAsynWait.Model;
 using UtilZ.Lib.Winform.Extend;
@@ -139,14 +139,14 @@ namespace UtilZ.Lib.Winform.PartAsynWait.Excute.Winform.V4
             System.Drawing.Image bitmap;
             if (containerControl is Form)
             {
-                bitmap = NExtendWinformControl.CreateFormImg(containerControl as Form);
+                bitmap = WinformControlEx.CreateFormImg(containerControl as Form);
             }
             else
             {
-                bitmap = NExtendWinformControl.CreateControlImg(containerControl);
+                bitmap = WinformControlEx.CreateControlImg(containerControl);
             }
 
-            bitmap = NExtendImg.ChangeImageOpacity(bitmap, 50);
+            bitmap = ImageEx.ChangeImageOpacity(bitmap, 50);
             shadeControl.BackgroundImage = bitmap;
             shadeControl.Visible = true;
         }

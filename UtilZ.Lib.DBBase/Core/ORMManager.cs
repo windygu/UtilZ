@@ -8,7 +8,7 @@ using System.Text;
 using UtilZ.Lib.DBBase.Factory;
 using UtilZ.Lib.DBModel.DBInfo;
 using UtilZ.Lib.DBModel.DBObject;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.Base.ZMemoryCache;
 using UtilZ.Lib.DBBase.Interface;
 
@@ -100,7 +100,7 @@ namespace UtilZ.Lib.DBBase.Core
             string valueConvertor = dataModelTableInfo.DBTable.ValueConvertor;
             if (dbModelValueConvert == null && !string.IsNullOrWhiteSpace(valueConvertor))
             {
-                dbModelValueConvert = NExtendActivator.CreateInstance(valueConvertor) as IDBModelValueConvert;
+                dbModelValueConvert = ActivatorEx.CreateInstance(valueConvertor) as IDBModelValueConvert;
             }
 
             DBTableInfo dbTableInfo = dbAccess.GetTableInfo(dataModelTableInfo.DBTable.Name, true);
@@ -171,7 +171,7 @@ namespace UtilZ.Lib.DBBase.Core
             //数据模型中属性的值与数据库表中字段对应的值是否是否需要转换
             if (!string.IsNullOrWhiteSpace(dbTable.ValueConvertor))
             {
-                dbModelValueConvert = NExtendActivator.CreateInstance(dbTable.ValueConvertor) as IDBModelValueConvert;
+                dbModelValueConvert = ActivatorEx.CreateInstance(dbTable.ValueConvertor) as IDBModelValueConvert;
             }
 
             //数据库主键列信息及对应的类的属性信息集合[key:列名;value:列信息]
@@ -344,7 +344,7 @@ namespace UtilZ.Lib.DBBase.Core
                     {
                         if (col.DataType != dbColumnPropertyInfo.PropertyInfo.PropertyType)
                         {
-                            value = NExtendConvert.ToObject(dbColumnPropertyInfo.PropertyInfo.PropertyType, value);
+                            value = ConvertEx.ToObject(dbColumnPropertyInfo.PropertyInfo.PropertyType, value);
                         }
                     }
 
@@ -371,11 +371,11 @@ namespace UtilZ.Lib.DBBase.Core
         public static Dictionary<string, PropertyInfo> GetProperties<T>()
         {
             Type type = typeof(T);
-            var propertyInfos = NSysMemoryCache.Get(type.FullName) as Dictionary<string, PropertyInfo>;
+            var propertyInfos = MemoryCacheEx.Get(type.FullName) as Dictionary<string, PropertyInfo>;
             if (propertyInfos == null)
             {
                 propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase).ToDictionary((item) => { return item.Name.ToUpper(); });
-                NSysMemoryCache.Set(type.FullName, propertyInfos, PropertiesCacheTime);
+                MemoryCacheEx.Set(type.FullName, propertyInfos, PropertiesCacheTime);
             }
 
             return propertyInfos;
@@ -421,7 +421,7 @@ namespace UtilZ.Lib.DBBase.Core
                     }
                     else if (col.DataType != propertyInfo.PropertyType)
                     {
-                        value = NExtendConvert.ToObject(propertyInfo.PropertyType, value);
+                        value = ConvertEx.ToObject(propertyInfo.PropertyType, value);
                     }
 
                     propertyInfo.SetValue(item, value, null);

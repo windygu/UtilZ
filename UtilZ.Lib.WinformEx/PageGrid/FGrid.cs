@@ -1,4 +1,4 @@
-﻿using UtilZ.Lib.Base.Extend;
+﻿using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Base.DataStruct.UIBinding;
 using System;
@@ -105,7 +105,7 @@ namespace UtilZ.Lib.WinformEx.PageGrid
 
                 var xdoc = XDocument.Load(columnSettingFilePath);
                 var rootEle = xdoc.Root;
-                int count = int.Parse(NXmlHelper.GetXElementAttributeValue(rootEle, "Count"));
+                int count = int.Parse(XmlEx.GetXElementAttributeValue(rootEle, "Count"));
                 if (this.dataGridView.Columns.Count != count)
                 {
                     //项数不同,同数据源名称,但是内容有变,不加载
@@ -119,10 +119,10 @@ namespace UtilZ.Lib.WinformEx.PageGrid
                     foreach (var itemEle in rootEle.Elements("Item"))
                     {
                         dynamic item = new ExpandoObject();
-                        item.Name = NXmlHelper.GetXElementAttributeValue(itemEle, "Name");
-                        item.Width = int.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "Width"));
-                        item.DisplayIndex = int.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "DisplayIndex"));
-                        item.Visible = bool.Parse(NXmlHelper.GetXElementAttributeValue(itemEle, "Visible"));
+                        item.Name = XmlEx.GetXElementAttributeValue(itemEle, "Name");
+                        item.Width = int.Parse(XmlEx.GetXElementAttributeValue(itemEle, "Width"));
+                        item.DisplayIndex = int.Parse(XmlEx.GetXElementAttributeValue(itemEle, "DisplayIndex"));
+                        item.Visible = bool.Parse(XmlEx.GetXElementAttributeValue(itemEle, "Visible"));
                         items.Add(item);
 
                         if (!this.dataGridView.Columns.Contains(item.Name))

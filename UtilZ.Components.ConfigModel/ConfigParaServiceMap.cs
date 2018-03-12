@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.DBModel.DBObject;
 
 namespace UtilZ.Components.ConfigModel
@@ -13,7 +14,7 @@ namespace UtilZ.Components.ConfigModel
     /// </summary>
     [Serializable]
     [DBTable("ConfigParaServiceMap")]
-    public class ConfigParaServiceMap : NBaseModel
+    public class ConfigParaServiceMap : BaseModel
     {
         /// <summary>
         /// 构造函数

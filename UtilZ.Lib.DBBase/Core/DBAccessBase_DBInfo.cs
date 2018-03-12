@@ -7,6 +7,7 @@ using UtilZ.Lib.DBModel.Common;
 using UtilZ.Lib.DBModel.DBInfo;
 using UtilZ.Lib.DBModel.Model;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.DBBase.Core
 {
@@ -40,7 +41,7 @@ namespace UtilZ.Lib.DBBase.Core
             DataTable dt = this.QueryData(sqlStr);
             foreach (DataColumn col in dt.Columns)
             {
-                if (col.DataType == NClrSystemType.BytesType)
+                if (col.DataType == ClrSystemType.BytesType)
                 {
                     binaryCols.Add(col.ColumnName);
                 }

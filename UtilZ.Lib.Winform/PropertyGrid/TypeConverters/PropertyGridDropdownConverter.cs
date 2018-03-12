@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.Base.Log;
 using UtilZ.Lib.Winform.PropertyGrid.Interface;
 

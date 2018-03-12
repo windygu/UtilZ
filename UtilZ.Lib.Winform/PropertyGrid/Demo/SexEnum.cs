@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using UtilZ.Lib.Base;
+using UtilZ.Lib.Base.Foundation;
 using UtilZ.Lib.Winform.PropertyGrid.TypeConverters;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.Demo
@@ -16,7 +17,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <summary>
         /// M
         /// </summary>
-        [NDisplayNameAttribute(DisplayName = "男")]
+        [DisplayNameExAttribute(DisplayName = "男")]
         M,
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// <summary>
         /// O
         /// </summary>
-        [NDisplayNameAttribute(DisplayName = "中性")]
+        [DisplayNameExAttribute(DisplayName = "中性")]
         O
     }
 }

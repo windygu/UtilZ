@@ -1,4 +1,4 @@
-﻿using UtilZ.Lib.Base.Extend;
+﻿using UtilZ.Lib.Base.Ex;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,7 +34,7 @@ namespace UtilZ.Lib.WinformEx.PageGrid
             {
                 if (string.IsNullOrEmpty(PageGridControlCommon._currentAssemblyDirectory))
                 {
-                    PageGridControlCommon._currentAssemblyDirectory = NExtendObject.GetAssemblyDirectory<PageGridControlCommon>();
+                    PageGridControlCommon._currentAssemblyDirectory = ObjectEx.GetAssemblyDirectory<PageGridControlCommon>();
                 }
 
                 settingDirectory = System.IO.Path.Combine(PageGridControlCommon._currentAssemblyDirectory, "Setting");

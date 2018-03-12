@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using UtilZ.Lib.DBBase.Interface;
 using UtilZ.Lib.DBModel.Config;
 using UtilZ.Lib.DBModel.Constant;
@@ -17,7 +17,7 @@ namespace UtilZ.Lib.DBBase.Base
     /// <summary>
     /// 数据库交互基类
     /// </summary>
-    public abstract class DBInteractionBase : IDBInteraction
+    public abstract class DBInteractioBase : IDBInteraction
     {
         /// <summary>
         /// 数据库连接字符串字典集合[key:数据库编号ID;value:数据库连接字符串]
@@ -32,7 +32,7 @@ namespace UtilZ.Lib.DBBase.Base
         /// <summary>
         /// 构造函数
         /// </summary>
-        public DBInteractionBase()
+        public DBInteractioBase()
         {
 
         }
@@ -99,7 +99,7 @@ namespace UtilZ.Lib.DBBase.Base
                         else
                         {
                             //调用数据库连接信息解密接口解密
-                            IConStrDecryption decryption = NExtendActivator.CreateInstance(decryptionType) as IConStrDecryption;
+                            IConStrDecryption decryption = ActivatorEx.CreateInstance(decryptionType) as IConStrDecryption;
                             if (decryption == null)
                             {
                                 throw new ApplicationException(string.Format("创建数据库连接信息解密接口类型{0}失败", decryptionType));

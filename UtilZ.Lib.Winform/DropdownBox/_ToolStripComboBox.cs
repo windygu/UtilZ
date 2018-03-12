@@ -1,10 +1,11 @@
 ﻿using UtilZ.Lib.Base;
-using UtilZ.Lib.Base.Extend;
+using UtilZ.Lib.Base.Ex;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UtilZ.Lib.Base.Foundation;
 
 namespace UtilZ.Lib.Winform.DropdownBox
 {
@@ -28,7 +29,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             EnumHelper.AssertEnum(enumType);
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (ignoreList == null)
@@ -79,7 +80,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             EnumHelper.AssertEnum(enumType);
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (toolStripComboBox.Items.Count == 0)
@@ -117,7 +118,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
             EnumHelper.AssertEnum<T>();
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             try
@@ -145,12 +146,12 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (items == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => items), "集合不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => items), "集合不能为null");
             }
 
             try
@@ -193,12 +194,12 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (selectedItem == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => selectedItem), "选中项不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => selectedItem), "选中项不能为null");
             }
 
             if (toolStripComboBox.Items.Count == 0)
@@ -237,7 +238,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (toolStripComboBox.SelectedIndex == -1)
@@ -268,7 +269,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             try
@@ -326,7 +327,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (toolStripComboBox.Items.Count == 0)
@@ -387,7 +388,7 @@ namespace UtilZ.Lib.Winform.DropdownBox
         {
             if (toolStripComboBox == null)
             {
-                throw new ArgumentNullException(NExtendObject.GetVarName(p => toolStripComboBox), "目标控件不能为null");
+                throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
             if (toolStripComboBox.SelectedIndex == -1)

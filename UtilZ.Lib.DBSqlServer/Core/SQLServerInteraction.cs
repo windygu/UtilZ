@@ -14,7 +14,7 @@ namespace UtilZ.Lib.DBSqlServer.Core
     /// <summary>
     /// SQLServer数据库交互类
     /// </summary>
-    public class SQLServerInteraction : DBInteractionBase
+    public class SQLServerInteraction : DBInteractioBase
     {
         /// <summary>
         /// 构造函数

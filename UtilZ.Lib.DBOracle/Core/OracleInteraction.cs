@@ -14,7 +14,7 @@ namespace UtilZ.Lib.DBOracle.Core
     /// <summary>
     /// Oracle数据库交互类
     /// </summary>
-    public class OracleInteraction : DBInteractionBase
+    public class OracleInteraction : DBInteractioBase
     {
         /// <summary>
         /// 创建DbDataAdapter

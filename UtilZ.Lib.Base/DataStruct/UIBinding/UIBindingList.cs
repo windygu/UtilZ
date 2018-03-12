@@ -1,4 +1,4 @@
-﻿using UtilZ.Lib.Base.Extend;
+﻿using UtilZ.Lib.Base.Ex;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
