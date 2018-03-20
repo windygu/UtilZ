@@ -50,6 +50,16 @@ namespace UtilZ.Lib.Base.DataStruct
         private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
+        /// 队列线程状态[true:线程正在运行;false:线程未运行]
+        /// </summary>
+        private bool _status = false;
+
+        /// <summary>
+        /// 获取队列线程状态[true:线程正在运行;false:线程未运行]
+        /// </summary>
+        public bool Status { get { return _status; } }
+
+        /// <summary>
         /// 数据处理委托
         /// </summary>
         public Action<T> ProcessAction;
@@ -105,7 +115,7 @@ namespace UtilZ.Lib.Base.DataStruct
         {
             lock (this._threadMonitor)
             {
-                if (this._thread != null)
+                if (this._status)
                 {
                     return;
                 }
@@ -113,8 +123,9 @@ namespace UtilZ.Lib.Base.DataStruct
                 this._cts = new CancellationTokenSource();
                 this._thread = new Thread(this.RunThreadQueueProcessMethod);
                 this._thread.IsBackground = this._isBackground;
-                this._thread.Name = this.ThreadName;
+                this._thread.Name = this._threadName;
                 this._thread.Start();
+                this._status = true;
             }
         }
 
@@ -125,12 +136,14 @@ namespace UtilZ.Lib.Base.DataStruct
         {
             lock (this._threadMonitor)
             {
-                if (this._thread != null)
+                if (this._status)
                 {
                     this._cts.Cancel();
                     this._autoResetEvent.Set();
                     this._thread = null;
                 }
+
+                this._status = false;
             }
         }
 
