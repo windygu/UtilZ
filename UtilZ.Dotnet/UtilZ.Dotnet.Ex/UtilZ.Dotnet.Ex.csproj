@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,12 +45,165 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Base\ActivatorEx.cs" />
+    <Compile Include="Base\AssemblyEx.cs" />
+    <Compile Include="Base\AttributeEx.cs" />
+    <Compile Include="Base\CharEx.cs" />
+    <Compile Include="Base\Compress.cs" />
+    <Compile Include="Base\ConvertEx.cs" />
+    <Compile Include="Base\DateTimeEx.cs" />
+    <Compile Include="Base\DirectoryInfoEx.cs" />
+    <Compile Include="Base\FileEx.cs" />
+    <Compile Include="Base\FileStringCodingEx.cs" />
+    <Compile Include="Base\FontEx.cs" />
+    <Compile Include="Base\FTPEx.cs" />
+    <Compile Include="Base\HashEx.cs" />
+    <Compile Include="Base\ImageEx.cs" />
+    <Compile Include="Base\IPAddressEx.cs" />
+    <Compile Include="Base\MailEx.cs" />
+    <Compile Include="Base\NJScript.cs" />
+    <Compile Include="Base\NumberEx.cs" />
+    <Compile Include="Base\ObjectEx.cs" />
+    <Compile Include="Base\ProcessEx.cs" />
+    <Compile Include="Base\RegistryKeyEx.cs" />
+    <Compile Include="Base\SerializeEx.cs" />
+    <Compile Include="Base\Shortcut.cs" />
+    <Compile Include="Base\StringEx.cs" />
+    <Compile Include="Base\StructEx.cs" />
+    <Compile Include="Base\TypeEx.cs" />
+    <Compile Include="Base\XmlEx.cs" />
+    <Compile Include="DataStruct\AlarmClock.cs" />
+    <Compile Include="DataStruct\AsynPriorityQueue.cs" />
+    <Compile Include="DataStruct\AsynQueue.cs" />
+    <Compile Include="DataStruct\ConcurrentFixCapacityQueue.cs" />
+    <Compile Include="DataStruct\ConcurrentList.cs" />
+    <Compile Include="DataStruct\LoopLinked.cs" />
+    <Compile Include="DataStruct\PriorityQueue.cs" />
+    <Compile Include="DataStruct\ReadOnlyDictionary.cs" />
+    <Compile Include="DataStruct\SortedListEx.cs" />
+    <Compile Include="DataStruct\Threading\IThreadEx.cs" />
+    <Compile Include="DataStruct\Threading\ThreadEx.cs" />
+    <Compile Include="DataStruct\Threading\ThreadExCompletedArgs.cs" />
+    <Compile Include="DataStruct\Threading\ThreadExCompletedType.cs" />
+    <Compile Include="DataStruct\UIBinding\BindingListChangedArgs.cs" />
+    <Compile Include="DataStruct\UIBinding\BindingListChangedType.cs" />
+    <Compile Include="DataStruct\UIBinding\ComparerResultType.cs" />
+    <Compile Include="DataStruct\UIBinding\UIBindingList.cs" />
+    <Compile Include="Expression\BaseCalate.cs" />
+    <Compile Include="Expression\Exceptions.cs" />
+    <Compile Include="Expression\ExpressionCalculator.cs" />
+    <Compile Include="Expression\Models.cs" />
+    <Compile Include="LMQ\LMQBase.cs" />
+    <Compile Include="LMQ\LMQCenter.cs" />
+    <Compile Include="LMQ\LMQConfigManager.cs" />
+    <Compile Include="LMQ\SubscibeGroup.cs" />
+    <Compile Include="LMQ\SubscibeItem.cs" />
+    <Compile Include="LRR\LMReq.cs" />
+    <Compile Include="LRR\LMReqResBase.cs" />
+    <Compile Include="LRR\LMReqResCenter.cs" />
+    <Compile Include="LRR\LMRes.cs" />
+    <Compile Include="Log\Config\Core\BaseLogConfig.cs" />
+    <Compile Include="Log\Config\Core\LogConfigSection.cs" />
+    <Compile Include="Log\Config\Core\XSecurityPolicy.cs" />
+    <Compile Include="Log\Config\Framework\DatabaseLogConfigCollection.cs" />
+    <Compile Include="Log\Config\Framework\DatabaseLogElement.cs" />
+    <Compile Include="Log\Config\Framework\FileLogConfigCollection.cs" />
+    <Compile Include="Log\Config\Framework\FileLogConfigElement.cs" />
+    <Compile Include="Log\Config\Framework\MailAddrConfigCollection.cs" />
+    <Compile Include="Log\Config\Framework\MailAddrConfigElement.cs" />
+    <Compile Include="Log\Config\Framework\MailLogConfigCollection.cs" />
+    <Compile Include="Log\Config\Framework\MailLogConfigElement.cs" />
+    <Compile Include="Log\Config\Framework\NullLogIConfigElement.cs" />
+    <Compile Include="Log\Config\Framework\SystemLogConfigCollection.cs" />
+    <Compile Include="Log\Config\Framework\SystemLogConfigElement.cs" />
+    <Compile Include="Log\Config\Framework\XLogBaseConfigurationElementCollection.cs" />
+    <Compile Include="Log\Config\Interface\IConfig.cs" />
+    <Compile Include="Log\Config\Interface\IDatabaseLogConfig.cs" />
+    <Compile Include="Log\Config\Interface\IEmailLogConfig.cs" />
+    <Compile Include="Log\Config\Interface\IFileLogConfig.cs" />
+    <Compile Include="Log\Config\Interface\ILogFilterConfig.cs" />
+    <Compile Include="Log\Config\Interface\ILogSecurityPolicy.cs" />
+    <Compile Include="Log\Config\Interface\ISystemLogConfig.cs" />
+    <Compile Include="Log\Core\BaseLog.cs" />
+    <Compile Include="Log\Core\ILog.cs" />
+    <Compile Include="Log\Core\NullLog.cs" />
+    <Compile Include="Log\Core\XLog.cs" />
+    <Compile Include="Log\Layout\LayoutManager.cs" />
+    <Compile Include="Log\Loger.cs" />
+    <Compile Include="Log\LogOutput\ILogOuputFilter.cs" />
+    <Compile Include="Log\LogOutput\LogOutputArgs.cs" />
+    <Compile Include="Log\LogOutput\LogOutputCenter.cs" />
+    <Compile Include="Log\LogOutput\LogOutputSubscribeItem.cs" />
+    <Compile Include="Log\LogRecorderInterface\IDatabaseLogRecorder.cs" />
+    <Compile Include="Log\LogRecorderInterface\IEmailLogRecorder.cs" />
+    <Compile Include="Log\LogRecorderInterface\IFileLogRecorder.cs" />
+    <Compile Include="Log\LogRecorderInterface\IGenerateExtendInfo.cs" />
+    <Compile Include="Log\LogRecorderInterface\ILoger.cs" />
+    <Compile Include="Log\LogRecorderInterface\ILogRecorder.cs" />
+    <Compile Include="Log\LogRecorderInterface\IRecorder.cs" />
+    <Compile Include="Log\LogRecorderInterface\ISystemLogRecorder.cs" />
+    <Compile Include="Log\LogRecorder\BaseLoger.cs" />
+    <Compile Include="Log\LogRecorder\BaseLogRecorder.cs" />
+    <Compile Include="Log\LogRecorder\DatabaseLogRecorder.cs" />
+    <Compile Include="Log\LogRecorder\EmailLogRecorder.cs" />
+    <Compile Include="Log\LogRecorder\FileLogRecorder.cs" />
+    <Compile Include="Log\LogRecorder\NullLoger.cs" />
+    <Compile Include="Log\LogRecorder\SystemLogRecorder.cs" />
+    <Compile Include="Log\LogSysInnerLog.cs" />
+    <Compile Include="Log\LogUtil.cs" />
+    <Compile Include="Log\Model\InnerLogAddedIlogerArgs.cs" />
+    <Compile Include="Log\Model\InnerLogOutputArgs.cs" />
+    <Compile Include="Log\Model\LogConstant.cs" />
+    <Compile Include="Log\Model\LogItem.cs" />
+    <Compile Include="Log\Model\LogLevel.cs" />
+    <Compile Include="Log\Security\XSecurityPolicy.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\BasePropertyValueVerifyModel.cs" />
+    <Compile Include="Model\ClrSystemType.cs" />
+    <Compile Include="Model\Compress.cs" />
+    <Compile Include="Model\DateTimeFormatProvider.cs" />
+    <Compile Include="Model\DisplayNameExAttribute.cs" />
+    <Compile Include="Model\DropdownBindingItem.cs" />
+    <Compile Include="Model\EnumAttribute.cs" />
+    <Compile Include="Model\EnumHelper.cs" />
+    <Compile Include="Model\TEventArgs.cs" />
+    <Compile Include="Model\FormatAttribute.cs" />
+    <Compile Include="Model\IPropertyValueVerify.cs" />
+    <Compile Include="Model\TKeyTValue.cs" />
+    <Compile Include="Model\NativeApiBase.cs" />
+    <Compile Include="Model\NativeMethods.cs" />
+    <Compile Include="Model\PropertyNameMapAttribute.cs" />
+    <Compile Include="Model\PropertyValueVerifyArgs.cs" />
+    <Compile Include="Model\UnManagedDll.cs" />
+    <Compile Include="Model\Util.cs" />
+    <Compile Include="PartAsynWait\Excute\PartAsynExcuteBase.cs" />
+    <Compile Include="PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
+    <Compile Include="PartAsynWait\Interface\IPartAsynExcute.cs" />
+    <Compile Include="PartAsynWait\Interface\IPartAsynWait.cs" />
+    <Compile Include="PartAsynWait\Model\PartAsynExcuteResult.cs" />
+    <Compile Include="PartAsynWait\Model\PartAsynExcuteStatus.cs" />
+    <Compile Include="PartAsynWait\Model\PartAsynFuncPara.cs" />
+    <Compile Include="PartAsynWait\Model\PartAsynUIPara.cs" />
+    <Compile Include="PartAsynWait\Model\PartAsynUIParaProxy.cs" />
+    <Compile Include="PartAsynWait\Model\PartAsynWaitPara.cs" />
+    <Compile Include="PartAsynWait\PartAsynWaitHelperBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Base\MemoryCacheEx.cs" />
+    <Compile Include="MemoryCache\ZMemoryCacheItem.cs" />
+    <Compile Include="MemoryCache\ZMemoryCache.cs" />
+    <Compile Include="MemoryCache\ZMemoryStoreMode.cs" />
+    <Compile Include="MemoryCache\ZMemoryTimeOutType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Base\" />
-    <Folder Include="Log\" />
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
