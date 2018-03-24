@@ -277,7 +277,11 @@ namespace UtilZ.Lib.Base.Ex
                 var handler = updateProgress;
                 using (FileStream localFileStream = new FileStream(localFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    localFileStream.Seek(sendedLength, SeekOrigin.Begin);
+                    if (!isAppend)
+                    {
+                        localFileStream.Seek(sendedLength, SeekOrigin.Begin);
+                    }
+
                     ftpWebRequest.ContentLength = localFileStream.Length - sendedLength;
                     using (Stream requestStream = ftpWebRequest.GetRequestStream())
                     {
