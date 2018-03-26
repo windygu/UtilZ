@@ -172,7 +172,7 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
                 this.OutputLog(this.Config.Name, item);
 
                 //生成日志信息
-                string msg = LayoutManager.LayoutLog(item, this.Config, false);
+                string msg = LayoutManager.LayoutLog(item, this.Config);
                 if (msg.Length > SystemLogRecorder.MAX_EVENTLOG_MESSAGE_SIZE)
                 {
                     msg = msg.Substring(0, SystemLogRecorder.MAX_EVENTLOG_MESSAGE_SIZE);

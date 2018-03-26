@@ -128,7 +128,7 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
                     {
                         //输出日志
                         this.OutputLog(logRecorderName, item);
-                        string body = LayoutManager.LayoutLog(item, this.Config, true);
+                        string body = LayoutManager.LayoutLog(item, this.Config);
                         sb.AppendLine(body);
                     }
                     catch (Exception exi)

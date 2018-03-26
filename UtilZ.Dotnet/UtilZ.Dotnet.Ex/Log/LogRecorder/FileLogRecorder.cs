@@ -241,7 +241,7 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
                             this.OutputLog(logRecorderName, item);
 
                             //日志处理
-                            logMsg = LayoutManager.LayoutLog(item, this._config, true);
+                            logMsg = LayoutManager.LayoutLog(item, this._config);
                             if (securityPolicy != null)
                             {
                                 logMsg = securityPolicy.Encryption(logMsg);

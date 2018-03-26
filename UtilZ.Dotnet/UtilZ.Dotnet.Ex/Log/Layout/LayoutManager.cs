@@ -102,9 +102,8 @@ namespace UtilZ.Dotnet.Ex.Log.Layout
         /// </summary>
         /// <param name="item">日志信息对象</param>
         /// <param name="config">日志配置</param>
-        /// <param name="isAddSeparatorLine">是否添加分隔线</param>
         /// <returns>日志文本记录</returns>
-        public static string LayoutLog(LogItem item, IConfig config, bool isAddSeparatorLine)
+        public static string LayoutLog(LogItem item, IConfig config)
         {
             string logMsg = string.Empty;
             try
@@ -117,7 +116,7 @@ namespace UtilZ.Dotnet.Ex.Log.Layout
                 }
 
                 //是否显示分隔线
-                if (isAddSeparatorLine)
+                if (config.SeparatorCount > 1)
                 {
                     int separatorCount = config.SeparatorCount;
                     if (separatorCount <= 0)
