@@ -14,7 +14,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
     /// </summary>
     [TypeConverter(typeof(PropertyGridSortConverter))]
     [DefaultProperty("Name")]
-    public class PersonDemo : IPropertyGridCategoryOrder
+    public class PersonDemo : IPropertyGridCategoryOrder, IPropertyGridCollection
     {
         private string _name = "Bob";
         private string _name1 = "Bob1";
@@ -88,6 +88,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
             get { return PropertyGridOrderType.Ascending; }
         }
 
+
         #region IPropertyGridCategoryOrder接口
         //private List<string> categorys = new List<string>() { "B", "A", "C" };//排序
         private List<string> categorys = new List<string>() { "B", "C", "A", "其它" };//排序
@@ -103,11 +104,41 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         #endregion
 
         /// <summary>
+        /// 员工集合
+        /// </summary>
+        [DisplayName("员工")]
+        public PropertyGridCollection<Employee> Employees { get; set; }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         public PersonDemo()
         {
             InnerPerson = new Person();
+            this.Employees = new PropertyGridCollection<Employee>();
+            Employee emp1 = new Employee();
+            emp1.FirstName = "Max";
+            emp1.Age = 42;
+            this.Employees.Add(emp1);
+
+            Employee emp2 = new Employee();
+            emp2.FirstName = "Lara";
+            emp2.Age = 24;
+            this.Employees.Add(emp2);
+        }
+
+        /// <summary>
+        /// 获取集合显示信息
+        /// </summary>
+        public string GetCollectionDisplayInfo(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "Employees":
+                    return "Employees集合显示信息";
+                default:
+                    return "XXX";
+            }
         }
 
         /// <summary>
@@ -117,6 +148,49 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         public override string ToString()
         {
             return Name;
+        }
+    }
+
+    /// <summary>
+    /// Employee is our sample business or domin object. It derives from the general base class Person.
+    /// </summary>
+    [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
+    public class Employee//: IPropertyGridCollectionItem
+    {
+        public Employee()
+        {
+        }
+
+        private string firstName = "";
+        private int age = 0;
+
+        [Category("Required")]
+        public string FirstName
+        {
+            get { return firstName; }
+            set { firstName = value; }
+        }
+
+        [Category("Optional")]
+        public int Age
+        {
+            get { return age; }
+            set { age = value; }
+        }
+
+        // Meaningful text representation
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.FirstName);
+            sb.Append(",");
+            sb.Append(this.Age);
+            return sb.ToString();
+        }
+
+        public string GetItemInfo()
+        {
+            return string.Format("集合项显示信息:{0}", FirstName);
         }
     }
 }

@@ -132,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PropertyGrid\Base\PropertyGridCollection.cs" />
     <Compile Include="PropertyGrid\Base\PropertyGridOrderAttribute.cs" />
     <Compile Include="PropertyGrid\Demo\DemoLonLatTypeConverter.cs" />
     <Compile Include="PropertyGrid\Demo\DemoModel.cs" />
@@ -143,12 +144,14 @@
     <Compile Include="PropertyGrid\Demo\PostureCommon.cs" />
     <Compile Include="PropertyGrid\Demo\SexEnum.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridCategoryOrder.cs" />
+    <Compile Include="PropertyGrid\Interface\IPropertyGridCollection.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridDirectory.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridDropDown.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridFile.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridOrder.cs" />
     <Compile Include="PropertyGrid\Interface\IPropertyGridPassword.cs" />
     <Compile Include="PropertyGrid\Base\PropertyGridAttribute.cs" />
+    <Compile Include="PropertyGrid\TypeConverters\PropertyGridCollectionConverter.cs" />
     <Compile Include="PropertyGrid\TypeConverters\PropertyGridDropdownConverter.cs" />
     <Compile Include="PropertyGrid\TypeConverters\PropertyGridSortConverter.cs" />
     <Compile Include="PropertyGrid\UITypeEditors\PropertyGridDirectoryEditor.cs" />

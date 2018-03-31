@@ -208,6 +208,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         {
             get { return _propertyGridCategoryNames; }
         }
+
+        public List<NAddress> Addrs => _addrs;
         #endregion
 
         #region IPropertyGridPassword接口
