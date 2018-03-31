@@ -27,6 +27,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
 
         }
 
+        #region ICollection<T>
         /// <summary>
         /// 集合项数
         /// </summary>
@@ -79,6 +80,30 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
         {
             this._items.CopyTo(array, arrayIndex);
         }
+
+        public bool Remove(T item)
+        {
+            return this._items.Remove(item);
+        }
+
+        /// <summary>
+        /// 返回循环访问 System.Collections.Generic.List`1 的枚举数
+        /// </summary>
+        /// <returns>用于 System.Collections.Generic.List`1.Enumerator 的 System.Collections.Generic.List`1</returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this._items.GetEnumerator();
+        }
+
+        /// <summary>
+        /// 返回循环访问 System.Collections.Generic.List`1 的枚举数
+        /// </summary>
+        /// <returns>用于 System.Collections.Generic.List`1.Enumerator 的 System.Collections.Generic.List`1</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+        #endregion
 
         #region ICustomTypeDescriptor接口
         /// <summary>
@@ -198,29 +223,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
         public object GetPropertyOwner(PropertyDescriptor pd)
         {
             return this;
-        }
-
-        public bool Remove(T item)
-        {
-            return this._items.Remove(item);
-        }
-
-        /// <summary>
-        /// 返回循环访问 System.Collections.Generic.List`1 的枚举数
-        /// </summary>
-        /// <returns>用于 System.Collections.Generic.List`1.Enumerator 的 System.Collections.Generic.List`1</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this._items.GetEnumerator();
-        }
-
-        /// <summary>
-        /// 返回循环访问 System.Collections.Generic.List`1 的枚举数
-        /// </summary>
-        /// <returns>用于 System.Collections.Generic.List`1.Enumerator 的 System.Collections.Generic.List`1</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
         #endregion
     }
