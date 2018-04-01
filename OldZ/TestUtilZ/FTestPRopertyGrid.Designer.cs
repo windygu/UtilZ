@@ -59,6 +59,7 @@
             this.Controls.Add(this.propertyGrid1);
             this.Name = "FTestPRopertyGrid";
             this.Text = "FTestPRopertyGrid";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FTestPRopertyGrid_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 

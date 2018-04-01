@@ -52,6 +52,7 @@
     <Compile Include="Base\Compress.cs" />
     <Compile Include="Base\ConvertEx.cs" />
     <Compile Include="Base\DateTimeEx.cs" />
+    <Compile Include="Base\DeletegateEx.cs" />
     <Compile Include="Base\DirectoryInfoEx.cs" />
     <Compile Include="Base\FileEx.cs" />
     <Compile Include="Base\FileStringCodingEx.cs" />
@@ -81,14 +82,8 @@
     <Compile Include="DataStruct\PriorityQueue.cs" />
     <Compile Include="DataStruct\ReadOnlyDictionary.cs" />
     <Compile Include="DataStruct\SortedListEx.cs" />
-    <Compile Include="DataStruct\Threading\IThreadEx.cs" />
-    <Compile Include="DataStruct\Threading\ThreadEx.cs" />
-    <Compile Include="DataStruct\Threading\ThreadExCompletedArgs.cs" />
-    <Compile Include="DataStruct\Threading\ThreadExCompletedType.cs" />
-    <Compile Include="DataStruct\UIBinding\BindingListChangedArgs.cs" />
-    <Compile Include="DataStruct\UIBinding\BindingListChangedType.cs" />
-    <Compile Include="DataStruct\UIBinding\ComparerResultType.cs" />
-    <Compile Include="DataStruct\UIBinding\UIBindingList.cs" />
+    <Compile Include="Base\ThreadEx.cs" />
+    <Compile Include="Base\BindingListEx.cs" />
     <Compile Include="Expression\BaseCalate.cs" />
     <Compile Include="Expression\Exceptions.cs" />
     <Compile Include="Expression\ExpressionCalculator.cs" />
@@ -175,7 +170,8 @@
     <Compile Include="Model\PropertyNameMapAttribute.cs" />
     <Compile Include="Model\PropertyValueVerifyArgs.cs" />
     <Compile Include="Model\UnManagedDll.cs" />
-    <Compile Include="Model\Util.cs" />
+    <Compile Include="Base\Util.cs" />
+    <Compile Include="Model\UtilConstant.cs" />
     <Compile Include="PartAsynWait\Excute\PartAsynExcuteBase.cs" />
     <Compile Include="PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
     <Compile Include="PartAsynWait\Interface\IPartAsynExcute.cs" />
@@ -205,5 +201,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

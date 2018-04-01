@@ -22,7 +22,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>是合法的ipv4地址返回true,否则返回flase</returns>
         public static bool ValidateIPV4(string ipStr)
         {
-            return Regex.IsMatch(ipStr, Util.IPV4Reg);
+            return Regex.IsMatch(ipStr, UtilConstant.IPV4Reg);
         }
 
         /// <summary>

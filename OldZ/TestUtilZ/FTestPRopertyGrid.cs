@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -34,15 +35,24 @@ namespace TestUtilZ
             {
                 return;
             }
-
-            propertyGrid1.Tag = _personDemo;
+            _personDemo.CollectionEditCompleted += _personDemo_CollectionEditCompleted;
             PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
+
+            //PropertyGridHelper.SetSelectedObject(propertyGrid1, _demoModel);
+
+
 
             //PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemos);
 
             //propertyGrid1.SelectedObjectsChanged += new EventHandler(propertyGrid1_SelectedObjectsChanged);
             //propertyGrid1.SelectedObject = new PersonDemo();
             //propertyGrid1.SelectedObject = _demoModel;
+        }
+
+        private void _personDemo_CollectionEditCompleted(object sender, EventArgs e)
+        {
+            PropertyGridHelper.SetSelectedObject(propertyGrid1, null);
+            PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
         }
 
         void propertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
@@ -118,6 +128,11 @@ namespace TestUtilZ
                 propertyGrid1.Tag = _personDemo;
                 PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
             }
+        }
+
+        private void FTestPRopertyGrid_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            PropertyGridHelper.SetSelectedObject(propertyGrid1, null);
         }
     }
 }

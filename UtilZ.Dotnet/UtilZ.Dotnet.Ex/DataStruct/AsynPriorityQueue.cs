@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.DataStruct;
-using UtilZ.Dotnet.Ex.DataStruct.Threading;
+using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.Ex.DataStruct
 {

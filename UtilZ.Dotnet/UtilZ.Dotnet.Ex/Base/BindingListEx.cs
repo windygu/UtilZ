@@ -5,14 +5,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.DataStruct.UIBinding
+namespace UtilZ.Dotnet.Ex.Base
 {
     /// <summary>
     /// UI绑定集合
     /// </summary>
     /// <typeparam name="T">数据类型</typeparam>
     [Serializable]
-    public class UIBindingList<T> : BindingList<T>
+    public class BindingListEx<T> : BindingList<T>
     {
         /// <summary>
         /// 列表是否是环形结构[true:环形显示列表;false:非环形显示列表]
@@ -59,7 +59,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct.UIBinding
         /// 构造函数
         /// </summary>
         /// <param name="invokeAction">主线程执行委托[Action:主线程要执行的委托;int:优先级[值越小优先级越高,越大越低]]</param>
-        public UIBindingList(Action<Action, int> invokeAction = null)
+        public BindingListEx(Action<Action, int> invokeAction = null)
             : base()
         {
             this._isRingStruct = false;
@@ -70,7 +70,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct.UIBinding
         /// 构造函数
         /// </summary>
         /// <param name="capcity">环形结构时的容量</param>
-        public UIBindingList(int capcity)
+        public BindingListEx(int capcity)
             : base()
         {
             this._isRingStruct = true;
@@ -789,5 +789,164 @@ namespace UtilZ.Dotnet.Ex.DataStruct.UIBinding
                 //}, 0);
             }
         }
+    }
+
+    /// <summary>
+    /// UI绑定集合改变类型
+    /// </summary>
+    public enum BindingListChangedType
+    {
+        /// <summary>
+        /// 添加项
+        /// </summary>
+        Add,
+
+        /// <summary>
+        /// 添加多项
+        /// </summary>
+        AddRange,
+
+        /// <summary>
+        /// 插入
+        /// </summary>
+        Insert,
+
+        /// <summary>
+        /// 更新项
+        /// </summary>
+        Update,
+
+        /// <summary>
+        /// 删除项
+        /// </summary>
+        Remove,
+
+        /// <summary>
+        /// 移除多项
+        /// </summary>
+        RemoveRange,
+
+        /// <summary>
+        /// 清空项
+        /// </summary>
+        Clear
+    }
+
+    /// <summary>
+    /// 比较结果类型
+    /// </summary>
+    internal enum ComparerResultType
+    {
+        /// <summary>
+        /// 等于
+        /// </summary>
+        Equal = 0,
+
+        /// <summary>
+        /// 大于
+        /// </summary>
+        Greater = 1,
+
+        /// <summary>
+        /// 小于
+        /// </summary>
+        Less = -1
+    }
+
+    /// <summary>
+    /// UI绑定集合发生更改委托参数
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    public class BindingListChangedArgs<T> : EventArgs
+    {
+        /*
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type">改变类型</param>
+        /// <param name="oldItem">改变项</param>
+        /// <param name="count">当前集合项组数</param>
+        /// <param name="index">当前项在集合中的位置索引</param>
+        public BindingListChangedArgs(BindingListChangedType type, T item, int count, int index)
+            : this(type, item, default(T), null, count, index)
+        { }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type">改变类型</param>
+        /// <param name="items">改变项集合</param>
+        /// <param name="count">当前集合项组数</param>
+        /// <param name="index">当前项在集合中的位置索引</param>
+        public BindingListChangedArgs(BindingListChangedType type, List<T> items, int count, int index)
+            : this(type, default(T), default(T), items, count, index)
+        { }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type">改变类型</param>
+        /// <param name="item">改变项</param>
+        /// <param name="count">当前集合项组数</param>
+        /// <param name="index">当前项在集合中的位置索引</param>
+        public BindingListChangedArgs(BindingListChangedType type, T oldItem, int count, int index)
+            : this(type, default(T), oldItem, null, count, index)
+        { }*/
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type">改变类型</param>
+        /// <param name="item">新项</param>
+        /// <param name="oldItem">旧项</param>
+        /// <param name="newItems">新项集合</param>
+        /// <param name="oldtems">旧项集合</param>
+        /// <param name="count">当前集合项组数</param>
+        /// <param name="index">当前项在集合中的位置索引</param>
+        public BindingListChangedArgs(BindingListChangedType type, T item, T oldItem, List<T> newItems, List<T> oldtems, int count, int index)
+        {
+            this.Type = type;
+            this.NewItem = item;
+            this.OldItem = oldItem;
+            this.NewItems = newItems;
+            this.Oldtems = oldtems;
+            this.Count = count;
+            this.Index = index;
+        }
+
+        /// <summary>
+        /// UI绑定集合改变类型
+        /// </summary>
+        public BindingListChangedType Type { get; private set; }
+
+        /// <summary>
+        /// 新项
+        /// </summary>
+        public T NewItem { get; private set; }
+
+        /// <summary>
+        /// 旧项
+        /// </summary>
+        public T OldItem { get; private set; }
+
+        /// <summary>
+        /// 新项集合
+        /// </summary>
+        public List<T> NewItems { get; private set; }
+
+        /// <summary>
+        /// 旧项集合
+        /// </summary>
+        public List<T> Oldtems { get; private set; }
+
+        /// <summary>
+        /// 当前集合项组数
+        /// </summary>
+        public int Count { get; private set; }
+
+        /// <summary>
+        /// 当前项在集合中的位置索引
+        /// </summary>
+        public int Index { get; private set; }
     }
 }

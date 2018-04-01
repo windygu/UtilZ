@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Dotnet.Ex.DataStruct.Threading;
+using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.Ex.MemoryCache
 {

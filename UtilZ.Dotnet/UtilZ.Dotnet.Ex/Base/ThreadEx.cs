@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using UtilZ.Dotnet.Ex.Model;
 
-namespace UtilZ.Dotnet.Ex.DataStruct.Threading
+namespace UtilZ.Dotnet.Ex.Base
 {
     /// <summary>
     /// 线程扩展类
@@ -262,6 +262,26 @@ namespace UtilZ.Dotnet.Ex.DataStruct.Threading
 
         //    return cpuid;
         //}
+
+        /// <summary>
+        /// 设置线程是否为后台线程
+        /// </summary>
+        /// <param name="thread">要设置的线程</param>
+        /// <param name="isBackground">true:后台线程;false:前台线程</param>
+        public static void SetThreadIsBackground(Thread thread, bool isBackground)
+        {
+            try
+            {
+                if (thread == null)
+                {
+                    return;
+                }
+
+                thread.IsBackground = isBackground;
+            }
+            catch
+            { }
+        }
         #endregion
 
         #region IThreadEx
@@ -506,5 +526,98 @@ namespace UtilZ.Dotnet.Ex.DataStruct.Threading
             }
         }
         #endregion
+    }
+
+    /// <summary>
+    /// 扩展线程接口
+    /// </summary>
+    public interface IThreadEx
+    {
+        /// <summary>
+        /// 启动线程
+        /// </summary>
+        /// <param name="obj">线程启动参数</param>
+        void Start(object obj = null);
+
+        /// <summary>
+        /// 停止线程
+        /// </summary>
+        /// <param name="isSycn">是否同步调用停止方法,同步调用会等线程结束后才退出本方法[true:同步;false:异步]</param>
+        /// <param name="synMillisecondsTimeout">同步超时时间,-1表示无限期等待,单位/毫秒</param>
+        /// <param name="throwOnfirtException">指示是否立即传播异常[默认为false]</param>
+        void Stop(bool isSycn = false, int synMillisecondsTimeout = -1, bool throwOnfirtException = false);
+
+        /// <summary>
+        /// 终止线程
+        /// </summary>
+        void Abort();
+
+        /// <summary>
+        /// 线程执行完成事件
+        /// </summary>
+        event EventHandler<ThreadExCompletedArgs> Completed;
+
+        /// <summary>
+        /// 获取线程当前的状态
+        /// </summary>
+        System.Threading.ThreadState ThreadState { get; }
+
+        /// <summary>
+        /// 获取当前托管线程的唯一标识符
+        /// </summary>
+        int ManagedThreadId { get; }
+
+        /// <summary>
+        /// 当前线程是否正在运行
+        /// </summary>
+        bool IsRuning { get; }
+    }
+
+    /// <summary>
+    /// 线程执行完成事件参数
+    /// </summary>
+    public class ThreadExCompletedArgs : EventArgs
+    {
+        /// <summary>
+        /// 线程执行完成类型
+        /// </summary>
+        public ThreadExCompletedType Type { get; private set; }
+
+        /// <summary>
+        /// 当执行异常可取消时可能的异常信息
+        /// </summary>
+        public Exception Exception { get; private set; }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type">线程执行完成类型</param>
+        /// <param name="ex">当执行异常可取消时可能的异常信息</param>
+        public ThreadExCompletedArgs(ThreadExCompletedType type, Exception ex)
+        {
+            this.Type = type;
+            this.Exception = ex;
+        }
+    }
+
+    /// <summary>
+    /// 线程执行完成类型
+    /// </summary>
+    public enum ThreadExCompletedType
+    {
+        /// <summary>
+        /// 完成
+        /// </summary>
+        Completed,
+
+        /// <summary>
+        /// 异常
+        /// </summary>
+        Exception,
+
+        /// <summary>
+        /// 取消
+        /// </summary>
+        Cancel
     }
 }
