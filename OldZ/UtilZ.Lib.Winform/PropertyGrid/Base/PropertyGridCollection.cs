@@ -325,7 +325,16 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
         }
 
         //private CollectionForm _frm;
+
+        /// <summary>
+        /// 集合编辑列表控件
+        /// </summary>
         private ListBox _listbox;
+
+        /// <summary>
+        /// 创建一个新的窗体来显示和编辑当前集合
+        /// </summary>
+        /// <returns>一个 System.ComponentModel.Design.CollectionEditor.CollectionForm 作为用户界面提供用于编辑集合</returns>
         protected override CollectionForm CreateCollectionForm()
         {
             CollectionForm frm = base.CreateCollectionForm();
