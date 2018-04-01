@@ -95,7 +95,7 @@ namespace UtilZ.Dotnet.Ex.Base
         public static string CompressEncoding(string input)
         {
             byte[] inputBytes = System.Text.Encoding.Default.GetBytes(input);
-            byte[] result = Compress.CompressBytes(inputBytes);
+            byte[] result = CompressEx.CompressBytes(inputBytes);
             return Convert.ToBase64String(result);
         }
 
@@ -107,7 +107,7 @@ namespace UtilZ.Dotnet.Ex.Base
         public static string DecompressEncoding(string input)
         {
             byte[] inputBytes = Convert.FromBase64String(input);
-            byte[] depressBytes = Compress.DecompressBytes(inputBytes);
+            byte[] depressBytes = CompressEx.DecompressBytes(inputBytes);
             return System.Text.Encoding.Default.GetString(depressBytes);
         }
     }

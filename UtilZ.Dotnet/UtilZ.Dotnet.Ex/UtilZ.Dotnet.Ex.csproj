@@ -49,7 +49,7 @@
     <Compile Include="Base\AssemblyEx.cs" />
     <Compile Include="Base\AttributeEx.cs" />
     <Compile Include="Base\CharEx.cs" />
-    <Compile Include="Base\Compress.cs" />
+    <Compile Include="Base\CompressEx.cs" />
     <Compile Include="Base\ConvertEx.cs" />
     <Compile Include="Base\DateTimeEx.cs" />
     <Compile Include="Base\DeletegateEx.cs" />
@@ -155,7 +155,6 @@
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BasePropertyValueVerifyModel.cs" />
     <Compile Include="Model\ClrSystemType.cs" />
-    <Compile Include="Model\Compress.cs" />
     <Compile Include="Model\DateTimeFormatProvider.cs" />
     <Compile Include="Model\DisplayNameExAttribute.cs" />
     <Compile Include="Model\DropdownBindingItem.cs" />

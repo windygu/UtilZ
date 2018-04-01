@@ -5,12 +5,12 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Model
+namespace UtilZ.Dotnet.Ex.Base
 {
     /// <summary>
     /// 压缩解压
     /// </summary>
-    public class Compress
+    public class CompressEx
     {
         /// <summary>
         /// 压缩字节数组
