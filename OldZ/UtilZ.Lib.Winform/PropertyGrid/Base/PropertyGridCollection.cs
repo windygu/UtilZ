@@ -318,7 +318,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">Type</param>
         public CollectionEditorEx(Type type) : base(type)
         {
 
