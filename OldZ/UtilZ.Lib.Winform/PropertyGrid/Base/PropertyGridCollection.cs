@@ -6,13 +6,11 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Windows.Forms;
 using UtilZ.Lib.Winform.PropertyGrid.Interface;
 
 namespace UtilZ.Lib.Winform.PropertyGrid.Base
 {
-
-    //    [EditorAttribute(typeof(System.ComponentModel.Design.CollectionEditor), typeof(System.Drawing.Design.UITypeEditor))]
-
     /// <summary>
     /// PropertyGrid集合
     /// </summary>
@@ -229,9 +227,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
     internal class PropertyGridCollectionPropertyDescriptor<T> : PropertyDescriptor
     {
         private readonly T _item;
-        //private PropertyGridCollection<T> _collection;
-        //private int _index;
-
         public PropertyGridCollectionPropertyDescriptor(T item, int index) :
             base(index.ToString(), null)
         {
@@ -245,7 +240,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
                 return new AttributeCollection(null);
             }
         }
-
 
         public override Type ComponentType
         {
@@ -319,6 +313,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
 
     internal class CollectionEditorEx : CollectionEditor
     {
+        //public static event EventHandler OnValueChange;
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -328,7 +324,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
 
         }
 
-        private CollectionForm _frm;
+        //private CollectionForm _frm;
+        private ListBox _listbox;
         protected override CollectionForm CreateCollectionForm()
         {
             CollectionForm frm = base.CreateCollectionForm();
@@ -340,9 +337,90 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
 
             frm.Width = 700;
             frm.Height = 600;
-            _frm = frm;
+
+            FieldInfo listboxFieldInfo = frm.GetType().GetField("listbox", BindingFlags.NonPublic | BindingFlags.Instance);
+            this._listbox = listboxFieldInfo.GetValue(frm) as ListBox;
+
+            //注册按钮事件
+            //this.ReflectButtonEvent(frm);
+
+            //_frm = frm;
             return frm;
         }
+
+        /* 反射事件
+         private void ReflectButtonEvent(CollectionForm frm)
+         {
+             FieldInfo removeButton = frm.GetType().GetField("removeButton", BindingFlags.NonPublic | BindingFlags.Instance);
+             if (removeButton != null)
+             {
+                 (removeButton.GetValue(frm) as Button).Click += ExtendCollectionEditor_RemoveClick;
+             }
+
+             FieldInfo cancelButton = frm.GetType().GetField("cancelButton", BindingFlags.NonPublic | BindingFlags.Instance);
+             if (cancelButton != null)
+             {
+                 (cancelButton.GetValue(frm) as Button).Click += ExtendCollectionEditor_ValueChange;
+             }
+
+             FieldInfo okButton = frm.GetType().GetField("okButton", BindingFlags.NonPublic | BindingFlags.Instance);
+             if (okButton != null)
+             {
+
+             }
+             FieldInfo upButton = frm.GetType().GetField("upButton", BindingFlags.NonPublic | BindingFlags.Instance);
+             if (upButton != null)
+             {
+
+             }
+             FieldInfo downButton = frm.GetType().GetField("downButton", BindingFlags.NonPublic | BindingFlags.Instance);
+             if (downButton != null)
+             {
+
+             }
+         }
+
+         private void ExtendCollectionEditor_ValueChange(object sender, EventArgs e)
+         {
+             SubmitChange();
+         }
+
+         protected void ExtendCollectionEditor_RemoveClick(object sender, EventArgs e)
+         {
+             CollectionForm frm = (sender as Button).Parent.Parent.Parent as CollectionForm;
+             FieldInfo listboxFieldInfo = frm.GetType().GetField("listbox", BindingFlags.NonPublic | BindingFlags.Instance);
+             ListBox listb = listboxFieldInfo.GetValue(frm) as ListBox;
+             if (listb.Items.Count == 0)
+             {
+                 return;
+             }
+
+             PropertyInfo itemsPropertyInfo = frm.GetType().GetProperty("Items", BindingFlags.NonPublic | BindingFlags.Instance);
+             PropertyInfo propertyInfo = listb.Items[0].GetType().GetProperty("Value", BindingFlags.Public | BindingFlags.Instance);
+
+             object[] items = new object[listb.Items.Count];
+             for (int i = 0; i < listb.Items.Count; i++)
+             {
+                 items[i] = propertyInfo.GetValue(listb.Items[i], null);
+             }
+
+             itemsPropertyInfo.SetValue(frm, items, null);
+             this.AfterRemove();
+         }
+
+         /// <summary>
+         /// 移除对象后触发
+         /// </summary>
+         protected virtual void AfterRemove()
+         {
+             SubmitChange();
+         }
+
+         private void SubmitChange()
+         {
+             OnValueChange?.Invoke();
+         }
+         */
 
         /// <summary>
         /// 获取此集合编辑器可以包含的数据类型
@@ -386,7 +464,35 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
             return base.CanRemoveInstance(value);
         }
 
-        #region 限制集合数量
+        /// <summary>
+        /// 返回包含给定的对象的列表
+        /// </summary>
+        /// <param name="instance">System.Collections.ArrayList 作为对象返回</param>
+        /// <returns>System.Collections.ArrayList 其中包含要创建的各个对象</returns>
+        protected override IList GetObjectsFromInstance(object instance)
+        {
+            if (this.Context.PropertyDescriptor.ComponentType.GetInterface(typeof(IPropertyGridCollection).FullName) == null)
+            {
+                //未实现对应接口,不限制
+                return base.GetObjectsFromInstance(instance);
+            }
+
+            int maxCount = ((IPropertyGridCollection)this.Context.Instance).GetObjectsInstanceMaxCount(this.Context.PropertyDescriptor.PropertyType.Name, this._listbox.Items);
+            if (maxCount < 1)
+            {
+                //小于1不限制
+                return base.GetObjectsFromInstance(instance);
+            }
+
+            if (this._listbox.Items.Count < maxCount)
+            {
+                return base.GetObjectsFromInstance(instance);
+            }
+
+            return null;
+        }
+
+        /* 限制集合数量-备份
         protected int _instanceCount = 0;
         protected override IList GetObjectsFromInstance(object instance)
         {
@@ -430,6 +536,6 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
             this._instanceCount--;
             base.DestroyInstance(instance);
         }
-        #endregion
+*/
     }
 }

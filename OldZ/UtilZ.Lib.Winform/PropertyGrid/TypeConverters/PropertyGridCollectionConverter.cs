@@ -49,7 +49,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <param name="context">提供格式上下文</param>
         /// <param name="culture">如果传递 null，则采用当前区域性</param>
         /// <param name="value">要转换的 Object</param>
-        /// <param name="destinationType">value 参数要转换成的 Type</param>
+        /// <param name="destType">value 参数要转换成的 Type</param>
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destType)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,8 +27,9 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Interface
         /// 获取允许的最大实例数[小于1无限制]
         /// </summary>
         /// <param name="propertyName">属性名称</param>
+        /// <param name="collection">当前正在编辑的项集合</param>
         /// <returns>许的最大实例数</returns>
-        int GetObjectsInstanceMaxCount(string propertyName);
+        int GetObjectsInstanceMaxCount(string propertyName, ICollection collection);
 
         /// <summary>
         /// 获取集合是否允许删除项

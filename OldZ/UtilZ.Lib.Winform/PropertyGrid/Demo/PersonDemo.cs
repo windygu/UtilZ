@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -154,8 +155,9 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// 获取允许的最大实例数[小于1无限制]
         /// </summary>
         /// <param name="propertyName">属性名称</param>
+        /// <param name="collection">当前正在编辑的项集合</param>
         /// <returns>许的最大实例数</returns>
-        public int GetObjectsInstanceMaxCount(string propertyName)
+        public int GetObjectsInstanceMaxCount(string propertyName, ICollection collection)
         {
             return 3;
         }
