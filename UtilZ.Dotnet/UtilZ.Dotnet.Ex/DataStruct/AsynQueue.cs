@@ -53,11 +53,23 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// 队列线程状态[true:线程正在运行;false:线程未运行]
         /// </summary>
         private bool _status = false;
-
         /// <summary>
         /// 获取队列线程状态[true:线程正在运行;false:线程未运行]
         /// </summary>
-        public bool Status { get { return _status; } }
+        public bool Status
+        {
+            get { return _status; }
+        }
+
+        private string _name = string.Empty;
+        /// <summary>
+        /// 获取或设置队列名称
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         /// <summary>
         /// 数据处理委托
@@ -93,13 +105,14 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             this.ProcessAction = processAction;
             this._isBackground = isBackground;
+            this._name = name;
             if (string.IsNullOrWhiteSpace(name))
             {
                 this._threadName = string.Empty;
             }
             else
             {
-                this._threadName = name;
+                this._threadName = name + "线程";
             }
 
             if (isAutoStart)
@@ -239,10 +252,10 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 线程队列最大项数,当超过这个值时,则移除超出的值
         /// </summary>
-        private int _maxcount = 10240;
+        private int _maxcount = int.MaxValue;
 
         /// <summary>
-        /// 获取或设置线程队列最大项数,当超过这个值时,则移除超出队列开始的项[默认为10240项]
+        /// 获取或设置线程队列最大项数,当超过这个值时,则移除超出队列开始的项
         /// </summary>
         public int Maxcount
         {
