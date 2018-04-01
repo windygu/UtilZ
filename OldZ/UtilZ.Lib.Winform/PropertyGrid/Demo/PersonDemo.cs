@@ -107,7 +107,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// 员工集合
         /// </summary>
         [DisplayName("员工")]
-        public PropertyGridCollection<Employee> Employees { get; set; }
+        public PropertyGridCollection<EmployeeBase> Employees { get; set; }
 
         /// <summary>
         /// 构造函数
@@ -115,7 +115,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         public PersonDemo()
         {
             InnerPerson = new Person();
-            this.Employees = new PropertyGridCollection<Employee>();
+            this.Employees = new PropertyGridCollection<EmployeeBase>();
             Employee emp1 = new Employee();
             emp1.FirstName = "Max";
             emp1.Age = 42;
@@ -142,6 +142,36 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         }
 
         /// <summary>
+        /// 获取此集合编辑器可以包含的数据类型
+        /// </summary>
+        /// <returns>此集合可以包含的数据类型的数组</returns>
+        public Type[] GetCreateNewItemTypes()
+        {
+            return new Type[] { typeof(Employee), typeof(Employee2) };
+        }
+
+        /// <summary>
+        /// 获取允许的最大实例数[小于1无限制]
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns>许的最大实例数</returns>
+        public int GetObjectsInstanceMaxCount(string propertyName)
+        {
+            return 3;
+        }
+
+        /// <summary>
+        /// 获取集合是否允许删除项
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        /// <param name="value">要移除的值</param>
+        /// <returns>true 如果允许此值从集合中删除;否则为 false。 默认实现始终返回 true</returns>
+        public bool GetCanRemoveInstance(string propertyName, object value)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// 重写ToString
         /// </summary>
         /// <returns>String</returns>
@@ -155,22 +185,49 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
     /// Employee is our sample business or domin object. It derives from the general base class Person.
     /// </summary>
     [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
-    public class Employee//: IPropertyGridCollectionItem
+    public class Employee2 : EmployeeBase// IPropertyGridCollectionItem
+    {
+        public Employee2()
+        {
+        }
+
+
+        private string _addr = "";
+        [Category("Optional")]
+        public string Addr
+        {
+            get { return _addr; }
+            set { _addr = value; }
+        }
+
+        // Meaningful text representation
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.FirstName);
+            sb.Append(",");
+            sb.Append(this._addr);
+            return sb.ToString();
+        }
+
+        public string GetItemInfo()
+        {
+            return string.Format("集合项显示信息:{0}", FirstName);
+        }
+    }
+
+    /// <summary>
+    /// Employee is our sample business or domin object. It derives from the general base class Person.
+    /// </summary>
+    [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
+    public class Employee : EmployeeBase// IPropertyGridCollectionItem
     {
         public Employee()
         {
         }
 
-        private string firstName = "";
+
         private int age = 0;
-
-        [Category("Required")]
-        public string FirstName
-        {
-            get { return firstName; }
-            set { firstName = value; }
-        }
-
         [Category("Optional")]
         public int Age
         {
@@ -191,6 +248,27 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         public string GetItemInfo()
         {
             return string.Format("集合项显示信息:{0}", FirstName);
+        }
+    }
+
+    /// <summary>
+    /// Employee is our sample business or domin object. It derives from the general base class Person.
+    /// </summary>
+    [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
+    public class EmployeeBase//: IPropertyGridCollectionItem
+    {
+        public EmployeeBase()
+        {
+        }
+
+        private string firstName = "";
+
+        [Description("第一个名字描述")]
+        [Category("Required")]
+        public string FirstName
+        {
+            get { return firstName; }
+            set { firstName = value; }
         }
     }
 }

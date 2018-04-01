@@ -22,7 +22,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destType)
         {
-            if (context.Instance == null)
+            if (context == null || context.Instance == null)
             {
                 return base.ConvertTo(context, culture, value, destType);
             }
@@ -53,7 +53,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.TypeConverters
         /// <returns>表示转换的 value 的 Object</returns>
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destType)
         {
-            if (context.Instance == null)
+            if (context == null || context.Instance == null)
             {
                 return base.ConvertTo(context, culture, value, destType);
             }
