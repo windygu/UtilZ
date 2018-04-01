@@ -27,9 +27,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Interface
         /// 获取允许的最大实例数[小于1无限制]
         /// </summary>
         /// <param name="propertyName">属性名称</param>
-        /// <param name="collection">当前正在编辑的项集合</param>
         /// <returns>许的最大实例数</returns>
-        int GetObjectsInstanceMaxCount(string propertyName, ICollection collection);
+        int GetObjectsInstanceMaxCount(string propertyName);
 
         /// <summary>
         /// 获取集合是否允许删除项
@@ -38,6 +37,12 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Interface
         /// <param name="value">要移除的值</param>
         /// <returns>true 如果允许此值从集合中删除;否则为 false。 默认实现始终返回 true</returns>
         bool GetCanRemoveInstance(string propertyName, object value);
+
+        /// <summary>
+        /// 集合编辑完成通知
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        void CollectionEditCompletedNotify(string propertyName);
     }
 
     /// <summary>

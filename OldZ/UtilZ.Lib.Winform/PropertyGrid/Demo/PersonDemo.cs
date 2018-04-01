@@ -155,9 +155,8 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         /// 获取允许的最大实例数[小于1无限制]
         /// </summary>
         /// <param name="propertyName">属性名称</param>
-        /// <param name="collection">当前正在编辑的项集合</param>
         /// <returns>许的最大实例数</returns>
-        public int GetObjectsInstanceMaxCount(string propertyName, ICollection collection)
+        public int GetObjectsInstanceMaxCount(string propertyName)
         {
             return 3;
         }
@@ -171,6 +170,21 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Demo
         public bool GetCanRemoveInstance(string propertyName, object value)
         {
             return true;
+        }
+
+        public event EventHandler CollectionEditCompleted;
+
+        /// <summary>
+        /// 集合编辑完成
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        public void CollectionEditCompletedNotify(string propertyName)
+        {
+            var handler = this.CollectionEditCompleted;
+            if (handler != null)
+            {
+                handler(this, new EventArgs());
+            }
         }
 
         /// <summary>

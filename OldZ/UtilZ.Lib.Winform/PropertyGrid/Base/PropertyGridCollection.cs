@@ -351,85 +351,65 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
             this._listbox = listboxFieldInfo.GetValue(frm) as ListBox;
 
             //注册按钮事件
-            //this.ReflectButtonEvent(frm);
+            this.ReflectButtonEvent(frm);
 
             //_frm = frm;
             return frm;
         }
 
-        /* 反射事件
-         private void ReflectButtonEvent(CollectionForm frm)
-         {
-             FieldInfo removeButton = frm.GetType().GetField("removeButton", BindingFlags.NonPublic | BindingFlags.Instance);
-             if (removeButton != null)
-             {
-                 (removeButton.GetValue(frm) as Button).Click += ExtendCollectionEditor_RemoveClick;
-             }
+        #region 反射事件
+        private void ReflectButtonEvent(CollectionForm frm)
+        {
+            FieldInfo okButton = frm.GetType().GetField("okButton", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (okButton != null)
+            {
+                (okButton.GetValue(frm) as Button).Click += Ok_Click; ;
+            }
 
-             FieldInfo cancelButton = frm.GetType().GetField("cancelButton", BindingFlags.NonPublic | BindingFlags.Instance);
-             if (cancelButton != null)
-             {
-                 (cancelButton.GetValue(frm) as Button).Click += ExtendCollectionEditor_ValueChange;
-             }
+            //FieldInfo removeButton = frm.GetType().GetField("removeButton", BindingFlags.NonPublic | BindingFlags.Instance);
+            //if (removeButton != null)
+            //{
+            //    (removeButton.GetValue(frm) as Button).Click += ExtendCollectionEditor_RemoveClick;
+            //}
 
-             FieldInfo okButton = frm.GetType().GetField("okButton", BindingFlags.NonPublic | BindingFlags.Instance);
-             if (okButton != null)
-             {
+            //FieldInfo cancelButton = frm.GetType().GetField("cancelButton", BindingFlags.NonPublic | BindingFlags.Instance);
+            //if (cancelButton != null)
+            //{
+            //    (cancelButton.GetValue(frm) as Button).Click += ExtendCollectionEditor_ValueChange;
+            //}
 
-             }
-             FieldInfo upButton = frm.GetType().GetField("upButton", BindingFlags.NonPublic | BindingFlags.Instance);
-             if (upButton != null)
-             {
+            //FieldInfo okButton = frm.GetType().GetField("okButton", BindingFlags.NonPublic | BindingFlags.Instance);
+            //if (okButton != null)
+            //{
 
-             }
-             FieldInfo downButton = frm.GetType().GetField("downButton", BindingFlags.NonPublic | BindingFlags.Instance);
-             if (downButton != null)
-             {
+            //}
+            //FieldInfo upButton = frm.GetType().GetField("upButton", BindingFlags.NonPublic | BindingFlags.Instance);
+            //if (upButton != null)
+            //{
 
-             }
-         }
+            //}
+            //FieldInfo downButton = frm.GetType().GetField("downButton", BindingFlags.NonPublic | BindingFlags.Instance);
+            //if (downButton != null)
+            //{
 
-         private void ExtendCollectionEditor_ValueChange(object sender, EventArgs e)
-         {
-             SubmitChange();
-         }
+            //}
+        }
 
-         protected void ExtendCollectionEditor_RemoveClick(object sender, EventArgs e)
-         {
-             CollectionForm frm = (sender as Button).Parent.Parent.Parent as CollectionForm;
-             FieldInfo listboxFieldInfo = frm.GetType().GetField("listbox", BindingFlags.NonPublic | BindingFlags.Instance);
-             ListBox listb = listboxFieldInfo.GetValue(frm) as ListBox;
-             if (listb.Items.Count == 0)
-             {
-                 return;
-             }
+        /// <summary>
+        /// 集合编辑器点击OK
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Ok_Click(object sender, EventArgs e)
+        {
+            if (this.Context.PropertyDescriptor.ComponentType.GetInterface(typeof(IPropertyGridCollection).FullName) == null)
+            {
+                return;
+            }
 
-             PropertyInfo itemsPropertyInfo = frm.GetType().GetProperty("Items", BindingFlags.NonPublic | BindingFlags.Instance);
-             PropertyInfo propertyInfo = listb.Items[0].GetType().GetProperty("Value", BindingFlags.Public | BindingFlags.Instance);
-
-             object[] items = new object[listb.Items.Count];
-             for (int i = 0; i < listb.Items.Count; i++)
-             {
-                 items[i] = propertyInfo.GetValue(listb.Items[i], null);
-             }
-
-             itemsPropertyInfo.SetValue(frm, items, null);
-             this.AfterRemove();
-         }
-
-         /// <summary>
-         /// 移除对象后触发
-         /// </summary>
-         protected virtual void AfterRemove()
-         {
-             SubmitChange();
-         }
-
-         private void SubmitChange()
-         {
-             OnValueChange?.Invoke();
-         }
-         */
+            ((IPropertyGridCollection)this.Context.Instance).CollectionEditCompletedNotify(this.Context.PropertyDescriptor.PropertyType.Name);
+        }
+        #endregion
 
         /// <summary>
         /// 获取此集合编辑器可以包含的数据类型
@@ -486,7 +466,7 @@ namespace UtilZ.Lib.Winform.PropertyGrid.Base
                 return base.GetObjectsFromInstance(instance);
             }
 
-            int maxCount = ((IPropertyGridCollection)this.Context.Instance).GetObjectsInstanceMaxCount(this.Context.PropertyDescriptor.PropertyType.Name, this._listbox.Items);
+            int maxCount = ((IPropertyGridCollection)this.Context.Instance).GetObjectsInstanceMaxCount(this.Context.PropertyDescriptor.PropertyType.Name);
             if (maxCount < 1)
             {
                 //小于1不限制
