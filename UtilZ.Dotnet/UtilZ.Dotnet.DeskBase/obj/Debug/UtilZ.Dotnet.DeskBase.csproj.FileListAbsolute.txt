@@ -1,0 +1,9 @@
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\obj\Debug\UtilZ.Dotnet.DeskBase.csprojResolveAssemblyReference.cache
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\obj\Debug\UtilZ.Dotnet.DeskBase.csproj.CoreCompileInputs.cache
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\bin\Debug\UtilZ.Dotnet.DeskBase.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\bin\Debug\UtilZ.Dotnet.DeskBase.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\bin\Debug\UtilZ.Dotnet.Ex.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\bin\Debug\UtilZ.Dotnet.Ex.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\obj\Debug\UtilZ.Dotnet.DeskBase.csproj.CopyComplete
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\obj\Debug\UtilZ.Dotnet.DeskBase.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.DeskBase\obj\Debug\UtilZ.Dotnet.DeskBase.pdb

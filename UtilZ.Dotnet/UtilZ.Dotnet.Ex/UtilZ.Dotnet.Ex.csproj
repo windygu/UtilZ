@@ -159,7 +159,7 @@
     <Compile Include="Model\DisplayNameExAttribute.cs" />
     <Compile Include="Model\DropdownBindingItem.cs" />
     <Compile Include="Model\EnumAttribute.cs" />
-    <Compile Include="Model\EnumHelper.cs" />
+    <Compile Include="Base\EnumEx.cs" />
     <Compile Include="Model\TEventArgs.cs" />
     <Compile Include="Model\FormatAttribute.cs" />
     <Compile Include="Model\IPropertyValueVerify.cs" />
@@ -171,17 +171,6 @@
     <Compile Include="Model\UnManagedDll.cs" />
     <Compile Include="Base\Util.cs" />
     <Compile Include="Model\UtilConstant.cs" />
-    <Compile Include="PartAsynWait\Excute\PartAsynExcuteBase.cs" />
-    <Compile Include="PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
-    <Compile Include="PartAsynWait\Interface\IPartAsynExcute.cs" />
-    <Compile Include="PartAsynWait\Interface\IPartAsynWait.cs" />
-    <Compile Include="PartAsynWait\Model\PartAsynExcuteResult.cs" />
-    <Compile Include="PartAsynWait\Model\PartAsynExcuteStatus.cs" />
-    <Compile Include="PartAsynWait\Model\PartAsynFuncPara.cs" />
-    <Compile Include="PartAsynWait\Model\PartAsynUIPara.cs" />
-    <Compile Include="PartAsynWait\Model\PartAsynUIParaProxy.cs" />
-    <Compile Include="PartAsynWait\Model\PartAsynWaitPara.cs" />
-    <Compile Include="PartAsynWait\PartAsynWaitHelperBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\MemoryCacheEx.cs" />
     <Compile Include="MemoryCache\ZMemoryCacheItem.cs" />

@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -41,21 +42,190 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\DataGridViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Base\DeskNativeApi.cs" />
+    <Compile Include="Base\DropdownBoxHelper.cs" />
     <Compile Include="Base\NativeMethods.cs" />
+    <Compile Include="Base\ScrollableControlEx.cs" />
+    <Compile Include="Base\TreeViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base\WindowNestProcess.cs" />
+    <Compile Include="Base\WinformControlEx.cs" />
+    <Compile Include="Base\_ComboBox.cs" />
+    <Compile Include="Base\_ToolStripComboBox.cs" />
     <Compile Include="Controls\NoneBorderForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\OpacityPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PageGrid\DGVBindDataSourceInfo.cs" />
+    <Compile Include="Controls\PageGrid\FPageGridColumnsSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PageGrid\FPageGridColumnsSetting.Designer.cs">
+      <DependentUpon>FPageGridColumnsSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PageGrid\Interface\DataRowClickArgs.cs" />
+    <Compile Include="Controls\PageGrid\Interface\DataRowSelectionChangedArgs.cs" />
+    <Compile Include="Controls\PageGrid\Interface\IPageDataGrid.cs" />
+    <Compile Include="Controls\PageGrid\Interface\PageInfo.cs" />
+    <Compile Include="Controls\PageGrid\Interface\PageSizeChangedArgs.cs" />
+    <Compile Include="Controls\PageGrid\Interface\QueryDataArgs.cs" />
+    <Compile Include="Controls\PageGrid\PageGridColumnSettingStatus.cs" />
+    <Compile Include="Controls\PageGrid\PageGridControlCommon.cs" />
+    <Compile Include="Controls\PageGrid\UCPageGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PageGrid\UCPageGridControl.Designer.cs">
+      <DependentUpon>UCPageGridControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\IOriginalDataShow.cs" />
+    <Compile Include="Controls\PartAsynWait\Interface\IPartAsynWaitWinform.cs" />
+    <Compile Include="Controls\PartAsynWait\PartAsynExcuteFactoryWinform.cs" />
+    <Compile Include="Controls\PartAsynWait\PartAsynWaitHelper.cs" />
+    <Compile Include="Controls\PartAsynWait\V1\MetroShadeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V1\MetroShadeControl.designer.cs">
+      <DependentUpon>MetroShadeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V1\WinformPartAsynExcuteV1.cs" />
+    <Compile Include="Controls\PartAsynWait\V2\UCMetroShadeControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V2\UCMetroShadeControl2.Designer.cs">
+      <DependentUpon>UCMetroShadeControl2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V2\WinformPartAsynExcute2.cs" />
+    <Compile Include="Controls\PartAsynWait\V3\UCMetroShadeControl3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V3\UCMetroShadeControl3.Designer.cs">
+      <DependentUpon>UCMetroShadeControl3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V3\WinformPartAsynExcute3.cs" />
+    <Compile Include="Controls\PartAsynWait\V4\UCMetroShadeControl4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V4\UCMetroShadeControl4.Designer.cs">
+      <DependentUpon>UCMetroShadeControl4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V4\WinformPartAsynExcute4.cs" />
+    <Compile Include="Controls\PartAsynWait\V5\ShadeControl5.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PartAsynWait\V5\WinformPartAsynExcute5.cs" />
+    <Compile Include="Controls\PartAsynWait\WinformPartAsynExcuteBase.cs" />
+    <Compile Include="Controls\PartAsynWait\WinformPartAsynExcuteHelper.cs" />
+    <Compile Include="Controls\PartAsynWait\WinformPartAsynExcuteTypeDefine.cs" />
+    <Compile Include="Controls\PropertyGrid\Base\PropertyGridAttribute.cs" />
+    <Compile Include="Controls\PropertyGrid\Base\PropertyGridCollection.cs" />
+    <Compile Include="Controls\PropertyGrid\Base\PropertyGridOrderAttribute.cs" />
+    <Compile Include="Controls\PropertyGrid\Base\PropertyValueVerifyBase.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\DemoLonLatTypeConverter.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\DemoModel.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\DirectionEnum.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\NAddress.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\Person.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\PersonConverter.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\PersonDemo.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\PostureCommon.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\PropertyGridCustomEnumEditor.cs" />
+    <Compile Include="Controls\PropertyGrid\Demo\PropertyGridEnumControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PropertyGrid\Demo\PropertyGridEnumControl.Designer.cs">
+      <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PropertyGrid\Demo\SexEnum.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridCategoryOrder.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridCollection.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridDirectory.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridDropDown.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridFile.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridOrder.cs" />
+    <Compile Include="Controls\PropertyGrid\Interface\IPropertyGridPassword.cs" />
+    <Compile Include="Controls\PropertyGrid\PropertyGridHelper.cs" />
+    <Compile Include="Controls\PropertyGrid\TypeConverters\PropertyGridCollectionConverter.cs" />
+    <Compile Include="Controls\PropertyGrid\TypeConverters\PropertyGridDropdownConverter.cs" />
+    <Compile Include="Controls\PropertyGrid\TypeConverters\PropertyGridPasswordConverter.cs" />
+    <Compile Include="Controls\PropertyGrid\TypeConverters\PropertyGridSortConverter.cs" />
+    <Compile Include="Controls\PropertyGrid\UITypeEditors\PropertyGridDirectoryEditor.cs" />
+    <Compile Include="Controls\PropertyGrid\UITypeEditors\PropertyGridFileEditor.cs" />
     <Compile Include="Controls\RichTextBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\UCOpacityControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\IControl.cs" />
+    <Compile Include="Interface\IForm.cs" />
+    <Compile Include="Interface\IUIAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DeskBase\UtilZ.Dotnet.DeskBase.csproj">
+      <Project>{8829ac10-ce2f-43af-be1a-37e61ddea866}</Project>
+      <Name>UtilZ.Dotnet.DeskBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\PageGrid\FPageGridColumnsSetting.resx">
+      <DependentUpon>FPageGridColumnsSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PageGrid\UCPageGridControl.resx">
+      <DependentUpon>UCPageGridControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PartAsynWait\V1\MetroShadeControl.resx">
+      <DependentUpon>MetroShadeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PartAsynWait\V2\UCMetroShadeControl2.resx">
+      <DependentUpon>UCMetroShadeControl2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PartAsynWait\V3\UCMetroShadeControl3.resx">
+      <DependentUpon>UCMetroShadeControl3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PartAsynWait\V4\UCMetroShadeControl4.resx">
+      <DependentUpon>UCMetroShadeControl4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PropertyGrid\Demo\PropertyGridEnumControl.resx">
+      <DependentUpon>PropertyGridEnumControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dropdown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\firstPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lastPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LoadWait.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nextPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\prePage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

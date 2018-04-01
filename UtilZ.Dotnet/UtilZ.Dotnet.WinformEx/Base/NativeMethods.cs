@@ -35,5 +35,37 @@ namespace UtilZ.Dotnet.WinformEx.Base
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
+        /// <summary>
+        /// 设置应用程序的父窗口
+        /// </summary>
+        /// <param name="hWndChild">子窗口句柄</param>
+        /// <param name="hWndNewParent">父窗口句柄</param>
+        /// <returns>long</returns>
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern long SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        /// <summary>
+        /// 移除应用启动的程序窗口边框
+        /// </summary>
+        /// <param name="hwnd">要移除边框的应用程序句柄</param>
+        /// <param name="nIndex">索引</param>
+        /// <param name="dwNewLong">边框值</param>
+        /// <returns>long</returns>
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongA", SetLastError = true)]
+        public static extern long SetWindowLong(IntPtr hwnd, int nIndex, long dwNewLong);
+
+        /// <summary>
+        /// 移动应用程序窗口位置
+        /// </summary>
+        /// <param name="hwnd">程序窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        /// <param name="cx">宽度</param>
+        /// <param name="cy">高度</param>
+        /// <param name="repaint">是否修正</param>
+        /// <returns>bool</returns>
+        [DllImport("user32.dll", EntryPoint = "MoveWindow", SetLastError = true)]
+        public static extern bool MoveWindow(IntPtr hwnd, int x, int y, int cx, int cy, bool repaint);
     }
 }

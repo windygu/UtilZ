@@ -32,17 +32,53 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.4.0.16114, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="PageGrid\DataRowDoubleClickArgs.cs" />
+    <Compile Include="PageGrid\FColumnDisplaySetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PageGrid\FColumnDisplaySetting.Designer.cs">
+      <DependentUpon>FColumnDisplaySetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PageGrid\FGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PageGrid\FGrid.Designer.cs">
+      <DependentUpon>FGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PageGrid\IPageGridControl.cs" />
+    <Compile Include="PageGrid\PageGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PageGrid\PageGridControl.Designer.cs">
+      <DependentUpon>PageGridControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PageGrid\PageGridControlCommon.cs" />
+    <Compile Include="PageGrid\PageGridHelper.cs" />
+    <Compile Include="PageGrid\PageInfo.cs" />
+    <Compile Include="PageGrid\QueryAssignPageDataArgs.cs" />
+    <Compile Include="PageGrid\SelectionChangedArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WFLHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DeskBase\UtilZ.Dotnet.DeskBase.csproj">
+      <Project>{8829ac10-ce2f-43af-be1a-37e61ddea866}</Project>
+      <Name>UtilZ.Dotnet.DeskBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>
@@ -51,6 +87,22 @@
       <Project>{51a02a5e-f3c1-4a10-a9b5-7838133a517a}</Project>
       <Name>UtilZ.Dotnet.WinformEx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="PageGrid\imgs\next.png" />
+    <Content Include="PageGrid\imgs\pre.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PageGrid\FColumnDisplaySetting.resx">
+      <DependentUpon>FColumnDisplaySetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PageGrid\FGrid.resx">
+      <DependentUpon>FGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PageGrid\PageGridControl.resx">
+      <DependentUpon>PageGridControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

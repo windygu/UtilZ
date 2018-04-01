@@ -1,0 +1,13 @@
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.IWPFEx.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.IWPFEx.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\obj\Debug\UtilZ.Dotnet.IWPFEx.csprojResolveAssemblyReference.cache
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\obj\Debug\UtilZ.Dotnet.IWPFEx.csproj.CoreCompileInputs.cache
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\obj\Debug\UtilZ.Dotnet.IWPFEx.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\obj\Debug\UtilZ.Dotnet.IWPFEx.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.DeskBase.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.Ex.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.WPFEx.dll
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.DeskBase.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.Ex.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\bin\Debug\UtilZ.Dotnet.WPFEx.pdb
+F:\Project\Git\UtilZ\UtilZ.Dotnet\UtilZ.Dotnet.IWPFEx\obj\Debug\UtilZ.Dotnet.IWPFEx.csproj.CopyComplete
