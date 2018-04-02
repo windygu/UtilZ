@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using UtilZ.Lib.Base;
-using UtilZ.Lib.Base.Foundation;
-using UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.TypeConverters;
-using UtilZ.Dotnet.Ex.Model;
+﻿using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
 {

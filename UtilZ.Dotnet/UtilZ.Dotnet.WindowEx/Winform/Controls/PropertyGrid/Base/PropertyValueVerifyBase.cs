@@ -1,9 +1,4 @@
-﻿using UtilZ.Lib.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UtilZ.Lib.Base.Foundation;
+﻿using System;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Base

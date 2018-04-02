@@ -1,15 +1,10 @@
-﻿using UtilZ.Lib.Base;
-using NPOI.HPSF;
-using NPOI.HSSF.UserModel;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using UtilZ.Lib.Base.Foundation;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Lib.Extend.Excel

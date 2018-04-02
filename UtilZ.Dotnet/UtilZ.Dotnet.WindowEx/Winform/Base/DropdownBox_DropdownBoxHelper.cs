@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
-using System.Data;
-using UtilZ.Lib.Base;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Base
