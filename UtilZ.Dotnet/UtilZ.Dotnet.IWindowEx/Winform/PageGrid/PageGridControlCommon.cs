@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.Ex.Base;
 
-namespace UtilZ.Dotnet.IWinformEx
+namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 分页显示控件公共类

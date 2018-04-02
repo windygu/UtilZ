@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace UtilZ.Dotnet.IWinformEx
+namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 分页显示表格控件显示列设置窗口

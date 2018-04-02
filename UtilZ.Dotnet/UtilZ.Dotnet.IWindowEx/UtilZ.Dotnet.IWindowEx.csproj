@@ -44,52 +44,52 @@
     <Reference Include="System.Xml" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.4.0.16114, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>Winform\Lib\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageGrid\DataRowDoubleClickArgs.cs" />
-    <Compile Include="PageGrid\FColumnDisplaySetting.cs">
+    <Compile Include="Winform\PageGrid\DataRowDoubleClickArgs.cs" />
+    <Compile Include="Winform\PageGrid\FColumnDisplaySetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PageGrid\FColumnDisplaySetting.Designer.cs">
+    <Compile Include="Winform\PageGrid\FColumnDisplaySetting.Designer.cs">
       <DependentUpon>FColumnDisplaySetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="PageGrid\FGrid.cs">
+    <Compile Include="Winform\PageGrid\FGrid.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PageGrid\FGrid.Designer.cs">
+    <Compile Include="Winform\PageGrid\FGrid.Designer.cs">
       <DependentUpon>FGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="PageGrid\IPageGridControl.cs" />
-    <Compile Include="PageGrid\PageGridControl.cs">
+    <Compile Include="Winform\PageGrid\IPageGridControl.cs" />
+    <Compile Include="Winform\PageGrid\PageGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PageGrid\PageGridControl.Designer.cs">
+    <Compile Include="Winform\PageGrid\PageGridControl.Designer.cs">
       <DependentUpon>PageGridControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="PageGrid\PageGridControlCommon.cs" />
-    <Compile Include="PageGrid\PageGridHelper.cs" />
-    <Compile Include="PageGrid\PageInfo.cs" />
-    <Compile Include="PageGrid\QueryAssignPageDataArgs.cs" />
-    <Compile Include="PageGrid\SelectionChangedArgs.cs" />
+    <Compile Include="Winform\PageGrid\PageGridControlCommon.cs" />
+    <Compile Include="Winform\PageGrid\PageGridHelper.cs" />
+    <Compile Include="Winform\PageGrid\PageInfo.cs" />
+    <Compile Include="Winform\PageGrid\QueryAssignPageDataArgs.cs" />
+    <Compile Include="Winform\PageGrid\SelectionChangedArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WFLHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\WeifenLuo.WinFormsUI.Docking.dll" />
-    <Content Include="PageGrid\imgs\next.png" />
-    <Content Include="PageGrid\imgs\pre.png" />
+    <Content Include="Winform\Lib\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="Winform\PageGrid\imgs\next.png" />
+    <Content Include="Winform\PageGrid\imgs\pre.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PageGrid\FColumnDisplaySetting.resx">
+    <EmbeddedResource Include="Winform\PageGrid\FColumnDisplaySetting.resx">
       <DependentUpon>FColumnDisplaySetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PageGrid\FGrid.resx">
+    <EmbeddedResource Include="Winform\PageGrid\FGrid.resx">
       <DependentUpon>FGrid.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PageGrid\PageGridControl.resx">
+    <EmbeddedResource Include="Winform\PageGrid\PageGridControl.resx">
       <DependentUpon>PageGridControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -102,6 +102,9 @@
       <Project>{2e7f4a5f-361b-4b39-966b-34e7bc57a2b0}</Project>
       <Name>UtilZ.Dotnet.WindowEx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WPF\Lib\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

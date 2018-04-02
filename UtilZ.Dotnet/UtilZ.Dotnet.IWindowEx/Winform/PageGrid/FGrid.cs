@@ -13,7 +13,7 @@ using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace UtilZ.Dotnet.IWinformEx
+namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 默认构造函数

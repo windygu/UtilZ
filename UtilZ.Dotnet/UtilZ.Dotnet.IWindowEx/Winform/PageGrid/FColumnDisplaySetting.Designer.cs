@@ -1,4 +1,4 @@
-﻿namespace UtilZ.Dotnet.IWinformEx
+﻿namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
 {
     partial class FColumnDisplaySetting
     {

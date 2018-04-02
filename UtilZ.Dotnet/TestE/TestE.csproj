@@ -43,16 +43,113 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FTest.cs">
+    <Compile Include="Common\FTest.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FTest.Designer.cs">
+    <Compile Include="Common\FTest.designer.cs">
       <DependentUpon>FTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\FTestFTP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestFTP.designer.cs">
+      <DependentUpon>FTestFTP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FTestLMQCenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestLMQCenter.designer.cs">
+      <DependentUpon>FTestLMQCenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FTestLMReqResCenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestLMReqResCenter.designer.cs">
+      <DependentUpon>FTestLMReqResCenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FTestNoneBorderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestNoneBorderForm.designer.cs">
+      <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FTestPRopertyGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestPRopertyGrid.designer.cs">
+      <DependentUpon>FTestPRopertyGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FTestThread.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestThread.designer.cs">
+      <DependentUpon>FTestThread.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FWave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FWave.designer.cs">
+      <DependentUpon>FWave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FWave22.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FWave22.designer.cs">
+      <DependentUpon>FWave22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\PropertyGridX.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DB\FTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\FTest.designer.cs">
+      <DependentUpon>FTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\FTestPageGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\FTestPageGrid.designer.cs">
+      <DependentUpon>FTestPageGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Model\Stu.cs" />
+    <Compile Include="DB\Units\MysqlUnitTest.cs" />
+    <Compile Include="DB\Units\SQLiteMysqlUnitTest.cs" />
+    <Compile Include="DB\Units\UnitTestBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FTest.resx">
+    <EmbeddedResource Include="Common\FTest.resx">
       <DependentUpon>FTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestFTP.resx">
+      <DependentUpon>FTestFTP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestLMQCenter.resx">
+      <DependentUpon>FTestLMQCenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestLMReqResCenter.resx">
+      <DependentUpon>FTestLMReqResCenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestNoneBorderForm.resx">
+      <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestPRopertyGrid.resx">
+      <DependentUpon>FTestPRopertyGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestThread.resx">
+      <DependentUpon>FTestThread.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FWave.resx">
+      <DependentUpon>FWave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FWave22.resx">
+      <DependentUpon>FWave22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\FTest.resx">
+      <DependentUpon>FTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\FTestPageGrid.resx">
+      <DependentUpon>FTestPageGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -63,6 +160,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -74,6 +172,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj">
+      <Project>{b7f963e6-e365-4f0d-9812-445d1c8e10f0}</Project>
+      <Name>UtilZ.Dotnet.DBBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBModel\UtilZ.Dotnet.DBModel.csproj">
+      <Project>{3b9a7263-e276-4f0e-a1db-4b8e2639e67d}</Project>
+      <Name>UtilZ.Dotnet.DBModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>
@@ -82,6 +188,18 @@
       <Project>{a88ed0e1-9bae-42bb-aae1-e37c2a3380ac}</Project>
       <Name>UtilZ.Dotnet.ILEx</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.Wav\UtilZ.Dotnet.Wav.csproj">
+      <Project>{87b09ee0-a60c-4553-8037-ab98dc004cdd}</Project>
+      <Name>UtilZ.Dotnet.Wav</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.WindowEx\UtilZ.Dotnet.WindowEx.csproj">
+      <Project>{2e7f4a5f-361b-4b39-966b-34e7bc57a2b0}</Project>
+      <Name>UtilZ.Dotnet.WindowEx</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Winform\" />
+    <Folder Include="WPF\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

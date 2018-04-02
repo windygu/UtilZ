@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using TestE.Common;
 
 namespace TestE
 {
@@ -15,7 +16,7 @@ namespace TestE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTest());
+            Application.Run(new FWave22());
         }
     }
 }
