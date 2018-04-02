@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{152D4F9F-AD52-49D1-A4EE-645C7E21508E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Dotnet.DBOracle</RootNamespace>
+    <AssemblyName>UtilZ.Dotnet.DBOracle</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ExtendLib\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\OracleDBAccess.cs" />
+    <Compile Include="Core\OracleDBAccess_DBInfo.cs" />
+    <Compile Include="Core\OracleDBAccess_Insert.cs" />
+    <Compile Include="Core\OracleDBAccess_Query.cs" />
+    <Compile Include="Core\OracleDBFactory.cs" />
+    <Compile Include="Core\OracleInteraction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj">
+      <Project>{b7f963e6-e365-4f0d-9812-445d1c8e10f0}</Project>
+      <Name>UtilZ.Dotnet.DBBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBModel\UtilZ.Dotnet.DBModel.csproj">
+      <Project>{3b9a7263-e276-4f0e-a1db-4b8e2639e67d}</Project>
+      <Name>UtilZ.Dotnet.DBModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
+      <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
+      <Name>UtilZ.Dotnet.Ex</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ExtendLib\doc\readme.htm" />
+    <Content Include="ExtendLib\managed\common\Oracle.ManagedDataAccess.Catalog.xml" />
+    <Content Include="ExtendLib\managed\common\Oracle.ManagedDataAccess.dll" />
+    <Content Include="ExtendLib\managed\x64\Oracle.ManagedDataAccessDTC.dll" />
+    <Content Include="ExtendLib\managed\x64\OraProvCfg.exe" />
+    <Content Include="ExtendLib\managed\x86\Oracle.ManagedDataAccessDTC.dll" />
+    <Content Include="ExtendLib\managed\x86\OraProvCfg.exe" />
+    <Content Include="ExtendLib\Oracle分布式事务使用-说明.txt" />
+    <Content Include="ExtendLib\Oracle.ManagedDataAccess.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExtendLib\managed\common\Oracle.ManagedDataAccess.Client.Configuration.Section.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExtendLib\managed\x64\configure.bat" />
+    <None Include="ExtendLib\managed\x64\unconfigure.bat" />
+    <None Include="ExtendLib\managed\x86\configure.bat" />
+    <None Include="ExtendLib\managed\x86\unconfigure.bat" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

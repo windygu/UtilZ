@@ -7,10 +7,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using UtilZ.Lib.Base;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Base;
 
-namespace UtilZ.Lib.Base.Foundation
+namespace UtilZ.Dotnet.Ex.Base.Foundation
 {
     /// <summary>
     /// 创建快捷方式及关联程序和分享关联程序

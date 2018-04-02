@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{95CC8972-2C84-4383-A5C3-E0489D8DF9EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Dotnet.DBSQLite</RootNamespace>
+    <AssemblyName>UtilZ.Dotnet.DBSQLite</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SQLite.Designer, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\SQLite.Designer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\SQLiteDBAccess.cs" />
+    <Compile Include="Core\SQLiteDBAccess_DBInfo.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Delete.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Insert.cs" />
+    <Compile Include="Core\SQLiteDBAccess_ISQLiteDBAccessBase.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Query.cs" />
+    <Compile Include="Core\SQLiteDBAccess_Update.cs" />
+    <Compile Include="Core\SQLiteDBFactory.cs" />
+    <Compile Include="Core\SQLiteInteraction.cs" />
+    <Compile Include="Interface\ISQLiteDBAccessBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Write\DBPersistenceCollection.cs" />
+    <Compile Include="Write\DBPersistenceGroup.cs" />
+    <Compile Include="Write\SQLiteDelete.cs" />
+    <Compile Include="Write\SQLiteDeleteT.cs" />
+    <Compile Include="Write\SQLiteExcuteStoredProcedure.cs" />
+    <Compile Include="Write\SQLiteExecuteNonQuery.cs" />
+    <Compile Include="Write\SQLiteExecuteScalar.cs" />
+    <Compile Include="Write\SQLiteInsert.cs" />
+    <Compile Include="Write\SQLiteInsertT.cs" />
+    <Compile Include="Write\SQLiteTransaction.cs" />
+    <Compile Include="Write\SQLiteUpdate.cs" />
+    <Compile Include="Write\SQLiteUpdateT.cs" />
+    <Compile Include="Write\SQLiteWriteBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\SQLite.Designer.dll" />
+    <Content Include="Lib\System.Data.SQLite.dll" />
+    <Content Include="Lib\System.Data.SQLite.EF6.dll" />
+    <Content Include="Lib\System.Data.SQLite.Linq.dll" />
+    <Content Include="Lib\System.Data.SQLite.xml" />
+    <Content Include="x64\SQLite.Interop.dll" />
+    <Content Include="x86\SQLite.Interop.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj">
+      <Project>{b7f963e6-e365-4f0d-9812-445d1c8e10f0}</Project>
+      <Name>UtilZ.Dotnet.DBBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBModel\UtilZ.Dotnet.DBModel.csproj">
+      <Project>{3b9a7263-e276-4f0e-a1db-4b8e2639e67d}</Project>
+      <Name>UtilZ.Dotnet.DBModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
+      <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
+      <Name>UtilZ.Dotnet.Ex</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
