@@ -20,7 +20,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
     /// <summary>
     /// 分页数据表格
     /// </summary>
-    public partial class UCPageGridControl : UserControl, IPageDataGrid<DataGridViewRow, DataGridViewEx>
+    public partial class UCPageGridControl : UserControl, IPageDataGrid<DataGridViewRow, DataGridViewZ>
     {
         #region IPageDataGrid接口
         #region 事件
@@ -305,7 +305,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         [Description("表格控件")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Category("分页数据显示控件")]
-        public DataGridViewEx GridControl
+        public DataGridViewZ GridControl
         {
             get { return _dataGridView; }
         }
@@ -441,7 +441,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
         public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
         {
-            DataGridViewEx.DataBinding(this._dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
+            DataGridViewZ.DataBinding(this._dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
             this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
             this._fPageGridColumnsSetting.UpdateAdvanceSetting(this._dataGridView.Columns);
             this._dataSourceName = dataSourceName;
@@ -873,7 +873,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         }
         #endregion
 
-        private readonly DataGridViewEx _dataGridView;
+        private readonly DataGridViewZ _dataGridView;
 
         /// <summary>
         /// 隐藏列绑定列表
@@ -934,9 +934,9 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             return fPageGridColumnsSetting;
         }
 
-        private DataGridViewEx CreateDataGridView()
+        private DataGridViewZ CreateDataGridView()
         {
-            var dgv = new DataGridViewEx();
+            var dgv = new DataGridViewZ();
             dgv.AllowDrop = true;
             dgv.AllowUserToAddRows = false;
             dgv.AllowUserToDeleteRows = false;

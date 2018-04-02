@@ -12,7 +12,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
     /// DataGridView扩展类
     /// </summary>
     [ToolboxBitmap(typeof(System.Windows.Forms.DataGridView))]//定义工具栏中的图标
-    public class DataGridViewEx : DataGridView
+    public class DataGridViewZ : DataGridView
     {
         /// <summary>
         /// DataGridView绑定数据
@@ -144,7 +144,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         /// <summary>
         /// 构造函数
         /// </summary>
-        public DataGridViewEx() : base()
+        public DataGridViewZ() : base()
         {
 
         }

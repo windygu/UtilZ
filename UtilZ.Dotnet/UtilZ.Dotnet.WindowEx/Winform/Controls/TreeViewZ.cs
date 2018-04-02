@@ -13,7 +13,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
     /// 扩展TreeView类
     /// </summary>
     [ToolboxBitmap(typeof(System.Windows.Forms.TreeView))]//定义工具栏中的图标
-    public class TreeViewEx : System.Windows.Forms.TreeView
+    public class TreeViewZ : System.Windows.Forms.TreeView
     {
         #region TreeView 展开深度扩展方法
         /// <summary>
@@ -32,7 +32,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             foreach (TreeNode node in treeNodes)
             {
                 node.Expand();
-                TreeViewEx.ExpandDepth(node.Nodes, ++currentDepth, depth);
+                TreeViewZ.ExpandDepth(node.Nodes, ++currentDepth, depth);
                 currentDepth--;
             }
         }
@@ -44,7 +44,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         /// <param name="depth">要展开的深度</param>
         public static void ExpandDepth(TreeView tree, int depth)
         {
-            TreeViewEx.ExpandDepth(tree.Nodes, 0, depth - 1);
+            TreeViewZ.ExpandDepth(tree.Nodes, 0, depth - 1);
         }
         #endregion
 
@@ -108,7 +108,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
                 }
 
                 //此处第二个参数传入固定值1，是因为这儿的for循环对应的路径索引为0,所以下一层的值为从1开始                
-                selectedNode = TreeViewEx.FindSelectedNode(paths, 1, tree.Nodes[i]);
+                selectedNode = TreeViewZ.FindSelectedNode(paths, 1, tree.Nodes[i]);
                 if (selectedNode != null)
                 {
                     tree.SelectedNode = selectedNode;
@@ -139,7 +139,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
                     index++;
                     if (parentNode.Nodes[i].Nodes.Count > 0 && paths.Length > index)
                     {
-                        return TreeViewEx.FindSelectedNode(paths, index, parentNode.Nodes[i]);
+                        return TreeViewZ.FindSelectedNode(paths, index, parentNode.Nodes[i]);
                     }
                     else if (parentNode.Nodes[i].Nodes.Count == 0 && paths.Length == index)
                     {
@@ -159,7 +159,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         /// <summary>
         /// 默认构造函数
         /// </summary>
-        public TreeViewEx()
+        public TreeViewZ()
             : base()
         {
             this.EnabledDoubleClick = false;
