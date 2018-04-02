@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.Dotnet.SQLitePwdTool"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.Dotnet.DBBaseModelGenerator", "UtilZ.Dotnet.DBBaseModelGenerator\UtilZ.Dotnet.DBBaseModelGenerator.csproj", "{C0D6FB8C-DD70-421F-8247-58125F82432D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.Dotnet.ConfigManagementTool", "UtilZ.Dotnet.ConfigManagementTool\UtilZ.Dotnet.ConfigManagementTool.csproj", "{557FBD92-FDA9-48E6-8562-D79578C9F93F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{C0D6FB8C-DD70-421F-8247-58125F82432D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0D6FB8C-DD70-421F-8247-58125F82432D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0D6FB8C-DD70-421F-8247-58125F82432D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{557FBD92-FDA9-48E6-8562-D79578C9F93F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{557FBD92-FDA9-48E6-8562-D79578C9F93F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{557FBD92-FDA9-48E6-8562-D79578C9F93F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{557FBD92-FDA9-48E6-8562-D79578C9F93F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{2A422D6F-CE45-4FCA-9170-7EA2C81C281F} = {A28BB8EE-2415-4BA2-A01C-630953B262B7}
 		{D96ABF7A-4684-4FE5-9AD4-2527FEC59016} = {A28BB8EE-2415-4BA2-A01C-630953B262B7}
 		{C0D6FB8C-DD70-421F-8247-58125F82432D} = {A28BB8EE-2415-4BA2-A01C-630953B262B7}
+		{557FBD92-FDA9-48E6-8562-D79578C9F93F} = {A28BB8EE-2415-4BA2-A01C-630953B262B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3D2C008-3454-4E15-9712-D0E4C91FD2B1}

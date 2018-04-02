@@ -87,8 +87,12 @@
     <Content Include="Lib\System.Data.SQLite.EF6.dll" />
     <Content Include="Lib\System.Data.SQLite.Linq.dll" />
     <Content Include="Lib\System.Data.SQLite.xml" />
-    <Content Include="x64\SQLite.Interop.dll" />
-    <Content Include="x86\SQLite.Interop.dll" />
+    <None Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj">
