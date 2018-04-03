@@ -4,8 +4,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using UtilZ.Dotnet.Ex;
+using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.NativeMethod;
 
-namespace UtilZ.Dotnet.Ex.Model
+namespace UtilZ.Dotnet.Ex.Base
 {
     /// <summary>
     /// 非托管程序集扩展类

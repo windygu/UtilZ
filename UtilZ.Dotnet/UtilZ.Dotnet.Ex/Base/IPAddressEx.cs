@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using UtilZ.Dotnet.Ex.Model;
+using UtilZ.Dotnet.Ex.NativeMethod;
 
 namespace UtilZ.Dotnet.Ex.Base
 {
@@ -280,6 +282,30 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             return pingStatus;
+        }
+
+        /// <summary>
+        /// win32 IcmpPing
+        /// </summary>
+        /// <param name="ip">目标IP</param>
+        /// <returns></returns>
+        public static bool Ping(IPAddress ip)
+        {
+            IntPtr icmpHandle = NativeMethods.IcmpCreateFile();
+            ICMP_OPTIONS icmpOptions = new ICMP_OPTIONS();
+            icmpOptions.Ttl = 255;
+            ICMP_ECHO_REPLY icmpReply = new ICMP_ECHO_REPLY();
+            string sData = "x";
+            int iReplies = NativeMethods.IcmpSendEcho(icmpHandle, BitConverter.ToInt32(ip.GetAddressBytes(), 0), sData, (short)sData.Length, ref icmpOptions, ref icmpReply, Marshal.SizeOf(icmpReply), 30);
+            NativeMethods.IcmpCloseHandle(icmpHandle);
+            if (icmpReply.Status == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

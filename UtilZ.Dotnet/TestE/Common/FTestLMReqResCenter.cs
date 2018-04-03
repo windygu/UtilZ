@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.LRPC;
 
 namespace TestE.Common
@@ -32,6 +34,16 @@ namespace TestE.Common
             object ret = LRPCCenter.LRPCCall("1", "abc");
             string str = ret.ToString();
             MessageBox.Show(str);
+        }
+
+        private void btnTest2_Click(object sender, EventArgs e)
+        {
+            IPAddress ip;
+            if (IPAddress.TryParse(textBox1.Text, out ip))
+            {
+                bool ret = IPAddressEx.Ping(ip);
+                MessageBox.Show(ret.ToString());
+            }
         }
     }
 }

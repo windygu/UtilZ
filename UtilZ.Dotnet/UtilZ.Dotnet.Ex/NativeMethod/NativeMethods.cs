@@ -4,13 +4,26 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Model
+namespace UtilZ.Dotnet.Ex.NativeMethod
 {
     /// <summary>
     /// 系统win32方法
     /// </summary>
     public class NativeMethods
     {
+        //private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        //{
+        //    //使本程序与文件类型关联
+        //    ShortcutHelper.AssociateWithFile("ATCSTestCaseFile", ".tc", @"C:\Program Files\ATCS\ATCS.exe");
+        //    // 刷新系统缓存图标
+        //    RefreshSystemdCatchIcon();
+
+        //    //分离本程序与文件类型的关联
+        //    ShortcutHelper.DisassocateWithFile("ATCSTestCaseFile", ".tc");
+        //    // 刷新系统缓存图标
+        //    RefreshSystemdCatchIcon();
+        //}
+
         //https://msdn.microsoft.com/en-us/library/windows/desktop/ms633499(v=vs.85).aspx
         /// <summary>
         /// Retrieves a handle to the top-level window whose class name and window name match the specified strings. This function does not search child windows. This function does not perform a case-sensitive search.
@@ -87,7 +100,187 @@ namespace UtilZ.Dotnet.Ex.Model
         /// <returns>返回调用 FlashWindowEx 函数之前指定窗口状态。如果调用之前窗口标题是活动的，返回值为非零值</returns>
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
+        #region 最小化窗口在任务栏闪烁
+        /// <summary>
+        /// Stop flashing. The system restores the window to its original stae.
+        /// </summary>
+        private const uint FLASHW_STOP = 0;
+
+        /// <summary>
+        /// Flash the window caption.
+        /// </summary>
+        private const uint FLASHW_CAPTION = 1;
+
+        /// <summary>
+        /// Flash the taskbar button.
+        /// </summary>
+        private const uint FLASHW_TRAY = 2;
+
+        /// <summary>
+        /// Flash both the window caption and taskbar button.
+        /// This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags.
+        /// </summary>
+        private const uint FLASHW_ALL = 3;
+
+        /// <summary>
+        /// Flash continuously, until the FLASHW_STOP flag is set.
+        /// </summary>
+        private const uint FLASHW_TIMER = 4;
+
+        /// <summary>
+        /// Flash continuously until the window comes to the foreground.
+        /// </summary>
+        private const uint FLASHW_TIMERNOFG = 12;
+
+        /// <summary>
+        /// A boolean value indicating whether the application is running on Windows 2000 or later.
+        /// </summary>
+        private static bool Win2000OrLater
+        {
+            get { return System.Environment.OSVersion.Version.Major >= 5; }
+        }
+
+        /// <summary>
+        /// 创建窗口闪烁对象信息
+        /// </summary>
+        /// <param name="handle">窗口够本</param>
+        /// <param name="flags">The Flash Status.</param>
+        /// <param name="count">次数</param>
+        /// <param name="timeout">The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.</param>
+        /// <returns></returns>
+        private static FLASHWINFO Create_FLASHWINFO(IntPtr handle, uint flags, uint count, uint timeout)
+        {
+            FLASHWINFO fi = new FLASHWINFO();
+            fi.cbSize = Convert.ToUInt32(System.Runtime.InteropServices.Marshal.SizeOf(fi));
+            fi.hwnd = handle;
+            fi.dwFlags = flags;
+            fi.uCount = count;
+            fi.dwTimeout = timeout;
+            return fi;
+        }
+
+        /// <summary>
+        /// 任务栏窗口闪烁直到该窗口接收到焦点为止
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <returns></returns>
+        public static bool Flash(IntPtr hwnd)
+        {
+            // Make sure we're running under Windows 2000 or later
+            if (Win2000OrLater)
+            {
+                FLASHWINFO fi = Create_FLASHWINFO(hwnd, FLASHW_ALL | FLASHW_TIMERNOFG, uint.MaxValue, 0);
+                return FlashWindowEx(ref fi);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Flash the specified Window (form) for the specified number of times
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="count">闪烁次数</param>
+        /// <returns></returns>
+        public static bool Flash(IntPtr hwnd, uint count)
+        {
+            if (Win2000OrLater)
+            {
+                FLASHWINFO fi = Create_FLASHWINFO(hwnd, FLASHW_ALL, count, 0);
+                return FlashWindowEx(ref fi);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Start Flashing the specified Window (form)
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <returns></returns>
+        public static bool Start(IntPtr hwnd)
+        {
+            if (Win2000OrLater)
+            {
+                FLASHWINFO fi = Create_FLASHWINFO(hwnd, FLASHW_ALL, uint.MaxValue, 0);
+                return FlashWindowEx(ref fi);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Stop Flashing the specified Window (form)
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <returns></returns>
+        public static bool Stop(IntPtr hwnd)
+        {
+            if (Win2000OrLater)
+            {
+                FLASHWINFO fi = Create_FLASHWINFO(hwnd, FLASHW_STOP, uint.MaxValue, 0);
+                return FlashWindowEx(ref fi);
+            }
+            return false;
+        }
+        #endregion
+
+        #region 窗口淡入淡出
+        /// <summary>
+        /// 窗口淡入淡出
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="dwTime">动画持续时间</param>
+        /// <param name="dwFlags">动画类型(WindowAnimateType中的值按位枚举运算)</param>
+        /// <returns>结果</returns>
+        public static bool WindowFadeInOut(IntPtr hwnd, int dwTime, int dwFlags)
+        {
+            return AnimateWindow(hwnd, dwTime, dwFlags);
+        }
+
+        /// <summary>
+        /// 窗口淡入
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="dwTime">动画持续时间</param>
+        /// <param name="dwFlags">动画类型(WindowAnimateType中的值按位枚举运算)</param>
+        /// <returns>结果</returns>
+        public static bool WindowFadeIn(IntPtr hwnd, int dwTime = 300, int dwFlags = WindowAnimateType.AW_BLEND)
+        {
+            return AnimateWindow(hwnd, dwTime, dwFlags);
+        }
+
+        /// <summary>
+        /// 窗口淡出
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="dwTime">动画持续时间</param>
+        /// <param name="dwFlags">动画类型(WindowAnimateType中的值按位枚举运算)</param>
+        /// <returns>结果</returns>
+        public static bool WindowFadeOut(IntPtr hwnd, int dwTime = 300, int dwFlags = WindowAnimateType.AW_SLIDE | WindowAnimateType.AW_HIDE | WindowAnimateType.AW_BLEND)
+        {
+            return AnimateWindow(hwnd, dwTime, dwFlags);
+        }
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// 指定hThread运行在核心dwThreadAffinityMask
@@ -163,38 +356,18 @@ namespace UtilZ.Dotnet.Ex.Model
         /// <param name="dwFlags">animation type</param>
         /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
-    }
+        private static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
 
-    /// <summary>
-    /// 窗口闪烁结构信息
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct FLASHWINFO
-    {
-        /// <summary>
-        /// The size of the structure in bytes.
-        /// </summary>
-        public uint cbSize;
+        [DllImport("icmp.dll", SetLastError = true)]
+        public static extern IntPtr IcmpCreateFile();
 
-        /// <summary>
-        /// A Handle to the Window to be Flashed. The window can be either opened or minimized.
-        /// </summary>
-        public IntPtr hwnd;
+        [DllImport("icmp.dll", SetLastError = true)]
+        public static extern bool IcmpCloseHandle(IntPtr handle);
 
-        /// <summary>
-        /// The Flash Status.
-        /// </summary>
-        public uint dwFlags;
+        [DllImport("icmp.dll", SetLastError = true)]
+        public static extern Int32 IcmpSendEcho(IntPtr icmpHandle, Int32 destinationAddress, IntPtr requestData, Int16 requestSize, IntPtr requestOptions, IntPtr replyBuffer, Int32 replySize, Int32 timeout);
 
-        /// <summary>
-        /// The number of times to Flash the window.
-        /// </summary>
-        public uint uCount;
-
-        /// <summary>
-        /// The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
-        /// </summary>
-        public uint dwTimeout;
+        [DllImport("icmp.dll", SetLastError = true)]
+        public static extern int IcmpSendEcho(IntPtr icmpHandle, int destinationAddress, string requestData, short requestSize, ref ICMP_OPTIONS requestOptions, ref ICMP_ECHO_REPLY replyBuffer, int replySize, int timeout);
     }
 }

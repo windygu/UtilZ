@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.btnTest = new System.Windows.Forms.Button();
+            this.btnTest2 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnTest
@@ -41,21 +43,43 @@
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
-            // FTestLocalMeseageReqResCenter
+            // btnTest2
+            // 
+            this.btnTest2.Location = new System.Drawing.Point(264, 119);
+            this.btnTest2.Name = "btnTest2";
+            this.btnTest2.Size = new System.Drawing.Size(75, 23);
+            this.btnTest2.TabIndex = 1;
+            this.btnTest2.Text = " Test2";
+            this.btnTest2.UseVisualStyleBackColor = true;
+            this.btnTest2.Click += new System.EventHandler(this.btnTest2_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(105, 120);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(139, 21);
+            this.textBox1.TabIndex = 2;
+            // 
+            // FTestLMReqResCenter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 356);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.btnTest2);
             this.Controls.Add(this.btnTest);
-            this.Name = "FTestLocalMeseageReqResCenter";
+            this.Name = "FTestLMReqResCenter";
             this.Text = "FTestLocalMeseageReqResCenter";
             this.Load += new System.EventHandler(this.FTestLocalMeseageReqResCenter_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Button btnTest2;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
