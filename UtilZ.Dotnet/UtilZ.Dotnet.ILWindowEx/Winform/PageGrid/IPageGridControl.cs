@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using UtilZ.Dotnet.WindowEx.Winform.Interface;
 
-namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
+namespace UtilZ.Dotnet.ILWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 分页数据显示接口

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
+namespace UtilZ.Dotnet.ILWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 表格控件辅助类

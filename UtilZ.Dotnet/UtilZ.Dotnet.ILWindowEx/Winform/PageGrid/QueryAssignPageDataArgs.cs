@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
+namespace UtilZ.Dotnet.ILWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 查询指定页数据参数

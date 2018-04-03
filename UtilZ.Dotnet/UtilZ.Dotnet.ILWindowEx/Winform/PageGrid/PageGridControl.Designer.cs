@@ -1,4 +1,4 @@
-﻿namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
+﻿namespace UtilZ.Dotnet.ILWindowEx.Winform.PageGrid
 {
     partial class PageGridControl
     {

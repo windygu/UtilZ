@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
+namespace UtilZ.Dotnet.ILWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// WEiFenLuoDockPanel辅助类

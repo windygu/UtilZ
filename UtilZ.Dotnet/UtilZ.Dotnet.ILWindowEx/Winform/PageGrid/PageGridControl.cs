@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using UtilZ.Dotnet.Ex.Log;
 
-namespace UtilZ.Dotnet.IWindowEx.Winform.PageGrid
+namespace UtilZ.Dotnet.ILWindowEx.Winform.PageGrid
 {
     /// <summary>
     /// 分页数据显示控件

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("UtilZ.Dotnet.IWindowEx")]
+[assembly: AssemblyTitle("UtilZ.Dotnet.ILWindowEx")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UtilZ.Dotnet.IWindowEx")]
+[assembly: AssemblyProduct("UtilZ.Dotnet.ILWindowEx")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("23db7019-993c-41b5-9f8a-c08f0576626b")]
+[assembly: Guid("4cccaa3c-a3d7-4ac9-95d3-941d7dbbfaa6")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
