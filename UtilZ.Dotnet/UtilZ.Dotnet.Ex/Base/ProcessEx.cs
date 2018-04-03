@@ -28,8 +28,9 @@ namespace UtilZ.Dotnet.Ex.Base
         /// 单进程检测[创建进程互斥对象成功返回true;否则返回false]
         /// </summary>
         /// <param name="rangeFlag">单进程检测范围[true:所有用户;false:仅当前用户]</param>
+        /// <param name="mutexName">互斥变量名称</param>
         /// <returns>创建进程互斥对象成功返回true;否则返回false</returns>
-        public static bool SingleProcessCheck(bool rangeFlag)
+        public static bool SingleProcessCheck(bool rangeFlag, string mutexName = null)
         {
             lock (_lock)
             {
@@ -38,10 +39,13 @@ namespace UtilZ.Dotnet.Ex.Base
                     return true;
                 }
 
-                string mutexName = Assembly.GetEntryAssembly().GetCustomAttributes(true).Where(t => t is GuidAttribute).Cast<GuidAttribute>().Select(t => t.Value).FirstOrDefault();
                 if (string.IsNullOrWhiteSpace(mutexName))
                 {
-                    mutexName = AppDomain.CurrentDomain.SetupInformation.ApplicationName;
+                    mutexName = Assembly.GetEntryAssembly().GetCustomAttributes(true).Where(t => t is GuidAttribute).Cast<GuidAttribute>().Select(t => t.Value).FirstOrDefault();
+                    if (string.IsNullOrWhiteSpace(mutexName))
+                    {
+                        mutexName = AppDomain.CurrentDomain.SetupInformation.ApplicationName;
+                    }
                 }
 
                 if (rangeFlag)
@@ -49,7 +53,7 @@ namespace UtilZ.Dotnet.Ex.Base
                     mutexName = @"Global\" + mutexName;
                 }
 
-                bool  createNew;
+                bool createNew;
                 try
                 {
                     _processMutex = new Mutex(true, mutexName, out createNew);

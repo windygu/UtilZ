@@ -93,10 +93,8 @@
     <Compile Include="LMQ\LMQConfigManager.cs" />
     <Compile Include="LMQ\SubscibeGroup.cs" />
     <Compile Include="LMQ\SubscibeItem.cs" />
-    <Compile Include="LRR\LMReq.cs" />
-    <Compile Include="LRR\LMReqResBase.cs" />
-    <Compile Include="LRR\LMReqResCenter.cs" />
-    <Compile Include="LRR\LMRes.cs" />
+    <Compile Include="LRPC\LRPCCenter.cs" />
+    <Compile Include="LRPC\LRPCChannel.cs" />
     <Compile Include="Log\Config\Core\BaseLogConfig.cs" />
     <Compile Include="Log\Config\Core\LogConfigSection.cs" />
     <Compile Include="Log\Config\Core\XSecurityPolicy.cs" />

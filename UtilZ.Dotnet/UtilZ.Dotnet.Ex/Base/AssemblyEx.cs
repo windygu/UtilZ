@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace UtilZ.Dotnet.Ex.Base
@@ -466,6 +467,21 @@ namespace UtilZ.Dotnet.Ex.Base
             cp.ReferencedAssemblies.AddRange(referencedAssemblyFilePaths);
             CompilerResults cr = provider.CompileAssemblyFromFile(cp, sourceFilePaths);
             return cr;
+        }
+
+        /// <summary>
+        /// 获取程序集GUID
+        /// </summary>
+        /// <param name="assembly">Assembly</param>
+        /// <returns>程序集GUID</returns>
+        public static string GetAssemblyGUID(Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+
+            return assembly.GetCustomAttributes(true).Where(t => t is GuidAttribute).Cast<GuidAttribute>().Select(t => t.Value).FirstOrDefault();
         }
     }
 }
