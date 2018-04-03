@@ -63,9 +63,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Winform\Base\DeskNativeApi.cs" />
     <Compile Include="Winform\Base\DropdownBox_DropdownBoxHelper.cs" />
-    <Compile Include="Winform\Base\NativeMethods.cs" />
     <Compile Include="Winform\Base\ScrollableControlEx.cs" />
     <Compile Include="Winform\Base\WindowNestProcess.cs" />
     <Compile Include="Winform\Base\WinformControlEx.cs" />

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.NativeMethod;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls
@@ -297,7 +298,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             if (this._isUseInOutEffect)
             {
                 //窗口淡入
-                DeskNativeApi.WindowFadeIn(this.Handle, this._inDurationTime, this._inAnimateType);
+                NativeMethods.WindowFadeIn(this.Handle, this._inDurationTime, this._inAnimateType);
             }
         }
 
@@ -310,7 +311,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             if (this._isUseInOutEffect)
             {
                 //窗口淡出
-                DeskNativeApi.WindowFadeOut(this.Handle, this._outDurationTime, this._outAnimateType);
+                NativeMethods.WindowFadeOut(this.Handle, this._outDurationTime, this._outAnimateType);
             }
 
             base.OnFormClosed(e);

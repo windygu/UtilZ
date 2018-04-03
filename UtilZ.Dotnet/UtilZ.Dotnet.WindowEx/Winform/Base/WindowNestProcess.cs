@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.NativeMethod;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Base
 {
