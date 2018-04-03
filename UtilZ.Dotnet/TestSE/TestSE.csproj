@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UtilZ.Dotnet.SEx\UtilZ.Dotnet.SEx.csproj" />
-    <ProjectReference Include="..\UtilZ.Dotnet.SILEx\UtilZ.Dotnet.SILEx.csproj" />
   </ItemGroup>
 
 </Project>

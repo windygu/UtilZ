@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UtilZ.Dotnet.SILEx
+namespace UtilZ.Dotnet.ILSEx
 {
     public class Class1
     {
