@@ -18,6 +18,11 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
         public Action<SubscibeItem, object> MessageNotify;
 
         /// <summary>
+        /// 标签
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="topic">主题</param>
