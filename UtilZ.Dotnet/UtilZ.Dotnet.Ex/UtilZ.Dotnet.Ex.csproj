@@ -150,6 +150,7 @@
     <Compile Include="Log\Model\LogItem.cs" />
     <Compile Include="Log\Model\LogLevel.cs" />
     <Compile Include="Log\Security\XSecurityPolicy.cs" />
+    <Compile Include="LRPC\NotFoundLRPCChannelException.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BasePropertyValueVerifyModel.cs" />
     <Compile Include="Model\ClrSystemType.cs" />

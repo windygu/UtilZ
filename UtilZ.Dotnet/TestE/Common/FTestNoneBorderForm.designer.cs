@@ -34,6 +34,8 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.cbAllowClose = new System.Windows.Forms.CheckBox();
             this.cbFullScreen = new System.Windows.Forms.CheckBox();
+            this.btnTestLog = new System.Windows.Forms.Button();
+            this.btnWriteLog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnMax
@@ -84,9 +86,9 @@
             // 
             this.cbAllowClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAllowClose.AutoSize = true;
-            this.cbAllowClose.Location = new System.Drawing.Point(385, 107);
+            this.cbAllowClose.Location = new System.Drawing.Point(383, 107);
             this.cbAllowClose.Name = "cbAllowClose";
-            this.cbAllowClose.Size = new System.Drawing.Size(82, 16);
+            this.cbAllowClose.Size = new System.Drawing.Size(84, 16);
             this.cbAllowClose.TabIndex = 4;
             this.cbAllowClose.Text = "AllowClose";
             this.cbAllowClose.UseVisualStyleBackColor = true;
@@ -95,18 +97,40 @@
             // 
             this.cbFullScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFullScreen.AutoSize = true;
-            this.cbFullScreen.Location = new System.Drawing.Point(295, 107);
+            this.cbFullScreen.Location = new System.Drawing.Point(293, 107);
             this.cbFullScreen.Name = "cbFullScreen";
-            this.cbFullScreen.Size = new System.Drawing.Size(82, 16);
+            this.cbFullScreen.Size = new System.Drawing.Size(84, 16);
             this.cbFullScreen.TabIndex = 5;
             this.cbFullScreen.Text = "FullScreen";
             this.cbFullScreen.UseVisualStyleBackColor = true;
+            // 
+            // btnTestLog
+            // 
+            this.btnTestLog.Location = new System.Drawing.Point(61, 99);
+            this.btnTestLog.Name = "btnTestLog";
+            this.btnTestLog.Size = new System.Drawing.Size(75, 23);
+            this.btnTestLog.TabIndex = 6;
+            this.btnTestLog.Text = "TestLog";
+            this.btnTestLog.UseVisualStyleBackColor = true;
+            this.btnTestLog.Click += new System.EventHandler(this.btnTestLog_Click);
+            // 
+            // btnWriteLog
+            // 
+            this.btnWriteLog.Location = new System.Drawing.Point(61, 146);
+            this.btnWriteLog.Name = "btnWriteLog";
+            this.btnWriteLog.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteLog.TabIndex = 7;
+            this.btnWriteLog.Text = "WriteLog";
+            this.btnWriteLog.UseVisualStyleBackColor = true;
+            this.btnWriteLog.Click += new System.EventHandler(this.btnWriteLog_Click);
             // 
             // FTestNoneBorderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 327);
+            this.Controls.Add(this.btnWriteLog);
+            this.Controls.Add(this.btnTestLog);
             this.Controls.Add(this.cbFullScreen);
             this.Controls.Add(this.cbAllowClose);
             this.Controls.Add(this.btnClose);
@@ -131,5 +155,7 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.CheckBox cbAllowClose;
         private System.Windows.Forms.CheckBox cbFullScreen;
+        private System.Windows.Forms.Button btnTestLog;
+        private System.Windows.Forms.Button btnWriteLog;
     }
 }

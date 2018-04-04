@@ -170,24 +170,17 @@ namespace UtilZ.Dotnet.Ex.Log.Layout
                 //线程
                 if (layoutFormat.Contains(_THREAD))
                 {
-                    if (config.IsRecordThreadInfo)
+                    layoutFormat = layoutFormat.Replace(_THREAD, string.Format("{{{0}}}", index++));
+                    if (string.IsNullOrWhiteSpace(item.ThreadName))
                     {
-                        layoutFormat = layoutFormat.Replace(_THREAD, string.Format("{{{0}}}", index++));
-                        if (string.IsNullOrWhiteSpace(item.ThreadName))
-                        {
-                            tmp = item.ThreadID.ToString();
-                        }
-                        else
-                        {
-                            tmp = item.ThreadName;
-                        }
-
-                        args.Add(tmp);
+                        tmp = item.ThreadID.ToString();
                     }
                     else
                     {
-                        args.Add(string.Empty);
+                        tmp = item.ThreadName;
                     }
+
+                    args.Add(tmp);
                 }
 
                 //内容
@@ -216,15 +209,8 @@ namespace UtilZ.Dotnet.Ex.Log.Layout
                 //堆栈位置信息
                 if (layoutFormat.Contains(_STACKTRACE))
                 {
-                    if (config.IsRecordExceptionStackInfo)
-                    {
-                        layoutFormat = layoutFormat.Replace(_STACKTRACE, string.Format("{{{0}}}", index++));
-                        args.Add(item.StackTraceInfo);
-                    }
-                    else
-                    {
-                        args.Add(string.Empty);
-                    }
+                    layoutFormat = layoutFormat.Replace(_STACKTRACE, string.Format("{{{0}}}", index++));
+                    args.Add(item.StackTraceInfo);
                 }
 
                 //生成日志

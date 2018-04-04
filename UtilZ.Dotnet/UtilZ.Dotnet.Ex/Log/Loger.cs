@@ -250,7 +250,6 @@ namespace UtilZ.Dotnet.Ex.Log
             //defaultFileLog.Layout = string.Format("%d {0} 线程:{1} 事件ID:{2} 信息:{3} 位置:{4}",
             //    LayoutManager.LEVEL, LayoutManager.THREAD, LayoutManager.EVENT, LayoutManager.CONTENT, LayoutManager.POSITION);
             defaultFileLog.LogFileSize = 10;
-            defaultFileLog.IsRecordExceptionStackInfo = true;
             defaultFileLog.LogDirectory = System.IO.Path.Combine(Path.GetDirectoryName(typeof(XLog).Assembly.Location), @"Log");
             defaultFileLog.SecurityPolicy = null;
             logConfig.FileLogConfig.Add(defaultFileLog);

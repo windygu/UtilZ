@@ -32,16 +32,6 @@ namespace UtilZ.Dotnet.Ex.Log.Config.Interface
         string DateFormat { get; set; }
 
         /// <summary>
-        /// 是否记录异常堆栈信息,true:记录,false不记录[默认为true]
-        /// </summary>
-        bool IsRecordExceptionStackInfo { get; set; }
-
-        /// <summary>
-        /// 是否记录线程信息,true:记录,false不记录[默认为true]
-        /// </summary>
-        bool IsRecordThreadInfo { get; set; }
-
-        /// <summary>
         /// 过滤日志级别起始值
         /// </summary>
         LogLevel FilterFrom { get; set; }

@@ -36,16 +36,6 @@ namespace UtilZ.Dotnet.Ex.Log.Config.Core
         private const string DateFormatPropertyName = "DateFormat";
 
         /// <summary>
-        /// 是否记录异常堆栈信息属性名称
-        /// </summary>
-        private const string IsRecordExceptionStackInfoPropertyName = "IsRecordExceptionStackInfo";
-
-        /// <summary>
-        /// 是否记录线程信息属性名称
-        /// </summary>
-        private const string IsRecordThreadInfoPropertyName = "IsRecordThreadInfo";
-
-        /// <summary>
         /// 过滤日志级别起始值属性名称
         /// </summary>
         private const string FilterFromPropertyName = "FilterFrom";
@@ -149,38 +139,6 @@ namespace UtilZ.Dotnet.Ex.Log.Config.Core
             set
             {
                 this[BaseLogConfig.DateFormatPropertyName] = value;
-            }
-        }
-
-        /// <summary>
-        /// 是否记录异常堆栈信息,true:记录,false不记录[默认为true]
-        /// </summary>
-        [ConfigurationProperty(BaseLogConfig.IsRecordExceptionStackInfoPropertyName, DefaultValue = true, IsRequired = false)]
-        public bool IsRecordExceptionStackInfo
-        {
-            get
-            {
-                return Convert.ToBoolean(this[BaseLogConfig.IsRecordExceptionStackInfoPropertyName]);
-            }
-            set
-            {
-                this[BaseLogConfig.IsRecordExceptionStackInfoPropertyName] = value;
-            }
-        }
-
-        /// <summary>
-        /// 是否记录线程信息,true:记录,false不记录[默认为true]
-        /// </summary>
-        [ConfigurationProperty(BaseLogConfig.IsRecordThreadInfoPropertyName, DefaultValue = true, IsRequired = false)]
-        public bool IsRecordThreadInfo
-        {
-            get
-            {
-                return Convert.ToBoolean(this[BaseLogConfig.IsRecordThreadInfoPropertyName]);
-            }
-            set
-            {
-                this[BaseLogConfig.IsRecordThreadInfoPropertyName] = value;
             }
         }
 
@@ -338,11 +296,6 @@ namespace UtilZ.Dotnet.Ex.Log.Config.Core
             }
 
             if (this.GetType() != config.GetType())
-            {
-                return false;
-            }
-
-            if (!(this.IsRecordExceptionStackInfo && config.IsRecordExceptionStackInfo))
             {
                 return false;
             }

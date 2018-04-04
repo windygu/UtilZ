@@ -30,7 +30,7 @@ namespace UtilZ.Dotnet.Ex.LRPC
 
             if (pro == null)
             {
-                throw new ArgumentNullException("pro", "通道回调不能为null");
+                throw new ArgumentNullException("pro", "回调委托不能为null");
             }
 
             lock (_htChannel.SyncRoot)
@@ -42,6 +42,34 @@ namespace UtilZ.Dotnet.Ex.LRPC
 
                 _htChannel.Add(channelName, new LRPCChannel(channelName, pro));
             }
+        }
+
+        /// <summary>
+        /// 是否存在本地远程调用通道[存在返回true;不存在返回false]
+        /// </summary>
+        /// <param name="channelName">通道名称</param>
+        /// <returns>存在返回true;不存在返回false</returns>
+        public static bool ExistChannel(string channelName)
+        {
+            return _htChannel.ContainsKey(channelName);
+        }
+
+        /// <summary>
+        /// 获取已创建的本地远程调用通道名称列表
+        /// </summary>
+        /// <returns>已创建的本地远程调用通道名称列表</returns>
+        public static List<string> GetChannelNames()
+        {
+            var channelNames = new List<string>();
+            lock (_htChannel.SyncRoot)
+            {
+                foreach (string channelName in _htChannel.Keys)
+                {
+                    channelNames.Add(channelName);
+                }
+            }
+
+            return channelNames;
         }
 
         /// <summary>
@@ -71,30 +99,45 @@ namespace UtilZ.Dotnet.Ex.LRPC
         }
 
         /// <summary>
-        /// 本地远程调用
+        /// 本地远程调用[如果通道未创建则会抛出]NotFoundLRPCChannelException
         /// </summary>
         /// <param name="channelName">远程通道名称</param>
         /// <param name="obj">远程调用参数</param>
-        /// <returns>远程调用结果</returns>
-        public static object LRPCCall(string channelName, object obj)
+        /// <returns>远程调用输出结果</returns>
+        public static object Call(string channelName, object obj)
         {
             LRPCChannel channel = _htChannel[channelName] as LRPCChannel;
             if (channel == null)
             {
-                lock (_htChannel.SyncRoot)
-                {
-                    channel = _htChannel[channelName] as LRPCChannel;
-                }
+                throw new NotFoundLRPCChannelException(string.Format("名称为:{0}的远程调用通道未创建", channelName));
             }
 
-            if (channel != null)
+            return channel.OnRaisePro(obj);
+        }
+
+        /// <summary>
+        /// 本地远程调用[返回值:true:调用成功;false:调用失败]
+        /// </summary>
+        /// <param name="channelName">远程通道名称</param>
+        /// <param name="obj">远程调用参数</param>
+        /// <param name="result">远程调用输出结果</param>
+        /// <returns>远程调用结果</returns>
+        public static bool TryCall(string channelName, object obj, out object result)
+        {
+            bool callResult;
+            LRPCChannel channel = _htChannel[channelName] as LRPCChannel;
+            if (channel == null)
             {
-                return channel.Pro(obj);
+                result = null;
+                callResult = false;
             }
             else
             {
-                return null;
+                result = channel.OnRaisePro(obj);
+                callResult = true;
             }
+
+            return callResult;
         }
     }
 }

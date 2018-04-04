@@ -18,7 +18,17 @@ namespace UtilZ.Dotnet.Ex.LRPC
         /// <summary>
         /// 本地远程调用回调
         /// </summary>
-        public Func<object, object> Pro { get; private set; }
+        private Func<object, object> _pro;
+
+        /// <summary>
+        /// 调用本地远程调用回调
+        /// </summary>
+        /// <param name="obj">调用参数</param>
+        /// <returns>调用结果</returns>
+        public object OnRaisePro(object obj)
+        {
+            return this._pro(obj);
+        }
 
         /// <summary>
         /// 构造函数
@@ -28,7 +38,7 @@ namespace UtilZ.Dotnet.Ex.LRPC
         public LRPCChannel(string channelName, Func<object, object> pro)
         {
             this.ChannelName = channelName;
-            this.Pro = pro;
+            this._pro = pro;
         }
     }
 }

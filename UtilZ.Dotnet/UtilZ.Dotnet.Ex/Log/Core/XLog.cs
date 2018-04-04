@@ -272,6 +272,27 @@ namespace UtilZ.Dotnet.Ex.Log.Core
         /// <summary>
         /// 添加日志记录器
         /// </summary>
+        /// <param name="name">日志记录器名称</param>
+        /// <param name="logDirectory">日志输出目录</param>
+        /// <param name="layout">由LayoutManager中定义的常量组成的日志格式</param>
+        /// <param name="hasSeparatorLine">是否需要分隔线</param>
+        public void AddLogRecorder(string name, string logDirectory, string layout, bool hasSeparatorLine = false)
+        {
+            var config = new FileLogConfigElement();
+            config.Layout = layout;
+            config.Name = name;
+            config.LogDirectory = logDirectory;
+            if (!hasSeparatorLine)
+            {
+                config.SeparatorCount = 0;
+            }
+
+            this.AddLogRecorder(config);
+        }
+
+        /// <summary>
+        /// 添加日志记录器
+        /// </summary>
         /// <param name="config">配置[继承自接口IFileLogConfig,ISystemLogConfig,IDatabaseLogConfig之一]</param>
         public void AddLogRecorder(IConfig config)
         {

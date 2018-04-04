@@ -31,7 +31,7 @@ namespace TestE.Common
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            object ret = LRPCCenter.LRPCCall("1", "abc");
+            object ret = LRPCCenter.Call("1", "abc");
             string str = ret.ToString();
             MessageBox.Show(str);
         }

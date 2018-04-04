@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Core;
+using UtilZ.Dotnet.Ex.Log.Layout;
 using UtilZ.Dotnet.WindowEx.Winform.Controls;
 
 namespace TestE.Common
@@ -41,6 +44,20 @@ namespace TestE.Common
         private void FTestNoneBorderForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = cbAllowClose.Checked;
+        }
+
+        private readonly string _logName = "YFLog";
+        private void btnTestLog_Click(object sender, EventArgs e)
+        {
+            var log = Loger.Log as XLog;
+            string layout = string.Format(@"{0} {1}", LayoutManager.TIME, LayoutManager.CONTENT);
+            log.AddLogRecorder(this._logName, string.Format(@"Log\{0}", _logName), layout);
+        }
+
+        private void btnWriteLog_Click(object sender, EventArgs e)
+        {
+            Loger.Error("ABC", _logName);
+            Loger.Error("ABC");
         }
     }
 }
