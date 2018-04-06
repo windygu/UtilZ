@@ -16,7 +16,7 @@ namespace TestE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestNoneBorderForm());
+            Application.Run(new FTestLMReqResCenter());
         }
     }
 }

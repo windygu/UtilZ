@@ -21,7 +21,8 @@ namespace TestE.Common
 
         private void FTestLocalMeseageReqResCenter_Load(object sender, EventArgs e)
         {
-            LRPCCenter.CreateChannel("1", ResAction);
+            //LRPCCenter.CreateChannel("1", ResAction);
+            LRPCCenter.CreateOrReplaceChannel("1", ResAction);
         }
 
         private object ResAction(object p)
@@ -31,7 +32,7 @@ namespace TestE.Common
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            object ret = LRPCCenter.Call("1", "abc");
+            object ret = LRPCCenter.RemoteCall("1", "abc");
             string str = ret.ToString();
             MessageBox.Show(str);
         }
