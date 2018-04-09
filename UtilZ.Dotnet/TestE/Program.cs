@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using TestE.Common;
+using TestE.DB;
 
 namespace TestE
 {
@@ -16,7 +17,7 @@ namespace TestE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestLMReqResCenter());
+            Application.Run(new FTestPageGrid());
         }
     }
 }
