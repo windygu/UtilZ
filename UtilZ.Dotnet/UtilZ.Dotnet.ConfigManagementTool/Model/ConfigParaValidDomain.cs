@@ -1,5 +1,5 @@
 ﻿using System;
-using UtilZ.Dotnet.DBModel.DBObject;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.ConfigManagementTool.Model

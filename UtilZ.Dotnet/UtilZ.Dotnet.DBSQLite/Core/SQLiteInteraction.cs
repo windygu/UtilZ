@@ -4,9 +4,9 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using UtilZ.Dotnet.DBBase.Base;
-using UtilZ.Dotnet.DBModel.Config;
-using UtilZ.Dotnet.DBModel.Model;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Base;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
 using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.DBSQLite.Core

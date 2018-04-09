@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace UtilZ.Dotnet.DBBaseModelGenerator
+namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBaseModelGenerator
 {
     static class Program
     {

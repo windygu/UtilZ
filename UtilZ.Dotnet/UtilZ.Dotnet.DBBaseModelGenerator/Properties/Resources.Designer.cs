@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UtilZ.Dotnet.DBBaseModelGenerator.Properties
+namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBaseModelGenerator.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace UtilZ.Dotnet.DBBaseModelGenerator.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UtilZ.Dotnet.DBBaseModelGenerator.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UtilZ.Dotnet.Ex.DataBaseAccess.DBBaseModelGenerator.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

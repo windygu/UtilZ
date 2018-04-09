@@ -3,11 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBBase.Base;
-using UtilZ.Dotnet.DBBase.Factory;
-using UtilZ.Dotnet.DBBase.Core;
-using UtilZ.Dotnet.DBBase.Interface;
-using UtilZ.Dotnet.DBModel.Config;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Base;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Factory;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UtilZ.Dotnet.DBBaseModelGenerator.Properties
+namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBaseModelGenerator.Properties
 {
 
 

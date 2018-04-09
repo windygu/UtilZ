@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBModel.Interface;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Interface;
 
 namespace UtilZ.Dotnet.DBSQLite.Write
 {

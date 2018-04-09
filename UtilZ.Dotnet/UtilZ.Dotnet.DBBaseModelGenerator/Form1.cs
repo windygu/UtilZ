@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace UtilZ.Dotnet.DBBaseModelGenerator
+namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBaseModelGenerator
 {
     public partial class Form1 : Form
     {

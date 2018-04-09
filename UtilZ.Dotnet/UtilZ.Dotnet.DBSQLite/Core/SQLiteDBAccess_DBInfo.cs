@@ -5,10 +5,10 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.Ex.Base;
-using UtilZ.Dotnet.DBBase.Factory;
-using UtilZ.Dotnet.DBModel.Common;
-using UtilZ.Dotnet.DBModel.DBInfo;
-using UtilZ.Dotnet.DBModel.Model;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Factory;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Common;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBInfo;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {

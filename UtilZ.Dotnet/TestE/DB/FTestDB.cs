@@ -6,10 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using UtilZ.Dotnet.DBBase.Core;
-using UtilZ.Dotnet.DBBase.Interface;
-using UtilZ.Dotnet.DBModel.Config;
-using UtilZ.Dotnet.DBModel.DBObject;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 
 namespace TestE.DB

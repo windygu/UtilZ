@@ -1,4 +1,4 @@
-﻿namespace UtilZ.Dotnet.DBBaseModelGenerator
+﻿namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBaseModelGenerator
 {
     partial class Form1
     {

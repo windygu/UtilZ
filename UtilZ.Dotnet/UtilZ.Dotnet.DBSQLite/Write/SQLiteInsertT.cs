@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBBase.Core;
-using UtilZ.Dotnet.DBBase.Interface;
-using UtilZ.Dotnet.DBModel.DBObject;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
 using UtilZ.Dotnet.DBSQLite.Interface;
 
 namespace UtilZ.Dotnet.DBSQLite.Write

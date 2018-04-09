@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBBase.Core;
-using UtilZ.Dotnet.DBModel.DBInfo;
-using UtilZ.Dotnet.DBModel.DBObject;
-using UtilZ.Dotnet.DBModel.Model;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBInfo;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {
