@@ -74,7 +74,6 @@
     <Compile Include="Base\StructEx.cs" />
     <Compile Include="Base\TypeEx.cs" />
     <Compile Include="Base\XmlEx.cs" />
-    <Compile Include="DataBaseAccess\Class1.cs" />
     <Compile Include="DataBaseAccess\DBBase\Base\DBInteractionBase.cs" />
     <Compile Include="DataBaseAccess\DBBase\Core\CacheManager.cs" />
     <Compile Include="DataBaseAccess\DBBase\Core\DBAccessBase.cs" />
