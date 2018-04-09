@@ -5,6 +5,7 @@ using TestE.DB.Model;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Interface;
 using UtilZ.Dotnet.DBModel.Config;
+using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;
 
@@ -21,6 +22,9 @@ namespace TestE.DB
         {
             try
             {
+                Loger.Error("LogFileAppender1");
+                Loger.Error("LogFileAppender1", "LogFileAppender1");
+
                 List<DBConfigElement> configItems = ConfigManager.GetAllConfigItems();
                 DropdownBoxHelper.BindingIEnumerableGenericToComboBox<DBConfigElement>(comDB, configItems, "ConName");
             }

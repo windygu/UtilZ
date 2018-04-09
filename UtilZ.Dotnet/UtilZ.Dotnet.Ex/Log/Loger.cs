@@ -90,11 +90,11 @@ namespace UtilZ.Dotnet.Ex.Log
         {
             get
             {
-                return Loger._log.Level;
+                return _log.Level;
             }
             set
             {
-                Loger._log.Level = value;
+                _log.Level = value;
             }
         }
 
@@ -271,7 +271,7 @@ namespace UtilZ.Dotnet.Ex.Log
         {
             try
             {
-                ILog log = Loger._log;
+                ILog log = _log;
                 if (log == null)
                 {
                     return;

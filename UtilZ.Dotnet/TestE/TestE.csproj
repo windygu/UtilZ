@@ -106,6 +106,12 @@
     <Compile Include="DB\FTest.designer.cs">
       <DependentUpon>FTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="DB\FTestDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\FTestDB.Designer.cs">
+      <DependentUpon>FTestDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\FTestPageGrid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DB\FTest.resx">
       <DependentUpon>FTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\FTestDB.resx">
+      <DependentUpon>FTestDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DB\FTestPageGrid.resx">
       <DependentUpon>FTestPageGrid.cs</DependentUpon>
