@@ -4,9 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
 
-namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Factory
+namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model
 {
     /// <summary>
     /// 数据库连接信息

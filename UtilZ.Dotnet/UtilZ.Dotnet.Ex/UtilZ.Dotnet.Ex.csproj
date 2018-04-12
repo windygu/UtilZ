@@ -86,7 +86,7 @@
     <Compile Include="DataBaseAccess\DBBase\Core\DBAccessManager.cs" />
     <Compile Include="DataBaseAccess\DBBase\Core\DbConnectionPool.cs" />
     <Compile Include="DataBaseAccess\DBBase\Core\ORMManager.cs" />
-    <Compile Include="DataBaseAccess\DBBase\Factory\DbConnectionInfo.cs" />
+    <Compile Include="DataBaseAccess\DBModel\Model\DbConnectionInfo.cs" />
     <Compile Include="DataBaseAccess\DBBase\Factory\DBFactoryBase.cs" />
     <Compile Include="DataBaseAccess\DBBase\Factory\DBFactoryManager.cs" />
     <Compile Include="DataBaseAccess\DBBase\Interface\IDBAccess.cs" />

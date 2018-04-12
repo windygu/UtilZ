@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
 using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Interface;
 using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
 
@@ -48,6 +44,13 @@ namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface
 
         #region ADO.NET执行原子操作方法
         /// <summary>
+        /// 创建数据库接连对象
+        /// </summary>
+        /// <param name="visitType">数据库访问类型</param>
+        /// <returns>数据库接连对象</returns>
+        DbConnectionInfo CreateConnection(DBVisitType visitType);
+
+        /// <summary>
         /// 创建命令
         /// </summary>
         /// <param name="con">连接对象</param>
@@ -55,11 +58,16 @@ namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface
         IDbCommand CreateCommand(IDbConnection con);
 
         /// <summary>
+        /// 创建DbDataAdapter
+        /// </summary>
+        /// <returns>DbDataAdapter</returns>
+        IDbDataAdapter CreateDbDataAdapter();
+
+        /// <summary>
         /// ExecuteScalar执行SQL语句,返回执行结果的第一行第一列；
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="parameters">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
         object ExecuteScalar(string sqlStr, DBVisitType visitType, NDbParameterCollection parameters = null);

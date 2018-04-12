@@ -80,6 +80,16 @@ namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core
 
         #region ADO.NET执行原子操作方法
         /// <summary>
+        /// 创建数据库接连对象
+        /// </summary>
+        /// <param name="visitType">数据库访问类型</param>
+        /// <returns>数据库接连对象</returns>
+        public DbConnectionInfo CreateConnection(DBVisitType visitType)
+        {
+            return new DbConnectionInfo(this._dbid, visitType);
+        }
+
+        /// <summary>
         /// 创建命令
         /// </summary>
         /// <param name="con">连接对象</param>
@@ -93,6 +103,15 @@ namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core
             }
 
             return cmd;
+        }
+
+        /// <summary>
+        /// 创建DbDataAdapter
+        /// </summary>
+        /// <returns>DbDataAdapter</returns>
+        public IDbDataAdapter CreateDbDataAdapter()
+        {
+            return this._interaction.CreateDbDataAdapter();
         }
 
         /// <summary>

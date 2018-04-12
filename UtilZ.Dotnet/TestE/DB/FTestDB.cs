@@ -10,6 +10,7 @@ using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
 using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
 using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
 using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
+using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 
 namespace TestE.DB
@@ -47,7 +48,23 @@ namespace TestE.DB
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(dbConfig.DBID);
                 //dataGridView1.DataSource = dbAccess.QueryData(@"select * from Stu");
                 //dataGridView1.DataSource = dbAccess.QueryT<Stu>(@"select * from Stu");
-                dataGridView1.DataSource = dbAccess.QueryPagingData(@"select * from Stu", "ID", 10, 1, true);
+                //dataGridView1.DataSource = dbAccess.QueryPagingData(@"select * from Stu", "ID", 10, 1, true);
+
+                string sql = @"select * from Stu";
+                var dbCon = dbAccess.CreateConnection(DBVisitType.R);
+                var cmd = dbCon.Con.CreateCommand();
+                cmd.CommandText = sql;
+                var da = dbAccess.CreateDbDataAdapter();
+                da.SelectCommand = cmd;
+                DataSet ds = new DataSet();
+                ds.EnforceConstraints = false;
+                da.Fill(ds);
+                dataGridView1.DataSource = ds.Tables[0];
+
+
+
+                //DataTable dt = dbAccess.QueryData(sql);
+                //dataGridView1.DataSource = dt;
             }
             catch (Exception ex)
             {

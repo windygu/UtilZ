@@ -99,6 +99,7 @@ namespace UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core
                 IDbDataAdapter da = this._interaction.CreateDbDataAdapter();
                 da.SelectCommand = cmd;
                 DataSet ds = new DataSet();
+                ds.EnforceConstraints = false;
                 da.Fill(ds);
                 return ds;
             }
