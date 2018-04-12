@@ -60,7 +60,7 @@ namespace TestE.DB
                 ds.EnforceConstraints = false;
                 da.Fill(ds);
                 dataGridView1.DataSource = ds.Tables[0];
-
+                dbCon.Dispose();
 
 
                 //DataTable dt = dbAccess.QueryData(sql);
