@@ -496,7 +496,7 @@ namespace UtilZ.Dotnet.Ex.Log.Core
                 }
                 else
                 {
-                    logInfo = new LogItem(DateTime.Now, Thread.CurrentThread, ex.StackTrace, e.Level, e.Message, e.Exception, e.Name, e.EventID, e.ExtendInfo);
+                    logInfo = new LogItem(DateTime.Now, Thread.CurrentThread, e.Level, e.Message, e.Exception, e.Name, e.EventID, e.ExtendInfo);
                 }
 
                 if (!this._logQueueThread.IsBackground)
@@ -538,7 +538,7 @@ namespace UtilZ.Dotnet.Ex.Log.Core
                 }
                 else
                 {
-                    logInfo = new LogItem(DateTime.Now, Thread.CurrentThread, ex.StackTrace, level, msg, ex, name, eventID, extendInfo);
+                    logInfo = new LogItem(DateTime.Now, Thread.CurrentThread, level, msg, ex, name, eventID, extendInfo);
                 }
 
                 this._logQueue.Enqueue(logInfo);

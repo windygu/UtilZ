@@ -458,12 +458,18 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="isSycn">是否同步调用停止方法,同步调用会等线程结束后才退出本方法[true:同步;false:异步]</param>
         /// <param name="synMillisecondsTimeout">同步超时时间,-1表示无限期等待,单位/毫秒[isSycn为true时有效]</param>
-        /// <param name="throwOnfirtException">指示是否立即传播异常[默认为false]</param>
-        public void Stop(bool isSycn = false, int synMillisecondsTimeout = -1, bool throwOnfirtException = false)
+        public void Stop(bool isSycn = false, int synMillisecondsTimeout = -1)
         {
             lock (this._lock)
             {
-                if (this._isReqAbort || this._cts == null || this._cts.Token.IsCancellationRequested)
+                if (this._isReqAbort ||
+                    this._cts == null ||
+                    this._cts.Token.IsCancellationRequested ||
+                    this._thread == null ||
+                    this._thread.ThreadState == System.Threading.ThreadState.Aborted ||
+                    this._thread.ThreadState == System.Threading.ThreadState.AbortRequested ||
+                    this._thread.ThreadState == System.Threading.ThreadState.StopRequested ||
+                    this._thread.ThreadState == System.Threading.ThreadState.Stopped)
                 {
                     return;
                 }
@@ -474,6 +480,8 @@ namespace UtilZ.Dotnet.Ex.Base
                 {
                     this._syncStopAutoResetEvent.WaitOne(synMillisecondsTimeout);
                 }
+
+                this._thread = null;
             }
         }
 
@@ -491,6 +499,7 @@ namespace UtilZ.Dotnet.Ex.Base
 
                 this._thread.Abort();
                 this._isReqAbort = true;
+                this._thread = null;
             }
         }
         #endregion
@@ -545,8 +554,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="isSycn">是否同步调用停止方法,同步调用会等线程结束后才退出本方法[true:同步;false:异步]</param>
         /// <param name="synMillisecondsTimeout">同步超时时间,-1表示无限期等待,单位/毫秒</param>
-        /// <param name="throwOnfirtException">指示是否立即传播异常[默认为false]</param>
-        void Stop(bool isSycn = false, int synMillisecondsTimeout = -1, bool throwOnfirtException = false);
+        void Stop(bool isSycn = false, int synMillisecondsTimeout = -1);
 
         /// <summary>
         /// 终止线程

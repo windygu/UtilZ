@@ -46,21 +46,19 @@ namespace UtilZ.Dotnet.Ex.Log.Model
         /// </summary>
         /// <param name="time">时间</param>
         /// <param name="thread">线程</param>
-        /// <param name="stackTraceInfo">调用堆栈信息</param>
         /// <param name="level">日志级别</param>
         /// <param name="msg">日志信息</param>
         /// <param name="ex">异常信息</param>
         /// <param name="name">日志记录器名称</param>
         /// <param name="eventID">事件ID</param>
         /// <param name="extendInfo">扩展信息</param>
-        public LogItem(DateTime time, Thread thread, string stackTraceInfo, LogLevel level, string msg, Exception ex, string name, int eventID, object extendInfo)
+        public LogItem(DateTime time, Thread thread, LogLevel level, string msg, Exception ex, string name, int eventID, object extendInfo)
         {
             this.Time = time;
             this.ThreadID = thread.ManagedThreadId;
             this.ThreadName = thread.Name;
             this.EventID = eventID;
             this.Level = level;
-            this.StackTraceInfo = stackTraceInfo;
             this.Message = msg;
             this.Exception = ex;
             this.Name = name;
@@ -195,66 +193,11 @@ namespace UtilZ.Dotnet.Ex.Log.Model
 
             if (this._isAnalyzeStackTrace)
             {
-                StackFrame sf = this.StackTrace.GetFrame(0);
-                string fileName = sf.GetFileName();
-                int lineNo = sf.GetFileLineNumber();
-                //int colNo = sf.GetFileColumnNumber();
-
-                MethodBase methodBase = sf.GetMethod();
-                this.Logger = methodBase.DeclaringType.FullName;
-                string methodName = methodBase.Name;
-                ParameterInfo[] parameters = methodBase.GetParameters();
-                StringBuilder sbParameter = new StringBuilder();
-
-                if (parameters.Length > 0)
-                {
-                    bool getStackTraceMethodParameterNameType = _getStackTraceMethodParameterNameType;
-                    StringBuilder sbGenericTypeParameter = new StringBuilder();
-                    string parameterTypeName;
-                    foreach (ParameterInfo parameter in parameters)
-                    {
-                        if (getStackTraceMethodParameterNameType)
-                        {
-                            if (parameter.ParameterType.IsGenericType)
-                            {
-                                try
-                                {
-                                    sbGenericTypeParameter.Clear();
-                                    this.AppendGenericArgumentType(sbGenericTypeParameter, parameter.ParameterType);
-                                    parameterTypeName = sbGenericTypeParameter.ToString();
-                                }
-                                catch (Exception ex)
-                                {
-                                    parameterTypeName = this.GetTypeNameStr(parameter.ParameterType);
-                                    LogSysInnerLog.OnRaiseLog(null, ex);
-                                }
-                            }
-                            else
-                            {
-                                parameterTypeName = this.GetTypeNameStr(parameter.ParameterType);
-                            }
-                        }
-                        else
-                        {
-                            parameterTypeName = parameter.ParameterType.Name;
-                        }
-
-                        sbParameter.Append(parameterTypeName);
-                        sbParameter.Append(MethodParameterTypeParameterNameSpacing);
-                        sbParameter.Append(parameter.Name);
-                        sbParameter.Append(MethodParameterSpacing);
-                    }
-
-                    sbParameter = sbParameter.Remove(sbParameter.Length - MethodParameterSpacing.Length, MethodParameterSpacing.Length);
-                }
-
-                //在 NTest.FTestLMQ.btnTest_Click(Object sender, EventArgs e) 位置 E:\Projects\Zhanghn\UtilitiesLib\NTest\FTestLMQ.cs:行号 88
-                this.StackTraceInfo = string.Format(@"   在 {0}.{1}({2}) 位置 {3}:行号 {4}",
-                    this.Logger, methodName, sbParameter.ToString(), fileName, lineNo);
+                this.StackTraceInfo = this.GetStackTraceInfo();
             }
             else
             {
-                this.Content = this.Exception.Message;
+                this.StackTraceInfo = this.Exception.StackTrace;
             }
 
             //拼接日志基本信息
@@ -273,6 +216,84 @@ namespace UtilZ.Dotnet.Ex.Log.Model
 
             this.Content = content;
             this._isAnalyzed = true;
+        }
+
+        /// <summary>
+        /// 获取堆栈信息字符串
+        /// </summary>
+        /// <returns>堆栈信息字符串</returns>
+        private string GetStackTraceInfo()
+        {
+            StackFrame sf = this.StackTrace.GetFrame(0);
+            string fileName = sf.GetFileName();
+            int lineNo = sf.GetFileLineNumber();
+            //int colNo = sf.GetFileColumnNumber();
+
+            MethodBase methodBase = sf.GetMethod();
+            this.Logger = methodBase.DeclaringType.FullName;
+            string methodName = methodBase.Name;
+            ParameterInfo[] parameters = methodBase.GetParameters();
+            string parameterStr;
+            if (parameters.Length > 0)
+            {
+                parameterStr = this.GetMethodParamtersString(parameters);
+            }
+            else
+            {
+                parameterStr = string.Empty;
+            }
+
+            //在 NTest.FTestLMQ.btnTest_Click(Object sender, EventArgs e) 位置 E:\Projects\Zhanghn\UtilitiesLib\NTest\FTestLMQ.cs:行号 88
+            return string.Format(@"   在 {0}.{1}({2}) 位置 {3}:行号 {4}", this.Logger, methodName, parameterStr, fileName, lineNo);
+        }
+
+        /// <summary>
+        /// 获得方法参数字符串
+        /// </summary>
+        /// <param name="parameters">参数数组</param>
+        /// <returns>方法参数字符串</returns>
+        private string GetMethodParamtersString(ParameterInfo[] parameters)
+        {
+            StringBuilder sbParameter = new StringBuilder();
+            bool getStackTraceMethodParameterNameType = _getStackTraceMethodParameterNameType;
+            StringBuilder sbGenericTypeParameter = new StringBuilder();
+            string parameterTypeName;
+            foreach (ParameterInfo parameter in parameters)
+            {
+                if (getStackTraceMethodParameterNameType)
+                {
+                    if (parameter.ParameterType.IsGenericType)
+                    {
+                        try
+                        {
+                            sbGenericTypeParameter.Clear();
+                            this.AppendGenericArgumentType(sbGenericTypeParameter, parameter.ParameterType);
+                            parameterTypeName = sbGenericTypeParameter.ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            parameterTypeName = this.GetTypeNameStr(parameter.ParameterType);
+                            LogSysInnerLog.OnRaiseLog(null, ex);
+                        }
+                    }
+                    else
+                    {
+                        parameterTypeName = this.GetTypeNameStr(parameter.ParameterType);
+                    }
+                }
+                else
+                {
+                    parameterTypeName = parameter.ParameterType.Name;
+                }
+
+                sbParameter.Append(parameterTypeName);
+                sbParameter.Append(MethodParameterTypeParameterNameSpacing);
+                sbParameter.Append(parameter.Name);
+                sbParameter.Append(MethodParameterSpacing);
+            }
+
+            sbParameter = sbParameter.Remove(sbParameter.Length - MethodParameterSpacing.Length, MethodParameterSpacing.Length);
+            return sbParameter.ToString();
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 异步队列线程名称
         /// </summary>
-        private readonly string _threadName = "异步队列线程";
+        private string _threadName = "异步队列线程";
 
         /// <summary>
         /// 异步队列线程
@@ -68,7 +68,23 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                if (string.Equals(_name, value))
+                {
+                    return;
+                }
+
+                _name = value;
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    this._threadName = string.Empty;
+                }
+                else
+                {
+                    this._threadName = value + "线程";
+                }
+            }
         }
 
         /// <summary>
@@ -105,15 +121,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             this.ProcessAction = processAction;
             this._isBackground = isBackground;
-            this._name = name;
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                this._threadName = string.Empty;
-            }
-            else
-            {
-                this._threadName = name + "线程";
-            }
+            this.Name = name;
 
             if (isAutoStart)
             {
@@ -145,7 +153,8 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 停止工作线程
         /// </summary>
-        public void Stop()
+        /// <param name="isAbort">是否立即终止处理方法[true:立即终止;false:等待方法执行完成;默认false]</param>
+        public void Stop(bool isAbort = false)
         {
             lock (this._threadMonitor)
             {
@@ -153,10 +162,14 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 {
                     this._cts.Cancel();
                     this._autoResetEvent.Set();
-                    this._thread = null;
-                }
+                    if (isAbort)
+                    {
+                        this._thread.Abort();
+                    }
 
-                this._status = false;
+                    this._thread = null;
+                    this._status = false;
+                }
             }
         }
 
@@ -165,15 +178,15 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// </summary>
         private void RunThreadQueueProcessMethod()
         {
-            CancellationToken token = this._cts.Token;
-            T item;
-            while (!token.IsCancellationRequested)
+            try
             {
-                try
+                CancellationToken token = this._cts.Token;
+                T item;
+                while (!token.IsCancellationRequested)
                 {
                     if (this._queue.Count == 0)
                     {
-                        this._autoResetEvent.WaitOne();
+                        this._autoResetEvent.WaitOne(5000);
                     }
                     else
                     {
@@ -187,11 +200,9 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Loger.Error(ex.Message);
-                }
             }
+            catch (ThreadAbortException)
+            { }
         }
 
         /// <summary>

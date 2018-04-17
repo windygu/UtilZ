@@ -17,7 +17,7 @@ namespace TestE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestDB());
+            Application.Run(new FTestLoger());
         }
     }
 }

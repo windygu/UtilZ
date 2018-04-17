@@ -67,6 +67,12 @@
     <Compile Include="Common\FTestLMReqResCenter.designer.cs">
       <DependentUpon>FTestLMReqResCenter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\FTestLoger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\FTestLoger.Designer.cs">
+      <DependentUpon>FTestLoger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\FTestNoneBorderForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Common\FTestLMReqResCenter.resx">
       <DependentUpon>FTestLMReqResCenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\FTestLoger.resx">
+      <DependentUpon>FTestLoger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\FTestNoneBorderForm.resx">
       <DependentUpon>FTestNoneBorderForm.cs</DependentUpon>
