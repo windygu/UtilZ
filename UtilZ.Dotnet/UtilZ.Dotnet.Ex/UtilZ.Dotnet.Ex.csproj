@@ -72,6 +72,7 @@
     <Compile Include="Base\Shortcut.cs" />
     <Compile Include="Base\StringEx.cs" />
     <Compile Include="Base\StructEx.cs" />
+    <Compile Include="Base\TelnetServer.cs" />
     <Compile Include="Base\TypeEx.cs" />
     <Compile Include="Base\XmlEx.cs" />
     <Compile Include="DataBaseAccess\DBBase\Base\DBInteractionBase.cs" />

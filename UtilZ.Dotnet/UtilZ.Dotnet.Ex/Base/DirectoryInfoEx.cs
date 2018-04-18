@@ -129,5 +129,32 @@ namespace UtilZ.Dotnet.Ex.Base
 
             return srcPath;
         }
+
+        /// <summary>
+        /// 打开指定文件所在目录[如果文件不存在,但目录存在则打开该文件上一层目录,如果目录不存在,则直接返回]
+        /// </summary>
+        /// <param name="filePath">指定文件路径</param>
+        public static void OpenFileDirectory(string filePath)
+        {
+            string selectPath;
+            if (File.Exists(filePath))
+            {
+                selectPath = filePath;
+            }
+            else
+            {
+                string dir = Path.GetDirectoryName(filePath);
+                if (Directory.Exists(dir))
+                {
+                    selectPath = dir;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,{0}", selectPath));
+        }
     }
 }

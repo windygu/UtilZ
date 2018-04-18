@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 
 namespace TestE.Common
@@ -26,8 +27,11 @@ namespace TestE.Common
         {
             try
             {
-                object obj = null;
-                var ret = obj.ToString();
+                //object obj = null;
+                //var ret = obj.ToString();
+                string filePath = @"E:\VM2\巧小君的舞蹈 竖屏.mp4";
+                filePath = @"E:\VM2\巧小君的舞蹈竖屏.mp4";
+                DirectoryInfoEx.OpenFileDirectory(filePath);
             }
             catch (Exception ex)
             {
