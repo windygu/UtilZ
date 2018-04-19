@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using TestE.Common;
 using TestE.DB;
+using TestE.Winform;
 
 namespace TestE
 {
@@ -17,7 +18,7 @@ namespace TestE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestLoger());
+            Application.Run(new FTestLogControl());
         }
     }
 }

@@ -20,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\UtilZ.Dotnet.WindowEx.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,6 +71,12 @@
     <Compile Include="Winform\Base\DropdownBox_ToolStripComboBox.cs" />
     <Compile Include="Winform\Controls\DataGridViewZ.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Winform\Controls\NoneBorderForm.cs">
       <SubType>Form</SubType>
@@ -237,6 +242,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Winform\Controls\LogControl.resx">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Winform\Controls\PageGrid\FPageGridColumnsSetting.resx">
       <DependentUpon>FPageGridColumnsSetting.cs</DependentUpon>
     </EmbeddedResource>
@@ -276,6 +284,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\prepage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSHTML">
+      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
