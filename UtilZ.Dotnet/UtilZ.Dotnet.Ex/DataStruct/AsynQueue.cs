@@ -50,6 +50,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
+        /// 停止线程消息通知
+        /// </summary>
+        private readonly AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
+
+        /// <summary>
         /// 队列线程状态[true:线程正在运行;false:线程未运行]
         /// </summary>
         private bool _status = false;
@@ -152,9 +157,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
         /// <summary>
         /// 停止工作线程
-        /// </summary>
+        /// </summary>       
         /// <param name="isAbort">是否立即终止处理方法[true:立即终止;false:等待方法执行完成;默认false]</param>
-        public void Stop(bool isAbort = false)
+        /// <param name="isSync">是否同步停止,isAbort为false时有效[true:同步停止;false:异常停止]</param>
+        /// <param name="synMillisecondsTimeout">同步超时时间,-1表示无限期等待,单位/毫秒[isSycn为true时有效]</param>
+        public void Stop(bool isAbort = false, bool isSync = true, int synMillisecondsTimeout = -1)
         {
             lock (this._threadMonitor)
             {
@@ -165,6 +172,13 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                     if (isAbort)
                     {
                         this._thread.Abort();
+                    }
+                    else
+                    {
+                        if (isSync)
+                        {
+                            this._stopAutoResetEvent.WaitOne(synMillisecondsTimeout);
+                        }
                     }
 
                     this._thread = null;
@@ -203,6 +217,8 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             }
             catch (ThreadAbortException)
             { }
+
+            this._stopAutoResetEvent.Set();
         }
 
         /// <summary>
@@ -339,12 +355,14 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="isDispose">是否释放标识</param>
         protected virtual void Dispose(bool isDispose)
         {
+            this.Stop(true, true, 5000);
             if (this._cts != null)
             {
                 this._cts.Dispose();
             }
 
             this._autoResetEvent.Dispose();
+            this._stopAutoResetEvent.Dispose();
         }
     }
 }

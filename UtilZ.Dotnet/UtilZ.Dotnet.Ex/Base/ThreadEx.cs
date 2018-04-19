@@ -440,6 +440,11 @@ namespace UtilZ.Dotnet.Ex.Base
                 this.OnRaiseCompleted(ThreadExCompletedType.Cancel, aex);
                 throw aex;
             }
+            catch(ObjectDisposedException oex)
+            {
+                this.OnRaiseCompleted(ThreadExCompletedType.Exception, oex);
+                throw;
+            }
             catch (Exception ex)
             {
                 this.OnRaiseCompleted(ThreadExCompletedType.Exception, ex);
