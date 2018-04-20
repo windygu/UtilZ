@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using mshtml;
 using System.IO;
+using UtilZ.Dotnet.Ex.DataStruct;
+using System.Collections;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 {
@@ -84,6 +86,17 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         private HtmlElement _logContainerEle;
         private string _logContainerEleId;
         private string _logItemEleName;
+        /// <summary>
+        /// 模板类型[true:内置模板;false:外部文件模板]
+        /// </summary>
+        private bool _templateType;
+        private string _urlPath;
+        private readonly AsynQueue<ShowLogItem> _logShowQueue;
+
+        /// <summary>
+        /// key:ClassId,value:style
+        /// </summary>
+        private readonly Hashtable _htStyle = new Hashtable();
 
         /// <summary>
         /// 构造函数
@@ -92,7 +105,195 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             InitializeComponent();
 
+            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true);
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+            this.Init("uid", "li");
+            this._templateType = true;
+            this.webBrowser.DocumentText = this.GetLogHtmlTemplate();
+        }
+
+        private void ShowLog(ShowLogItem item)
+        {
+            if (this.webBrowser.InvokeRequired)
+            {
+                this.webBrowser.Invoke(new Action(() =>
+                {
+                    this.ShowLog(item);
+                }));
+            }
+            else
+            {
+                if (this._logContainerEle == null)
+                {
+                    return;
+                }
+
+                HtmlElement logEle = this.CreateLogItemEle(item);
+                this._logContainerEle.AppendChild(logEle);
+                this.webBrowser.Document.Body.ScrollTop = this.webBrowser.Height;
+                if (!this._isLock)
+                {
+                    this.RemoveOutElements();
+                    this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
+                }
+            }
+        }
+
+        private HtmlElement CreateLogItemEle(ShowLogItem item)
+        {
+            //this.webBrowser.Document.InvokeScript("")
+            HtmlElement logEle = this.webBrowser.Document.CreateElement(this._logItemEleName);
+            logEle.InnerText = item.LogText;
+            switch (item.Type)
+            {
+                case StyleType.Color:
+                    logEle.Style = string.Format("color:{0}", ColorTranslator.ToHtml(item.Color));
+                    break;
+                case StyleType.Style:
+                    logEle.Style = item.Css;
+                    break;
+                case StyleType.ClassId:
+                    logEle.Style = this.GetStyle(item.Css);
+                    break;
+                case StyleType.None:
+                default:
+                    break;
+            }
+
+            return logEle;
+        }
+
+        #region 生成Style
+        private string GetStyle(string classId)
+        {
+            if (this._htStyle.ContainsKey(classId))
+            {
+                return this._htStyle[classId].ToString();
+            }
+
+            string styleStr = this.GetTyleStr();
+            if (string.IsNullOrWhiteSpace(styleStr))
+            {
+                return null;
+            }
+
+            string styleText = this.GetCssText(styleStr, classId);
+            this._htStyle.Add(classId, styleText);
+            return styleText;
+        }
+
+        private string GetCssText(string styleStr, string classId)
+        {
+            string classStr = "." + classId;
+            int index = styleStr.IndexOf(classStr);
+            if (index < 0)
+            {
+                return null;
+            }
+            else
+            {
+                index = index + classStr.Length;
+            }
+
+            int endIndex = -1, leftCount = 0, rightCount = 0;
+            char ch;
+            for (int i = index; i < styleStr.Length; i++)
+            {
+                ch = styleStr[i];
+                if (ch == '{')
+                {
+                    leftCount++;
+                    if (leftCount == 1)
+                    {
+                        index = i + 1;
+                    }
+                }
+                else if (ch == '}')
+                {
+                    rightCount++;
+                    if (rightCount == leftCount)
+                    {
+                        endIndex = i;
+                        break;
+                    }
+                }
+                else
+                {
+
+                }
+            }
+
+            if (endIndex == -1)
+            {
+                return null;
+            }
+
+            return styleStr.Substring(index, endIndex - index).Trim();
+        }
+
+        private string GetTyleStr()
+        {
+            HtmlElement headEle = null;
+            foreach (HtmlElement ele in this.webBrowser.Document.All)
+            {
+                if (string.Equals(ele.TagName, "HEAD", StringComparison.OrdinalIgnoreCase))
+                {
+                    headEle = ele;
+                    break;
+                }
+            }
+
+            if (headEle == null)
+            {
+                return null;
+            }
+
+            HtmlElement styleEle = null;
+            foreach (HtmlElement ele in headEle.Children)
+            {
+                if (string.Equals(ele.TagName, "STYLE", StringComparison.OrdinalIgnoreCase))
+                {
+                    styleEle = ele;
+                    break;
+                }
+            }
+
+            if (styleEle == null)
+            {
+                return null;
+            }
+
+            return styleEle.InnerHtml;
+        }
+        #endregion
+
+        /// <summary>
+        /// 移除超出限制的日志项
+        /// </summary>
+        private void RemoveOutElements()
+        {
+            if (this._logContainerEle == null)
+            {
+                return;
+            }
+
+            var logItemElementCollection = this._logContainerEle.Children;
+            int offset = logItemElementCollection.Count - this._maxItemCount;
+            if (offset <= 0)
+            {
+                return;
+            }
+
+            IHTMLDOMNode node;
+            for (int i = 0; i < offset; i++)
+            {
+                node = logItemElementCollection[0].DomElement as IHTMLDOMNode;
+                node.parentNode.removeChild(node);
+            }
+        }
+
+        private string GetLogHtmlTemplate()
+        {
             string logHtmlTemplate = @"<!DOCTYPE html>
             <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
             <head>
@@ -115,8 +316,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             </ul>
             </body>
             </html>";
-            this.Init("uid", "li");
-            this.webBrowser.DocumentText = logHtmlTemplate;
+            return logHtmlTemplate;
         }
 
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -145,8 +345,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 
             this.Init(logContainerEleId, logItemEleName);
             //file://F:/Project/Git/UtilZ/UtilZ.Dotnet/TestE/bin/Debug/LogControl.html
-            string urlPath = Uri.UriSchemeFile + Uri.SchemeDelimiter + Path.GetFullPath(templateFilePath).Replace(Path.DirectorySeparatorChar, '/');
-            this.webBrowser.Navigate(urlPath);
+            this._urlPath = Uri.UriSchemeFile + Uri.SchemeDelimiter + Path.GetFullPath(templateFilePath).Replace(Path.DirectorySeparatorChar, '/');
+            this._templateType = false;
+            this._htStyle.Clear();
+            this.webBrowser.Navigate(this._urlPath);
         }
 
         /// <summary>
@@ -155,17 +357,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="logText">日志文本</param>
         public void AddLog(string logText)
         {
-            if (this.webBrowser.InvokeRequired)
-            {
-                this.webBrowser.Invoke(new Action(() =>
-                {
-                    this.AddLog(logText);
-                }));
-            }
-            else
-            {
-                this.ShowLog(logText, null);
-            }
+            this._logShowQueue.Enqueue(new ShowLogItem(logText));
         }
 
         /// <summary>
@@ -175,68 +367,96 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="color">该条记录文本所显示的颜色</param>
         public void AddLog(string logText, Color color)
         {
-            if (this.webBrowser.InvokeRequired)
+            this._logShowQueue.Enqueue(new ShowLogItem(logText, color));
+        }
+
+        /// <summary>
+        /// 添加显示日志
+        /// </summary>
+        /// <param name="logText">日志文本</param>
+        /// <param name="css">css样式</param>
+        /// <param name="type">样式类型[true:style;false:ClassId;默认为false]</param>
+        public void AddLog(string logText, string css, bool type = false)
+        {
+            this._logShowQueue.Enqueue(new ShowLogItem(logText, css, type));
+        }
+
+        /// <summary>
+        /// 清空日志
+        /// </summary>
+        public void Clear()
+        {
+            if (this._logContainerEle == null)
             {
-                this.webBrowser.Invoke(new Action(() =>
-                {
-                    this.AddLog(logText, color);
-                }));
+                return;
+            }
+
+            if (this._templateType)
+            {
+                this.webBrowser.DocumentText = this.GetLogHtmlTemplate();
             }
             else
             {
-                string style = string.Format("color:{0}", ColorTranslator.ToHtml(color));
-                this.ShowLog(logText, style);
+                this.webBrowser.Navigate(this._urlPath);
             }
+        }
+    }
+
+    internal class ShowLogItem
+    {
+        private StyleType _type;
+        internal StyleType Type { get { return _type; } }
+
+        public Color Color { get; private set; }
+
+        public string Css { get; private set; }
+
+        private string _logText;
+        public string LogText { get { return _logText; } }
+
+        public ShowLogItem(string logText)
+        {
+            this._type = StyleType.None;
+            this._logText = logText;
+        }
+
+        public ShowLogItem(string logText, Color color)
+        {
+            this._type = StyleType.Color;
+            this._logText = logText;
+            this.Color = color;
         }
 
         /// <summary>
-        /// 将日志显示到控件上
+        /// 
         /// </summary>
-        /// <param name="logInfo"></param>
-        /// <param name="style"></param>
-        private void ShowLog(string logInfo, string style)
+        /// <param name="logText"></param>
+        /// <param name="css"></param>
+        /// <param name="type">样式类型[true:style;false:ClassId]</param>
+        public ShowLogItem(string logText, string css, bool type)
         {
-            if (this._logContainerEle == null)
+            if (type)
             {
-                return;
+                this._type = StyleType.Style;
+            }
+            else
+            {
+                this._type = StyleType.ClassId;
             }
 
-            HtmlElement logEle = this.webBrowser.Document.CreateElement(this._logItemEleName);
-            logEle.Style = style;
-            logEle.InnerText = logInfo;
-
-            this._logContainerEle.AppendChild(logEle);
-            this.webBrowser.Document.Body.ScrollTop = this.webBrowser.Height;
-            if (!this._isLock)
-            {
-                this.RemoveOutElements();
-                this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
-            }
+            this._logText = logText;
+            this.Css = css;
         }
+    }
 
-        /// <summary>
-        /// 移除超出限制的日志项
-        /// </summary>
-        private void RemoveOutElements()
-        {
-            if (this._logContainerEle == null)
-            {
-                return;
-            }
+    internal enum StyleType
+    {
+        None,
 
-            var logItemElementCollection = this._logContainerEle.Children;
-            int offset = logItemElementCollection.Count - this._maxItemCount;
-            if (offset <= 0)
-            {
-                return;
-            }
+        Color,
 
-            IHTMLDOMNode node;
-            for (int i = 0; i < offset; i++)
-            {
-                node = logItemElementCollection[0].DomElement as IHTMLDOMNode;
-                node.parentNode.removeChild(node);
-            }
-        }
+        Style,
+
+        ClassId
     }
 }
