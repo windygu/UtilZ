@@ -63,7 +63,23 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         public bool IsLock
         {
             get { return _isLock; }
-            set { _isLock = value; }
+            set
+            {
+                if (_isLock == value)
+                {
+                    return;
+                }
+
+                _isLock = value;
+                if (_isLock)
+                {
+                    this._logShowQueue.Stop();
+                }
+                else
+                {
+                    this._logShowQueue.Start();
+                }
+            }
         }
 
         /// <summary>
@@ -92,6 +108,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         private bool _templateType;
         private string _urlPath;
         private readonly AsynQueue<ShowLogItem> _logShowQueue;
+        private readonly int _millisecondsTimeout = 10;
 
         /// <summary>
         /// key:ClassId,value:style
@@ -105,7 +122,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             InitializeComponent();
 
-            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true);
+            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, 3, AsynQueueCapcityStrategy.Dequeue);
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             this.Init("uid", "li");
             this._templateType = true;
@@ -130,12 +147,13 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 
                 HtmlElement logEle = this.CreateLogItemEle(item);
                 this._logContainerEle.AppendChild(logEle);
-                this.webBrowser.Document.Body.ScrollTop = this.webBrowser.Height;
+
                 if (!this._isLock)
                 {
                     this.RemoveOutElements();
-                    this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
                 }
+
+                this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
             }
         }
 
@@ -166,19 +184,26 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         #region 生成Style
         private string GetStyle(string classId)
         {
+            string styleText;
             if (this._htStyle.ContainsKey(classId))
             {
-                return this._htStyle[classId].ToString();
+                styleText = this._htStyle[classId] as string;
             }
-
-            string styleStr = this.GetTyleStr();
-            if (string.IsNullOrWhiteSpace(styleStr))
+            else
             {
-                return null;
+                string styleStr = this.GetTyleStr();
+                if (string.IsNullOrWhiteSpace(styleStr))
+                {
+                    styleText = null;
+                }
+                else
+                {
+                    styleText = this.GetCssText(styleStr, classId);
+                }
+
+                this._htStyle.Add(classId, styleText);
             }
 
-            string styleText = this.GetCssText(styleStr, classId);
-            this._htStyle.Add(classId, styleText);
             return styleText;
         }
 
@@ -357,28 +382,37 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="logText">日志文本</param>
         public void AddLog(string logText)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText));
+            this._logShowQueue.Enqueue(new ShowLogItem(logText), this._millisecondsTimeout);
         }
 
         /// <summary>
-        /// 添加显示日志
+        /// 添加显示日志,样式指定为颜色
         /// </summary>
         /// <param name="logText">日志文本</param>
         /// <param name="color">该条记录文本所显示的颜色</param>
-        public void AddLog(string logText, Color color)
+        public void AddLogStyleForColor(string logText, Color color)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText, color));
+            this._logShowQueue.Enqueue(new ShowLogItem(logText, color), this._millisecondsTimeout);
         }
 
         /// <summary>
-        /// 添加显示日志
+        /// 添加显示日志,样式指定为style
         /// </summary>
         /// <param name="logText">日志文本</param>
-        /// <param name="css">css样式</param>
-        /// <param name="type">样式类型[true:style;false:ClassId;默认为false]</param>
-        public void AddLog(string logText, string css, bool type = false)
+        /// <param name="style">样式</param>
+        public void AddLogStyleForCss(string logText, string style)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText, css, type));
+            this._logShowQueue.Enqueue(new ShowLogItem(logText, style, StyleType.Style), this._millisecondsTimeout);
+        }
+
+        /// <summary>
+        /// 添加显示日志,样式指定为css中定义的类名
+        /// </summary>
+        /// <param name="logText">日志文本</param>
+        /// <param name="className">css class名称</param>
+        public void AddLogStyleForClass(string logText, string className)
+        {
+            this._logShowQueue.Enqueue(new ShowLogItem(logText, className, StyleType.ClassId), this._millisecondsTimeout);
         }
 
         /// <summary>
@@ -432,18 +466,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// </summary>
         /// <param name="logText"></param>
         /// <param name="css"></param>
-        /// <param name="type">样式类型[true:style;false:ClassId]</param>
-        public ShowLogItem(string logText, string css, bool type)
+        /// <param name="styleType">样式类型</param>
+        public ShowLogItem(string logText, string css, StyleType styleType)
         {
-            if (type)
-            {
-                this._type = StyleType.Style;
-            }
-            else
-            {
-                this._type = StyleType.ClassId;
-            }
-
+            this._type = styleType;
             this._logText = logText;
             this.Css = css;
         }

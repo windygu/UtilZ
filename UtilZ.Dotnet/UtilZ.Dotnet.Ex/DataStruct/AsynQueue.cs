@@ -42,12 +42,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 需要处理的数据队列
         /// </summary>
-        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
-
-        /// <summary>
-        /// 输出消息到UI的线程消息通知
-        /// </summary>
-        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
+        private readonly BlockingCollection<T> _blockingCollection;
 
         /// <summary>
         /// 停止线程消息通知
@@ -93,14 +88,31 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         }
 
         /// <summary>
-        /// 数据处理委托
+        /// 获取队列容量[如果设置的容量小于当前已有队列长度,则丢弃掉队列头的项.直到队列长度与目标容量一致]
         /// </summary>
-        public Action<T> ProcessAction;
+        public int Capity
+        {
+            get { return this._blockingCollection.BoundedCapacity; }
+        }
+
+        private AsynQueueCapcityStrategy _strategy = AsynQueueCapcityStrategy.None;
+        /// <summary>
+        /// 获取或设置容量策略
+        /// </summary>
+        public AsynQueueCapcityStrategy Strategy
+        {
+            get { return _strategy; }
+        }
 
         /// <summary>
         /// 同步操作对象
         /// </summary>
         public readonly object SyncRoot = new object();
+
+        /// <summary>
+        /// 数据处理委托
+        /// </summary>
+        public Action<T> ProcessAction;
 
         /// <summary>
         /// 数据处理
@@ -119,14 +131,37 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// 构造函数
         /// </summary>
         /// <param name="processAction">数据处理委托</param>
+        public AsynQueue(Action<T> processAction) : this(processAction, UtilZ.Dotnet.Ex.Base.ObjectEx.GetVarName((p) => processAction) + "委托异步队列")
+        {
+
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="processAction">数据处理委托</param>
         /// <param name="name">异步队列名称</param>
         /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
         /// <param name="isAutoStart">是否自动启动线程</param>
-        public AsynQueue(Action<T> processAction, string name = null, bool isBackground = true, bool isAutoStart = false)
+        /// <param name="capcity">队列容量,-1为不限容量,小于</param>
+        /// <param name="strategy">队列满时新项入队列的策略</param>
+        public AsynQueue(Action<T> processAction, string name = null, bool isBackground = true, bool isAutoStart = false, int capcity = -1, AsynQueueCapcityStrategy strategy = AsynQueueCapcityStrategy.None)
         {
             this.ProcessAction = processAction;
             this._isBackground = isBackground;
             this.Name = name;
+            this._strategy = strategy;
+            if (capcity == 0 || capcity < -1)
+            {
+                throw new ArgumentException("capcity");
+            }
+
+            if (capcity == -1)
+            {
+                capcity = int.MaxValue;
+            }
+
+            this._blockingCollection = new BlockingCollection<T>(new ConcurrentQueue<T>(), capcity);
 
             if (isAutoStart)
             {
@@ -159,16 +194,15 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// 停止工作线程
         /// </summary>       
         /// <param name="isAbort">是否立即终止处理方法[true:立即终止;false:等待方法执行完成;默认false]</param>
-        /// <param name="isSync">是否同步停止,isAbort为false时有效[true:同步停止;false:异常停止]</param>
+        /// <param name="isSync">是否同步停止,isAbort为false时有效[true:同步停止;false:异常停止];注:注意线程死锁,典型场景:刷新UI,在UI上执行同步停止</param>
         /// <param name="synMillisecondsTimeout">同步超时时间,-1表示无限期等待,单位/毫秒[isSycn为true时有效]</param>
-        public void Stop(bool isAbort = false, bool isSync = true, int synMillisecondsTimeout = -1)
+        public void Stop(bool isAbort = false, bool isSync = false, int synMillisecondsTimeout = -1)
         {
             lock (this._threadMonitor)
             {
                 if (this._status)
                 {
                     this._cts.Cancel();
-                    this._autoResetEvent.Set();
                     if (isAbort)
                     {
                         this._thread.Abort();
@@ -196,23 +230,44 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             {
                 CancellationToken token = this._cts.Token;
                 T item;
+                bool result;
                 while (!token.IsCancellationRequested)
                 {
-                    if (this._queue.Count == 0)
-                    {
-                        this._autoResetEvent.WaitOne(5000);
-                    }
-                    else
+                    try
                     {
                         lock (this.SyncRoot)
                         {
-                            if (this._queue.TryDequeue(out item))
-                            {
-                                //数据处理
-                                this.OnRaiseProcess(item);
-                            }
+                            result = this._blockingCollection.TryTake(out item, 5000, token);
+                        }
+
+                        if (result)
+                        {
+                            //数据处理
+                            this.OnRaiseProcess(item);
                         }
                     }
+                    catch (OperationCanceledException)
+                    {
+                        //已取消
+                        break;
+                    }
+                    //catch (ObjectDisposedException)
+                    //{
+                    //    //已释放
+                    //    break;
+                    //}
+                    //catch (ArgumentOutOfRangeException)
+                    //{
+                    //    //millisecondsTimeout 是一个非 -1 的负数，而 - 1 表示无限期超时
+                    //}
+                    //catch (InvalidOperationException)
+                    //{
+                    //    //基础集合已在此 System.Collections.Concurrent.BlockingCollection`1 实例外部进行了修改
+                    //}
+                    //catch(Exception)
+                    //{
+
+                    //}
                 }
             }
             catch (ThreadAbortException)
@@ -222,23 +277,56 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         }
 
         /// <summary>
-        /// 将对象添加到队列的结尾处
+        /// 将对象添加到队列的结尾处[如果在指定的时间内可以将 item 添加到集合中，则为 true；否则为 false]
         /// </summary>
         /// <param name="item">待添加的对象</param>
-        public void Enqueue(T item)
+        /// <param name="millisecondsTimeout">等待的毫秒数，或为 System.Threading.Timeout.Infinite (-1)，表示无限期等待</param>
+        /// <param name="fiItems">当队列超出策略为Dequeue时,先进入队列中移除项输出集合,如果为null则不输出</param>
+        /// <returns>如果在指定的时间内可以将 item 添加到集合中，则为 true；否则为 false</returns>
+        public bool Enqueue(T item, int millisecondsTimeout = System.Threading.Timeout.Infinite, List<T> fiItems = null)
         {
-            this._queue.Enqueue(item);
-            if (this._queue.Count > this._maxcount)
+            bool result = this._blockingCollection.TryAdd(item, millisecondsTimeout);
+            if (result)
             {
-                //超过线程队列最大项数,则移除超出队列开始的项
-                T value = default(T);
-                while (this._queue.Count > this._maxcount)
-                {
-                    this._queue.TryDequeue(out value);
-                }
+                return result;
             }
 
-            this._autoResetEvent.Set();
+            switch (this._strategy)
+            {
+                case AsynQueueCapcityStrategy.Dequeue:
+                    var removeFiItems = new List<T>();
+                    T oldItem;
+                    lock (this.SyncRoot)
+                    {
+                        result = this._blockingCollection.TryAdd(item);
+                        while (!result)
+                        {
+                            if (this._blockingCollection.TryTake(out oldItem))
+                            {
+                                removeFiItems.Add(oldItem);
+                                result = this._blockingCollection.TryAdd(item);
+                            }
+                        }
+                    }
+
+                    if (removeFiItems.Count > 0 && fiItems != null)
+                    {
+                        fiItems.AddRange(removeFiItems);
+                    }
+                    break;
+                case AsynQueueCapcityStrategy.Choke:
+                    while (!result)
+                    {
+                        result = this._blockingCollection.TryAdd(item);
+                        Thread.Sleep(10);
+                    }
+                    break;
+                case AsynQueueCapcityStrategy.None:
+                default:
+                    break;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -249,18 +337,15 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             T result;
             int removeCount = 0;
-            while (removeCount < count)
+            lock (this.SyncRoot)
             {
-                //如果为空了就跳出
-                if (this._queue.Count == 0)
+                while (removeCount < count && this._blockingCollection.Count > 0)
                 {
-                    break;
-                }
-
-                //移除一项
-                if (this._queue.TryDequeue(out result))
-                {
-                    removeCount++;
+                    //移除一项
+                    if (this._blockingCollection.TryTake(out result))
+                    {
+                        removeCount++;
+                    }
                 }
             }
         }
@@ -272,29 +357,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             get
             {
-                return this._queue.Count;
-            }
-        }
-
-        /// <summary>
-        /// 线程队列最大项数,当超过这个值时,则移除超出的值
-        /// </summary>
-        private int _maxcount = int.MaxValue;
-
-        /// <summary>
-        /// 获取或设置线程队列最大项数,当超过这个值时,则移除超出队列开始的项
-        /// </summary>
-        public int Maxcount
-        {
-            get { return _maxcount; }
-            set
-            {
-                if (value < 1)
-                {
-                    throw new ArgumentOutOfRangeException(string.Format("线程队列最大项数不能小于1,值{0}无效", value), "value");
-                }
-
-                _maxcount = value;
+                return this._blockingCollection.Count;
             }
         }
 
@@ -312,7 +375,21 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <returns>新数组</returns>
         public T[] ToArray()
         {
-            return this._queue.ToArray();
+            return this._blockingCollection.ToArray();
+        }
+
+        /// <summary>
+        /// 从指定数组索引开始将 System.Collections.Concurrent.ConcurrentQueue`1 元素复制到现有一维 System.Array中
+        /// 异常:
+        /// T:System.ArgumentNullException:array 为 null 引用（在 Visual Basic 中为 Nothing）。
+        /// T:System.ArgumentOutOfRangeException:index 小于零。
+        /// T:System.ArgumentException:index 等于或大于该长度的 array -源中的元素数目 System.Collections.Concurrent.ConcurrentQueue`1大于从的可用空间 index 目标从头到尾 array。
+        /// </summary>
+        /// <param name="array">一维 System.Array，用作从 System.Collections.Concurrent.ConcurrentQueue`1 所复制的元素的目标数组。System.Array 必须具有从零开始的索引。</param>
+        /// <param name="index">array 中从零开始的索引，从此处开始复制</param>
+        public void CopyTo(T[] array, int index)
+        {
+            this._blockingCollection.CopyTo(array, index);
         }
 
         /// <summary>
@@ -320,7 +397,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// </summary>
         public void Clear()
         {
-            this.Remove(this._queue.Count);
+            this.Remove(this._blockingCollection.Count);
         }
 
         /// <summary>
@@ -329,7 +406,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <returns>循环的遍历枚举</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return this._queue.GetEnumerator();
+            return this._blockingCollection.GetConsumingEnumerable().GetEnumerator();
         }
 
         /// <summary>
@@ -361,8 +438,29 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 this._cts.Dispose();
             }
 
-            this._autoResetEvent.Dispose();
+            this._blockingCollection.Dispose();
             this._stopAutoResetEvent.Dispose();
         }
+    }
+
+    /// <summary>
+    /// 异步队列容量策略
+    /// </summary>
+    public enum AsynQueueCapcityStrategy
+    {
+        /// <summary>
+        /// 无,直接返回Enqueue结果
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// 同步阻塞,直到Enqueue成功返回
+        /// </summary>
+        Choke,
+
+        /// <summary>
+        /// 当队列达到容量上限时,先移队列顶部元素,再将新元素Enqueue,直到Enqueue成功返回
+        /// </summary>
+        Dequeue,
     }
 }
