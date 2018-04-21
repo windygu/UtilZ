@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
+using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBSQLite.Core;
 using UtilZ.Dotnet.DBSQLite.Interface;
 

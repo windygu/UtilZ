@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {

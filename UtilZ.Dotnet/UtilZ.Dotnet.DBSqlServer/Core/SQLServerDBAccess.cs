@@ -4,9 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Constant;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
+using UtilZ.Dotnet.DBIBase.DBModel.Constant;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBSqlServer.Core
 {

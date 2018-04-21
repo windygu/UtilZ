@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Factory;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Common;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBInfo;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBBase.Factory;
+using UtilZ.Dotnet.DBIBase.DBModel.Common;
+using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {

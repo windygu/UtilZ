@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Common;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Constant;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
+using UtilZ.Dotnet.DBIBase.DBModel.Common;
+using UtilZ.Dotnet.DBIBase.DBModel.Constant;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.Dotnet.DBSQLite.Interface;
 using UtilZ.Dotnet.DBSQLite.Write;
 using UtilZ.Dotnet.Ex.DataStruct;

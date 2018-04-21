@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using TestE.DB.Units;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
+using UtilZ.Dotnet.DBIBase.DBModel.DBObject;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.ConfigManagementTool.Model

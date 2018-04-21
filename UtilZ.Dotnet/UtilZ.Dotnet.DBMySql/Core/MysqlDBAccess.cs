@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Constant;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
+using UtilZ.Dotnet.DBIBase.DBModel.Constant;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {
@@ -51,7 +51,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         public MysqlDBAccess(int dbid)
             : base(dbid)
         {
-            _databaseName = typeof(SqlConnection).Assembly.FullName;
+            _databaseName = typeof(MySqlConnection).Assembly.FullName;
             if (this.Config.SqlMaxLength == DBConstant.SqlMaxLength)
             {
                 this.SqlMaxLength = 1048576;

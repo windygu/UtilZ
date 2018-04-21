@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Dotnet.DBIBase</RootNamespace>
+    <AssemblyName>UtilZ.Dotnet.DBIBase</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DBBase\Base\DBInteractionBase.cs" />
+    <Compile Include="DBBase\Core\CacheManager.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase_DBInfo.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase_Delete.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase_Insert.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase_Protected.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase_Query.cs" />
+    <Compile Include="DBBase\Core\DBAccessBase_Update.cs" />
+    <Compile Include="DBBase\Core\DBAccessManager.cs" />
+    <Compile Include="DBBase\Core\DbConnectionPool.cs" />
+    <Compile Include="DBBase\Core\ORMManager.cs" />
+    <Compile Include="DBBase\Factory\DBFactoryBase.cs" />
+    <Compile Include="DBBase\Factory\DBFactoryManager.cs" />
+    <Compile Include="DBBase\Interface\IDBAccess.cs" />
+    <Compile Include="DBBase\Interface\IDBAccess_DBInfo.cs" />
+    <Compile Include="DBBase\Interface\IDBAccess_Delete.cs" />
+    <Compile Include="DBBase\Interface\IDBAccess_Insert.cs" />
+    <Compile Include="DBBase\Interface\IDBAccess_Query.cs" />
+    <Compile Include="DBBase\Interface\IDBAccess_Update.cs" />
+    <Compile Include="DBModel\Common\DBHelper.cs" />
+    <Compile Include="DBModel\Common\DBLog.cs" />
+    <Compile Include="DBModel\Config\BaseConfig.cs" />
+    <Compile Include="DBModel\Config\BaseConfigurationElementCollection.cs" />
+    <Compile Include="DBModel\Config\ConfigManager.cs" />
+    <Compile Include="DBModel\Config\DBConfigCollection.cs" />
+    <Compile Include="DBModel\Config\DBConfigElement.cs" />
+    <Compile Include="DBModel\Config\DBConfigSection.cs" />
+    <Compile Include="DBModel\Constant\DBConstant.cs" />
+    <Compile Include="DBModel\Constant\DbParameterStructTypeConstant.cs" />
+    <Compile Include="DBModel\DBInfo\DBFieldInfo.cs" />
+    <Compile Include="DBModel\DBInfo\DBFieldInfoCollection.cs" />
+    <Compile Include="DBModel\DBInfo\DBFieldType.cs" />
+    <Compile Include="DBModel\DBInfo\DBTableInfo.cs" />
+    <Compile Include="DBModel\DBObject\DataModelFieldInfo.cs" />
+    <Compile Include="DBModel\DBObject\DataModelFieldInfoCollection.cs" />
+    <Compile Include="DBModel\DBObject\DataModelInfo.cs" />
+    <Compile Include="DBModel\DBObject\DataModelTableInfo.cs" />
+    <Compile Include="DBModel\DBObject\DBColumnAttribute.cs" />
+    <Compile Include="DBModel\DBObject\DBColumnPropertyInfo.cs" />
+    <Compile Include="DBModel\DBObject\DBFieldDataAccessType.cs" />
+    <Compile Include="DBModel\DBObject\DBTableAttribute.cs" />
+    <Compile Include="DBModel\DBObject\IDBModelValueConvert.cs" />
+    <Compile Include="DBModel\Interface\IConStrDecryption.cs" />
+    <Compile Include="DBModel\Interface\IDBInteraction.cs" />
+    <Compile Include="DBModel\Interface\IDBInteractionEx.cs" />
+    <Compile Include="DBModel\Model\DbConnectionInfo.cs" />
+    <Compile Include="DBModel\Model\DBExcuteType.cs" />
+    <Compile Include="DBModel\Model\DBOrderInfo.cs" />
+    <Compile Include="DBModel\Model\DBPageInfo.cs" />
+    <Compile Include="DBModel\Model\DBVisitType.cs" />
+    <Compile Include="DBModel\Model\NDbParameter.cs" />
+    <Compile Include="DBModel\Model\NDbParameterCollection.cs" />
+    <Compile Include="DBModel\Model\StoredProcedurePara.cs" />
+    <Compile Include="DBModel\Model\StoredProcedureResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
+      <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
+      <Name>UtilZ.Dotnet.Ex</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using TestE.DB.Model;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Config;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
+using UtilZ.Dotnet.DBIBase.DBBase.Interface;
+using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
 
 namespace TestE.DB.Units

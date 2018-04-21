@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.DBObject;
+using UtilZ.Dotnet.DBIBase.DBModel.DBObject;
 
 namespace TestE.DB.Model
 {

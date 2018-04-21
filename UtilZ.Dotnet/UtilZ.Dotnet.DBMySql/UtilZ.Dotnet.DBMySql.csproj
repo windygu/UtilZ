@@ -65,6 +65,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBIBase\UtilZ.Dotnet.DBIBase.csproj">
+      <Project>{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}</Project>
+      <Name>UtilZ.Dotnet.DBIBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>

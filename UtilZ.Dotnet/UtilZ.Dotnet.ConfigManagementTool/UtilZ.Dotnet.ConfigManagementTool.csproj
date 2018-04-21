@@ -156,6 +156,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBIBase\UtilZ.Dotnet.DBIBase.csproj">
+      <Project>{ea8994cc-3b5b-4860-9e9b-6f85f59eb8c0}</Project>
+      <Name>UtilZ.Dotnet.DBIBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>

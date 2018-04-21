@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using UtilZ.Dotnet.ConfigManagementTool.Model;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Core;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBBase.Interface;
-using UtilZ.Dotnet.Ex.DataBaseAccess.DBModel.Model;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
+using UtilZ.Dotnet.DBIBase.DBBase.Interface;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.ConfigManagementTool.BLL
 {
