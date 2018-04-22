@@ -43,7 +43,8 @@ namespace TestE.Winform
 
         private void btnTemplate_Click(object sender, EventArgs e)
         {
-            logControl1.SetTemplate(@"LogControl.html", "bid", "p");
+            //logControl1.SetTemplate(@"LogControlTemplate1.html", "bid", "p");
+            logControl1.SetTemplate(@"LogControlTemplate2.html", "uid", "li");
         }
     }
 }

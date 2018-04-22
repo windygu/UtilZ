@@ -42,6 +42,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 需要处理的数据队列
         /// </summary>
+        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
+
+        /// <summary>
+        /// BlockingCollection
+        /// </summary>
         private readonly BlockingCollection<T> _blockingCollection;
 
         /// <summary>
@@ -107,7 +112,13 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 同步操作对象
         /// </summary>
-        public readonly object SyncRoot = new object();
+        public object SyncRoot
+        {
+            get
+            {
+                return ((IProducerConsumerCollection<T>)this._queue).SyncRoot;
+            }
+        }
 
         /// <summary>
         /// 数据处理委托
@@ -125,15 +136,6 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             {
                 handler(item);
             }
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="processAction">数据处理委托</param>
-        public AsynQueue(Action<T> processAction) : this(processAction, UtilZ.Dotnet.Ex.Base.ObjectEx.GetVarName((p) => processAction) + "委托异步队列")
-        {
-
         }
 
         /// <summary>
@@ -161,8 +163,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 capcity = int.MaxValue;
             }
 
-            this._blockingCollection = new BlockingCollection<T>(new ConcurrentQueue<T>(), capcity);
-
+            this._blockingCollection = new BlockingCollection<T>(this._queue, capcity);
             if (isAutoStart)
             {
                 this.Start();
@@ -226,6 +227,67 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// </summary>
         private void RunThreadQueueProcessMethod()
         {
+            CancellationToken token = this._cts.Token;
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    try
+                    {
+                        foreach (T item in this._blockingCollection.GetConsumingEnumerable(token))
+                        {
+                            try
+                            {
+                                this.OnRaiseProcess(item);//数据处理
+                            }
+                            catch (ThreadAbortException)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        //Loger.Info("OperationCanceledException");
+                        break;
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        //Loger.Info("ThreadAbortException");
+                        break;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        break;//已释放
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        //millisecondsTimeout 是一个非 -1 的负数，而 - 1 表示无限期超时
+                        break;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        //基础集合已在此 System.Collections.Concurrent.BlockingCollection`1 实例外部进行了修改
+                        break;
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        Loger.Warn("this._blockingCollection.GetConsumingEnumerable(token) ArgumentNullException");
+                        continue;
+                    }
+                }
+            }
+            finally
+            {
+                this._stopAutoResetEvent.Set();
+            }
+        }
+
+        /// <summary>
+        /// 线程队列处理方法
+        /// </summary>
+        private void RunThreadQueueProcessMethod_bk()
+        {
             try
             {
                 CancellationToken token = this._cts.Token;
@@ -239,35 +301,39 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                         {
                             result = this._blockingCollection.TryTake(out item, 5000, token);
                         }
-
-                        if (result)
-                        {
-                            //数据处理
-                            this.OnRaiseProcess(item);
-                        }
                     }
                     catch (OperationCanceledException)
                     {
-                        //已取消
                         break;
                     }
-                    //catch (ObjectDisposedException)
-                    //{
-                    //    //已释放
-                    //    break;
-                    //}
-                    //catch (ArgumentOutOfRangeException)
-                    //{
-                    //    //millisecondsTimeout 是一个非 -1 的负数，而 - 1 表示无限期超时
-                    //}
-                    //catch (InvalidOperationException)
-                    //{
-                    //    //基础集合已在此 System.Collections.Concurrent.BlockingCollection`1 实例外部进行了修改
-                    //}
-                    //catch(Exception)
-                    //{
+                    catch (ThreadAbortException)
+                    {
+                        break;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        //已释放
+                        break;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        //millisecondsTimeout 是一个非 -1 的负数，而 - 1 表示无限期超时
+                        break;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        //基础集合已在此 System.Collections.Concurrent.BlockingCollection`1 实例外部进行了修改
+                        break;
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        continue;
+                    }
 
-                    //}
+                    if (result)
+                    {
+                        this.OnRaiseProcess(item);//数据处理
+                    }
                 }
             }
             catch (ThreadAbortException)
@@ -281,50 +347,52 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// </summary>
         /// <param name="item">待添加的对象</param>
         /// <param name="millisecondsTimeout">等待的毫秒数，或为 System.Threading.Timeout.Infinite (-1)，表示无限期等待</param>
-        /// <param name="fiItems">当队列超出策略为Dequeue时,先进入队列中移除项输出集合,如果为null则不输出</param>
+        /// <param name="overflowItems">当队列超出策略为Dequeue时,先进入队列中移除项输出集合,如果为null则不输出</param>
         /// <returns>如果在指定的时间内可以将 item 添加到集合中，则为 true；否则为 false</returns>
-        public bool Enqueue(T item, int millisecondsTimeout = System.Threading.Timeout.Infinite, List<T> fiItems = null)
+        public bool Enqueue(T item, int millisecondsTimeout = System.Threading.Timeout.Infinite, List<T> overflowItems = null)
         {
             bool result = this._blockingCollection.TryAdd(item, millisecondsTimeout);
-            if (result)
+            if (!result)
             {
-                return result;
-            }
-
-            switch (this._strategy)
-            {
-                case AsynQueueCapcityStrategy.Dequeue:
-                    var removeFiItems = new List<T>();
-                    T oldItem;
-                    lock (this.SyncRoot)
-                    {
-                        result = this._blockingCollection.TryAdd(item);
-                        while (!result)
+                switch (this._strategy)
+                {
+                    case AsynQueueCapcityStrategy.Dequeue:
+                        T oldItem;
+                        lock (this.SyncRoot)
                         {
-                            if (this._blockingCollection.TryTake(out oldItem))
+                            result = this._blockingCollection.TryAdd(item);
+                            while (!result)
                             {
-                                removeFiItems.Add(oldItem);
-                                result = this._blockingCollection.TryAdd(item);
+                                if (this._blockingCollection.TryTake(out oldItem))
+                                {
+                                    if (overflowItems != null)
+                                    {
+                                        overflowItems.Add(oldItem);
+                                    }
+
+                                    result = this._blockingCollection.TryAdd(item);
+                                }
                             }
                         }
-                    }
 
-                    if (removeFiItems.Count > 0 && fiItems != null)
-                    {
-                        fiItems.AddRange(removeFiItems);
-                    }
-                    break;
-                case AsynQueueCapcityStrategy.Choke:
-                    while (!result)
-                    {
-                        result = this._blockingCollection.TryAdd(item);
-                        Thread.Sleep(10);
-                    }
-                    break;
-                case AsynQueueCapcityStrategy.None:
-                default:
-                    break;
+                        break;
+                    case AsynQueueCapcityStrategy.Choke:
+                        while (!result)
+                        {
+                            result = this._blockingCollection.TryAdd(item);
+                            Thread.Sleep(10);
+                        }
+                        break;
+                    case AsynQueueCapcityStrategy.None:
+                    default:
+                        break;
+                }
             }
+
+            //if (result)
+            //{
+            //    this._blockingCollection.CompleteAdding();
+            //}
 
             return result;
         }
@@ -375,7 +443,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <returns>新数组</returns>
         public T[] ToArray()
         {
-            return this._blockingCollection.ToArray();
+            return this._queue.ToArray();
         }
 
         /// <summary>
@@ -389,7 +457,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="index">array 中从零开始的索引，从此处开始复制</param>
         public void CopyTo(T[] array, int index)
         {
-            this._blockingCollection.CopyTo(array, index);
+            this._queue.CopyTo(array, index);
         }
 
         /// <summary>
@@ -397,7 +465,14 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// </summary>
         public void Clear()
         {
-            this.Remove(this._blockingCollection.Count);
+            T result;
+            lock (this.SyncRoot)
+            {
+                while (this._blockingCollection.Count > 0)
+                {
+                    this._blockingCollection.TryTake(out result);
+                }
+            }
         }
 
         /// <summary>
@@ -406,7 +481,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <returns>循环的遍历枚举</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return this._blockingCollection.GetConsumingEnumerable().GetEnumerator();
+            return this._queue.GetEnumerator();
         }
 
         /// <summary>

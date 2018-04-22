@@ -9,6 +9,8 @@ using System.Threading;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
+using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.LogOutput;
 
 namespace TestE.Common
 {
@@ -32,7 +34,7 @@ namespace TestE.Common
                     textBox1.Text = i.ToString();
                 }));
                 Application.DoEvents();
-            }, "sadf", true, false);
+            }, "消费者线程", true, false);
 
             _thread = new ThreadEx((token) =>
             {
@@ -40,46 +42,53 @@ namespace TestE.Common
                 while (!token.IsCancellationRequested)
                 {
                     ret = _asynQueue.Enqueue(_index++, 10);
-                    Thread.Sleep(10);
+                    Thread.Sleep(30);
                 }
-            }, "sadfcv", true);
+            }, "生产者线程", true);
+
+            var subLog = new LogOutputSubscribeItem(null, null);
+            subLog.LogOutput += SubLog_LogOutput;
+            Loger.LogOutput.AddLogOutput(subLog);
+            Loger.LogOutput.Enable = true;
         }
 
+        private void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                //logControl1.AddLogStyleForColor(e.Item.Content, Color.Gray);
+                logControl1.AddLog(e.Item.Content);
+            }));
+        }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnPro_Click(object sender, EventArgs e)
         {
             if (_thread.IsRuning)
             {
                 _thread.Stop();
+                btnPro.Text = "已停止生产";
             }
             else
             {
                 _thread.Start();
+                btnPro.Text = "正在生产";
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnCons_Click(object sender, EventArgs e)
         {
-            //_asynQueue.Dispose();
-            //_thread.Dispose();
-            //if (_thread.IsRuning)
-            //{
-            //    _thread.Stop();
-            //}
-            //else
-            //{
-            //    _thread.Start();
-            //}
-
+            bool isAbort = checkBoxStopCons.Checked;
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 if (_asynQueue.Status)
                 {
-                    _asynQueue.Stop(false);
+                    _asynQueue.Stop(isAbort);
+                    this.Invoke(new Action(() => { btnCons.Text = "已停止消费"; }));
                 }
                 else
                 {
                     _asynQueue.Start();
+                    this.Invoke(new Action(() => { btnCons.Text = "正在消费"; }));
                 }
             });
         }

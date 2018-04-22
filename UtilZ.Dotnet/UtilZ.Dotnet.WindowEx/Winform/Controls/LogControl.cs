@@ -326,17 +326,18 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 <title></title>
                 <style type=""text/css"">
         body {
-            background-color: lavender
+            background-color: black
         }
         ul {
             margin: 0px 0px 0px 0px;
         }
                     li {
+                        color: gray;
                         list-style: none;
                     }
                 </style>
             </head>
-            <body id=""bid"">
+            <body>
             <ul  id=""uid"">
             </ul>
             </body>

@@ -209,7 +209,13 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
             get { return _propertyGridCategoryNames; }
         }
 
-        public List<NAddress> Addrs => _addrs;
+        /// <summary>
+        /// 地址列表
+        /// </summary>
+        public List<NAddress> Addrs
+        {
+            get { return _addrs; }
+        }
         #endregion
 
         #region IPropertyGridPassword接口
