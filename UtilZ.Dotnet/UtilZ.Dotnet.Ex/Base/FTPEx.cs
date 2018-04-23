@@ -61,7 +61,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="ftpUrl">FTPURL</param>
+        /// <param name="ftpUrl">ftpUrl</param>
         /// <param name="userName">用户名</param>
         /// <param name="password">密码</param>
         /// <param name="proxy">代理</param>
@@ -83,6 +83,7 @@ namespace UtilZ.Dotnet.Ex.Base
         private FtpWebRequest CreateRequest(string ftpUrl, string method)
         {
             //根据服务器信息FtpWebRequest创建类的对象
+            ftpUrl = ftpUrl.Replace(Path.DirectorySeparatorChar, '/');
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
             request.Credentials = new NetworkCredential(this._userName, this._password);
             request.KeepAlive = false;

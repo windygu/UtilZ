@@ -122,7 +122,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             InitializeComponent();
 
-            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, 3, AsynQueueCapcityStrategy.Dequeue);
+            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, 3);
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             this.Init("uid", "li");
             this._templateType = true;
