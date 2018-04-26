@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UtilZ.Dotnet.Ex.Model.Attributes;
 
 namespace UtilZ.Dotnet.Ex.Model
 {
@@ -76,7 +77,7 @@ namespace UtilZ.Dotnet.Ex.Model
             for (int i = 0; i < properties.Length; i++)
             {
                 var propertyInfo = properties[i];
-                attrs = propertyInfo.GetCustomAttributes(BaseModel._browsableType, false);
+                attrs = propertyInfo.GetCustomAttributes(_browsableType, false);
                 if (attrs.Length != 0)
                 {
                     if (!((BrowsableAttribute)attrs[0]).Browsable)
@@ -87,7 +88,7 @@ namespace UtilZ.Dotnet.Ex.Model
                 }
 
                 //显示名称
-                attrs = propertyInfo.GetCustomAttributes(BaseModel._displayNameType, false);
+                attrs = propertyInfo.GetCustomAttributes(_displayNameType, false);
                 if (attrs.Length == 0)
                 {
                     title = propertyInfo.Name;
@@ -108,7 +109,7 @@ namespace UtilZ.Dotnet.Ex.Model
                 }
 
                 //生成行字符串
-                attrs = propertyInfo.GetCustomAttributes(BaseModel._formatAttributeType, false);
+                attrs = propertyInfo.GetCustomAttributes(_formatAttributeType, false);
                 if (attrs.Length != 0)
                 {
                     try

@@ -8,7 +8,7 @@ using UtilZ.Dotnet.DBIBase.DBModel.Model;
 namespace UtilZ.Dotnet.DBMySql.Core
 {
     //Mysql数据库访问类-查询
-    public partial class MysqlDBAccess
+    public partial class MySqlDBAccess
     {
         #region 分页查询数据
         /// <summary>

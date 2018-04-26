@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
         /// <param name="config">数据库配置</param>
         /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public override IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
+        public override DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
         {
             return new SqlConnection(this.GetDBConStr(config, visitType));
         }

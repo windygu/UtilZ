@@ -11,7 +11,7 @@ using UtilZ.Dotnet.DBIBase.DBModel.Model;
 namespace UtilZ.Dotnet.DBMySql.Core
 {
     //Mysql数据库访问类-数据库信息相关
-    public partial class MysqlDBAccess
+    public partial class MySqlDBAccess
     {
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]

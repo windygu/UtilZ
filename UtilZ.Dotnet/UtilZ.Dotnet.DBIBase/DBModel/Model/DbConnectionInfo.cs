@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBBase.Core;
@@ -25,7 +26,7 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.Model
         /// <summary>
         /// 数据库连接对象
         /// </summary>
-        public IDbConnection Con { get; private set; }
+        public DbConnection Con { get; private set; }
 
         /// <summary>
         /// 构造函数

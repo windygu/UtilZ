@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBBase.Base;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
 using UtilZ.Dotnet.DBIBase.DBBase.Factory;
 using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBSqlServer.Core
 {
@@ -45,6 +49,17 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
         public override IDBAccess GetDBAccess(int dbid)
         {
             return new SQLServerDBAccess(dbid);
+        }
+
+        /// <summary>
+        /// 附加EF配置
+        /// </summary>
+        public override void AttatchEFConfig()
+        {
+            //EFDbConfiguration.AddProviderServices("System.Data.SqlClient", SqlProviderServices.Instance);
+            //EFDbConfiguration.AddProviderFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+            EFDbConfiguration.AddProviderServices(typeof(System.Data.SqlClient.SqlConnection).Namespace, SqlProviderServices.Instance);
+            EFDbConfiguration.AddProviderFactory(typeof(System.Data.SqlClient.SqlConnection).Namespace, SqlClientFactory.Instance);
         }
     }
 }

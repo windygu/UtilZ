@@ -441,7 +441,12 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
         public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
         {
-            DataGridViewZ.DataBinding(this._dataGridView, dataSource, hidenColumns, colHeadInfos, allowEditColumns);
+            if (this._dataGridView.DataSource == dataSource)
+            {
+                return;
+            }
+
+            this.DataBinding(dataSource, hidenColumns, colHeadInfos, allowEditColumns);
             this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
             this._fPageGridColumnsSetting.UpdateAdvanceSetting(this._dataGridView.Columns);
             this._dataSourceName = dataSourceName;
@@ -461,6 +466,142 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 }
             }
         }
+
+        /// <summary>
+        /// DataGridView绑定数据
+        /// </summary>
+        /// <param name="dgv">DataGridView</param>
+        /// <param name="dataSource">数据源</param>
+        /// <param name="hidenColumns">隐藏列集合</param>
+        /// <param name="colHeadInfos">列标题映射字典[key:列名;value:列标题;默认为null]</param>
+        /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
+        private void DataBinding(object dataSource, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
+        {
+            if (this._dataGridView.DataSource == dataSource)
+            {
+                return;
+            }
+
+            this._dataGridView.ColumnDisplayIndexChanged -= _dataGridView_ColumnDisplayIndexChanged;
+            if (this._dataGridView.SelectionMode == DataGridViewSelectionMode.FullColumnSelect ||
+                this._dataGridView.SelectionMode == DataGridViewSelectionMode.ColumnHeaderSelect)
+            {
+                var srcSelectionMode = this._dataGridView.SelectionMode;
+                this._dataGridView.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
+                this._dataGridView.DataSource = dataSource;
+                foreach (DataGridViewColumn col in this._dataGridView.Columns)
+                {
+                    if (col.SortMode == DataGridViewColumnSortMode.Automatic)
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                }
+
+                this._dataGridView.SelectionMode = srcSelectionMode;
+            }
+            else
+            {
+                this._dataGridView.DataSource = dataSource;
+            }
+
+            if (dataSource == null)
+            {
+                return;
+            }
+
+            if (hidenColumns == null)
+            {
+                hidenColumns = new List<string>();
+            }
+
+            if (colHeadInfos == null)
+            {
+                colHeadInfos = new Dictionary<string, string>();
+            }
+
+            if (allowEditColumns == null)
+            {
+                allowEditColumns = new List<string>();
+            }
+
+            string caption = null;
+            string fieldName = null;
+            bool isReadOnly;
+            var dt = this._dataGridView.DataSource as System.Data.DataTable;
+            this._dataGridView.ReadOnly = allowEditColumns.Count() == 0;
+            foreach (DataGridViewColumn gridColumn in this._dataGridView.Columns)
+            {
+                //获取字段名
+                fieldName = gridColumn.Name;
+                if (hidenColumns.Contains(fieldName))
+                {
+                    gridColumn.Visible = false;
+                    break;
+                }
+
+                isReadOnly = !allowEditColumns.Contains(fieldName);
+                //设置为可编辑性
+                if (isReadOnly != gridColumn.ReadOnly)
+                {
+                    gridColumn.ReadOnly = isReadOnly;
+                }
+
+                //设置显示标题
+                if (colHeadInfos.ContainsKey(fieldName))
+                {
+                    caption = colHeadInfos[fieldName];
+                }
+                else if (dt != null && dt.Columns.Contains(fieldName))
+                {
+                    caption = dt.Columns[fieldName].Caption;
+                }
+
+                if (!string.IsNullOrEmpty(caption))
+                {
+                    gridColumn.HeaderText = caption;
+                    caption = null;
+                }
+            }
+
+            this._dataGridView.ColumnDisplayIndexChanged += _dataGridView_ColumnDisplayIndexChanged;
+        }
+
+        private void _dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            if (!this._isLastColumnAutoSizeModeFill || this._dataGridView.Columns.Count == 0)
+            {
+                return;
+            }
+
+            DataGridViewColumn fillCol = null, maxDisplayIndexCol = this._dataGridView.Columns[0];
+            foreach (DataGridViewColumn col in this._dataGridView.Columns)
+            {
+                if (col.AutoSizeMode == DataGridViewAutoSizeColumnMode.Fill)
+                {
+                    fillCol = col;
+                }
+
+                if (col.DisplayIndex > maxDisplayIndexCol.DisplayIndex)
+                {
+                    maxDisplayIndexCol = col;
+                }
+            }
+
+            if (fillCol == null)
+            {
+                maxDisplayIndexCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                return;
+            }
+
+            if (maxDisplayIndexCol == fillCol)
+            {
+                return;
+            }
+
+            fillCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            maxDisplayIndexCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
+
 
         /*
         private DGVBindDataSourceInfo _currentDGVBindDataSourceInfo = null;

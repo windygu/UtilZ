@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <param name="config">数据库配置</param>
         /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public override IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
+        public override DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
         {
             return new SQLiteConnection(this.GetDBConStr(config, visitType));
         }

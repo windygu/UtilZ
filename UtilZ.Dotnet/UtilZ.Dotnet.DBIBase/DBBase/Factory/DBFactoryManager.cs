@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IO;
+using System.Reflection;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
 using UtilZ.Dotnet.DBIBase.DBModel.Constant;
 using UtilZ.Dotnet.Ex.Base;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
 {
@@ -12,70 +17,91 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
     public class DBFactoryManager
     {
         /// <summary>
-        /// 数据库连接信息集合[key:数据库访问工厂名称,value:数据库访问工厂实例]
+        /// 数据库连接信息集合[key:数据库访问工厂类型(Type),value:数据库访问工厂实例(DBFactoryBase)]
         /// </summary>
-        private static readonly ConcurrentDictionary<string, DBFactoryBase> _dbFactorys = new ConcurrentDictionary<string, DBFactoryBase>();
+        private static readonly Hashtable _htFactorys = Hashtable.Synchronized(new Hashtable());
 
         /// <summary>
         /// 线程锁
         /// </summary>
         private static readonly object _monitor = new object();
 
-        ///// <summary>
-        ///// 获取数据库访问工厂实例
-        ///// </summary>
-        ///// <param name="dbid">数据库编号ID</param>
-        ///// <returns>数据库访问工厂实例</returns>
-        //public static DBFactoryBase GetDBFactory(int dbid)
-        //{
-        //    var dbItem = ConfigManager.GetConfigItem(dbid);
-        //    string dbFactoryName = dbItem.DBFactory;
-        //    DBFactoryBase dbFactory;
-        //    if (_dbFactorys.ContainsKey(dbFactoryName))
-        //    {
-        //        dbFactory = GetDBFactory(dbFactoryName);
-        //    }
-        //    else
-        //    {
-        //        lock (_monitor)
-        //        {
-        //            if (_dbFactorys.ContainsKey(dbFactoryName))
-        //            {
-        //                dbFactory = GetDBFactory(dbFactoryName);
-        //            }
-        //            else
-        //            {
-        //                dbFactory = CreateDBFactory(dbItem);
-        //            }
-        //        }
-        //    }
-
-        //    return dbFactory;
-        //}
-
-        /// <summary>
-        /// 获取数据库访问工厂实例
-        /// </summary>
-        /// <param name="dbItem">配置</param>
-        /// <returns>数据库访问工厂实例</returns>
-        private static DBFactoryBase CreateDBFactory(DBConfigElement dbItem)
+        static DBFactoryManager()
         {
-            string dbFactoryName = dbItem.DBFactory;
-            var dbFactory = ActivatorEx.CreateInstance(dbFactoryName, dbItem) as DBFactoryBase;
-            if (dbFactory != null)
+            Assembly dbiAssembly = typeof(DBFactoryManager).Assembly;
+            var ignorAssemblyNames = new List<string>();
+            ignorAssemblyNames.Add(typeof(UtilZ.Dotnet.Ex.Base.ObjectEx).Assembly.GetName().Name);
+            ignorAssemblyNames.Add(dbiAssembly.GetName().Name);
+
+            string dir = Path.GetDirectoryName(dbiAssembly.Location);
+            string[] pluginDirs = Directory.GetDirectories(Path.GetFullPath("DBPlugins"));
+            Dictionary<string, Assembly> assembliyDic = AppDomain.CurrentDomain.GetAssemblies().ToDictionary(p => { return p.GetName().Name; });
+            Type dbFactoryBaseType = typeof(DBFactoryBase);
+
+            foreach (var pluginDir in pluginDirs)
             {
-                bool ret = Util.Add<string, DBFactoryBase>(_dbFactorys, dbFactoryName, dbFactory, DBConstant.AddConcurrentDictionaryRepatCount);
-                if (!ret)
+                LoadDBPlugin(pluginDir, ignorAssemblyNames, assembliyDic, dbFactoryBaseType);
+            }
+        }
+
+        private static void LoadDBPlugin(string pluginDir, List<string> ignorAssemblyNames, Dictionary<string, Assembly> assembliyDic, Type dbFactoryBaseType)
+        {
+            string[] dllFilePaths = Directory.GetFiles(pluginDir, "UtilZ.Dotnet.*.dll", SearchOption.TopDirectoryOnly);
+            Assembly assembly;
+            DBFactoryBase dbFactory;
+            foreach (var dllFilePath in dllFilePaths)
+            {
+                try
                 {
-                    throw new ApplicationException(string.Format("添加名称为{0}数据库访问工厂实例失败", dbFactoryName));
+                    AssemblyName an = AssemblyName.GetAssemblyName(dllFilePath);
+                    if (ignorAssemblyNames.Contains(an.Name))
+                    {
+                        continue;
+                    }
+
+                    if (assembliyDic.ContainsKey(an.Name))
+                    {
+                        assembly = assembliyDic[an.Name];
+                    }
+                    else
+                    {
+                        assembly = Assembly.LoadFile(dllFilePath);
+                    }
+
+                    Type[] types = assembly.GetTypes();
+                    foreach (Type type in types)
+                    {
+                        if (!type.IsClass)
+                        {
+                            continue;
+                        }
+
+                        if (type.IsAbstract)
+                        {
+                            continue;
+                        }
+
+                        if (!type.IsSubclassOf(dbFactoryBaseType))
+                        {
+                            continue;
+                        }
+
+                        dbFactory = Activator.CreateInstance(type) as DBFactoryBase;
+                        if (dbFactory == null)
+                        {
+                            continue;
+                        }
+
+                        dbFactory.AttatchEFConfig();
+                        _htFactorys[type] = dbFactory;
+                        return;
+                    }
+                }
+                catch
+                {
+
                 }
             }
-            else
-            {
-                throw new ApplicationException(string.Format("创建名称为{0}数据库访问工厂实例失败", dbFactoryName));
-            }
-
-            return dbFactory;
         }
 
         /// <summary>
@@ -85,46 +111,15 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
         /// <returns>数据库访问工厂实例</returns>
         public static DBFactoryBase GetDBFactory(int dbid)
         {
-            DBFactoryBase dbFactory;
             var dbItem = ConfigManager.GetConfigItem(dbid);
             string dbFactoryName = dbItem.DBFactory;
-            if (_dbFactorys.ContainsKey(dbFactoryName))
+            Type type = TypeEx.GetType(dbFactoryName);
+            if (type == null)
             {
-                if (!_dbFactorys.TryGetValue(dbFactoryName, out dbFactory))
-                {
-                    throw new ApplicationException(string.Format("获取名称为{0}数据库访问工厂实例失败", dbFactoryName));
-                }
-            }
-            else
-            {
-                lock (_monitor)
-                {
-                    if (_dbFactorys.ContainsKey(dbFactoryName))
-                    {
-                        if (!_dbFactorys.TryGetValue(dbFactoryName, out dbFactory))
-                        {
-                            throw new ApplicationException(string.Format("获取名称为{0}数据库访问工厂实例失败", dbFactoryName));
-                        }
-                    }
-                    else
-                    {
-                        dbFactory = ActivatorEx.CreateInstance(dbFactoryName) as DBFactoryBase;
-                        if (dbFactory != null)
-                        {
-                            bool ret = Util.Add<string, DBFactoryBase>(_dbFactorys, dbFactoryName, dbFactory, DBConstant.AddConcurrentDictionaryRepatCount);
-                            if (!ret)
-                            {
-                                throw new ApplicationException(string.Format("添加名称为{0}数据库访问工厂实例失败", dbFactoryName));
-                            }
-                        }
-                        else
-                        {
-                            throw new ApplicationException(string.Format("创建名称为{0}数据库访问工厂实例失败", dbFactoryName));
-                        }
-                    }
-                }
+                throw new ApplicationException(string.Format("获取名称为{0}数据库访问工厂实例失败", dbFactoryName));
             }
 
+            DBFactoryBase dbFactory = _htFactorys[type] as DBFactoryBase;
             if (dbFactory == null)
             {
                 throw new ApplicationException(string.Format("获取名称为{0}数据库访问工厂实例失败", dbFactoryName));
@@ -132,113 +127,5 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
 
             return dbFactory;
         }
-
-        ///// <summary>
-        ///// 获取数据库访问实例
-        ///// </summary>
-        ///// <param name="dbid">数据库编号ID</param>
-        ///// <returns>数据库访问实例</returns>
-        //public static DBInteractioBase GetDBInteractionObj(int dbid)
-        //{
-        //    return GetDBFactory(dbid).GetDBInteraction();
-        //}
-
-        /*
-        /// <summary>
-        /// 创建数据库连接对象
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
-        /// <param name="conType">连接类型</param>
-        /// <returns>数据库连接对象</returns>
-        public static IDbConnection CreateDbConnection(int dbid, DBVisitType conType)
-        {
-            DBConfigElement dbItem = ConfigManager.GetConfigItem(dbid);
-            DBFactoryBase dbFactory = null;
-            string dbFactoryName = dbItem.DBFactory;
-            if (_dbFactorys.ContainsKey(dbFactoryName))
-            {
-                dbFactory = GetDBFactory(dbFactoryName);
-            }
-            else
-            {
-                lock (_monitor)
-                {
-                    if (_dbFactorys.ContainsKey(dbFactoryName))
-                    {
-                        dbFactory = GetDBFactory(dbFactoryName);
-                    }
-                    else
-                    {
-                        dbFactory = CreateDBFactory(dbItem);
-                    }
-                }
-            }
-
-            if (dbFactory != null)
-            {
-                DBInteractioBase dbInteraction = dbFactory.GetDBInteraction();
-                if (dbInteraction != null)
-                {
-                    IDbConnection con = null;
-                    switch (conType)
-                    {
-                        case DBVisitType.R:
-                            con = dbInteraction.CreateReadConnection(dbItem);
-                            break;
-                        case DBVisitType.W:
-                            con = dbInteraction.CreateWriteConnection(dbItem);
-                            break;
-                    }
-
-                    if (con == null)
-                    {
-                        throw new ApplicationException(string.Format("类型{0}中创建连接返回值为null", dbInteraction.GetType().FullName));
-                    }
-
-                    if (string.IsNullOrEmpty(con.ConnectionString))
-                    {
-                        con.ConnectionString = dbInteraction.GetDBConStr(dbItem);
-                    }
-
-                    return con;
-                }
-            }
-
-            throw new ApplicationException(string.Format("创建数据库编号为{0}数据库连接实例失败", dbid));
-        }
-
-        /// <summary>
-        /// 创建DbDataAdapter
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
-        /// <returns>创建好的DbDataAdapter</returns>
-        public static IDbDataAdapter CreateDbDataAdapter(int dbid)
-        {
-            return GetDBInteractionObj(dbid).CreateDbDataAdapter();
-        }
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
-        /// <param name="dbDataParameter">命令参数</param>
-        /// <param name="parameter">参数</param>
-        /// <returns>创建好的命令参数</returns>
-        public static void SetParameter(int dbid, IDbDataParameter cmdParameter, NDbParameter parameter)
-        {
-            GetDBInteractionObj(dbid).SetParameter(cmdParameter, parameter);
-        }
-
-        /// <summary>
-        /// 设置命令参数
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
-        /// <param name="cmd">命令</param>
-        /// <param name="collection">参数集合</param>
-        /// <returns>创建好的命令参数</returns>
-        public static void SetParameter(int dbid, IDbCommand cmd, NDbParameterCollection collection)
-        {
-            GetDBInteractionObj(dbid).SetParameter(cmd, collection);
-        }*/
     }
 }

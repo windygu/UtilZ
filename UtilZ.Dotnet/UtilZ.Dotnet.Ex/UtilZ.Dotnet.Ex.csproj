@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DisplayOrderAttribute.cs" />
     <Compile Include="Base\ActivatorEx.cs" />
     <Compile Include="Base\AssemblyEx.cs" />
     <Compile Include="Base\AttributeEx.cs" />
@@ -157,19 +158,20 @@
     <Compile Include="Model\BasePropertyValueVerifyModel.cs" />
     <Compile Include="Model\ClrSystemType.cs" />
     <Compile Include="Model\DateTimeFormatProvider.cs" />
-    <Compile Include="Model\DisplayNameExAttribute.cs" />
+    <Compile Include="Attributes\DisplayNameExAttribute.cs" />
     <Compile Include="Model\DropdownBindingItem.cs" />
-    <Compile Include="Model\EnumAttribute.cs" />
+    <Compile Include="Attributes\EnumAttribute.cs" />
     <Compile Include="Base\EnumEx.cs" />
+    <Compile Include="Model\RegexConstant.cs" />
     <Compile Include="Model\TEventArgs.cs" />
-    <Compile Include="Model\FormatAttribute.cs" />
+    <Compile Include="Attributes\FormatAttribute.cs" />
     <Compile Include="Model\IPropertyValueVerify.cs" />
     <Compile Include="Model\TKeyTValue.cs" />
     <Compile Include="NativeMethod\FLASHWINFO.cs" />
     <Compile Include="NativeMethod\ICMP_ECHO_REPLY.cs" />
     <Compile Include="NativeMethod\ICMP_OPTIONS.cs" />
     <Compile Include="NativeMethod\NativeMethods.cs" />
-    <Compile Include="Model\PropertyNameMapAttribute.cs" />
+    <Compile Include="Attributes\PropertyNameMapAttribute.cs" />
     <Compile Include="Model\PropertyValueVerifyArgs.cs" />
     <Compile Include="Base\UnManagedDll.cs" />
     <Compile Include="Base\Util.cs" />

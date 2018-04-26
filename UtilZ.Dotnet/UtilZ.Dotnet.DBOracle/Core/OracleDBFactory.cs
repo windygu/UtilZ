@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBBase.Base;
+using UtilZ.Dotnet.DBIBase.DBBase.Core;
 using UtilZ.Dotnet.DBIBase.DBBase.Factory;
 using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
@@ -45,6 +48,21 @@ namespace UtilZ.Dotnet.DBOracle.Core
         public override IDBAccess GetDBAccess(int dbid)
         {
             return new OracleDBAccess(dbid);
+        }
+
+        /// <summary>
+        /// 附加EF配置
+        /// </summary>
+        public override void AttatchEFConfig()
+        {
+            //EFDbConfiguration.AddProviderServices("Oracle.ManagedDataAccess.Client", EFOracleProviderServices.Instance);
+            //EFDbConfiguration.AddProviderFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
+
+            //EFDbConfiguration.AddProviderServices(typeof(OracleClientFactory).Namespace, EFOracleProviderServices.Instance);
+            //EFDbConfiguration.AddProviderFactory(typeof(OracleClientFactory).Namespace, OracleClientFactory.Instance);
+
+            EFDbConfiguration.AddProviderServices("Oracle.ManagedDataAccess.Client", EFOracleProviderServices.Instance);
+            EFDbConfiguration.AddProviderFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
         }
     }
 }

@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBBase.Core;
+using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Constant;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {
     /// <summary>
     /// Mysql数据库访问类
     /// </summary>
-    public partial class MysqlDBAccess : DBAccessBase
+    public partial class MySqlDBAccess : DBAccessBase
     {
         /// <summary>
         /// 数据库程序集名称
@@ -48,7 +50,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// 构造函数
         /// </summary>
         /// <param name="dbid">数据库编号ID</param>
-        public MysqlDBAccess(int dbid)
+        public MySqlDBAccess(int dbid)
             : base(dbid)
         {
             _databaseName = typeof(MySqlConnection).Assembly.FullName;

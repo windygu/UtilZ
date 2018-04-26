@@ -94,5 +94,30 @@ namespace UtilZ.Dotnet.Ex.Base
             autoResetEvent.WaitOne();
             return pro.StandardOutput.ReadToEnd();
         }
+
+        /// <summary>
+        /// 计算CPU使用率
+        /// </summary>
+        /// <param name="curCpuTime"></param>
+        /// <param name="interval"></param>
+        /// <param name="lastCalTime"></param>
+        /// <returns></returns>
+        public static float CaculateCpuUsing(TimeSpan curCpuTime, int interval, ref DateTime lastCalTime)
+        {
+            //double innerInterval;
+            //var time = DateTime.Now;
+            //var ts = time - lastCalTime;
+            //if (ts.TotalMilliseconds > interval)
+            //{
+            //    innerInterval = ts.TotalMilliseconds;
+            //}
+            //else
+            //{
+            //    innerInterval = interval;
+            //}
+
+            //var value=(curCpuTime-lastCalTime).
+            throw new NotImplementedException();
+        }
     }
 }

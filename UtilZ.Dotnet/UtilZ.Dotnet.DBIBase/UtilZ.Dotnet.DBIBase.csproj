@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UtilZ.Dotnet.DBIBase</RootNamespace>
     <AssemblyName>UtilZ.Dotnet.DBIBase</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\UtilZ.Dotnet.DBIBase.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,9 +31,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
@@ -40,6 +48,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.7.17.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Z.EntityFramework.Plus.EF6.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBBase\Base\DBInteractionBase.cs" />
@@ -53,6 +65,8 @@
     <Compile Include="DBBase\Core\DBAccessBase_Update.cs" />
     <Compile Include="DBBase\Core\DBAccessManager.cs" />
     <Compile Include="DBBase\Core\DbConnectionPool.cs" />
+    <Compile Include="DBBase\Core\EFDbConfiguration.cs" />
+    <Compile Include="DBBase\Core\EFDbContext.cs" />
     <Compile Include="DBBase\Core\ORMManager.cs" />
     <Compile Include="DBBase\Factory\DBFactoryBase.cs" />
     <Compile Include="DBBase\Factory\DBFactoryManager.cs" />
@@ -62,6 +76,7 @@
     <Compile Include="DBBase\Interface\IDBAccess_Insert.cs" />
     <Compile Include="DBBase\Interface\IDBAccess_Query.cs" />
     <Compile Include="DBBase\Interface\IDBAccess_Update.cs" />
+    <Compile Include="DBBase\Interface\IEFDbContext.cs" />
     <Compile Include="DBModel\Common\DBHelper.cs" />
     <Compile Include="DBModel\Common\DBLog.cs" />
     <Compile Include="DBModel\Config\BaseConfig.cs" />
@@ -91,8 +106,10 @@
     <Compile Include="DBModel\Model\DbConnectionInfo.cs" />
     <Compile Include="DBModel\Model\DBExcuteType.cs" />
     <Compile Include="DBModel\Model\DBOrderInfo.cs" />
+    <Compile Include="DBModel\Model\DbOrderType.cs" />
     <Compile Include="DBModel\Model\DBPageInfo.cs" />
     <Compile Include="DBModel\Model\DBVisitType.cs" />
+    <Compile Include="DBModel\Model\EFDbContextException.cs" />
     <Compile Include="DBModel\Model\NDbParameter.cs" />
     <Compile Include="DBModel\Model\NDbParameterCollection.cs" />
     <Compile Include="DBModel\Model\StoredProcedurePara.cs" />
@@ -104,6 +121,12 @@
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Lib\EntityFramework.dll" />
+    <Content Include="Lib\EntityFramework.xml" />
+    <Content Include="Lib\Z.EntityFramework.Plus.EF6.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using UtilZ.Dotnet.DBIBase.DBBase.Factory;
 using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Constant;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.DBIBase.DBBase.Core

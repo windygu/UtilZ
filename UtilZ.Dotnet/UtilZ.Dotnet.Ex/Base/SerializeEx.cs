@@ -90,7 +90,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="filePath">序列化文件路径</param>
         /// <returns>反序列化后的对象</returns>
-        public static T BinaryDeSerialize<T>(string filePath)
+        public static T BinaryDeserialize<T>(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -101,6 +101,47 @@ namespace UtilZ.Dotnet.Ex.Base
             using (Stream stream = File.OpenRead(filePath))
             {
                 return (T)bf.Deserialize(stream);
+            }
+        }
+
+        /// <summary>
+        /// 可序列化对象序列化为byte数组
+        /// </summary>
+        /// <param name="obj">可序列化对象</param>
+        /// <returns>byte数组</returns>
+        public static byte[] BinarySerialize(object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(memoryStream, obj);
+                return memoryStream.GetBuffer();
+            }
+        }
+
+        /// <summary>
+        /// 二进制转换为可序列化的对象
+        /// </summary>
+        /// <typeparam name="T">可序列化的类型 </typeparam>
+        /// <param name="buffer">byte数组</param>
+        /// <returns>可序列化的类型实例</returns>
+        public static T BinaryDeserialize<T>(byte[] buffer)
+        {
+            if (buffer == null || buffer.Length == 0)
+            {
+                return default(T);
+            }
+
+            using (var memoryStream = new MemoryStream(buffer))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                memoryStream.Position = 0;
+                return (T)formatter.Deserialize(memoryStream);
             }
         }
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
@@ -40,7 +41,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
         /// <param name="config">数据库配置</param>
         /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public abstract IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
+        public abstract DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
 
         /// <summary>
         /// 创建DbDataAdapter

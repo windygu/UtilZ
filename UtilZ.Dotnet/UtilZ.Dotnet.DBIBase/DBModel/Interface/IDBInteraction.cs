@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
@@ -19,7 +20,7 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.Interface
         /// <param name="config">数据库配置</param>
         /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        IDbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
+        DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
 
         /// <summary>
         /// 获取数据库连接字符串

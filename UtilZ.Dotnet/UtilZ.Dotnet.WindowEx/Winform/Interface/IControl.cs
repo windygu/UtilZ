@@ -74,6 +74,11 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Interface
         /// 获取一个值，该值指示控件是否已经被释放[如果控件已经被释放，则为 true；否则为 false]
         /// </summary>
         bool IsDisposed { get; }
+
+        /// <summary>
+        /// 获取控件的同步上下文
+        /// </summary>
+        //System.Threading.SynchronizationContext SynContext { get; }
         #endregion
 
         #region 方法

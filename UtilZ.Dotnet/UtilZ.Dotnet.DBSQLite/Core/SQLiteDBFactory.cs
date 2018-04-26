@@ -8,6 +8,9 @@ using UtilZ.Dotnet.DBIBase.DBBase.Factory;
 using UtilZ.Dotnet.DBIBase.DBBase.Core;
 using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using System.Data.SQLite;
+using System.Data.SQLite.EF6;
+using System.Data.Entity.Core.Common;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {
@@ -75,6 +78,22 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         {
             string databaseName = ((SQLiteInteraction)this.GetDBInteraction(ConfigManager.GetConfigItem(dbid))).DatabaseTypeName;
             return new SQLiteDBAccess(dbid, databaseName);
+        }
+
+        /// <summary>
+        /// 附加EF配置
+        /// </summary>
+        public override void AttatchEFConfig()
+        {
+            //SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
+            //SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
+            //var s = SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices));
+            //SetProviderServices("System.Data.SQLite", (DbProviderServices)s);
+
+            DbProviderServices service = SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)) as DbProviderServices;
+            EFDbConfiguration.AddProviderServices(typeof(SQLiteFactory).Namespace, service);
+            EFDbConfiguration.AddProviderFactory(typeof(SQLiteProviderFactory).Namespace, SQLiteProviderFactory.Instance);
+            EFDbConfiguration.AddProviderFactory(typeof(SQLiteFactory).Namespace, SQLiteFactory.Instance);
         }
     }
 }

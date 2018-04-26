@@ -1,6 +1,7 @@
 ﻿using UtilZ.Dotnet.DBIBase.DBBase.Base;
 using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
 {
@@ -30,5 +31,10 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
         /// <param name="dbid">数据库编号ID</param>
         /// <returns>数据库访问实例</returns>
         public abstract IDBAccess GetDBAccess(int dbid);
+
+        /// <summary>
+        /// 附加EF配置
+        /// </summary>
+        public abstract void AttatchEFConfig();
     }
 }

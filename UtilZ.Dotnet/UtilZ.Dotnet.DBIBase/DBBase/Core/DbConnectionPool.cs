@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBModel.Common;
@@ -20,12 +21,12 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// <summary>
         /// 读连接对象集合池
         /// </summary>
-        private readonly BlockingCollection<IDbConnection> _readConPool = new BlockingCollection<IDbConnection>();
+        private readonly BlockingCollection<DbConnection> _readConPool = new BlockingCollection<DbConnection>();
 
         /// <summary>
         /// 写连接对象集合池
         /// </summary>
-        private readonly BlockingCollection<IDbConnection> _writeConPool = new BlockingCollection<IDbConnection>();
+        private readonly BlockingCollection<DbConnection> _writeConPool = new BlockingCollection<DbConnection>();
 
         /// <summary>
         /// 数据库配置
@@ -69,9 +70,9 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// </summary>
         /// <param name="visitType">数据库访问类型</param>
         /// <returns>数据库访问连接对象</returns>
-        private IDbConnection GetDbConnection(DBVisitType visitType)
+        private DbConnection GetDbConnection(DBVisitType visitType)
         {
-            IDbConnection con = null;
+            DbConnection con = null;
             if (visitType == DBVisitType.R)
             {
                 if (this._config.ReadConCount < 1)
@@ -118,7 +119,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// </summary>
         /// <param name="con">数据库访问连接对象</param>
         /// <param name="visitType">数据库访问类型</param>
-        private void ReleaseDbConnection(IDbConnection con, DBVisitType visitType)
+        private void ReleaseDbConnection(DbConnection con, DBVisitType visitType)
         {
             if (visitType == DBVisitType.R)
             {
@@ -260,7 +261,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// <param name="dbid">数据库编号ID</param>
         /// <param name="visitType">数据库访问类型</param>
         /// <returns>数据库访问连接对象</returns>
-        public static IDbConnection GetDbConnection(int dbid, DBVisitType visitType)
+        public static DbConnection GetDbConnection(int dbid, DBVisitType visitType)
         {
             if (_dbConnectionPoolDic.ContainsKey(dbid))
             {
@@ -286,7 +287,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// <param name="dbid">数据库编号ID</param>
         /// <param name="con">数据库访问连接对象</param>
         /// <param name="visitType">数据库访问类型</param>
-        public static void ReleaseDbConnection(int dbid, IDbConnection con, DBVisitType visitType)
+        public static void ReleaseDbConnection(int dbid, DbConnection con, DBVisitType visitType)
         {
             if (_dbConnectionPoolDic.ContainsKey(dbid))
             {

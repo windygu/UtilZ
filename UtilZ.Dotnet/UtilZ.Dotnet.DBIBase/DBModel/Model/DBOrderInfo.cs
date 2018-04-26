@@ -1,5 +1,6 @@
 ﻿using System;
 using UtilZ.Dotnet.Ex.Model;
+using UtilZ.Dotnet.Ex.Model.Attributes;
 
 namespace UtilZ.Dotnet.DBIBase.DBModel.Model
 {

@@ -10,6 +10,7 @@ using mshtml;
 using System.IO;
 using UtilZ.Dotnet.Ex.DataStruct;
 using System.Collections;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 {
@@ -114,6 +115,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// key:ClassId,value:style
         /// </summary>
         private readonly Hashtable _htStyle = new Hashtable();
+        /// <summary>
+        /// 获取控件的同步上下文
+        /// </summary>
+        private System.Threading.SynchronizationContext _synContext;
 
         /// <summary>
         /// 构造函数
@@ -122,24 +127,19 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             InitializeComponent();
 
-            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, 1000);
+            this._synContext = System.Threading.SynchronizationContext.Current;
+            this._logShowQueue = new AsynQueue<ShowLogItem>((item) => { this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item); }, "日志显示线程", true, true, 1000);
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             this.Init("uid", "li");
             this._templateType = true;
             this.webBrowser.DocumentText = this.GetLogHtmlTemplate();
         }
 
-        private void ShowLog(ShowLogItem item)
+        private void ShowLog(object state)
         {
-            if (this.webBrowser.InvokeRequired)
+            try
             {
-                this.webBrowser.Invoke(new Action(() =>
-                {
-                    this.ShowLog(item);
-                }));
-            }
-            else
-            {
+                ShowLogItem item = (ShowLogItem)state;
                 if (this._logContainerEle == null)
                 {
                     return;
@@ -154,6 +154,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 }
 
                 this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
             }
         }
 

@@ -32,6 +32,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comDB = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnEFQuery = new System.Windows.Forms.Button();
+            this.btnTableStruct = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,11 +80,33 @@
             this.dataGridView1.Size = new System.Drawing.Size(769, 391);
             this.dataGridView1.TabIndex = 47;
             // 
+            // btnEFQuery
+            // 
+            this.btnEFQuery.Location = new System.Drawing.Point(296, 12);
+            this.btnEFQuery.Name = "btnEFQuery";
+            this.btnEFQuery.Size = new System.Drawing.Size(75, 23);
+            this.btnEFQuery.TabIndex = 48;
+            this.btnEFQuery.Text = "EFQuery";
+            this.btnEFQuery.UseVisualStyleBackColor = true;
+            this.btnEFQuery.Click += new System.EventHandler(this.btnEFQuery_Click);
+            // 
+            // btnTableStruct
+            // 
+            this.btnTableStruct.Location = new System.Drawing.Point(389, 11);
+            this.btnTableStruct.Name = "btnTableStruct";
+            this.btnTableStruct.Size = new System.Drawing.Size(75, 23);
+            this.btnTableStruct.TabIndex = 49;
+            this.btnTableStruct.Text = "TableStruct";
+            this.btnTableStruct.UseVisualStyleBackColor = true;
+            this.btnTableStruct.Click += new System.EventHandler(this.btnTableStruct_Click);
+            // 
             // FTestDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnTableStruct);
+            this.Controls.Add(this.btnEFQuery);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.label1);
@@ -102,5 +126,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comDB;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnEFQuery;
+        private System.Windows.Forms.Button btnTableStruct;
     }
 }

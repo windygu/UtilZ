@@ -51,6 +51,12 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
         DbConnectionInfo CreateConnection(DBVisitType visitType);
 
         /// <summary>
+        /// 检查数据库连接[连接正常返回true;否则返回false]
+        /// </summary>
+        /// <returns>连接正常返回true;否则返回false</returns>
+        bool CheckDbConnection();
+
+        /// <summary>
         /// 创建命令
         /// </summary>
         /// <param name="con">连接对象</param>
@@ -77,7 +83,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="parameters">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
         int ExecuteNonQuery(string sqlStr, DBVisitType visitType, NDbParameterCollection parameters = null);
@@ -97,6 +102,13 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
         /// <param name="con">数据库连接对象</param>
         /// <returns>事务返回值</returns>
         object ExcuteAdoNetTransaction(object para, Func<IDbConnection, IDbTransaction, object, object> function);
+
+        /// <summary>
+        /// 创建EF上下文接口
+        /// </summary>
+        /// <param name="visitType">数据库访问类型</param>
+        /// <returns>IEFDbContext</returns>
+        IEFDbContext CreateEFDbContext(DBVisitType visitType);
         #endregion
     }
 }

@@ -9,7 +9,7 @@ using UtilZ.Dotnet.DBIBase.DBModel.Model;
 namespace UtilZ.Dotnet.DBMySql.Core
 {
     //Mysql数据库访问类-插入泛型数据
-    public partial class MysqlDBAccess
+    public partial class MySqlDBAccess
     {
         /// <summary>
         /// 批量插入数据,返回受影响的行数

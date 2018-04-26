@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using UtilZ.Dotnet.Ex.Model;
+using UtilZ.Dotnet.Ex.Model.Attributes;
 
 namespace UtilZ.Dotnet.Ex.Base
 {

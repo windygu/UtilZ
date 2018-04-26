@@ -372,9 +372,29 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// <returns>数据集合</returns>
         public List<T> QueryT<T>(string sqlStr, NDbParameterCollection collection = null) where T : class, new()
         {
-            DataTable dt = this.QueryData(sqlStr, collection);
-            return ORMManager.ConvertData<T>(dt, this);
+            using (var context = this.CreateEFDbContext(DBVisitType.R))
+            {
+                if (collection != null && collection.Count > 0)
+                {
+                    List<IDbDataParameter> paras = new List<IDbDataParameter>();
+                    foreach (var para in collection)
+                    {
+                        paras.Add(this._interaction.CreateDbParameter(para));
+                    }
+
+                    return ((System.Data.Entity.DbContext)context).Database.SqlQuery<T>(sqlStr, paras.ToArray()).ToList();
+                }
+                else
+                {
+                    return ((System.Data.Entity.DbContext)context).Database.SqlQuery<T>(sqlStr, null).ToList();
+                }
+            }
+
+            //DataTable dt = this.QueryData(sqlStr, collection);
+            //return ORMManager.ConvertData<T>(dt, this);
         }
+
+
 
         /// <summary>
         /// 查询数据并返回List泛型集合

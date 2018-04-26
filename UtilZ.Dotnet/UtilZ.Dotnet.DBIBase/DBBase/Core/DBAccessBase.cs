@@ -90,6 +90,28 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         }
 
         /// <summary>
+        /// 检查数据库连接[连接正常返回true;否则返回false]
+        /// </summary>
+        /// <returns>连接正常返回true;否则返回false</returns>
+        public bool CheckDbConnection()
+        {
+            try
+            {
+                this.GetDataBaseSysTime();
+                //using (var con = new DbConnectionInfo(this._dbid, DBVisitType.R))
+                //{
+                //    con.Con.Open();
+                //}
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 创建命令
         /// </summary>
         /// <param name="con">连接对象</param>
@@ -247,6 +269,16 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 创建EF上下文接口
+        /// </summary>
+        /// <param name="visitType">数据库访问类型</param>
+        /// <returns>IEFDbContext</returns>
+        public IEFDbContext CreateEFDbContext(DBVisitType visitType)
+        {
+            return new EFDbContext(new DbConnectionInfo(this._dbid, visitType));
         }
         #endregion
 
