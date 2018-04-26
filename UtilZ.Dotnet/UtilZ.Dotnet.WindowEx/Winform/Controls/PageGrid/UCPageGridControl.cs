@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Attributes;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
 {
@@ -431,6 +432,8 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         #endregion
 
         #region 方法
+        private TypeCode _lastModelTypeCode = TypeCode.Empty;
+
         /// <summary>
         /// 显示数据
         /// </summary>
@@ -441,13 +444,31 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
         public void ShowData(object dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
         {
+            this._lastModelTypeCode = TypeCode.Empty;
             if (this._dataGridView.DataSource == dataSource)
             {
                 return;
             }
 
+            if (hidenColumns == null)
+            {
+                hidenColumns = new List<string>();
+            }
+
+            if (colHeadInfos == null)
+            {
+                colHeadInfos = new Dictionary<string, string>();
+            }
+
+            if (allowEditColumns == null)
+            {
+                allowEditColumns = new List<string>();
+            }
+
             this.DataBinding(dataSource, hidenColumns, colHeadInfos, allowEditColumns);
+
             this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
+
             this._fPageGridColumnsSetting.UpdateAdvanceSetting(this._dataGridView.Columns);
             this._dataSourceName = dataSourceName;
 
@@ -468,6 +489,104 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         }
 
         /// <summary>
+        /// 显示数据
+        /// </summary>
+        /// <typeparam name="T">数据模型类型</typeparam>
+        /// <param name="dataSource">数据源</param>
+        /// <param name="dataSourceName">数据源名称</param>
+        /// <param name="hidenColumns">隐藏列集合</param>
+        /// <param name="colHeadInfos">列标题映射字典[key:列名;value:列标题;默认为null]</param>
+        /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
+        public void ShowData<T>(IEnumerable<T> dataSource, string dataSourceName = null, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
+        {
+            if (this._dataGridView.DataSource == dataSource)
+            {
+                return;
+            }
+
+            if (hidenColumns == null)
+            {
+                hidenColumns = new List<string>();
+            }
+
+            if (colHeadInfos == null)
+            {
+                colHeadInfos = new Dictionary<string, string>();
+            }
+
+            if (allowEditColumns == null)
+            {
+                allowEditColumns = new List<string>();
+            }
+
+            this._dataGridView.ColumnDisplayIndexChanged -= _dataGridView_ColumnDisplayIndexChanged;
+            this.DataBinding(dataSource, hidenColumns, colHeadInfos, allowEditColumns);
+
+            Type type = typeof(T);
+            if (this._lastModelTypeCode != Type.GetTypeCode(type))
+            {
+                Dictionary<string, DisplayOrderAttribute> proOrderDic = this.GetPropertyDisplayOrderInfo(type);
+                if (proOrderDic.Count > 0)
+                {
+                    foreach (DataGridViewColumn col in this._dataGridView.Columns)
+                    {
+                        if (col.Visible && proOrderDic.ContainsKey(col.Name))
+                        {
+                            col.DisplayIndex = proOrderDic[col.Name].OrderIndex;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            this.LoadColumnsSetting(this._settingDirectory, dataSourceName);
+
+            this._fPageGridColumnsSetting.UpdateAdvanceSetting(this._dataGridView.Columns);
+            this._dataSourceName = dataSourceName;
+
+            if (this._isLastColumnAutoSizeModeFill)
+            {
+                //设置最后一个可见列填充
+                DataGridViewColumn col;
+                for (int i = this._dataGridView.Columns.Count - 1; i >= 0; i--)
+                {
+                    col = this._dataGridView.Columns[i];
+                    if (col.Visible)
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        break;
+                    }
+                }
+            }
+
+            this._dataGridView.ColumnDisplayIndexChanged += _dataGridView_ColumnDisplayIndexChanged;
+        }
+
+        private Dictionary<string, DisplayOrderAttribute> GetPropertyDisplayOrderInfo(Type type)
+        {
+            Dictionary<string, DisplayOrderAttribute> proOrderDic = UtilZ.Dotnet.Ex.Base.MemoryCacheEx.Get(type.FullName) as Dictionary<string, DisplayOrderAttribute>;
+            if (proOrderDic == null)
+            {
+                var proInfos = type.GetProperties();
+                Type displayOrderType = typeof(DisplayOrderAttribute);
+                foreach (var proInfo in proInfos)
+                {
+                    object[] objs = proInfo.GetCustomAttributes(displayOrderType, true);
+                    if (objs == null || objs.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    proOrderDic.Add(proInfo.Name, (DisplayOrderAttribute)objs[0]);
+                }
+
+                UtilZ.Dotnet.Ex.Base.MemoryCacheEx.Set(type.FullName, proOrderDic, 10 * 60 * 1000);//10分钟过期
+            }
+
+            return proOrderDic;
+        }
+
+        /// <summary>
         /// DataGridView绑定数据
         /// </summary>
         /// <param name="dgv">DataGridView</param>
@@ -475,14 +594,14 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <param name="hidenColumns">隐藏列集合</param>
         /// <param name="colHeadInfos">列标题映射字典[key:列名;value:列标题;默认为null]</param>
         /// <param name="allowEditColumns">允许编辑的列集合[当为null或空时,全部列都可编辑;默认为null]</param>
-        private void DataBinding(object dataSource, IEnumerable<string> hidenColumns = null, Dictionary<string, string> colHeadInfos = null, IEnumerable<string> allowEditColumns = null)
+        private void DataBinding(object dataSource, IEnumerable<string> hidenColumns, Dictionary<string, string> colHeadInfos, IEnumerable<string> allowEditColumns)
         {
             if (this._dataGridView.DataSource == dataSource)
             {
                 return;
             }
 
-            this._dataGridView.ColumnDisplayIndexChanged -= _dataGridView_ColumnDisplayIndexChanged;
+
             if (this._dataGridView.SelectionMode == DataGridViewSelectionMode.FullColumnSelect ||
                 this._dataGridView.SelectionMode == DataGridViewSelectionMode.ColumnHeaderSelect)
             {
@@ -507,21 +626,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             if (dataSource == null)
             {
                 return;
-            }
-
-            if (hidenColumns == null)
-            {
-                hidenColumns = new List<string>();
-            }
-
-            if (colHeadInfos == null)
-            {
-                colHeadInfos = new Dictionary<string, string>();
-            }
-
-            if (allowEditColumns == null)
-            {
-                allowEditColumns = new List<string>();
             }
 
             string caption = null;
@@ -562,8 +666,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                     caption = null;
                 }
             }
-
-            this._dataGridView.ColumnDisplayIndexChanged += _dataGridView_ColumnDisplayIndexChanged;
         }
 
         private void _dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)

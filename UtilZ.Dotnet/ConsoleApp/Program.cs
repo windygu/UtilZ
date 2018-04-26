@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace ConsoleApp
         {
             //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, null, 3);
 
+            DataTable dt = new DataTable();
 
             //TestPortReg();
 

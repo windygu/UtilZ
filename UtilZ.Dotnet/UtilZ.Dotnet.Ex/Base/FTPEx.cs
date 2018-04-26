@@ -165,7 +165,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="ftpUrl">ftp目录</param>
         /// <param name="dir">目录名</param>
         /// <returns>存在返回true,不存在返回false</returns>
-        public bool CheckDirectoryExists(string ftpUrl, string dir)
+        private bool CheckDirectoryExists(string ftpUrl, string dir)
         {
             if (string.IsNullOrWhiteSpace(dir))
             {
