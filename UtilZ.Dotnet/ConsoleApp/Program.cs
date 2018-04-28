@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Model;
 
@@ -17,6 +18,11 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
+            
+            _stopAutoResetEvent.WaitOne();
+            _stopAutoResetEvent.Set();
+
             //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, null, 3);
 
             DataTable dt = new DataTable();

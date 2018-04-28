@@ -47,7 +47,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 停止线程消息通知
         /// </summary>
-        private AutoResetEvent _stopAutoResetEvent = null;
+        private readonly AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
         /// 操作外部线程锁
@@ -167,11 +167,6 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             {
                 if (this._status)
                 {
-                    if (isSync)
-                    {
-                        this._stopAutoResetEvent = new AutoResetEvent(false);
-                    }
-
                     this._cts.Cancel();
                     if (isAbort)
                     {
@@ -180,11 +175,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
                     if (isSync)
                     {
-                        this._stopAutoResetEvent.WaitOne(synMillisecondsTimeout);
+                        if (!this._stopAutoResetEvent.WaitOne(synMillisecondsTimeout))
+                        {
+                            this._thread.Abort();
+                        }
                     }
-
-                    this._thread = null;
-                    this._status = false;
                 }
             }
         }
@@ -248,12 +243,13 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             { }
             finally
             {
-                if (this._stopAutoResetEvent != null)
+                lock (this._threadMonitor)
                 {
-                    this._stopAutoResetEvent.Set();
-                    this._stopAutoResetEvent.Dispose();
-                    this._stopAutoResetEvent = null;
+                    this._thread = null;
+                    this._status = false;
                 }
+
+                this._stopAutoResetEvent.Set();
             }
         }
 
@@ -435,6 +431,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             }
 
             this._blockingCollection.Dispose();
+            this._stopAutoResetEvent.Dispose();
         }
     }
 }
