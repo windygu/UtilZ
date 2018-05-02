@@ -177,7 +177,10 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                     {
                         if (!this._stopAutoResetEvent.WaitOne(synMillisecondsTimeout))
                         {
-                            this._thread.Abort();
+                            if (!isAbort)
+                            {
+                                this._thread.Abort();
+                            }
                         }
                     }
                 }
@@ -234,23 +237,26 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                     }
                     catch (ArgumentNullException)
                     {
-                        Loger.Warn("this._blockingCollection.GetConsumingEnumerable(token) ArgumentNullException");
+                        //Loger.Warn("this._blockingCollection.GetConsumingEnumerable(token) ArgumentNullException");
                         continue;
                     }
                 }
             }
             catch (ThreadAbortException)
             { }
-            finally
-            {
-                lock (this._threadMonitor)
-                {
-                    this._thread = null;
-                    this._status = false;
-                }
 
+            lock (this._threadMonitor)
+            {
+                this._thread = null;
+                this._status = false;
+            }
+
+            try
+            {
                 this._stopAutoResetEvent.Set();
             }
+            catch (ObjectDisposedException)
+            { }
         }
 
         /// <summary>
@@ -303,11 +309,12 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             { }
 
-            if (this._stopAutoResetEvent != null)
+            try
             {
                 this._stopAutoResetEvent.Set();
-                this._stopAutoResetEvent.Dispose();
             }
+            catch (ObjectDisposedException)
+            { }
         }
 
         /// <summary>
@@ -424,7 +431,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="isDispose">是否释放标识</param>
         protected virtual void Dispose(bool isDispose)
         {
-            this.Stop(true, true, 5000);
+            this.Stop(false, false, 5000);
             if (this._cts != null)
             {
                 this._cts.Dispose();

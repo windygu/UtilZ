@@ -15,6 +15,7 @@ using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.Attributes;
+using System.Reflection;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
 {
@@ -569,15 +570,25 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             {
                 var proInfos = type.GetProperties();
                 Type displayOrderType = typeof(DisplayOrderAttribute);
+                var noneOrderProInfos = new List<Tuple<DisplayOrderAttribute, PropertyInfo>>();
+
                 foreach (var proInfo in proInfos)
                 {
                     object[] objs = proInfo.GetCustomAttributes(displayOrderType, true);
                     if (objs == null || objs.Length == 0)
                     {
-                        continue;
+                        noneOrderProInfos.Add(new Tuple<DisplayOrderAttribute, PropertyInfo>(new DisplayOrderAttribute(int.MaxValue), proInfo));
                     }
+                    else
+                    {
+                        noneOrderProInfos.Add(new Tuple<DisplayOrderAttribute, PropertyInfo>((DisplayOrderAttribute)objs[0], proInfo));
+                    }
+                }
 
-                    proOrderDic.Add(proInfo.Name, (DisplayOrderAttribute)objs[0]);
+                var orderProInfos = noneOrderProInfos.OrderBy((p) => { return p.Item1.OrderIndex; });
+                foreach (var item in orderProInfos)
+                {
+                    proOrderDic.Add(item.Item2.Name, item.Item1);
                 }
 
                 UtilZ.Dotnet.Ex.Base.MemoryCacheEx.Set(type.FullName, proOrderDic, 10 * 60 * 1000);//10分钟过期

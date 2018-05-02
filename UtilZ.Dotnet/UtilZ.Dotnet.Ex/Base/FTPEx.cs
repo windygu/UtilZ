@@ -15,6 +15,11 @@ namespace UtilZ.Dotnet.Ex.Base
     public class FTPEx
     {
         /// <summary>
+        /// init ftp url
+        /// </summary>
+        private readonly string _ftpUrl;
+
+        /// <summary>
         /// ftp根地址
         /// </summary>
         private readonly string _ftpRootUrl;
@@ -93,6 +98,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 port = "21";//ftp默认端口号为21
             }
 
+            this._ftpUrl = ftpUrl;
             this._ftpRootUrl = string.Format("ftp://{0}:{1}", ip, port);
             this._rootDirs = dir.Split(this._splitDirChs, StringSplitOptions.RemoveEmptyEntries);
             this._userName = userName;
@@ -121,7 +127,12 @@ namespace UtilZ.Dotnet.Ex.Base
             return request;
         }
 
-        private List<string> GetFullDir(string relativeDir)
+        /// <summary>
+        /// 获取全目录层级名称列表
+        /// </summary>
+        /// <param name="relativeDir">相对目录</param>
+        /// <returns>全目录层级名称列表</returns>
+        private List<string> GetFullDirFolderNames(string relativeDir)
         {
             List<string> dirs = new List<string>(this._rootDirs);
             if (!string.IsNullOrWhiteSpace(relativeDir))
@@ -133,13 +144,59 @@ namespace UtilZ.Dotnet.Ex.Base
         }
 
         /// <summary>
+        /// 获取全路径
+        /// </summary>
+        /// <param name="relativePath">相对路径</param>
+        /// <returns>全路径</returns>
+        private string GetFullPath(string relativePath)
+        {
+            char ch;
+            int index = 0;
+
+            //截取头
+            for (int i = 0; i < relativePath.Length; i++)
+            {
+                ch = relativePath[i];
+                if (ch != Path.DirectorySeparatorChar && ch != Path.AltDirectorySeparatorChar)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index > 0)
+            {
+                relativePath = relativePath.Substring(index);
+            }
+
+            //截取尾
+            int length = 0;
+            for (int i = relativePath.Length - 1; i > -1; i--)
+            {
+                ch = relativePath[i];
+                if (ch != Path.DirectorySeparatorChar && ch != Path.AltDirectorySeparatorChar)
+                {
+                    length = relativePath.Length - 1 - i;
+                    break;
+                }
+            }
+
+            if (length > 0)
+            {
+                relativePath = relativePath.Substring(0, length);
+            }
+
+            return Path.Combine(this._ftpUrl, relativePath);
+        }
+
+        /// <summary>
         /// 检查FTP上指定目录是否存在
         /// </summary>
         /// <param name="remoteDir">FTP服务器的相对目录</param>
         /// <returns></returns>
         public bool DirectoryExists(string remoteDir)
         {
-            var dirs = this.GetFullDir(remoteDir);
+            var dirs = this.GetFullDirFolderNames(remoteDir);
             string ftpUrl = this._ftpRootUrl;
             string cuurentDir;
             for (int i = 0; i < dirs.Count; i++)
@@ -211,7 +268,7 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             bool createResult = false;
-            var dirs = this.GetFullDir(remoteDir);
+            var dirs = this.GetFullDirFolderNames(remoteDir);
             string ftpUrl = this._ftpRootUrl;
             foreach (var dir in dirs)
             {
@@ -243,7 +300,7 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             try
             {
-                string ftpUrl = Path.Combine(this._ftpRootUrl, remoteFilePath);
+                string ftpUrl = this.GetFullPath(remoteFilePath);
                 FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.GetDateTimestamp);
                 using (FtpWebResponse ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse())
                 {
@@ -280,8 +337,7 @@ namespace UtilZ.Dotnet.Ex.Base
             //创建目录
             string remoteDir = Path.GetDirectoryName(remoteFilePath);
             bool createResult = this.CreateDirectory(remoteDir);
-
-            string ftpUrl = Path.Combine(this._ftpRootUrl, remoteFilePath);
+            string ftpUrl = this.GetFullPath(remoteFilePath);
             long sendedLength;
             FtpWebRequest ftpWebRequest;
             if (isAppend && !createResult)
@@ -365,7 +421,7 @@ namespace UtilZ.Dotnet.Ex.Base
             string remoteDir = Path.GetDirectoryName(remoteFilePath);
             bool createResult = this.CreateDirectory(remoteDir);
 
-            string ftpUrl = Path.Combine(this._ftpRootUrl, remoteFilePath);
+            string ftpUrl = this.GetFullPath(remoteFilePath);
             long sendedLength;
             FtpWebRequest ftpWebRequest;
             if (isAppend && !createResult)
@@ -433,7 +489,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 throw new FileNotFoundException("Ftp上文件不存在", remoteFilePath);
             }
 
-            string ftpUrl = Path.Combine(this._ftpRootUrl, remoteFilePath);
+            string ftpUrl = this.GetFullPath(remoteFilePath);
             FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.GetFileSize);
             using (FtpWebResponse re = (FtpWebResponse)ftpWebRequest.GetResponse())
             {
@@ -462,7 +518,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 Directory.CreateDirectory(dir);
             }
 
-            string ftpUrl = Path.Combine(this._ftpRootUrl, remoteFilePath);
+            string ftpUrl = this.GetFullPath(remoteFilePath);
             long totallLength;
             FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.GetFileSize);
             using (FtpWebResponse re = (FtpWebResponse)ftpWebRequest.GetResponse())
@@ -524,7 +580,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 throw new FileNotFoundException("Ftp上文件不存在", oldFileName);
             }
 
-            string ftpUrl = Path.Combine(this._ftpRootUrl, oldFileName);
+            string ftpUrl = this.GetFullPath(oldFileName);
             FtpWebRequest request = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.Rename);
             request.Method = WebRequestMethods.Ftp.Rename;
             request.RenameTo = newFileName;
@@ -544,7 +600,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 return;
             }
 
-            string ftpUrl = Path.Combine(this._ftpRootUrl, remoteFilePath);
+            string ftpUrl = this.GetFullPath(remoteFilePath);
             FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.DeleteFile);
             using (var response = ftpWebRequest.GetResponse())
             {
@@ -581,17 +637,17 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (!this.DirectoryExists(remoteDir))
             {
-                throw new DirectoryNotFoundException(string.Format("Ftp上目录:{0}不存在", remoteDir));
+                return new List<FTPDirectoryInfo>();
             }
 
             string ftpUrl;
             if (string.IsNullOrWhiteSpace(remoteDir))
             {
-                ftpUrl = this._ftpRootUrl;
+                ftpUrl = this._ftpUrl;
             }
             else
             {
-                ftpUrl = Path.Combine(this._ftpRootUrl, remoteDir);
+                ftpUrl = this.GetFullPath(remoteDir);
             }
 
             var dirList = new List<FTPDirectoryInfo>();
@@ -630,19 +686,10 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (!this.DirectoryExists(remoteDir))
             {
-                throw new DirectoryNotFoundException(string.Format("Ftp上目录:{0}不存在", remoteDir));
+                return new List<FTPFileInfo>();
             }
 
-            string ftpUrl;
-            if (string.IsNullOrWhiteSpace(remoteDir))
-            {
-                ftpUrl = this._ftpRootUrl;
-            }
-            else
-            {
-                ftpUrl = Path.Combine(this._ftpRootUrl, remoteDir);
-            }
-
+            string ftpUrl = this.GetFullPath(remoteDir);
             var fileList = new List<FTPFileInfo>();
             DateTime createTime;
             long length;
@@ -705,7 +752,7 @@ namespace UtilZ.Dotnet.Ex.Base
 
             if (!this.DirectoryExists(remoteDir))
             {
-                throw new DirectoryNotFoundException(string.Format("Ftp上目录:{0}不存在", remoteDir));
+                return;
             }
 
             string localFilePath, remoteFilePath;
@@ -734,7 +781,7 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (!this.DirectoryExists(remoteDir))
             {
-                throw new DirectoryNotFoundException(string.Format("Ftp上目录:{0}不存在", remoteDir));
+                return;
             }
 
             string ftpUrl = Path.Combine(this._ftpRootUrl, remoteDir);
