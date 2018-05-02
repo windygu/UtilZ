@@ -12,7 +12,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
     /// 异步队列
     /// </summary>
     /// <typeparam name="T">数据类型</typeparam>
-    public class AsynQueue<T> : IEnumerable<T>, IDisposable
+    public class AsynQueue<T> : IDisposable
     {
         /// <summary>
         /// 异步队列线程
@@ -35,11 +35,6 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly bool _isBackground = true;
 
         /// <summary>
-        /// 需要处理的数据队列
-        /// </summary>
-        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
-
-        /// <summary>
         /// BlockingCollection
         /// </summary>
         private readonly BlockingCollection<T> _blockingCollection;
@@ -52,7 +47,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 操作外部线程锁
         /// </summary>
-        private readonly object _queueExChangeMonitor = new object();
+        private readonly object _blockingCollectionMonitor = new object();
 
         /// <summary>
         /// 异步队列线程名称
@@ -127,7 +122,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 capcity = int.MaxValue;
             }
 
-            this._blockingCollection = new BlockingCollection<T>(this._queue, capcity);
+            this._blockingCollection = new BlockingCollection<T>(new ConcurrentQueue<T>(), capcity);
             if (isAutoStart)
             {
                 this.Start();
@@ -337,7 +332,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             T result;
             int removeCount = 0;
-            lock (this._queueExChangeMonitor)
+            lock (this._blockingCollectionMonitor)
             {
                 while (removeCount < count && this._blockingCollection.Count > 0)
                 {
@@ -367,7 +362,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <returns>新数组</returns>
         public T[] ToArray()
         {
-            return this._queue.ToArray();
+            return this._blockingCollection.ToArray();
         }
 
         /// <summary>
@@ -381,7 +376,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="index">array 中从零开始的索引，从此处开始复制</param>
         public void CopyTo(T[] array, int index)
         {
-            this._queue.CopyTo(array, index);
+            this._blockingCollection.CopyTo(array, index);
         }
 
         /// <summary>
@@ -390,31 +385,13 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         public void Clear()
         {
             T result;
-            lock (this._queueExChangeMonitor)
+            lock (this._blockingCollectionMonitor)
             {
                 while (this._blockingCollection.Count > 0)
                 {
                     this._blockingCollection.TryTake(out result);
                 }
             }
-        }
-
-        /// <summary>
-        /// 返回循环的遍历枚举
-        /// </summary>
-        /// <returns>循环的遍历枚举</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this._queue.GetEnumerator();
-        }
-
-        /// <summary>
-        /// 返回循环的遍历枚举
-        /// </summary>
-        /// <returns>循环的遍历枚举</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
 
         /// <summary>
