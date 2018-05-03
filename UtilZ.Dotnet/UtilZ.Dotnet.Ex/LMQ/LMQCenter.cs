@@ -14,11 +14,6 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
     public class LMQCenter
     {
         /// <summary>
-        /// 订阅线程锁
-        /// </summary>
-        private static readonly object _monitor = new object();
-
-        /// <summary>
         /// 订阅项集合
         /// </summary>
         private static readonly Hashtable _htSubscibeItems = Hashtable.Synchronized(new Hashtable());
@@ -30,7 +25,7 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
         /// <param name="item">订阅项</param>
         public static void Subscibe(SubscibeItem item)
         {
-            lock (_monitor)
+            lock (_htSubscibeItems.SyncRoot)
             {
                 SubscibeGroup subscibeGroup;
                 string topic = item.Topic;
@@ -63,7 +58,7 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
                 return;
             }
 
-            lock (_monitor)
+            lock (_htSubscibeItems.SyncRoot)
             {
                 if (_htSubscibeItems.ContainsKey(item.Topic))
                 {
@@ -85,7 +80,7 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
         /// <param name="topic">订阅ID下要清空订阅主题,为null清空所有订阅组</param>
         public static void Clear(string topic)
         {
-            lock (_monitor)
+            lock (_htSubscibeItems.SyncRoot)
             {
                 if (topic == null)
                 {
@@ -109,18 +104,13 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
         /// 发布数据消息
         /// </summary>
         /// <param name="topic">主题名称</param>
-        /// <param name="message">数据</param>
-        public static void Publish(string topic, object message)
+        /// <param name="obj">数据对象</param>
+        public static void Publish(string topic, object obj)
         {
-            if (message == null)
-            {
-                throw new ArgumentNullException("data");
-            }
-
             var subscibeGroup = _htSubscibeItems[topic] as SubscibeGroup;
             if (subscibeGroup != null)
             {
-                subscibeGroup.Publish(message);
+                subscibeGroup.Publish(obj);
             }
         }
     }
