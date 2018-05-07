@@ -50,6 +50,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly object _blockingCollectionMonitor = new object();
 
         /// <summary>
+        /// 对象是否已释放[true:已释放;false:未释放]
+        /// </summary>
+        private bool _isDisposed = false;
+
+        /// <summary>
         /// 异步队列线程名称
         /// </summary>
         private string _threadName = "异步队列线程";
@@ -136,6 +141,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             lock (this._threadMonitor)
             {
+                if (this._isDisposed)
+                {
+                    throw new ObjectDisposedException(string.Empty, "对象已释放");
+                }
+
                 if (this._status)
                 {
                     return;
@@ -160,6 +170,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             lock (this._threadMonitor)
             {
+                if (this._isDisposed)
+                {
+                    return;
+                }
+
                 if (this._status)
                 {
                     this._cts.Cancel();
@@ -246,12 +261,18 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 this._status = false;
             }
 
-            try
+            lock (this._threadMonitor)
             {
-                this._stopAutoResetEvent.Set();
+                try
+                {
+                    if (!this._isDisposed)
+                    {
+                        this._stopAutoResetEvent.Set();
+                    }
+                }
+                catch (ObjectDisposedException)
+                { }
             }
-            catch (ObjectDisposedException)
-            { }
         }
 
         /// <summary>
@@ -408,14 +429,23 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="isDispose">是否释放标识</param>
         protected virtual void Dispose(bool isDispose)
         {
-            this.Stop(false, false, 5000);
-            if (this._cts != null)
+            lock (this._threadMonitor)
             {
-                this._cts.Dispose();
-            }
+                if (this._isDisposed)
+                {
+                    return;
+                }
 
-            this._blockingCollection.Dispose();
-            this._stopAutoResetEvent.Dispose();
+                this._isDisposed = true;
+                this.Stop(false, false, 5000);
+                if (this._cts != null)
+                {
+                    this._cts.Dispose();
+                }
+
+                this._blockingCollection.Dispose();
+                this._stopAutoResetEvent.Dispose();
+            }
         }
     }
 }

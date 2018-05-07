@@ -165,6 +165,11 @@ namespace UtilZ.Dotnet.Ex.Base
         private bool _isRuning = false;
 
         /// <summary>
+        /// 对象是否已释放[true:已释放;false:未释放]
+        /// </summary>
+        private bool _isDisposed = false;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="action">线程要执行的委托</param>
@@ -369,6 +374,11 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             lock (this._lock)
             {
+                if (this._isDisposed)
+                {
+                    throw new ObjectDisposedException(string.Empty, "对象已释放");
+                }
+
                 if (this._isRuning)
                 {
                     return;
@@ -440,7 +450,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 this.OnRaiseCompleted(ThreadExCompletedType.Cancel, aex);
                 throw aex;
             }
-            catch(ObjectDisposedException oex)
+            catch (ObjectDisposedException oex)
             {
                 this.OnRaiseCompleted(ThreadExCompletedType.Exception, oex);
                 throw;
@@ -452,9 +462,21 @@ namespace UtilZ.Dotnet.Ex.Base
             }
             finally
             {
-                this._syncStopAutoResetEvent.Set();
-                this._isRuning = false;
-                DecreaseExcuteThreadCount();
+                lock (this._lock)
+                {
+                    try
+                    {
+                        if (!this._isDisposed)
+                        {
+                            this._syncStopAutoResetEvent.Set();
+                        }
+                    }
+                    catch (ObjectDisposedException)
+                    { }
+
+                    this._isRuning = false;
+                    DecreaseExcuteThreadCount();
+                }
             }
         }
 
@@ -467,14 +489,19 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             lock (this._lock)
             {
+                if (this._isDisposed)
+                {
+                    return;
+                }
+
                 if (this._isReqAbort ||
-                    this._cts == null ||
-                    this._cts.Token.IsCancellationRequested ||
-                    this._thread == null ||
-                    this._thread.ThreadState == System.Threading.ThreadState.Aborted ||
-                    this._thread.ThreadState == System.Threading.ThreadState.AbortRequested ||
-                    this._thread.ThreadState == System.Threading.ThreadState.StopRequested ||
-                    this._thread.ThreadState == System.Threading.ThreadState.Stopped)
+                this._cts == null ||
+                this._cts.Token.IsCancellationRequested ||
+                this._thread == null ||
+                this._thread.ThreadState == System.Threading.ThreadState.Aborted ||
+                this._thread.ThreadState == System.Threading.ThreadState.AbortRequested ||
+                this._thread.ThreadState == System.Threading.ThreadState.StopRequested ||
+                this._thread.ThreadState == System.Threading.ThreadState.Stopped)
                 {
                     return;
                 }
@@ -524,16 +551,26 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="isDispose">是否释放标识</param>
         protected virtual void Dispose(bool isDispose)
         {
-            if (this._syncStopAutoResetEvent != null)
+            lock (this._lock)
             {
-                this._syncStopAutoResetEvent.Dispose();
-            }
-
-            if (this._cts != null)
-            {
-                if (!this._cts.IsCancellationRequested)
+                if (this._isDisposed)
                 {
-                    this._cts.Cancel();
+                    return;
+                }
+
+                this._isDisposed = true;
+                if (this._syncStopAutoResetEvent != null)
+                {
+                    this._syncStopAutoResetEvent.Set();
+                    this._syncStopAutoResetEvent.Dispose();
+                }
+
+                if (this._cts != null)
+                {
+                    if (!this._cts.IsCancellationRequested)
+                    {
+                        this._cts.Cancel();
+                    }
                 }
 
                 this._cts.Dispose();
