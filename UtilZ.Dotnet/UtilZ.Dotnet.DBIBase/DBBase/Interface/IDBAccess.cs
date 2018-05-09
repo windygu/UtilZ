@@ -99,7 +99,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
         /// </summary>
         /// <param name="para">参数</param>
         /// <param name="function">事务执行委托[数据库连接,事务,入参,出参]</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>事务返回值</returns>
         object ExcuteAdoNetTransaction(object para, Func<IDbConnection, IDbTransaction, object, object> function);
 

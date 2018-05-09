@@ -30,11 +30,10 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
         /// 创建数据库读连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public override DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
+        public override DbConnection CreateConnection(DBConfigElement config)
         {
-            return new SqlConnection(this.GetDBConStr(config, visitType));
+            return new SqlConnection(this.GetDBConStr(config));
         }
 
         /// <summary>
@@ -50,9 +49,8 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
         /// 生成数据库连接字符串
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接字符串</returns>
-        public override string GenerateDBConStr(DBConfigElement config, DBVisitType visitType)
+        public override string GenerateDBConStr(DBConfigElement config)
         {
             if (config == null)
             {

@@ -56,12 +56,12 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         {
             for (int i = 0; i < this._config.ReadConCount; i++)
             {
-                this._readConPool.Add(this._interaction.CreateConnection(this._config, DBVisitType.R));
+                this._readConPool.Add(this._interaction.CreateConnection(this._config));
             }
 
             for (int i = 0; i < this._config.WriteConCount; i++)
             {
-                this._writeConPool.Add(this._interaction.CreateConnection(this._config, DBVisitType.W));
+                this._writeConPool.Add(this._interaction.CreateConnection(this._config));
             }
         }
 
@@ -73,37 +73,36 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         private DbConnection GetDbConnection(DBVisitType visitType)
         {
             DbConnection con = null;
-            if (visitType == DBVisitType.R)
+            switch (visitType)
             {
-                if (this._config.ReadConCount < 1)
-                {
-                    con = this._interaction.CreateConnection(this._config, visitType);
-                }
-                else
-                {
-                    if (!this._readConPool.TryTake(out con, this._config.GetConTimeout))
+                case DBVisitType.R:
+                    if (this._config.ReadConCount < 1)
                     {
-                        throw new ApplicationException("从连接池获取读连接超时");
+                        con = this._interaction.CreateConnection(this._config);
                     }
-                }
-            }
-            else if (visitType == DBVisitType.W)
-            {
-                if (this._config.WriteConCount < 1)
-                {
-                    con = this._interaction.CreateConnection(this._config, visitType);
-                }
-                else
-                {
-                    if (!this._writeConPool.TryTake(out con, this._config.GetConTimeout))
+                    else
                     {
-                        throw new ApplicationException("从连接池获取写连接超时");
+                        if (!this._readConPool.TryTake(out con, this._config.GetConTimeout))
+                        {
+                            throw new ApplicationException("从连接池获取读连接超时");
+                        }
                     }
-                }
-            }
-            else
-            {
-                throw new NotSupportedException(string.Format("不支持的访问类型:{0}", visitType.ToString()));
+                    break;
+                case DBVisitType.W:
+                    if (this._config.WriteConCount < 1)
+                    {
+                        con = this._interaction.CreateConnection(this._config);
+                    }
+                    else
+                    {
+                        if (!this._writeConPool.TryTake(out con, this._config.GetConTimeout))
+                        {
+                            throw new ApplicationException("从连接池获取写连接超时");
+                        }
+                    }
+                    break;
+                default:
+                    throw new NotSupportedException(string.Format("不支持的访问类型:{0}", visitType.ToString()));
             }
 
             if (con.State == ConnectionState.Closed)

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Attributes\DisplayOrderAttribute.cs" />
     <Compile Include="Base\ActivatorEx.cs" />
+    <Compile Include="Base\ArrayEx.cs" />
     <Compile Include="Base\AssemblyEx.cs" />
     <Compile Include="Base\AttributeEx.cs" />
     <Compile Include="Base\CharEx.cs" />

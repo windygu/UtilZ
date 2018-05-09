@@ -44,7 +44,7 @@ namespace UtilZ.Dotnet.Ex.Log.LogOutput
         /// <summary>
         /// 线程取消通知对象
         /// </summary>
-        private CancellationTokenSource _cts;
+        private CancellationTokenSource _cts = null;
 
         /// <summary>
         /// 日志输出线程同步对象
@@ -298,6 +298,11 @@ namespace UtilZ.Dotnet.Ex.Log.LogOutput
         protected virtual void Dispose(bool isDispose)
         {
             this.StopOutputThread();
+
+            if (this._cts != null)
+            {
+                this._cts.Dispose();
+            }
 
             if (this._logOutputAutoResetEvent != null)
             {

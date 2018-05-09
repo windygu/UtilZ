@@ -39,6 +39,36 @@
             font-size: 15px;
         }
     </style>
+    <script type="text/javascript">
+        document.oncontextmenu = function () {
+            var selecTextLen;
+            var selectionObj = window.getSelection();
+            if (selectionObj == null) {
+                selecTextLen = 0;
+            }
+            else {
+                var selectedText = selectionObj.toString();
+                selecTextLen = selectedText.length;
+            }
+
+            return selecTextLen > 0;
+        };
+
+        function removeEle(id) {
+            var ele = document.getElementById(id);
+            if (ele != null) {
+                try {
+                    ele.parentElement.removeChild(ele);
+                }
+                catch (err) {
+                    //window.alert(err.message);
+                }
+            }
+            else {
+                //window.alert(""ele == null"");
+            }
+        };
+    </script>
 </head>
 <body>
     <ul id="uid">

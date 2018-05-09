@@ -81,7 +81,7 @@ namespace UtilZ.Dotnet.Ex.Log.Core
         /// <summary>
         /// 空日志对象
         /// </summary>
-        private NullLoger _nullLoger;
+        private NullLoger _nullLoger = null;
 
         /// <summary>
         /// 构造函数
@@ -623,6 +623,11 @@ namespace UtilZ.Dotnet.Ex.Log.Core
         protected override void Dispose(bool isDispose)
         {
             base.Dispose(isDispose);
+            if (this._nullLoger != null)
+            {
+                this._nullLoger.Dispose();
+            }
+
             this._cts.Dispose();
             this._autoResetEvent.Dispose();
         }

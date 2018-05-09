@@ -29,20 +29,18 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// 创建数据库连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public override DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType)
+        public override DbConnection CreateConnection(DBConfigElement config)
         {
-            return new MySqlConnection(this.GetDBConStr(config, visitType));
+            return new MySqlConnection(this.GetDBConStr(config));
         }
 
         /// <summary>
         /// 生成数据库连接字符串
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接字符串</returns>
-        public override string GenerateDBConStr(DBConfigElement config, DBVisitType visitType)
+        public override string GenerateDBConStr(DBConfigElement config)
         {
             if (config == null)
             {

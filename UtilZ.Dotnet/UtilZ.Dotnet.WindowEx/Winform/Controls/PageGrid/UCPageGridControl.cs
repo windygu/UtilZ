@@ -600,7 +600,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <summary>
         /// DataGridView绑定数据
         /// </summary>
-        /// <param name="dgv">DataGridView</param>
         /// <param name="dataSource">数据源</param>
         /// <param name="hidenColumns">隐藏列集合</param>
         /// <param name="colHeadInfos">列标题映射字典[key:列名;value:列标题;默认为null]</param>

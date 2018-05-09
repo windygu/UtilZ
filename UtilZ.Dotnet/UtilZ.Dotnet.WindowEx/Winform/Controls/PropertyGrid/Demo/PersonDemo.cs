@@ -172,6 +172,9 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
             return true;
         }
 
+        /// <summary>
+        /// f
+        /// </summary>
         public event EventHandler CollectionEditCompleted;
 
         /// <summary>

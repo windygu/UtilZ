@@ -6,7 +6,7 @@
     <title>日志</title>
     <style type="text/css">
         body {
-            background-color:  powderblue 
+            background-color: powderblue
         }
 
         /*p {
@@ -30,9 +30,43 @@
             font-size: 15px;
         }
     </style>
+    <script type="text/javascript">
+        document.oncontextmenu = function () {
+            var selecTextLen;
+            var selectionObj = window.getSelection();
+            if (selectionObj == null) {
+                selecTextLen = 0;
+            }
+            else {
+                var selectedText = selectionObj.toString();
+                selecTextLen = selectedText.length;
+            }
+
+            return selecTextLen > 0;
+        };
+
+        function removeEle(id) {
+            var ele = document.getElementById(id);
+            if (ele != null) {
+                try {
+                    ele.parentElement.removeChild(ele);
+                }
+                catch (err) {
+                    //window.alert(err.message);
+                }
+            }
+            else {
+                //window.alert(""ele == null"");
+            }
+        };
+    </script>
 </head>
 <body id="bid">
-
+    <ul id="uid">
+        <li id="qwe">sadfsdafasdfasd</li>
+        <li id="qwe2">sadfsdafasdfasd</li>
+        <li id="qwe3">sadfsdafasdfasd</li>
+    </ul>
     <!--<p>asdfsdafsdafdsa</p>
     <p style="color:red">一二三天二在</p>-->
     <!--<p class="error">一二三天二在</p>

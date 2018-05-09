@@ -51,7 +51,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="priKeyColValues">主键列名值映射字典</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
         public virtual long Delete(string tableName, Dictionary<string, object> priKeyColValues)
         {

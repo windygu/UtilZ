@@ -448,7 +448,7 @@ namespace UtilZ.Dotnet.Ex.Base
             catch (System.Threading.ThreadAbortException aex)
             {
                 this.OnRaiseCompleted(ThreadExCompletedType.Cancel, aex);
-                throw aex;
+                throw;
             }
             catch (ObjectDisposedException oex)
             {

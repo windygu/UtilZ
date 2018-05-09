@@ -75,9 +75,9 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Interface
         /// </summary>
         bool IsDisposed { get; }
 
-        /// <summary>
-        /// 获取控件的同步上下文
-        /// </summary>
+        ///// <summary>
+        ///// 获取控件的同步上下文
+        ///// </summary>
         //System.Threading.SynchronizationContext SynContext { get; }
         #endregion
 

@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using mshtml;
+//using mshtml;
 using System.IO;
 using UtilZ.Dotnet.Ex.DataStruct;
 using System.Collections;
@@ -82,7 +82,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 }
             }
         }
-
+        /*
         /// <summary>
         /// 获取选中文本
         /// </summary>
@@ -98,7 +98,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 dynamic range = doc2.selection.createRange();
                 return range.htmlText;
             }
-        }
+        }*/
 
         private HtmlElement _logContainerEle;
         private string _logContainerEleId;
@@ -130,6 +130,8 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             this._synContext = System.Threading.SynchronizationContext.Current;
             this._logShowQueue = new AsynQueue<ShowLogItem>((item) => { this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item); }, "日志显示线程", true, true, 1000);
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+            this.webBrowser.ScriptErrorsSuppressed = true;
+            //this.webBrowser.IsWebBrowserContextMenuEnabled = false;
             this.Init("uid", "li");
             this._templateType = true;
             this.webBrowser.DocumentText = this.GetLogHtmlTemplate();
@@ -165,6 +167,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             //this.webBrowser.Document.InvokeScript("")
             HtmlElement logEle = this.webBrowser.Document.CreateElement(this._logItemEleName);
+            logEle.SetAttribute("id", Guid.NewGuid().ToString());
             logEle.InnerText = item.LogText;
             switch (item.Type)
             {
@@ -313,11 +316,19 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 return;
             }
 
-            IHTMLDOMNode node;
+            //IHTMLDOMNode node;
+            //for (int i = 0; i < offset; i++)
+            //{
+            //    node = logItemElementCollection[0].DomElement as IHTMLDOMNode;
+            //    node.parentNode.removeChild(node);
+            //}
+
+            string id;
             for (int i = 0; i < offset; i++)
             {
-                node = logItemElementCollection[0].DomElement as IHTMLDOMNode;
-                node.parentNode.removeChild(node);
+                HtmlElement ele = logItemElementCollection[0];
+                id = ele.GetAttribute("id");
+                this.webBrowser.Document.InvokeScript("removeEle", new object[] { id });
             }
         }
 
@@ -340,6 +351,40 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                         list-style: none;
                     }
                 </style>
+
+<script type=""text/javascript"">
+//document.oncontextmenu = function(){return false;};  
+        document.oncontextmenu = function () {
+            var selecTextLen;
+            var selectionObj = window.getSelection();
+            if (selectionObj == null) {
+                selecTextLen = 0;
+            }
+            else {
+                var selectedText = selectionObj.toString();
+                selecTextLen = selectedText.length;
+            }
+
+            return selecTextLen > 0; 
+        };
+
+        function removeEle(id)
+            {
+                var ele = document.getElementById(id);
+                if (ele != null){
+                    try {
+                     ele.parentElement.removeChild(ele);
+                    }
+                    catch (err) {
+                        //window.alert(err.message);
+                    }
+                }
+                else{
+                //window.alert(""ele == null"");
+                }
+            };
+    </script>
+
             </head>
             <body>
             <ul  id=""uid"">
@@ -351,7 +396,15 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            this._logContainerEle = this.webBrowser.Document.GetElementById(this._logContainerEleId);
+            var doc = this.webBrowser.Document;
+            if (doc == null)
+            {
+                this._logContainerEle = null;
+            }
+            else
+            {
+                this._logContainerEle = doc.GetElementById(this._logContainerEleId);                
+            }
         }
 
         private void Init(string logContainerEleId, string logItemEleName)

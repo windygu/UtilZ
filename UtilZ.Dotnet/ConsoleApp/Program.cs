@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace ConsoleApp
@@ -18,21 +19,32 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
-            
-            _stopAutoResetEvent.WaitOne();
-            _stopAutoResetEvent.Set();
+            var subLog = new UtilZ.Dotnet.Ex.Log.LogOutput.LogOutputSubscribeItem(null, null);
+            subLog.LogOutput += SubLog_LogOutput;
+            Loger.LogOutput.AddLogOutput(subLog);
+            Loger.LogOutput.Enable = true;
 
-            //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, null, 3);
 
-            DataTable dt = new DataTable();
-
-            //TestPortReg();
-
-            TestFtpUrl();
+            //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, "测试服务", ProCallback, 3);
+            //ts.Start();
 
             Console.WriteLine("Press any key exit");
             Console.ReadKey();
+        }
+
+        private static void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)
+        {
+            string str;
+            try
+            {
+                str = string.Format("{0} {1}", DateTime.Now, e.Item.Content);
+            }
+            catch (Exception ex)
+            {
+                str = ex.Message;
+            }
+
+            Console.WriteLine(str);
         }
 
         private static void TestFtpUrl()
@@ -80,7 +92,7 @@ namespace ConsoleApp
             {
                 new FTPEx(ftpUrl);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -89,7 +101,7 @@ namespace ConsoleApp
             Console.WriteLine("---------------------------------------------------------------");
             return;
             ftpUrl = ftpUrl.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-      
+
 
             Match match = Regex.Match(ftpUrl, regStr);
             if (match.Success)

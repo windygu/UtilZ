@@ -20,7 +20,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
         /// <summary>
         /// 数据库连接字符串字典集合[key:数据库编号ID;value:数据库连接字符串]
         /// </summary>
-        private readonly ConcurrentDictionary<int, DBConStrInfo> _dicConStrs = new ConcurrentDictionary<int, DBConStrInfo>();
+        private readonly ConcurrentDictionary<int, string> _dicConStrs = new ConcurrentDictionary<int, string>();
 
         /// <summary>
         /// 数据库连接字符串字典集合线程锁
@@ -39,9 +39,8 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
         /// 创建数据库读连接对象
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接对象</returns>
-        public abstract DbConnection CreateConnection(DBConfigElement config, DBVisitType visitType);
+        public abstract DbConnection CreateConnection(DBConfigElement config);
 
         /// <summary>
         /// 创建DbDataAdapter
@@ -53,15 +52,14 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
         /// 获取数据库连接字符串
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接字符串</returns>
-        public string GetDBConStr(DBConfigElement config, DBVisitType visitType)
+        public string GetDBConStr(DBConfigElement config)
         {
             int dbid = config.DBID;
-            DBConStrInfo dbConStrInfo;
+            string conStr;
             if (this._dicConStrs.ContainsKey(dbid))
             {
-                if (!this._dicConStrs.TryGetValue(dbid, out dbConStrInfo))
+                if (!this._dicConStrs.TryGetValue(dbid, out conStr))
                 {
                     throw new ApplicationException(string.Format("获取数据库编号为{0}的数据库连接字符串失败", dbid));
                 }
@@ -72,7 +70,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
                 {
                     if (this._dicConStrs.ContainsKey(dbid))
                     {
-                        if (!this._dicConStrs.TryGetValue(dbid, out dbConStrInfo))
+                        if (!this._dicConStrs.TryGetValue(dbid, out conStr))
                         {
                             throw new ApplicationException(string.Format("获取数据库编号为{0}的数据库连接字符串失败", dbid));
                         }
@@ -80,18 +78,15 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
                     else
                     {
                         string decryptionType = config.Decryption;
-                        string readConStr, writeConStr;
                         if (string.IsNullOrEmpty(decryptionType))
                         {
                             if (config.DBConInfoType == 0)
                             {
-                                readConStr = config.ConStr;
-                                writeConStr = config.ConStr;
+                                conStr = config.ConStr;
                             }
                             else
                             {
-                                readConStr = this.GenerateDBConStr(config, DBVisitType.R);
-                                writeConStr = this.GenerateDBConStr(config, DBVisitType.W);
+                                conStr = this.GenerateDBConStr(config);
                             }
                         }
                         else
@@ -103,24 +98,12 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
                                 throw new ApplicationException(string.Format("创建数据库连接信息解密接口类型{0}失败", decryptionType));
                             }
 
-                            readConStr = decryption.GetDBConStr(config, DBVisitType.R);
-                            writeConStr = decryption.GetDBConStr(config, DBVisitType.W);
+                            conStr = decryption.GetDBConStr(config);
                         }
 
-                        dbConStrInfo = new DBConStrInfo(readConStr, writeConStr);
-                        this._dicConStrs.TryAdd(dbid, dbConStrInfo);
+                        this._dicConStrs.TryAdd(dbid, conStr);
                     }
                 }
-            }
-
-            string conStr;
-            if (visitType == DBVisitType.R)
-            {
-                conStr = dbConStrInfo.ReadConStr;
-            }
-            else
-            {
-                conStr = dbConStrInfo.WriteConStr;
             }
 
             return conStr;
@@ -130,9 +113,8 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
         /// 生成数据库连接字符串
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接字符串</returns>
-        public abstract string GenerateDBConStr(DBConfigElement config, DBVisitType visitType);
+        public abstract string GenerateDBConStr(DBConfigElement config);
 
         /// <summary>
         /// 创建命令参数
@@ -462,33 +444,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Base
             }
 
             return sbSql.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 数据库连接字符串信息
-    /// </summary>
-    internal class DBConStrInfo
-    {
-        /// <summary>
-        /// 读取连接字符串
-        /// </summary>
-        public string ReadConStr { get; private set; }
-
-        /// <summary>
-        /// 写取连接字符串
-        /// </summary>
-        public string WriteConStr { get; private set; }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="readConStr">读取连接字符串</param>
-        /// <param name="writeConStr">写取连接字符串</param>
-        public DBConStrInfo(string readConStr, string writeConStr)
-        {
-            this.ReadConStr = readConStr;
-            this.WriteConStr = writeConStr;
         }
     }
 }

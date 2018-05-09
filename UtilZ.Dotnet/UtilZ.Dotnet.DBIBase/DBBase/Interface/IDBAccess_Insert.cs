@@ -51,7 +51,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="collections">命令的参数集合</param>
-        /// <param name="con">数据库连接对象</param>
         /// <returns>返回受影响的行数</returns>
         long BatchInsert(string sqlStr, IEnumerable<NDbParameterCollection> collections);
 

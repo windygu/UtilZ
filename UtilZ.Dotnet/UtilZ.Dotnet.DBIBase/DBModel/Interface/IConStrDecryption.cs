@@ -16,8 +16,7 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.Interface
         /// 获取数据库连接字符串
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <param name="visitType">访问类型</param>
         /// <returns>数据库连接字符串</returns>
-        string GetDBConStr(DBConfigElement config, DBVisitType visitType);
+        string GetDBConStr(DBConfigElement config);
     }
 }
