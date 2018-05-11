@@ -128,13 +128,26 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             InitializeComponent();
 
             this._synContext = System.Threading.SynchronizationContext.Current;
-            this._logShowQueue = new AsynQueue<ShowLogItem>((item) => { this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item); }, "日志显示线程", true, true, 1000);
+            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, 100);
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             this.webBrowser.ScriptErrorsSuppressed = true;
             //this.webBrowser.IsWebBrowserContextMenuEnabled = false;
             this.Init("uid", "li");
             this._templateType = true;
             this.webBrowser.DocumentText = this.GetLogHtmlTemplate();
+        }
+
+        private void ShowLog(ShowLogItem item)
+        {
+            try
+            {
+                this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item);
+                Application.DoEvents();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
 
         private void ShowLog(object state)
@@ -159,7 +172,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             }
             catch (Exception ex)
             {
-                Loger.Error(ex);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
 
@@ -403,7 +416,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             }
             else
             {
-                this._logContainerEle = doc.GetElementById(this._logContainerEleId);                
+                this._logContainerEle = doc.GetElementById(this._logContainerEleId);
             }
         }
 
