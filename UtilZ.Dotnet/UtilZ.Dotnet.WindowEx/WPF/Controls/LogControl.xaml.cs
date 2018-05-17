@@ -107,7 +107,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
 
             this._defaultStyle = new LogShowStyle(Colors.Gray, this.GetFontFamily(null), 15);
             this._synContext = System.Threading.SynchronizationContext.Current;
-            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, false, 100);
+            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, 20, "日志显示线程", true, false, 10000);
             this._logShowQueue.Start(System.Threading.ApartmentState.STA);
         }
 
@@ -156,14 +156,14 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             return null;
         }
 
-        private void ShowLog(ShowLogItem item)
+        private void ShowLog(List<ShowLogItem> items)
         {
             try
             {
-                this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item);
+                //this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), items);
                 //DoEvents();
-                //this.Dispatcher.Invoke(new Action(() => { this.ShowLog(item); }));
-                //Thread.Sleep(100);
+                this.Dispatcher.Invoke(new Action(() => { this.ShowLog((object)items); }));
+                Thread.Sleep(15);
             }
             catch (Exception ex)
             {
@@ -175,27 +175,33 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         {
             try
             {
-                ShowLogItem item = (ShowLogItem)state;
-                LogShowStyle style = this.GetStyle(item.Level);
-
-                var span = new Span();
-                var run = new Run();
-                run.Text = item.LogText;
-                run.FontSize = style.FontSize;
-                run.FontFamily = style.FontFamily;
-                run.Foreground = style.Foreground;
-
-                span.Inlines.Add(run);
-                span.Inlines.Add(new LineBreak());
-                content.Inlines.Add(span);
-                this._lines.Add(span);
-
-                if (!this._isLock)
+                List<ShowLogItem> items = (List<ShowLogItem>)state;
+                foreach (var item in items)
                 {
-                    this.RemoveOutElements();
+                    LogShowStyle style = this.GetStyle(item.Level);
+
+                    var span = new Span();
+                    var run = new Run();
+                    run.Text = item.LogText;
+                    run.FontSize = style.FontSize;
+                    run.FontFamily = style.FontFamily;
+                    run.Foreground = style.Foreground;
+
+                    span.Inlines.Add(run);
+                    span.Inlines.Add(new LineBreak());
+                    content.Inlines.Add(span);
+                    this._lines.Add(span);
+
+                    if (!this._isLock)
+                    {
+                        this.RemoveOutElements();
+                    }
                 }
 
-                if (item.Level == LogLevel.Faltal)
+                rtxt.ScrollToEnd();
+
+
+                if (items.LastOrDefault().Level == LogLevel.Faltal)
                 {
                     UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
                 }

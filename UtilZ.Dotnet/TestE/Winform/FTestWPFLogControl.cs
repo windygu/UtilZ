@@ -95,7 +95,7 @@ namespace TestE.Winform
 
         private void btnPer_Click(object sender, EventArgs e)
         {
-            logControl1.MaxItemCount = 10050;
+            logControl1.MaxItemCount = 200;
             Task.Factory.StartNew(() =>
             {
                 _watch = Stopwatch.StartNew();
