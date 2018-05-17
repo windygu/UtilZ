@@ -169,6 +169,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 }
 
                 this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
+                if (item.Color == Color.Green)
+                {
+                    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
+                }
             }
             catch (Exception ex)
             {

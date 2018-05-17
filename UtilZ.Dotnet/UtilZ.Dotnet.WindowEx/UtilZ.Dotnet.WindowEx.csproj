@@ -200,6 +200,9 @@
     </Compile>
     <Compile Include="WPF\Controls\GifImage\GifImageExceptionRoutedEventArgs.cs" />
     <Compile Include="WPF\Controls\GifImage\WebReadState.cs" />
+    <Compile Include="WPF\Controls\LogControl.xaml.cs">
+      <DependentUpon>LogControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Controls\NumericTextBox.xaml.cs">
       <DependentUpon>NumericTextBox.xaml</DependentUpon>
     </Compile>
@@ -208,6 +211,7 @@
     <Compile Include="WPF\Controls\PartAsynWait\V1\WPFPartAsynExcuteV1.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteBase.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteTypeDefine.cs" />
+    <Compile Include="WPF\Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="WPF\Controls\WaitingControls\MetroLRWaitIndicator.xaml.cs">
       <DependentUpon>MetroLRWaitIndicator.xaml</DependentUpon>
     </Compile>
@@ -225,6 +229,10 @@
     <Page Include="WPF\Controls\GifImage\GifImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\Controls\LogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\Controls\NumericTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>

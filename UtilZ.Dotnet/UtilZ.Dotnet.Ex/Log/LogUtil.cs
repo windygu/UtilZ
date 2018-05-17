@@ -54,7 +54,7 @@ namespace UtilZ.Dotnet.Ex.Log
                     try
                     {
                         FileInfo fileInfo = new FileInfo(filePath);
-                        if (fileInfo.Length / 1024 / 1024 >= fileSize)//如果文件大小大于了fileSize大小，就将文件区分索引+1，再重新创建一个文件路径
+                        if (fileInfo.Length / 1048576 >= fileSize)//如果文件大小大于了fileSize大小，就将文件区分索引+1，再重新创建一个文件路径
                         {
                             index++;
                             filePath = Path.Combine(directory, string.Format(@"{0}_{1}{2}", dayStr, index, extension));

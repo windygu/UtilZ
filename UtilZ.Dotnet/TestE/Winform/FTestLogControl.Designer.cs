@@ -33,6 +33,8 @@
             this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.btnTemplate = new System.Windows.Forms.Button();
+            this.btnPer = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnTest
@@ -88,11 +90,30 @@
             this.btnTemplate.UseVisualStyleBackColor = true;
             this.btnTemplate.Click += new System.EventHandler(this.btnTemplate_Click);
             // 
+            // btnPer
+            // 
+            this.btnPer.Location = new System.Drawing.Point(505, 13);
+            this.btnPer.Name = "btnPer";
+            this.btnPer.Size = new System.Drawing.Size(75, 23);
+            this.btnPer.TabIndex = 8;
+            this.btnPer.Text = "性能";
+            this.btnPer.UseVisualStyleBackColor = true;
+            this.btnPer.Click += new System.EventHandler(this.btnPer_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(612, 12);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.TabIndex = 7;
+            // 
             // FTestLogControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnPer);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btnTemplate);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btnClear);
@@ -113,5 +134,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button btnTemplate;
+        private System.Windows.Forms.Button btnPer;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

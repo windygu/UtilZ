@@ -45,6 +45,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
+        /// 批量出队列线程消息通知
+        /// </summary>
+        private readonly AutoResetEvent _batchAutoResetEvent = new AutoResetEvent(false);
+
+        /// <summary>
         /// 操作外部线程锁
         /// </summary>
         private readonly object _blockingCollectionMonitor = new object();
@@ -87,34 +92,45 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         }
 
         /// <summary>
+        /// 是否每次抛出多项
+        /// </summary>
+        private readonly bool _isDequeueMuiltItem;
+
+        /// <summary>
+        /// 批量处理最大项数
+        /// </summary>
+        private readonly int _batchCount = 0;
+
+        /// <summary>
         /// 数据处理委托
         /// </summary>
         public Action<T> ProcessAction;
 
         /// <summary>
-        /// 数据处理
+        /// 数据处理委托
         /// </summary>
-        /// <param name="item">待处理数据项</param>
-        private void OnRaiseProcess(T item)
+        public Action<List<T>> ProcessAction2;
+
+        private void OnRaiseProcessAction2(List<T> items)
         {
-            var handler = this.ProcessAction;
+            var handler = this.ProcessAction2;
             if (handler != null)
             {
-                handler(item);
+                handler(items);//数据处理
             }
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="processAction">数据处理委托</param>
+        /// <param name="isDequeueMuiltItem">是否每次抛出多项</param>
         /// <param name="threadName">异步队列线程名称</param>
         /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
         /// <param name="isAutoStart">是否自动启动线程</param>
         /// <param name="capcity">队列容量,-1为不限容量,小于</param>
-        public AsynQueue(Action<T> processAction, string threadName = null, bool isBackground = true, bool isAutoStart = false, int capcity = -1)
+        private AsynQueue(bool isDequeueMuiltItem, string threadName = null, bool isBackground = true, bool isAutoStart = false, int capcity = -1)
         {
-            this.ProcessAction = processAction;
+            this._isDequeueMuiltItem = isDequeueMuiltItem;
             this._isBackground = isBackground;
             this._threadName = threadName;
             if (capcity == 0 || capcity < -1)
@@ -128,6 +144,45 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             }
 
             this._blockingCollection = new BlockingCollection<T>(new ConcurrentQueue<T>(), capcity);
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="processAction">数据处理委托</param>
+        /// <param name="threadName">异步队列线程名称</param>
+        /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
+        /// <param name="isAutoStart">是否自动启动线程</param>
+        /// <param name="capcity">队列容量,-1为不限容量,小于</param>
+        public AsynQueue(Action<T> processAction, string threadName = null, bool isBackground = true, bool isAutoStart = false, int capcity = -1) :
+            this(false, threadName, isBackground, isAutoStart, capcity)
+        {
+            this.ProcessAction = processAction;
+            if (isAutoStart)
+            {
+                this.Start();
+            }
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="processAction">数据处理委托</param>
+        /// <param name="batchCount">批量处理最大项数</param>
+        /// <param name="threadName">异步队列线程名称</param>
+        /// <param name="isBackground">是否是后台线程[true:后台线程，false:前台线程]</param>
+        /// <param name="isAutoStart">是否自动启动线程</param>
+        /// <param name="capcity">队列容量,-1为不限容量,小于</param>
+        public AsynQueue(Action<List<T>> processAction, int batchCount = 10, string threadName = null, bool isBackground = true, bool isAutoStart = false, int capcity = -1) :
+            this(true, threadName, isBackground, isAutoStart, capcity)
+        {
+            if (batchCount < 1)
+            {
+                throw new ArgumentException(string.Format("批量处理最大项数不能小于1,值:{0}无效", batchCount));
+            }
+
+            this.ProcessAction2 = processAction;
+            this._batchCount = batchCount;
             if (isAutoStart)
             {
                 this.Start();
@@ -137,7 +192,8 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 启动子类无参数工作线程
         /// </summary>
-        public void Start()
+        /// <param name="apartmentState">指定的单元状态 System.Threading.Thread</param>
+        public void Start(ApartmentState apartmentState = ApartmentState.Unknown)
         {
             lock (this._threadMonitor)
             {
@@ -152,8 +208,17 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 }
 
                 this._cts = new CancellationTokenSource();
-                this._thread = new Thread(this.RunThreadQueueProcessMethod);
+                if (this._isDequeueMuiltItem)
+                {
+                    this._thread = new Thread(this.RunThreadQueueMuiltProcessMethod);
+                }
+                else
+                {
+                    this._thread = new Thread(this.RunThreadQueueSingleProcessMethod);
+                }
+
                 this._thread.IsBackground = this._isBackground;
+                this._thread.SetApartmentState(apartmentState);
                 this._thread.Name = this._threadName;
                 this._thread.Start();
                 this._status = true;
@@ -178,6 +243,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 if (this._status)
                 {
                     this._cts.Cancel();
+                    if (this._isDequeueMuiltItem)
+                    {
+                        this._batchAutoResetEvent.Set();
+                    }
+
                     if (isAbort)
                     {
                         this._thread.Abort();
@@ -200,7 +270,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 线程队列处理方法
         /// </summary>
-        private void RunThreadQueueProcessMethod()
+        private void RunThreadQueueSingleProcessMethod()
         {
             CancellationToken token = this._cts.Token;
             try
@@ -213,7 +283,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                         {
                             try
                             {
-                                this.OnRaiseProcess(item);//数据处理
+                                var handler = this.ProcessAction;
+                                if (handler != null)
+                                {
+                                    handler(item);//数据处理
+                                }
                             }
                             catch (ThreadAbortException)
                             {
@@ -278,19 +352,39 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 线程队列处理方法
         /// </summary>
-        private void RunThreadQueueProcessMethod_bk()
+        private void RunThreadQueueMuiltProcessMethod()
         {
             try
             {
                 CancellationToken token = this._cts.Token;
                 T item;
+                List<T> items = new List<T>();
+                List<T> outItems;
                 while (!token.IsCancellationRequested)
                 {
                     try
                     {
-                        if (this._blockingCollection.TryTake(out item, 5000, token))
+                        if (this._blockingCollection.TryTake(out item, 1, token))
                         {
-                            this.OnRaiseProcess(item);//数据处理
+                            items.Add(item);
+                            if (items.Count >= this._batchCount)
+                            {
+                                outItems = items.ToList();
+                                items.Clear();
+                                this.OnRaiseProcessAction2(outItems);//数据处理                                
+                            }
+                        }
+                        else
+                        {
+                            if (items.Count > 0)
+                            {
+                                outItems = items.ToList();
+                                items.Clear();
+                                this.OnRaiseProcessAction2(outItems);//数据处理  
+                            }
+
+                            //等待
+                            this._batchAutoResetEvent.WaitOne(2000);
                         }
                     }
                     catch (OperationCanceledException)
@@ -342,7 +436,13 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <returns>如果在指定的时间内可以将 item 添加到集合中，则为 true；否则为 false</returns>
         public bool Enqueue(T item, int millisecondsTimeout = System.Threading.Timeout.Infinite, List<T> overflowItems = null)
         {
-            return this._blockingCollection.TryAdd(item, millisecondsTimeout);
+            bool ret = this._blockingCollection.TryAdd(item, millisecondsTimeout);
+            if (ret && this._isDequeueMuiltItem)
+            {
+                this._batchAutoResetEvent.Set();
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -445,6 +545,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
                 this._blockingCollection.Dispose();
                 this._stopAutoResetEvent.Dispose();
+                this._batchAutoResetEvent.Dispose();
             }
         }
     }

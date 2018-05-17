@@ -370,7 +370,8 @@ namespace UtilZ.Dotnet.Ex.Base
         /// 启动线程
         /// </summary>
         /// <param name="obj">线程启动参数</param>
-        public void Start(object obj = null)
+        /// <param name="apartmentState">指定的单元状态 System.Threading.Thread</param>
+        public void Start(object obj = null, ApartmentState apartmentState = ApartmentState.Unknown)
         {
             lock (this._lock)
             {
@@ -399,6 +400,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 this._cts = new CancellationTokenSource();
 
                 this._thread = new Thread(new ParameterizedThreadStart(this.ThreadExcuteMethod));
+                this._thread.SetApartmentState(apartmentState);
                 if (string.IsNullOrWhiteSpace(this._name))
                 {
                     var st = new System.Diagnostics.StackTrace(1, true);
@@ -589,7 +591,8 @@ namespace UtilZ.Dotnet.Ex.Base
         /// 启动线程
         /// </summary>
         /// <param name="obj">线程启动参数</param>
-        void Start(object obj = null);
+        /// <param name="apartmentState">指定的单元状态 System.Threading.Thread</param>
+        void Start(object obj = null, ApartmentState apartmentState = ApartmentState.Unknown);
 
         /// <summary>
         /// 停止线程
