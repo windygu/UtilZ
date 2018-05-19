@@ -96,10 +96,12 @@ namespace TestE.Winform
         private void btnPer_Click(object sender, EventArgs e)
         {
             logControl1.MaxItemCount = 200;
+            int count = 100000;
+            logControl1.SetLogRefreshInfo(10, count + 10);
             Task.Factory.StartNew(() =>
             {
                 _watch = Stopwatch.StartNew();
-                for (int i = 0; i < 10000; i++)
+                for (int i = 0; i < count; i++)
                 {
                     logControl1.AddLog(string.Format("{0}_{1} Debugsdafasdfsda sdag agfdgdsfg  private void btnThreadTest_Click(" +
                         "object sender, EventArgs e) private void btnThreadTest_Click(object sender, EventArgs e)", DateTime.Now, _index++), LogLevel.Debug);

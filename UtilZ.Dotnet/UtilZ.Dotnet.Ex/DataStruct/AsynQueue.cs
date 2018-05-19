@@ -384,7 +384,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                             }
 
                             //等待
-                            this._batchAutoResetEvent.WaitOne(2000);
+                            this._batchAutoResetEvent.WaitOne();
                         }
                     }
                     catch (OperationCanceledException)
@@ -419,12 +419,24 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             { }
 
-            try
+            lock (this._threadMonitor)
             {
-                this._stopAutoResetEvent.Set();
+                this._thread = null;
+                this._status = false;
             }
-            catch (ObjectDisposedException)
-            { }
+
+            lock (this._threadMonitor)
+            {
+                try
+                {
+                    if (!this._isDisposed)
+                    {
+                        this._stopAutoResetEvent.Set();
+                    }
+                }
+                catch (ObjectDisposedException)
+                { }
+            }
         }
 
         /// <summary>
@@ -536,7 +548,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                     return;
                 }
 
-                this._isDisposed = true;
+
                 this.Stop(false, false, 5000);
                 if (this._cts != null)
                 {
@@ -546,6 +558,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 this._blockingCollection.Dispose();
                 this._stopAutoResetEvent.Dispose();
                 this._batchAutoResetEvent.Dispose();
+                this._isDisposed = true;
             }
         }
     }

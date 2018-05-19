@@ -28,6 +28,7 @@ namespace TestE.Winform
             var sub = new UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.SubscibeItem("123");
             sub.MessageNotify = this.CompletedNotify;
             UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Subscibe(sub);
+            logControl1.StartRefreshLogThread(5, 15000);
         }
 
         private void CompletedNotify(SubscibeItem sub, object obj)
@@ -70,9 +71,9 @@ namespace TestE.Winform
             Task.Factory.StartNew(() =>
             {
                 _watch = Stopwatch.StartNew();
-                for (int i = 0; i < 10000; i++)
+                for (int i = 0; i < 100000; i++)
                 {
-                    logControl1.AddLogStyleForColor(string.Format("{0}_{1}_safsdf", DateTime.Now, _index++), Color.Red);
+                    logControl1.AddLogStyleForColor(string.Format("{0} Hello Word{1}", DateTime.Now, _index++), Color.Red);
                 }
 
                 logControl1.AddLogStyleForColor(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), Color.Green);

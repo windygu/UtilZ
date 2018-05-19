@@ -108,7 +108,8 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// </summary>
         private bool _templateType;
         private string _urlPath;
-        private readonly AsynQueue<ShowLogItem> _logShowQueue;
+        private AsynQueue<ShowLogItem> _logShowQueue = null;
+        private readonly object _logShowQueueLock = new object();
         private readonly int _millisecondsTimeout = 10;
 
         /// <summary>
@@ -118,7 +119,17 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <summary>
         /// 获取控件的同步上下文
         /// </summary>
-        private System.Threading.SynchronizationContext _synContext;
+        //private System.Threading.SynchronizationContext _synContext;
+
+        /// <summary>
+        /// 单次最大刷新日志条数
+        /// </summary>
+        private int _refreshCount = 0;
+
+        /// <summary>
+        /// 日志缓存容量
+        /// </summary>
+        private int _cacheCapcity = 0;
 
         /// <summary>
         /// 构造函数
@@ -127,8 +138,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             InitializeComponent();
 
-            this._synContext = System.Threading.SynchronizationContext.Current;
-            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, 100);
+            //this._synContext = System.Threading.SynchronizationContext.Current;            
             this.webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             this.webBrowser.ScriptErrorsSuppressed = true;
             //this.webBrowser.IsWebBrowserContextMenuEnabled = false;
@@ -137,11 +147,47 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             this.webBrowser.DocumentText = this.GetLogHtmlTemplate();
         }
 
-        private void ShowLog(ShowLogItem item)
+        /// <summary>
+        /// 启动刷新日志线程
+        /// </summary>
+        /// <param name="refreshCount">单次最大刷新日志条数</param>
+        /// <param name="cacheCapcity">日志缓存容量,建议等于日志最大项数</param>
+        public void StartRefreshLogThread(int refreshCount, int cacheCapcity)
+        {
+            if (refreshCount < 1)
+            {
+                throw new ArgumentException(string.Format("单次最大刷新日志条数参数值:{0}无效,该值不能小于1", refreshCount), "refreshCount");
+            }
+
+            if (cacheCapcity < refreshCount)
+            {
+                throw new ArgumentException(string.Format("日志缓存容量参数值:{0}无效,该值不能小于单次最大刷新日志条数参数值:{1}", cacheCapcity, refreshCount), "cacheCapcity");
+            }
+
+            lock (this._logShowQueueLock)
+            {
+                if (this._refreshCount == refreshCount && this._cacheCapcity == cacheCapcity)
+                {
+                    //参数相同,忽略
+                    return;
+                }
+
+                if (this._logShowQueue != null)
+                {
+                    this._logShowQueue.Stop();
+                    this._logShowQueue.Dispose();
+                }
+
+                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, refreshCount, "日志显示线程", true, true, cacheCapcity);
+            }
+        }
+
+        private void ShowLog(List<ShowLogItem> items)
         {
             try
             {
-                this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item);
+                //this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), item);
+                this.Invoke(new Action(() => { this.ShowLogInfo(items); }));
                 Application.DoEvents();
             }
             catch (Exception ex)
@@ -150,29 +196,32 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             }
         }
 
-        private void ShowLog(object state)
+        private void ShowLogInfo(List<ShowLogItem> items)
         {
             try
             {
-                ShowLogItem item = (ShowLogItem)state;
                 if (this._logContainerEle == null)
                 {
                     return;
                 }
 
-                HtmlElement logEle = this.CreateLogItemEle(item);
-                this._logContainerEle.AppendChild(logEle);
-
-                if (!this._isLock)
+                foreach (ShowLogItem item in items)
                 {
-                    this.RemoveOutElements();
+                    HtmlElement logEle = this.CreateLogItemEle(item);
+                    this._logContainerEle.AppendChild(logEle);
+
+                    if (!this._isLock)
+                    {
+                        this.RemoveOutElements();
+                    }
+
+                    if (item.Color == Color.Green)
+                    {
+                        UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
+                    }
                 }
 
                 this.webBrowser.Document.Window.ScrollTo(0, this.webBrowser.Document.Window.Size.Height);
-                if (item.Color == Color.Green)
-                {
-                    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
-                }
             }
             catch (Exception ex)
             {
@@ -451,13 +500,34 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
             this.webBrowser.Navigate(this._urlPath);
         }
 
+        private readonly object _innerAddLogLock = new object();
+        private void InnerAddLog(ShowLogItem item)
+        {
+            bool result;
+            lock (this._innerAddLogLock)
+            {
+                while (true)
+                {
+                    result = this._logShowQueue.Enqueue(item, this._millisecondsTimeout);
+                    if (result)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        this._logShowQueue.Remove(1);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 添加显示日志
         /// </summary>
         /// <param name="logText">日志文本</param>
         public void AddLog(string logText)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText), this._millisecondsTimeout);
+            this.InnerAddLog(new ShowLogItem(logText));
         }
 
         /// <summary>
@@ -467,7 +537,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="color">该条记录文本所显示的颜色</param>
         public void AddLogStyleForColor(string logText, Color color)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText, color), this._millisecondsTimeout);
+            this.InnerAddLog(new ShowLogItem(logText, color));
         }
 
         /// <summary>
@@ -477,7 +547,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="style">样式</param>
         public void AddLogStyleForCss(string logText, string style)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText, style, StyleType.Style), this._millisecondsTimeout);
+            this.InnerAddLog(new ShowLogItem(logText, style, StyleType.Style));
         }
 
         /// <summary>
@@ -487,7 +557,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="className">css class名称</param>
         public void AddLogStyleForClass(string logText, string className)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText, className, StyleType.ClassId), this._millisecondsTimeout);
+            this.InnerAddLog(new ShowLogItem(logText, className, StyleType.ClassId));
         }
 
         /// <summary>

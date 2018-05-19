@@ -68,6 +68,7 @@ namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
                     //如果订阅组内的订阅项数为0，则移除该订阅组
                     if (subscibeGroup.Count == 0)
                     {
+                        subscibeGroup.Dispose();
                         _htSubscibeItems.Remove(item.Topic);
                     }
                 }

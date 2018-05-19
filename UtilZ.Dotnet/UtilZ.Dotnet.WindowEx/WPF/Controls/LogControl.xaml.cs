@@ -88,7 +88,18 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             }
         }
 
-        private readonly AsynQueue<ShowLogItem> _logShowQueue;
+        private AsynQueue<ShowLogItem> _logShowQueue = null;
+        private readonly object _logShowQueueLock = new object();
+        /// <summary>
+        /// 单次最大刷新日志条数
+        /// </summary>
+        private int _refreshCount = 10;
+
+        /// <summary>
+        /// 日志缓存容量
+        /// </summary>
+        private int _cacheCapcity = 100;
+
         private readonly int _millisecondsTimeout = 10;
         private readonly List<Span> _lines = new List<Span>();
         private readonly Dictionary<LogLevel, LogShowStyle> _leveStyle = new Dictionary<LogLevel, LogShowStyle>();
@@ -96,7 +107,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <summary>
         /// 获取控件的同步上下文
         /// </summary>
-        private System.Threading.SynchronizationContext _synContext;
+       // private System.Threading.SynchronizationContext _synContext;
 
         /// <summary>
         /// 构造函数
@@ -106,11 +117,16 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             InitializeComponent();
 
             this._defaultStyle = new LogShowStyle(Colors.Gray, this.GetFontFamily(null), 15);
-            this._synContext = System.Threading.SynchronizationContext.Current;
-            this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, 20, "日志显示线程", true, false, 10000);
-            this._logShowQueue.Start(System.Threading.ApartmentState.STA);
+            // this._synContext = System.Threading.SynchronizationContext.Current;     
+            this.Loaded += LogControl_Loaded;
         }
 
+        private void LogControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.StartRefreshLogThread();
+        }
+
+        /*
         private static DispatcherOperationCallback exitFrameCallback = new
                                 DispatcherOperationCallback(ExitFrame);
 
@@ -154,6 +170,53 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             // Exit the nested message loop.
             frame.Continue = false;
             return null;
+        }
+        */
+
+        /// <summary>
+        /// 设置日志刷新信息
+        /// </summary>
+        /// <param name="refreshCount">单次最大刷新日志条数</param>
+        /// <param name="cacheCapcity">日志缓存容量,建议等于日志最大项数</param>
+        public void SetLogRefreshInfo(int refreshCount, int cacheCapcity)
+        {
+            if (refreshCount < 1)
+            {
+                throw new ArgumentException(string.Format("单次最大刷新日志条数参数值:{0}无效,该值不能小于1", refreshCount), "refreshCount");
+            }
+
+            if (cacheCapcity < refreshCount)
+            {
+                throw new ArgumentException(string.Format("日志缓存容量参数值:{0}无效,该值不能小于单次最大刷新日志条数参数值:{1}", cacheCapcity, refreshCount), "cacheCapcity");
+            }
+
+            if (this._refreshCount == refreshCount && this._cacheCapcity == cacheCapcity)
+            {
+                //参数相同,忽略
+                return;
+            }
+
+            this._refreshCount = refreshCount;
+            this._cacheCapcity = cacheCapcity;
+
+            this.StartRefreshLogThread();
+        }
+
+        /// <summary>
+        /// 启动刷新日志线程
+        /// </summary>
+        private void StartRefreshLogThread()
+        {
+            lock (this._logShowQueueLock)
+            {
+                if (this._logShowQueue != null)
+                {
+                    this._logShowQueue.Stop();
+                    this._logShowQueue.Dispose();
+                }
+
+                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, this._refreshCount, "日志显示线程", true, true, this._cacheCapcity);
+            }
         }
 
         private void ShowLog(List<ShowLogItem> items)
@@ -292,6 +355,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             return this._defaultStyle;
         }
 
+        private readonly object _addLogLock = new object();
         /// <summary>
         /// 添加显示日志
         /// </summary>
@@ -299,7 +363,23 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="level">日志级别</param>
         public void AddLog(string logText, LogLevel level)
         {
-            this._logShowQueue.Enqueue(new ShowLogItem(logText, level), this._millisecondsTimeout);
+            var item = new ShowLogItem(logText, level);
+            bool result;
+            lock (this._addLogLock)
+            {
+                while (true)
+                {
+                    result = this._logShowQueue.Enqueue(item, this._millisecondsTimeout);
+                    if (result)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        this._logShowQueue.Remove(1);
+                    }
+                }
+            }
         }
 
 

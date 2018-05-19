@@ -57,6 +57,7 @@
     <Compile Include="Base\DateTimeEx.cs" />
     <Compile Include="Base\DeletegateEx.cs" />
     <Compile Include="Base\DirectoryInfoEx.cs" />
+    <Compile Include="Base\EventWaitHandleEx.cs" />
     <Compile Include="Base\FileEx.cs" />
     <Compile Include="Base\FileStringCodingEx.cs" />
     <Compile Include="Base\FontEx.cs" />
