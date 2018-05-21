@@ -24,11 +24,6 @@ namespace UtilZ.Dotnet.Ex.Base
         private bool _isDisposed = false;
 
         /// <summary>
-        /// 对象是否已释放线程锁
-        /// </summary>
-        private readonly object _isDisposedLock = new object();
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="initialState"></param>
@@ -55,15 +50,19 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>如果该操作成功，则为 true；否则为 false</returns>
         public bool Reset()
         {
-            lock (this._isDisposedLock)
+            if (this._isDisposed)
             {
-                if (this._isDisposed)
-                {
-                    return false;
-                    //throw new ObjectDisposedException("_eventWaitHandle");
-                }
+                return false;
+                //throw new ObjectDisposedException("_eventWaitHandle");
+            }
 
+            try
+            {
                 return this._eventWaitHandle.Reset();
+            }
+            catch (ObjectDisposedException)
+            {
+                return false;
             }
         }
 
@@ -73,15 +72,42 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>如果该操作成功，则为 true；否则为 false</returns>
         public bool Set()
         {
-            lock (this._isDisposedLock)
+            if (this._isDisposed)
             {
-                if (this._isDisposed)
-                {
-                    return false;
-                    //throw new ObjectDisposedException("_eventWaitHandle");
-                }
+                return false;
+                //throw new ObjectDisposedException("_eventWaitHandle");
+            }
 
+            try
+            {
                 return this._eventWaitHandle.Set();
+            }
+            catch (ObjectDisposedException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 阻止当前线程，直到当前 System.Threading.WaitHandle 收到信号，同时使用 32 位带符号整数指定时间间隔（以毫秒为单位）
+        /// </summary>
+        /// <param name="millisecondsTimeout">等待的毫秒数，或为 System.Threading.Timeout.Infinite (-1)，表示无限期等待</param>
+        /// <returns></returns>
+        public bool WaitOne(int millisecondsTimeout = System.Threading.Timeout.Infinite)
+        {
+            if (this._isDisposed)
+            {
+                return false;
+                //throw new ObjectDisposedException("_eventWaitHandle");
+            }
+
+            try
+            {
+                return this._eventWaitHandle.WaitOne(millisecondsTimeout);
+            }
+            catch (ObjectDisposedException)
+            {
+                return false;
             }
         }
 
@@ -100,16 +126,18 @@ namespace UtilZ.Dotnet.Ex.Base
                 throw new ArgumentNullException("eventSecurity");
             }
 
-            lock (this._isDisposedLock)
+            if (this._isDisposed)
             {
-                if (this._isDisposed)
-                {
-                    return;
-                    //throw new ObjectDisposedException("_eventWaitHandle");
-                }
+                return;
+                //throw new ObjectDisposedException("_eventWaitHandle");
+            }
 
+            try
+            {
                 this._eventWaitHandle.SetAccessControl(eventSecurity);
             }
+            catch (ObjectDisposedException)
+            { }
         }
 
         /// <summary>
@@ -126,16 +154,13 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="isDispose">是否释放标识</param>
         protected virtual void Dispose(bool isDispose)
         {
-            lock (this._isDisposedLock)
+            if (this._isDisposed)
             {
-                if (this._isDisposed)
-                {
-                    return;
-                }
-
-                this._eventWaitHandle.Dispose();
-                this._isDisposed = true;
+                return;
             }
+
+            this._eventWaitHandle.Dispose();
+            this._isDisposed = true;
         }
     }
 }

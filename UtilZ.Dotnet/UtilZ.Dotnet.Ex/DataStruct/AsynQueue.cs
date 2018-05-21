@@ -235,33 +235,46 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             lock (this._threadMonitor)
             {
-                if (this._isDisposed)
-                {
-                    return;
-                }
+                this.PrimitiveStop(isAbort, isSync, synMillisecondsTimeout);
+            }
+        }
 
-                if (this._status)
-                {
-                    this._cts.Cancel();
-                    if (this._isDequeueMuiltItem)
-                    {
-                        this._batchAutoResetEvent.Set();
-                    }
+        /// <summary>
+        /// 停止工作线程
+        /// </summary>       
+        /// <param name="isAbort">是否立即终止处理方法[true:立即终止;false:等待方法执行完成;默认false]</param>
+        /// <param name="isSync">是否同步停止[true:同步停止;false:异常停止];注:注意线程死锁,典型场景:刷新UI,在UI上执行同步停止</param>
+        /// <param name="synMillisecondsTimeout">同步超时时间,-1表示无限期等待,单位/毫秒[isSycn为true时有效]</param>
+        private void PrimitiveStop(bool isAbort, bool isSync, int synMillisecondsTimeout)
+        {
+            if (this._isDisposed)
+            {
+                return;
+            }
 
-                    if (isAbort)
+            if (!this._status)
+            {
+                return;
+            }
+
+            this._cts.Cancel();
+            if (this._isDequeueMuiltItem)
+            {
+                this._batchAutoResetEvent.Set();
+            }
+
+            if (isAbort)
+            {
+                this._thread.Abort();
+            }
+
+            if (isSync)
+            {
+                if (!this._stopAutoResetEvent.WaitOne(synMillisecondsTimeout))
+                {
+                    if (!isAbort)
                     {
                         this._thread.Abort();
-                    }
-
-                    if (isSync)
-                    {
-                        if (!this._stopAutoResetEvent.WaitOne(synMillisecondsTimeout))
-                        {
-                            if (!isAbort)
-                            {
-                                this._thread.Abort();
-                            }
-                        }
                     }
                 }
             }
@@ -329,24 +342,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             { }
 
-            lock (this._threadMonitor)
-            {
-                this._thread = null;
-                this._status = false;
-            }
-
-            lock (this._threadMonitor)
-            {
-                try
-                {
-                    if (!this._isDisposed)
-                    {
-                        this._stopAutoResetEvent.Set();
-                    }
-                }
-                catch (ObjectDisposedException)
-                { }
-            }
+            this.ThreadRunFinish();
         }
 
         /// <summary>
@@ -419,14 +415,15 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             { }
 
+            this.ThreadRunFinish();
+        }
+
+        private void ThreadRunFinish()
+        {
             lock (this._threadMonitor)
             {
                 this._thread = null;
                 this._status = false;
-            }
-
-            lock (this._threadMonitor)
-            {
                 try
                 {
                     if (!this._isDisposed)
@@ -549,7 +546,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 }
 
 
-                this.Stop(false, false, 5000);
+                this.PrimitiveStop(false, false, 5000);
                 if (this._cts != null)
                 {
                     this._cts.Dispose();

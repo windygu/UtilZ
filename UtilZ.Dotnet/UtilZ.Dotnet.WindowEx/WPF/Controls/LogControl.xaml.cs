@@ -246,8 +246,16 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     var span = new Span();
                     var run = new Run();
                     run.Text = item.LogText;
-                    run.FontSize = style.FontSize;
-                    run.FontFamily = style.FontFamily;
+                    if (style.FontSize > 0)
+                    {
+                        run.FontSize = style.FontSize;
+                    }
+
+                    if (style.FontFamily != null)
+                    {
+                        run.FontFamily = style.FontFamily;
+                    }
+
                     run.Foreground = style.Foreground;
 
                     span.Inlines.Add(run);
@@ -292,7 +300,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="foreground">字体颜色</param>
         /// <param name="fontFamilyName">字体名称</param>
         /// <param name="fontSize">字体大小</param>
-        public void AddStyle(LogLevel level, Color foreground, string fontFamilyName, double fontSize = 15)
+        public void AddStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
         {
             FontFamily fontFamily = this.GetFontFamily(fontFamilyName);
             var style = new LogShowStyle(foreground, fontFamily, fontSize);
@@ -311,17 +319,24 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             FontFamily fontFamily;
             if (string.IsNullOrWhiteSpace(fontName))
             {
-                fontName = "Microsoft YaHei UI";
+                fontFamily = null;
+                //fontName = "Microsoft YaHei UI";
             }
-
-            var fonts = UtilZ.Dotnet.Ex.Base.FontEx.GetSystemInstallFonts();
-            bool existYahei = (from tmpItem in fonts where string.Equals(tmpItem.Name, fontName, StringComparison.OrdinalIgnoreCase) select tmpItem).Count() == 0;
-            if (existYahei)
+            else
             {
-                fontName = fonts[0].Name;
+                var fonts = UtilZ.Dotnet.Ex.Base.FontEx.GetSystemInstallFonts();
+                bool existYahei = (from tmpItem in fonts where string.Equals(tmpItem.Name, fontName, StringComparison.OrdinalIgnoreCase) select tmpItem).Count() > 0;
+                if (existYahei)
+                {
+                    //fontName = fonts[0].Name;
+                    fontFamily = new FontFamily(fontName);
+                }
+                else
+                {
+                    fontFamily = null;
+                }
             }
 
-            fontFamily = new FontFamily(fontName);
             return fontFamily;
         }
 
@@ -382,6 +397,14 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 清空日志
+        /// </summary>
+        public void Clear()
+        {
+            this.content.Inlines.Clear();
+            this._lines.Clear();
+        }
 
         /*
         private void OnLoaded(object sender, RoutedEventArgs e)

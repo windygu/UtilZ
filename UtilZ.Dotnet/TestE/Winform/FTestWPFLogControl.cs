@@ -36,12 +36,17 @@ namespace TestE.Winform
         private Stopwatch _watch;
         private void FTestWPFLogControl_Load(object sender, EventArgs e)
         {
-            logControl1.AddStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray, "Vladimir Script", 15);
-            logControl1.AddStyle(LogLevel.Error, System.Windows.Media.Colors.Red, "Wide Latin", 13);
-            logControl1.AddStyle(LogLevel.Faltal, System.Windows.Media.Colors.Blue, "STXingkai", 15);
-            //logControl1.AddStyle(LogLevel.Info, System.Windows.Media.Colors.Green, "STCaiyun", 13);
-            logControl1.AddStyle(LogLevel.Info, System.Windows.Media.Colors.Green, "", 13);
-            logControl1.AddStyle(LogLevel.Warn, System.Windows.Media.Colors.YellowGreen, "Nirmala UI", 15);
+            //logControl1.AddStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray, "Vladimir Script", 15);
+            //logControl1.AddStyle(LogLevel.Error, System.Windows.Media.Colors.Red, "Wide Latin", 13);
+            //logControl1.AddStyle(LogLevel.Faltal, System.Windows.Media.Colors.Blue, "STXingkai", 15);
+            //logControl1.AddStyle(LogLevel.Info, System.Windows.Media.Colors.Green, "", 13);
+            //logControl1.AddStyle(LogLevel.Warn, System.Windows.Media.Colors.YellowGreen, "Nirmala UI", 15);
+
+            logControl1.AddStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray, null, 0);
+            logControl1.AddStyle(LogLevel.Error, System.Windows.Media.Colors.Red, "");
+            logControl1.AddStyle(LogLevel.Faltal, System.Windows.Media.Colors.Red, "", 0);
+            logControl1.AddStyle(LogLevel.Info, System.Windows.Media.Colors.WhiteSmoke, "");
+            logControl1.AddStyle(LogLevel.Warn, System.Windows.Media.Colors.Yellow, null);
 
             //logControl1.MaxItemCount = 8;
             cbIsLock.Checked = logControl1.IsLock;
@@ -96,7 +101,7 @@ namespace TestE.Winform
         private void btnPer_Click(object sender, EventArgs e)
         {
             logControl1.MaxItemCount = 200;
-            int count = 100000;
+            int count = 1000000;
             logControl1.SetLogRefreshInfo(10, count + 10);
             Task.Factory.StartNew(() =>
             {
