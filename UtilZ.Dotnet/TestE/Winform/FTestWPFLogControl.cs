@@ -101,7 +101,7 @@ namespace TestE.Winform
         private void btnPer_Click(object sender, EventArgs e)
         {
             logControl1.MaxItemCount = 200;
-            int count = 1000000;
+            int count = 100000;
             logControl1.SetLogRefreshInfo(10, count + 10);
             Task.Factory.StartNew(() =>
             {

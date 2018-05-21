@@ -271,10 +271,10 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 rtxt.ScrollToEnd();
 
 
-                if (items.LastOrDefault().Level == LogLevel.Faltal)
-                {
-                    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
-                }
+                //if (items.LastOrDefault().Level == LogLevel.Faltal)
+                //{
+                //    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
+                //}
             }
             catch (Exception ex)
             {
