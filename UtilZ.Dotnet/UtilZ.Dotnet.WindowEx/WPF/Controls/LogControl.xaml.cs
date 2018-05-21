@@ -246,6 +246,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     var span = new Span();
                     var run = new Run();
                     run.Text = item.LogText;
+                    run.Foreground = style.Foreground;
                     if (style.FontSize > 0)
                     {
                         run.FontSize = style.FontSize;
@@ -255,8 +256,6 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     {
                         run.FontFamily = style.FontFamily;
                     }
-
-                    run.Foreground = style.Foreground;
 
                     span.Inlines.Add(run);
                     span.Inlines.Add(new LineBreak());
