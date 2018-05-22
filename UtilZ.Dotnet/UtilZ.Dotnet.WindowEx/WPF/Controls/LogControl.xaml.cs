@@ -101,7 +101,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         private int _cacheCapcity = 100;
 
         private readonly int _millisecondsTimeout = 10;
-        private readonly List<Span> _lines = new List<Span>();
+        private readonly List<Inline> _lines = new List<Inline>();
         private readonly Dictionary<LogLevel, LogShowStyle> _leveStyle = new Dictionary<LogLevel, LogShowStyle>();
         private readonly LogShowStyle _defaultStyle;
         /// <summary>
@@ -235,6 +235,49 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         }
 
         private void ShowLog(object state)
+        {
+            try
+            {
+                List<ShowLogItem> items = (List<ShowLogItem>)state;
+                foreach (var item in items)
+                {
+                    LogShowStyle style = this.GetStyle(item.Level);
+                    var run = new Run();
+                    run.Text = item.LogText;
+                    run.Foreground = style.Foreground;
+                    if (style.FontSize > 0)
+                    {
+                        run.FontSize = style.FontSize;
+                    }
+
+                    if (style.FontFamily != null)
+                    {
+                        run.FontFamily = style.FontFamily;
+                    }
+
+                    content.Inlines.Add(run);
+                    this._lines.Add(run);
+
+                    if (!this._isLock)
+                    {
+                        this.RemoveOutElements();
+                    }
+                }
+
+                rtxt.ScrollToEnd();
+
+                //if (items.LastOrDefault().Level == LogLevel.Faltal)
+                //{
+                //    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
+                //}
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void ShowLog_bk(object state)
         {
             try
             {
@@ -487,9 +530,23 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         private string _logText;
         public string LogText { get { return _logText; } }
 
+        private const string _newLine = "\r\n";
 
         public ShowLogItem(string logText, LogLevel level)
         {
+            logText += _newLine;
+            //if (logText == null)
+            //{
+            //    logText = string.Empty;
+            //}
+            //else
+            //{
+            //    if (!logText.EndsWith(_newLine))
+            //    {
+            //        logText += _newLine;
+            //    }
+            //}
+
             this._logText = logText;
             this._level = level;
         }
