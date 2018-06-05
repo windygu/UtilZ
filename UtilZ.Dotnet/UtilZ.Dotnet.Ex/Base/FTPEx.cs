@@ -796,6 +796,7 @@ namespace UtilZ.Dotnet.Ex.Base
     /// <summary>
     /// 传输文件异常
     /// </summary>
+    [Serializable]
     public class TransferFileException : Exception
     {
         /// <summary>

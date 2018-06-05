@@ -10,7 +10,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
     /// <summary>
     /// 闹钟
     /// </summary>
-    public sealed class AlarmClock
+    public class AlarmClock : IDisposable
     {
         /// <summary>
         /// 闹钟响铃时刻
@@ -155,7 +155,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 闹钟执行线程
         /// </summary>
-        private IThreadEx _timingThread = null;
+        private ThreadEx _timingThread = null;
 
         /// <summary>
         /// 创建时刻点环形链表
@@ -253,6 +253,23 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         public void Stop()
         {
             this._timingThread.Stop();
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// 释放资源方法
+        /// </summary>
+        /// <param name="isDispose">是否释放标识</param>
+        protected virtual void Dispose(bool isDispose)
+        {
+            this._timingThread.Dispose();
         }
     }
 

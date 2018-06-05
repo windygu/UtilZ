@@ -80,6 +80,7 @@
     <Compile Include="Base\XmlEx.cs" />
     <Compile Include="DataStruct\AlarmClock.cs" />
     <Compile Include="DataStruct\AsynPriorityQueue.cs" />
+    <Compile Include="DataStruct\AsynParallelQueue.cs" />
     <Compile Include="DataStruct\AsynQueue.cs" />
     <Compile Include="DataStruct\ConcurrentFixCapacityQueue.cs" />
     <Compile Include="DataStruct\ConcurrentList.cs" />

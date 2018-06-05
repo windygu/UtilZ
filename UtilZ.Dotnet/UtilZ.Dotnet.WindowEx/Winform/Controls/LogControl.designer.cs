@@ -18,7 +18,10 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
-            this._logShowQueue.Dispose();
+            if (this._logShowQueue != null)
+            {
+                this._logShowQueue.Dispose();
+            }
         }
 
         #region 组件设计器生成的代码

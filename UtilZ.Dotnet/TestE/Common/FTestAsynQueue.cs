@@ -41,7 +41,7 @@ namespace TestE.Common
                 bool ret;
                 while (!token.IsCancellationRequested)
                 {
-                    ret = _asynQueue.Enqueue(_index++, 10);
+                    ret = _asynQueue.Enqueue(_index++);
                     Thread.Sleep(30);
                 }
             }, "生产者线程", true);

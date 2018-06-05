@@ -531,7 +531,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 {
                     foreach (DataGridViewColumn col in this._dataGridView.Columns)
                     {
-                        if (col.Visible && proOrderDic.ContainsKey(col.Name))
+                        if (col.Visible && proOrderDic.ContainsKey(col.Name) && proOrderDic[col.Name].OrderIndex < this._dataGridView.Columns.Count)
                         {
                             col.DisplayIndex = proOrderDic[col.Name].OrderIndex;
                             break;
@@ -568,6 +568,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             Dictionary<string, DisplayOrderAttribute> proOrderDic = UtilZ.Dotnet.Ex.Base.MemoryCacheEx.Get(type.FullName) as Dictionary<string, DisplayOrderAttribute>;
             if (proOrderDic == null)
             {
+                proOrderDic = new Dictionary<string, DisplayOrderAttribute>();
                 var proInfos = type.GetProperties();
                 Type displayOrderType = typeof(DisplayOrderAttribute);
                 var noneOrderProInfos = new List<Tuple<DisplayOrderAttribute, PropertyInfo>>();
@@ -575,13 +576,13 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 foreach (var proInfo in proInfos)
                 {
                     object[] objs = proInfo.GetCustomAttributes(displayOrderType, true);
-                    if (objs == null || objs.Length == 0)
+                    if (objs != null && objs.Length > 0)
                     {
-                        noneOrderProInfos.Add(new Tuple<DisplayOrderAttribute, PropertyInfo>(new DisplayOrderAttribute(int.MaxValue), proInfo));
+                        noneOrderProInfos.Add(new Tuple<DisplayOrderAttribute, PropertyInfo>((DisplayOrderAttribute)objs[0], proInfo));
                     }
                     else
                     {
-                        noneOrderProInfos.Add(new Tuple<DisplayOrderAttribute, PropertyInfo>((DisplayOrderAttribute)objs[0], proInfo));
+                        //noneOrderProInfos.Add(new Tuple<DisplayOrderAttribute, PropertyInfo>(new DisplayOrderAttribute(int.MaxValue), proInfo));
                     }
                 }
 

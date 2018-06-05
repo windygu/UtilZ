@@ -108,17 +108,18 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// </summary>
         private bool _templateType;
         private string _urlPath;
+
         private AsynQueue<ShowLogItem> _logShowQueue = null;
         private readonly object _logShowQueueLock = new object();
-        private readonly int _millisecondsTimeout = 10;
 
         /// <summary>
         /// key:ClassId,value:style
         /// </summary>
         private readonly Hashtable _htStyle = new Hashtable();
-        /// <summary>
-        /// 获取控件的同步上下文
-        /// </summary>
+        
+        ///// <summary>
+        ///// 获取控件的同步上下文
+        ///// </summary>
         //private System.Threading.SynchronizationContext _synContext;
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                     this._logShowQueue.Dispose();
                 }
 
-                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, refreshCount, "日志显示线程", true, true, cacheCapcity);
+                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, refreshCount, 10, "日志显示线程", true, true, cacheCapcity);
             }
         }
 
@@ -504,18 +505,24 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         private void InnerAddLog(ShowLogItem item)
         {
             bool result;
+            var logShowQueue = this._logShowQueue;
+            if (logShowQueue == null)
+            {
+                return;
+            }
+
             lock (this._innerAddLogLock)
             {
                 while (true)
                 {
-                    result = this._logShowQueue.Enqueue(item, this._millisecondsTimeout);
+                    result = logShowQueue.Enqueue(item);
                     if (result)
                     {
                         break;
                     }
                     else
                     {
-                        this._logShowQueue.Remove(1);
+                        logShowQueue.Remove(1);
                     }
                 }
             }

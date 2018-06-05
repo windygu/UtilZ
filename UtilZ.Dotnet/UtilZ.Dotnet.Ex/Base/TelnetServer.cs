@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UtilZ.Dotnet.Ex.DataStruct;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.Ex.Base
 {
@@ -312,7 +313,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
                 catch (Exception ex)
                 {
-
+                    Loger.Error(ex);
                 }
             }
         }

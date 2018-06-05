@@ -33,10 +33,36 @@ namespace UtilZ.Dotnet.Ex.Base
                 throw new ArgumentNullException("filePath");
             }
 
+            string dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             XmlSerializer se = new XmlSerializer(obj.GetType());
             using (TextWriter tw = new StreamWriter(filePath))
             {
                 se.Serialize(tw, obj);
+            }
+        }
+
+        /// <summary>
+        /// XML序列化
+        /// </summary>
+        /// <param name="obj">待序列化对象</param>
+        /// <returns>xml</returns>
+        public static string XmlSerializer(object obj)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
+            XmlSerializer se = new XmlSerializer(obj.GetType());
+            using (var ms = new MemoryStream())
+            {
+                se.Serialize(ms, obj);
+                return Encoding.UTF8.GetString(ms.GetBuffer());
             }
         }
 
@@ -45,17 +71,96 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="filePath">序列化文件路径</param>
         /// <returns>反序列化后的对象</returns>
-        public static T XmlDeSerializer<T>(string filePath)
+        public static T XmlDeserializerFromFile<T>(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
                 throw new ArgumentNullException("filePath");
             }
 
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("序列化文件不存在", filePath);
+            }
+
             XmlSerializer se = new XmlSerializer(typeof(T));
             using (TextReader tr = new StreamReader(filePath))
             {
                 return (T)se.Deserialize(tr);
+            }
+        }
+
+        /// <summary>        
+        /// XML反序列化
+        /// </summary>
+        /// <param name="filePath">序列化文件路径</param>
+        /// <param name="type">目标类型</param>
+        /// <returns>反序列化后的对象</returns>
+        public static object XmlDeserializerFromFile(string filePath, Type type)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentNullException("filePath");
+            }
+
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("序列化文件不存在", filePath);
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            XmlSerializer se = new XmlSerializer(type);
+            using (TextReader tr = new StreamReader(filePath))
+            {
+                return se.Deserialize(tr);
+            }
+        }
+
+        /// <summary>        
+        /// XML反序列化
+        /// </summary>
+        /// <param name="xmlStr">xml</param>
+        /// <returns>反序列化后的对象</returns>
+        public static T XmlDeserializerFromString<T>(string xmlStr)
+        {
+            if (string.IsNullOrEmpty(xmlStr))
+            {
+                throw new ArgumentNullException("xmlStr");
+            }
+
+            XmlSerializer se = new XmlSerializer(typeof(T));
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(xmlStr)))
+            {
+                return (T)se.Deserialize(ms);
+            }
+        }
+
+        /// <summary>        
+        /// XML反序列化
+        /// </summary>
+        /// <param name="xmlStr">xml</param>
+        /// <param name="type">目标类型</param>
+        /// <returns>反序列化后的对象</returns>
+        public static object XmlDeserializerFromString(string xmlStr, Type type)
+        {
+            if (string.IsNullOrEmpty(xmlStr))
+            {
+                throw new ArgumentNullException("xmlStr");
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            XmlSerializer se = new XmlSerializer(type);
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(xmlStr)))
+            {
+                return se.Deserialize(ms);
             }
         }
         #endregion
@@ -78,29 +183,16 @@ namespace UtilZ.Dotnet.Ex.Base
                 throw new ArgumentNullException("filePath");
             }
 
+            string dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             BinaryFormatter bf = new BinaryFormatter();
             using (Stream stream = File.OpenWrite(filePath))
             {
                 bf.Serialize(stream, obj);
-            }
-        }
-
-        /// <summary>        
-        /// 二进制反序列化
-        /// </summary>
-        /// <param name="filePath">序列化文件路径</param>
-        /// <returns>反序列化后的对象</returns>
-        public static T BinaryDeserialize<T>(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                throw new ArgumentNullException("filePath");
-            }
-
-            BinaryFormatter bf = new BinaryFormatter();
-            using (Stream stream = File.OpenRead(filePath))
-            {
-                return (T)bf.Deserialize(stream);
             }
         }
 
@@ -121,6 +213,30 @@ namespace UtilZ.Dotnet.Ex.Base
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(memoryStream, obj);
                 return memoryStream.GetBuffer();
+            }
+        }
+
+        /// <summary>        
+        /// 二进制反序列化
+        /// </summary>
+        /// <param name="filePath">序列化文件路径</param>
+        /// <returns>反序列化后的对象</returns>
+        public static T BinaryDeserialize<T>(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentNullException("filePath");
+            }
+
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("序列化文件不存在", filePath);
+            }
+
+            BinaryFormatter bf = new BinaryFormatter();
+            using (Stream stream = File.OpenRead(filePath))
+            {
+                return (T)bf.Deserialize(stream);
             }
         }
 
@@ -153,7 +269,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="obj">要序列化的对象</param>
         /// <returns>json序列化之后的字符串</returns>
-        public static string RuntimeSerializerObject(this object obj)
+        public static string RuntimeJsonSerializerObject(object obj)
         {
             if (obj == null)
             {
@@ -175,7 +291,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <typeparam name="T">反序列化之类的类型</typeparam>
         /// <param name="json">json字符串</param>
         /// <returns>反序列化之后的对象</returns>
-        public static T RuntimeDeserializeObject<T>(this string json)
+        public static T RuntimeJsonDeserializeObject<T>(string json)
         {
             if (string.IsNullOrEmpty(json))
             {
@@ -197,7 +313,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="obj">要序列化的对象</param>
         /// <returns>json序列化之后的字符串</returns>
-        public static string WebScriptSerializerObject(this object obj)
+        public static string WebScriptJsonSerializerObject(object obj)
         {
             if (obj == null)
             {
@@ -220,7 +336,7 @@ namespace UtilZ.Dotnet.Ex.Base
         ///     output 为 null。</summary>
         /// <param name="obj">要序列化的对象</param>
         /// <param name="output">用于写入 JSON 字符串的 System.Text.StringBuilder 对象</param>
-        public static void WebScriptSerializerObject(object obj, StringBuilder output)
+        public static void WebScriptJsonSerializerObject(object obj, StringBuilder output)
         {
             if (obj == null)
             {
@@ -237,7 +353,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <typeparam name="T">反序列化之类的类型</typeparam>
         /// <param name="json">待反序列化的json字符串</param>
         /// <returns>反序列化之后的对象</returns>
-        public static T WebScriptDeserializeObject<T>(this string json)
+        public static T WebScriptJsonDeserializeObject<T>(string json)
         {
             if (string.IsNullOrEmpty(json))
             {
@@ -254,7 +370,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="json">待反序列化的json字符串</param>
         /// <param name="targetType">反序列化之类的类型</param>
         /// <returns>反序列化之后的对象</returns>
-        public static object WebScriptDeserializeObject(this string json, Type targetType)
+        public static object WebScriptJsonDeserializeObject(string json, Type targetType)
         {
             if (string.IsNullOrEmpty(json))
             {
@@ -284,7 +400,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="json">要进行反序列化的 JSON 字符串</param>
         /// <returns>反序列化的对象</returns>
-        public static object WebScriptDeserializeObject(string json)
+        public static object WebScriptJsonDeserializeObject(string json)
         {
             if (string.IsNullOrEmpty(json))
             {
@@ -315,7 +431,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="serializer">JavaScriptSerializer</param>
         /// <param name="json">要进行反序列化的 JSON 字符串</param>
         /// <returns>反序列化的对象</returns>
-        public static object WebScriptDeserializeObject(JavaScriptSerializer serializer, string json)
+        public static object WebScriptJsonDeserializeObject(JavaScriptSerializer serializer, string json)
         {
             if (string.IsNullOrEmpty(json))
             {

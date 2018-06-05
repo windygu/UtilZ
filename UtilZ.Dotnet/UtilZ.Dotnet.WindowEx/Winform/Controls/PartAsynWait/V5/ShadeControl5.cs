@@ -252,7 +252,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V5
         private void ButtonCancel()
         {
             _cancellText = CancellingText;
-            _cancellEnabled = false;
             this.Invalidate(this._cancelButtonReg);
         }
 
@@ -288,7 +287,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V5
         {
             this._isCanceled = false;
             _cancellText = CancellingText;
-            _cancellEnabled = true;
         }
 
         /// <summary>
@@ -384,7 +382,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V5
             this._fontBrush = new SolidBrush(this.ForeColor);
 
             _cancellText = CancellText;
-            _cancellEnabled = true;
             this.UpdateArea();
 
             _btnBrush = new SolidBrush(Color.FromArgb(181, 181, 181));

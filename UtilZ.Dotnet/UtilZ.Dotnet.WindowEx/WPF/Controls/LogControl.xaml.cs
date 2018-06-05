@@ -100,14 +100,13 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// </summary>
         private int _cacheCapcity = 100;
 
-        private readonly int _millisecondsTimeout = 10;
         private readonly List<Inline> _lines = new List<Inline>();
         private readonly Dictionary<LogLevel, LogShowStyle> _leveStyle = new Dictionary<LogLevel, LogShowStyle>();
         private readonly LogShowStyle _defaultStyle;
-        /// <summary>
-        /// 获取控件的同步上下文
-        /// </summary>
-       // private System.Threading.SynchronizationContext _synContext;
+        ///// <summary>
+        ///// 获取控件的同步上下文
+        ///// </summary>
+        // private System.Threading.SynchronizationContext _synContext;
 
         /// <summary>
         /// 构造函数
@@ -215,7 +214,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     this._logShowQueue.Dispose();
                 }
 
-                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, this._refreshCount, "日志显示线程", true, true, this._cacheCapcity);
+                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, this._refreshCount, 10, "日志显示线程", true, true, this._cacheCapcity);
             }
         }
 
@@ -426,7 +425,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             {
                 while (true)
                 {
-                    result = this._logShowQueue.Enqueue(item, this._millisecondsTimeout);
+                    result = this._logShowQueue.Enqueue(item);
                     if (result)
                     {
                         break;
