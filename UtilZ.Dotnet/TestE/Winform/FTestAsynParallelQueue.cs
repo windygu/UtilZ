@@ -20,8 +20,8 @@ namespace TestE.Winform
             InitializeComponent();
         }
 
-        private AsynQueue<List<int>> _retShowQueue;
-        private AsynParallelQueue<int, int> _apQueue;
+        private AsynQueue<List<string>> _retShowQueue;
+        private AsynParallelQueue<int, string> _apQueue;
         private ThreadEx _createThread;
         private void FTestAsynParallelQueue_Load(object sender, EventArgs e)
         {
@@ -30,8 +30,8 @@ namespace TestE.Winform
                 return;
             }
 
-            this._apQueue = new AsynParallelQueue<int, int>(Pro, ProResult, 4, 10, true);
-            this._retShowQueue = new AsynQueue<List<int>>(this.ProShow, "结果显示线程", true, true);
+            this._apQueue = new AsynParallelQueue<int, string>(Pro, ProResult, 4, 10, true);
+            this._retShowQueue = new AsynQueue<List<string>>(this.ProShow, "结果显示线程", true, true);
             this._createThread = new ThreadEx(this.Create, "生产线程", true);
         }
 
@@ -44,11 +44,12 @@ namespace TestE.Winform
             }
         }
 
-        private void ProShow(List<int> rets)
+        private void ProShow(List<string> rets)
         {
-            string ret = string.Join(",", rets);
+            string ret = string.Join("\r\n", rets);
             try
             {
+                Thread.Sleep(1000);
                 this.Invoke(new Action(() =>
                 {
                     richTextBox1.Text = ret;
@@ -61,12 +62,13 @@ namespace TestE.Winform
             }
         }
 
-        private int Pro(int p, CancellationToken token)
+        private string Pro(int p, CancellationToken token)
         {
-            return p * 10;
+            Thread.SpinWait(_rnd.Next(5, 15));
+            return string.Format("ThreadId:{0};Value:{1}", Thread.CurrentThread.ManagedThreadId, p * 10);
         }
 
-        private void ProResult(List<int> rets)
+        private void ProResult(List<string> rets)
         {
             this._retShowQueue.Enqueue(rets);
         }

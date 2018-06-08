@@ -47,6 +47,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
+        /// 空队列等待超时时间
+        /// </summary>
+        private readonly int _emptyQueueWaitTimeout = 10000;
+
+        /// <summary>
         /// 停止线程消息通知
         /// </summary>
         private readonly AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
@@ -249,8 +254,15 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
                     if (items.Count == 0)
                     {
-                        this._autoResetEvent.WaitOne();
-                        continue;
+                        try
+                        {
+                            this._autoResetEvent.WaitOne(this._emptyQueueWaitTimeout);
+                            continue;
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            return;
+                        }
                     }
 
                     var processHandler = this.ProcessAction;

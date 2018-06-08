@@ -45,6 +45,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
+        /// 空队列等待超时时间
+        /// </summary>
+        private readonly int _emptyQueueWaitTimeout = 10000;
+
+        /// <summary>
         /// 停止线程消息通知
         /// </summary>
         private readonly AutoResetEvent _stopAutoResetEvent = new AutoResetEvent(false);
@@ -314,8 +319,14 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
                     if (count == 0)
                     {
-                        //等待10秒重试
-                        this._autoResetEvent.WaitOne(10000);
+                        try
+                        {
+                            this._autoResetEvent.WaitOne(this._emptyQueueWaitTimeout);
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            break;
+                        }
                     }
                     else
                     {
@@ -368,10 +379,24 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                         }
                     }
 
-                    //数据处理
-                    items2 = items.ToList();
-                    items.Clear();
-                    this.OnRaiseProcessAction2(items2);
+                    if (items.Count == 0)
+                    {
+                        try
+                        {
+                            this._autoResetEvent.WaitOne(this._emptyQueueWaitTimeout);
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        //数据处理
+                        items2 = items.ToList();
+                        items.Clear();
+                        this.OnRaiseProcessAction2(items2);
+                    }
                 }
             }
             catch (ThreadAbortException)
