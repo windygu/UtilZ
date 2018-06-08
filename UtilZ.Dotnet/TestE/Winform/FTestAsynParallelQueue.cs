@@ -64,13 +64,16 @@ namespace TestE.Winform
 
         private string Pro(int p, CancellationToken token)
         {
-            Thread.SpinWait(_rnd.Next(5, 15));
-            return string.Format("ThreadId:{0};Value:{1}", Thread.CurrentThread.ManagedThreadId, p * 10);
+            int time = _rnd.Next(2000, 2500);
+            time = 1;
+            Thread.SpinWait(time);
+            return string.Format("ThreadId:{0};Wait:{1},Value:{2}", Thread.CurrentThread.ManagedThreadId, time, p * 10);
         }
 
         private void ProResult(List<string> rets)
         {
-            this._retShowQueue.Enqueue(rets);
+            //Thread.Sleep(500);
+            //this._retShowQueue.Enqueue(rets);
         }
 
         private void btnTest_Click(object sender, EventArgs e)
