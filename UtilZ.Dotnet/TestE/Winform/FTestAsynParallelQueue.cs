@@ -38,10 +38,20 @@ namespace TestE.Winform
         private readonly Random _rnd = new Random();
         private void Create(CancellationToken token)
         {
-            while (!token.IsCancellationRequested)
+            int count = 0;
+            while (!token.IsCancellationRequested&& count<100000)
             {
+                count++;
+                count++;
+                count++;
+                count++;
                 this._apQueue.Enqueue(_rnd.Next(1, 100));
             }
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    this._apQueue.Enqueue(_rnd.Next(1, 100));
+            //}
         }
 
         private void ProShow(List<string> rets)
@@ -65,8 +75,9 @@ namespace TestE.Winform
         private string Pro(int p, CancellationToken token)
         {
             int time = _rnd.Next(2000, 2500);
-            time = 1;
+            time = 60 * 1000;
             Thread.SpinWait(time);
+            //Thread.Sleep(time);
             return string.Format("ThreadId:{0};Wait:{1},Value:{2}", Thread.CurrentThread.ManagedThreadId, time, p * 10);
         }
 
@@ -87,6 +98,20 @@ namespace TestE.Winform
             {
                 this._createThread.Start();
                 btnTest.Text = "停止";
+            }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            if (this._apQueue.Status)
+            {
+                this._apQueue.Stop();
+                btnStop.Text = "开始";
+            }
+            else
+            {
+                this._apQueue.Start();
+                btnStop.Text = "停止";
             }
         }
     }

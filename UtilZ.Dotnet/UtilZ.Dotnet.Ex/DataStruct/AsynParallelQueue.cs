@@ -27,6 +27,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         private readonly object _threadMonitor = new object();
 
         /// <summary>
+        /// 当前并行运行对象停止状态通知
+        /// </summary>
+        private readonly ConcurrentList<ParallelLoopState> _parallelLoopStates = new ConcurrentList<ParallelLoopState>();
+
+        /// <summary>
         /// 对象是否已释放[true:已释放;false:未释放]
         /// </summary>
         private bool _isDisposed = false;
@@ -223,6 +228,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             List<T> items = new List<T>();
             List<TResult> results = new List<TResult>();
             T item;
+
             try
             {
                 while (!token.IsCancellationRequested)
@@ -271,10 +277,24 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                         continue;
                     }
 
+                    this._parallelLoopStates.Clear();
                     //并行处理
-                    Parallel.ForEach(items, (t) =>
+                    Parallel.ForEach(items, (t, parallelLoopState) =>
                     {
-                        results.Add(processHandler(t, token));
+                       lock (this._threadMonitor)
+                       {
+                           if (this._status)
+                           {
+                               this._parallelLoopStates.Add(parallelLoopState);
+                           }
+                           else
+                           {
+                               parallelLoopState.Stop();
+                               return;
+                           }
+                       }
+
+                       results.Add(processHandler(t, token));
                     });
                     items.Clear();
 
@@ -306,6 +326,17 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 {
                     return;
                 }
+
+                if (!this._status)
+                {
+                    return;
+                }
+
+                foreach (var parallelLoopState in this._parallelLoopStates)
+                {
+                    parallelLoopState.Stop();
+                }
+                this._parallelLoopStates.Clear();
 
                 this._thread = null;
                 this._status = false;
