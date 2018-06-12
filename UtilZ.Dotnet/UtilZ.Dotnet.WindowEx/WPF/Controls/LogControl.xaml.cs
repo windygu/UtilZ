@@ -93,7 +93,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <summary>
         /// 单次最大刷新日志条数
         /// </summary>
-        private int _refreshCount = 10;
+        private int _refreshCount = 5;
 
         /// <summary>
         /// 日志缓存容量
@@ -101,12 +101,12 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         private int _cacheCapcity = 100;
 
         private readonly List<Inline> _lines = new List<Inline>();
-        private readonly Dictionary<LogLevel, LogShowStyle> _leveStyle = new Dictionary<LogLevel, LogShowStyle>();
+
+        /// <summary>
+        /// 样式字典集合[key:样式key;value:样式]
+        /// </summary>
+        private readonly Dictionary<int, LogShowStyle> _styleDic = new Dictionary<int, LogShowStyle>();
         private readonly LogShowStyle _defaultStyle;
-        ///// <summary>
-        ///// 获取控件的同步上下文
-        ///// </summary>
-        // private System.Threading.SynchronizationContext _synContext;
 
         /// <summary>
         /// 构造函数
@@ -116,61 +116,8 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             InitializeComponent();
 
             this._defaultStyle = new LogShowStyle(Colors.Gray, this.GetFontFamily(null), 15);
-            // this._synContext = System.Threading.SynchronizationContext.Current;     
-            this.Loaded += LogControl_Loaded;
-        }
-
-        private void LogControl_Loaded(object sender, RoutedEventArgs e)
-        {
             this.StartRefreshLogThread();
         }
-
-        /*
-        private static DispatcherOperationCallback exitFrameCallback = new
-                                DispatcherOperationCallback(ExitFrame);
-
-        /// <summary>
-        /// Processes all UI messages currently in the message queue.
-        /// </summary>
-
-        public static void DoEvents()
-        {
-
-            // Create new nested message pump.
-
-            DispatcherFrame nestedFrame = new DispatcherFrame();
-
-            // Dispatch a callback to the current message queue, when getting called,
-
-            // this callback will end the nested message loop.
-
-            // note that the priority of this callback should be lower than the that of UI event messages.
-
-            DispatcherOperation exitOperation = Dispatcher.CurrentDispatcher.BeginInvoke(
-
-                                                  DispatcherPriority.Background, exitFrameCallback, nestedFrame);
-
-            // pump the nested message loop, the nested message loop will
-
-            // immediately process the messages left inside the message queue.
-            Dispatcher.PushFrame(nestedFrame);
-
-            // If the "exitFrame" callback doesn't get finished, Abort it.
-
-            if (exitOperation.Status != DispatcherOperationStatus.Completed)
-            {
-                exitOperation.Abort();
-            }
-        }
-
-        private static Object ExitFrame(Object state)
-        {
-            DispatcherFrame frame = state as DispatcherFrame;
-            // Exit the nested message loop.
-            frame.Continue = false;
-            return null;
-        }
-        */
 
         /// <summary>
         /// 设置日志刷新信息
@@ -222,8 +169,11 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         {
             try
             {
-                //this._synContext.Post(new System.Threading.SendOrPostCallback(this.ShowLog), items);
-                //DoEvents();
+                if (items == null || items.Count == 0)
+                {
+                    return;
+                }
+
                 this.Dispatcher.Invoke(new Action(() => { this.ShowLog((object)items); }));
                 Thread.Sleep(15);
             }
@@ -240,7 +190,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 List<ShowLogItem> items = (List<ShowLogItem>)state;
                 foreach (var item in items)
                 {
-                    LogShowStyle style = this.GetStyle(item.Level);
+                    LogShowStyle style = this.GetStyle(item.StyleKey);
                     var run = new Run();
                     run.Text = item.LogText;
                     run.Foreground = style.Foreground;
@@ -264,59 +214,6 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 }
 
                 rtxt.ScrollToEnd();
-
-                //if (items.LastOrDefault().Level == LogLevel.Faltal)
-                //{
-                //    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
-                //}
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-        }
-
-        private void ShowLog_bk(object state)
-        {
-            try
-            {
-                List<ShowLogItem> items = (List<ShowLogItem>)state;
-                foreach (var item in items)
-                {
-                    LogShowStyle style = this.GetStyle(item.Level);
-
-                    var span = new Span();
-                    var run = new Run();
-                    run.Text = item.LogText;
-                    run.Foreground = style.Foreground;
-                    if (style.FontSize > 0)
-                    {
-                        run.FontSize = style.FontSize;
-                    }
-
-                    if (style.FontFamily != null)
-                    {
-                        run.FontFamily = style.FontFamily;
-                    }
-
-                    span.Inlines.Add(run);
-                    span.Inlines.Add(new LineBreak());
-                    content.Inlines.Add(span);
-                    this._lines.Add(span);
-
-                    if (!this._isLock)
-                    {
-                        this.RemoveOutElements();
-                    }
-                }
-
-                rtxt.ScrollToEnd();
-
-
-                //if (items.LastOrDefault().Level == LogLevel.Faltal)
-                //{
-                //    UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
-                //}
             }
             catch (Exception ex)
             {
@@ -343,15 +240,27 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="fontSize">字体大小</param>
         public void AddStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
         {
+            this.AddStyle((int)level, foreground, fontFamilyName, fontSize);
+        }
+
+        /// <summary>
+        /// 添加样式
+        /// </summary>
+        /// <param name="styleKey">样式key</param>
+        /// <param name="foreground">字体颜色</param>
+        /// <param name="fontFamilyName">字体名称</param>
+        /// <param name="fontSize">字体大小</param>
+        public void AddStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        {
             FontFamily fontFamily = this.GetFontFamily(fontFamilyName);
             var style = new LogShowStyle(foreground, fontFamily, fontSize);
-            if (this._leveStyle.ContainsKey(level))
+            if (this._styleDic.ContainsKey(styleKey))
             {
-                this._leveStyle[level] = style;
+                this._styleDic[styleKey] = style;
             }
             else
             {
-                this._leveStyle.Add(level, style);
+                this._styleDic.Add(styleKey, style);
             }
         }
 
@@ -369,7 +278,6 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 bool existYahei = (from tmpItem in fonts where string.Equals(tmpItem.Name, fontName, StringComparison.OrdinalIgnoreCase) select tmpItem).Count() > 0;
                 if (existYahei)
                 {
-                    //fontName = fonts[0].Name;
                     fontFamily = new FontFamily(fontName);
                 }
                 else
@@ -387,9 +295,18 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="level">日志级别</param>
         public void RemoveStyle(LogLevel level)
         {
-            if (this._leveStyle.ContainsKey(level))
+            this.RemoveStyle((int)level);
+        }
+
+        /// <summary>
+        /// 移除样式
+        /// </summary>
+        /// <param name="styleKey">样式key</param>
+        public void RemoveStyle(int styleKey)
+        {
+            if (this._styleDic.ContainsKey(styleKey))
             {
-                this._leveStyle.Remove(level);
+                this._styleDic.Remove(styleKey);
             }
         }
 
@@ -398,14 +315,14 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// </summary>
         public void ClearStyle()
         {
-            this._leveStyle.Clear();
+            this._styleDic.Clear();
         }
 
-        private LogShowStyle GetStyle(LogLevel level)
+        private LogShowStyle GetStyle(int styleKey)
         {
-            if (this._leveStyle.ContainsKey(level))
+            if (this._styleDic.ContainsKey(styleKey))
             {
-                return this._leveStyle[level];
+                return this._styleDic[styleKey];
             }
 
             return this._defaultStyle;
@@ -419,7 +336,17 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="level">日志级别</param>
         public void AddLog(string logText, LogLevel level)
         {
-            var item = new ShowLogItem(logText, level);
+            this.AddLog(logText, (int)level);
+        }
+
+        /// <summary>
+        /// 添加显示日志
+        /// </summary>
+        /// <param name="logText">日志文本</param>
+        /// <param name="styleKey">样式key</param>
+        public void AddLog(string logText, int styleKey)
+        {
+            var item = new ShowLogItem(logText, styleKey);
             bool result;
             lock (this._addLogLock)
             {
@@ -446,65 +373,6 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             this.content.Inlines.Clear();
             this._lines.Clear();
         }
-
-        /*
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            //Player1.Child = CreateMediaElementOnWorkerThread();
-            //Player2.Child = CreateMediaElementOnWorkerThread();
-            //Player3.Child = CreateMediaElementOnWorkerThread();
-        }
-
-        private HostVisual CreateMediaElementOnWorkerThread()
-        {
-            // Create the HostVisual that will "contain" the VisualTarget
-            // on the worker thread.
-            HostVisual hostVisual = new HostVisual();
-
-            // Spin up a worker thread, and pass it the HostVisual that it
-            // should be part of.
-            Thread thread = new Thread(new ParameterizedThreadStart(MediaWorkerThread));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.IsBackground = true;
-            thread.Start(hostVisual);
-            // Wait for the worker thread to spin up and create the VisualTarget.
-            s_event.WaitOne();
-            return hostVisual;
-        }
-
-        private FrameworkElement CreateMediaElement()
-        {
-            // Create a MediaElement, and give it some video content.
-            MediaElement mediaElement = new MediaElement();
-            mediaElement.BeginInit();
-            mediaElement.Source = new Uri("http://download.microsoft.com/download/2/C/4/2C433161-F56C-4BAB-BBC5-B8C6F240AFCC/SL_0410_448x256_300kb_2passCBR.wmv?amp;clcid=0x409");
-            mediaElement.Width = 200;
-            mediaElement.Height = 100;
-            mediaElement.EndInit();
-            return mediaElement;
-        }
-
-        private void MediaWorkerThread(object arg)
-        {
-            // Create the VisualTargetPresentationSource and then signal the
-            // calling thread, so that it can continue without waiting for us.
-            HostVisual hostVisual = (HostVisual)arg;
-
-
-            VisualTargetPresentationSource visualTargetPS = new VisualTargetPresentationSource(hostVisual);
-            s_event.Set();
-
-            // Create a MediaElement and use it as the root visual for the
-            // VisualTarget.
-            visualTargetPS.RootVisual = CreateMediaElement();
-
-            // Run a dispatcher for this worker thread.  This is the central
-            // processing loop for WPF.
-            System.Windows.Threading.Dispatcher.Run();
-        }
-
-        private static AutoResetEvent s_event = new AutoResetEvent(false);
-        */
     }
 
     internal class LogShowStyle
@@ -523,15 +391,15 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
 
     internal class ShowLogItem
     {
-        private LogLevel _level;
-        public LogLevel Level { get { return _level; } }
+        private int _styleKey;
+        public int StyleKey { get { return _styleKey; } }
 
         private string _logText;
         public string LogText { get { return _logText; } }
 
         private const string _newLine = "\r\n";
 
-        public ShowLogItem(string logText, LogLevel level)
+        public ShowLogItem(string logText, int styleKey)
         {
             logText += _newLine;
             //if (logText == null)
@@ -547,7 +415,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             //}
 
             this._logText = logText;
-            this._level = level;
+            this._styleKey = styleKey;
         }
     }
 }

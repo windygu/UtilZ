@@ -32,7 +32,7 @@
             this.btnPro = new System.Windows.Forms.Button();
             this.btnCons = new System.Windows.Forms.Button();
             this.checkBoxStopCons = new System.Windows.Forms.CheckBox();
-            this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl();
+            this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl_bk();
             this.SuspendLayout();
             // 
             // textBox1
@@ -108,6 +108,6 @@
         private System.Windows.Forms.Button btnPro;
         private System.Windows.Forms.Button btnCons;
         private System.Windows.Forms.CheckBox checkBoxStopCons;
-        private UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl logControl1;
+        private UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl_bk logControl1;
     }
 }

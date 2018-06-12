@@ -45,7 +45,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteBase.cs" />
@@ -74,11 +76,17 @@
     <Compile Include="Winform\Controls\DataGridViewZ.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Winform\Controls\LogControl.cs">
+    <Compile Include="Winform\Controls\LogControlF.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winform\Controls\LogControl.Designer.cs">
-      <DependentUpon>LogControl.cs</DependentUpon>
+    <Compile Include="Winform\Controls\LogControlF.Designer.cs">
+      <DependentUpon>LogControlF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Winform\Controls\LogControl_bk.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\LogControl_bk.Designer.cs">
+      <DependentUpon>LogControl_bk.cs</DependentUpon>
     </Compile>
     <Compile Include="Winform\Controls\NoneBorderForm.cs">
       <SubType>Form</SubType>
@@ -252,8 +260,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winform\Controls\LogControl.resx">
-      <DependentUpon>LogControl.cs</DependentUpon>
+    <EmbeddedResource Include="Winform\Controls\LogControlF.resx">
+      <DependentUpon>LogControlF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Winform\Controls\LogControl_bk.resx">
+      <DependentUpon>LogControl_bk.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Winform\Controls\PageGrid\FPageGridColumnsSetting.resx">
       <DependentUpon>FPageGridColumnsSetting.cs</DependentUpon>

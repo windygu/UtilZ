@@ -1,6 +1,6 @@
 ﻿namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 {
-    partial class LogControl
+    partial class LogControl_bk
     {
         /// <summary> 
         /// 必需的设计器变量。

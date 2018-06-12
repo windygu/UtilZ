@@ -163,6 +163,12 @@
     <Compile Include="Winform\FTestLogControl.Designer.cs">
       <DependentUpon>FTestLogControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Winform\FTestLogControlF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Winform\FTestLogControlF.Designer.cs">
+      <DependentUpon>FTestLogControlF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Winform\FTestTelnetServer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -232,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Winform\FTestLogControl.resx">
       <DependentUpon>FTestLogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Winform\FTestLogControlF.resx">
+      <DependentUpon>FTestLogControlF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Winform\FTestTelnetServer.resx">
       <DependentUpon>FTestTelnetServer.cs</DependentUpon>

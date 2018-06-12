@@ -30,7 +30,7 @@
         {
             this.btnTest = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl();
+            this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl_bk();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.btnTemplate = new System.Windows.Forms.Button();
             this.btnPer = new System.Windows.Forms.Button();
@@ -129,7 +129,7 @@
 
         #endregion
 
-        private UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl logControl1;
+        private UtilZ.Dotnet.WindowEx.Winform.Controls.LogControl_bk logControl1;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.CheckBox checkBox1;
