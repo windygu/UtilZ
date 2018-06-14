@@ -28,23 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF();
             this.cbIsLock = new System.Windows.Forms.CheckBox();
             this.btnThreadTest = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
+            this.logControl1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF();
             this.SuspendLayout();
-            // 
-            // logControl1
-            // 
-            this.logControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.logControl1.IsLock = false;
-            this.logControl1.Location = new System.Drawing.Point(12, 66);
-            this.logControl1.MaxItemCount = 100;
-            this.logControl1.Name = "logControl1";
-            this.logControl1.Size = new System.Drawing.Size(776, 372);
-            this.logControl1.TabIndex = 0;
             // 
             // cbIsLock
             // 
@@ -54,7 +42,7 @@
             this.cbIsLock.Size = new System.Drawing.Size(48, 16);
             this.cbIsLock.TabIndex = 7;
             this.cbIsLock.Text = "锁定";
-            this.cbIsLock.UseVisualStyleBackColor = true;            
+            this.cbIsLock.UseVisualStyleBackColor = true;
             // 
             // btnThreadTest
             // 
@@ -75,6 +63,19 @@
             this.btnTest.Text = "Test";
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
+            // logControl1
+            // 
+            this.logControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.logControl1.BackColor = System.Drawing.Color.Green;
+            this.logControl1.IsLock = false;
+            this.logControl1.Location = new System.Drawing.Point(12, 66);
+            this.logControl1.MaxItemCount = 100;
+            this.logControl1.Name = "logControl1";
+            this.logControl1.Size = new System.Drawing.Size(776, 372);
+            this.logControl1.TabIndex = 0;
             // 
             // FTestLogControlF
             // 

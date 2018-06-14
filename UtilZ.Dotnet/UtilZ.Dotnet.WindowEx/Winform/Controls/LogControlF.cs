@@ -138,11 +138,13 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         {
             get
             {
-                var brush = (System.Windows.Media.SolidColorBrush)logControl.Background;
-                return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+                //var brush = (System.Windows.Media.SolidColorBrush)logControl.Background;
+                //return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+                return base.BackColor;
             }
             set
             {
+                base.BackColor = value;
                 var color = System.Windows.Media.Color.FromArgb(value.A, value.R, value.G, value.B);
                 logControl.Background = new System.Windows.Media.SolidColorBrush(color);
             }
