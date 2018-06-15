@@ -49,8 +49,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.Dotnet.DBIBase", "UtilZ.Dotnet.DBIBase\UtilZ.Dotnet.DBIBase.csproj", "{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessStoreCSharp", "..\..\..\..\zhn-2018-4-18 1035\2018-4-18 1035\AccessStoreCSharp\AccessStoreCSharp.csproj", "{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,14 +209,6 @@ Global
 		{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}.Release|x86.Build.0 = Release|Any CPU
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Debug|x86.ActiveCfg = Debug|x86
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Debug|x86.Build.0 = Debug|x86
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Release|x86.ActiveCfg = Release|x86
-		{D30F1CAE-0E99-4C08-95AF-7992B7E5C9B3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

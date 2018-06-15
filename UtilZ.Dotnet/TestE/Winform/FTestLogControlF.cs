@@ -37,11 +37,11 @@ namespace TestE.Winform
 
         private void FTestLogControlF_Load(object sender, EventArgs e)
         {
-            logControl1.AddStyle(LogLevel.Debug, Color.Gray, null, 0);
-            logControl1.AddStyle(LogLevel.Error, Color.Red, "", 0);
-            logControl1.AddStyle(LogLevel.Faltal, Color.Red, "", 0);
-            logControl1.AddStyle(LogLevel.Info, Color.WhiteSmoke, "", 0);
-            logControl1.AddStyle(LogLevel.Warn, Color.Yellow, null, 0);
+            //logControl1.SetStyle(LogLevel.Debug, Color.Gray, null, 0);
+            //logControl1.SetStyle(LogLevel.Error, Color.Red, "", 0);
+            //logControl1.SetStyle(LogLevel.Faltal, Color.Red, "", 0);
+            //logControl1.SetStyle(LogLevel.Info, Color.WhiteSmoke, "", 0);
+            //logControl1.SetStyle(LogLevel.Warn, Color.Yellow, null, 0);
         }
 
         private int _index = 0;

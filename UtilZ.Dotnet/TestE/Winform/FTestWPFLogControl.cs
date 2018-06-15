@@ -42,11 +42,11 @@ namespace TestE.Winform
             //logControl1.AddStyle(LogLevel.Info, System.Windows.Media.Colors.Green, "", 13);
             //logControl1.AddStyle(LogLevel.Warn, System.Windows.Media.Colors.YellowGreen, "Nirmala UI", 15);
 
-            logControl1.AddStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray, null, 0);
-            logControl1.AddStyle(LogLevel.Error, System.Windows.Media.Colors.Red, "");
-            logControl1.AddStyle(LogLevel.Faltal, System.Windows.Media.Colors.Red, "", 0);
-            logControl1.AddStyle(LogLevel.Info, System.Windows.Media.Colors.WhiteSmoke, "");
-            logControl1.AddStyle(LogLevel.Warn, System.Windows.Media.Colors.Yellow, null);
+            logControl1.SetStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray, null, 0);
+            logControl1.SetStyle(LogLevel.Error, System.Windows.Media.Colors.Red, "");
+            logControl1.SetStyle(LogLevel.Faltal, System.Windows.Media.Colors.Red, "", 0);
+            logControl1.SetStyle(LogLevel.Info, System.Windows.Media.Colors.WhiteSmoke, "");
+            logControl1.SetStyle(LogLevel.Warn, System.Windows.Media.Colors.Yellow, null);
 
             //logControl1.MaxItemCount = 8;
             cbIsLock.Checked = logControl1.IsLock;

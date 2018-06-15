@@ -58,10 +58,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="foreground">字体颜色</param>
         /// <param name="fontFamilyName">字体名称</param>
         /// <param name="fontSize">字体大小</param>
-        public void AddStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        public void SetStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
         {
             var color = System.Windows.Media.Color.FromArgb(foreground.A, foreground.R, foreground.G, foreground.B);
-            logControl.AddStyle(level, color, fontFamilyName, fontSize);
+            logControl.SetStyle(level, color, fontFamilyName, fontSize);
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <param name="foreground">字体颜色</param>
         /// <param name="fontFamilyName">字体名称</param>
         /// <param name="fontSize">字体大小</param>
-        public void AddStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        public void SetStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
         {
             var color = System.Windows.Media.Color.FromArgb(foreground.A, foreground.R, foreground.G, foreground.B);
-            logControl.AddStyle(styleKey, color, fontFamilyName, fontSize);
+            logControl.SetStyle(styleKey, color, fontFamilyName, fontSize);
         }
 
         /// <summary>

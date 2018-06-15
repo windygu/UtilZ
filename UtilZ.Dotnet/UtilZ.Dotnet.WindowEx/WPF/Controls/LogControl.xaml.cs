@@ -116,7 +116,20 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             InitializeComponent();
 
             this._defaultStyle = new LogShowStyle(Colors.Gray, this.GetFontFamily(null), 15);
+            this.SetDefaultStyle();
             this.StartRefreshLogThread();
+        }
+
+        /// <summary>
+        /// 设置默认样式
+        /// </summary>
+        private void SetDefaultStyle()
+        {
+            this.SetStyle(LogLevel.Debug, Colors.Gray, null, 0);
+            this.SetStyle(LogLevel.Error, Colors.Red, "", 0);
+            this.SetStyle(LogLevel.Faltal, Colors.Red, "", 0);
+            this.SetStyle(LogLevel.Info, Colors.WhiteSmoke, "", 0);
+            this.SetStyle(LogLevel.Warn, Colors.Yellow, null, 0);
         }
 
         /// <summary>
@@ -238,9 +251,9 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="foreground">字体颜色</param>
         /// <param name="fontFamilyName">字体名称</param>
         /// <param name="fontSize">字体大小</param>
-        public void AddStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        public void SetStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
         {
-            this.AddStyle((int)level, foreground, fontFamilyName, fontSize);
+            this.SetStyle((int)level, foreground, fontFamilyName, fontSize);
         }
 
         /// <summary>
@@ -250,7 +263,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <param name="foreground">字体颜色</param>
         /// <param name="fontFamilyName">字体名称</param>
         /// <param name="fontSize">字体大小</param>
-        public void AddStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        public void SetStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
         {
             FontFamily fontFamily = this.GetFontFamily(fontFamilyName);
             var style = new LogShowStyle(foreground, fontFamily, fontSize);
