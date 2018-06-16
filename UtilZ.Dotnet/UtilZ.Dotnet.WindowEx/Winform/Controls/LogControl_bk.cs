@@ -116,7 +116,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// key:ClassId,value:style
         /// </summary>
         private readonly Hashtable _htStyle = new Hashtable();
-        
+
         ///// <summary>
         ///// 获取控件的同步上下文
         ///// </summary>
@@ -586,55 +586,55 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
                 this.webBrowser.Navigate(this._urlPath);
             }
         }
-    }
 
-    internal class ShowLogItem
-    {
-        private StyleType _type;
-        internal StyleType Type { get { return _type; } }
-
-        public Color Color { get; private set; }
-
-        public string Css { get; private set; }
-
-        private string _logText;
-        public string LogText { get { return _logText; } }
-
-        public ShowLogItem(string logText)
+        internal class ShowLogItem
         {
-            this._type = StyleType.None;
-            this._logText = logText;
+            private StyleType _type;
+            internal StyleType Type { get { return _type; } }
+
+            public Color Color { get; private set; }
+
+            public string Css { get; private set; }
+
+            private string _logText;
+            public string LogText { get { return _logText; } }
+
+            public ShowLogItem(string logText)
+            {
+                this._type = StyleType.None;
+                this._logText = logText;
+            }
+
+            public ShowLogItem(string logText, Color color)
+            {
+                this._type = StyleType.Color;
+                this._logText = logText;
+                this.Color = color;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="logText"></param>
+            /// <param name="css"></param>
+            /// <param name="styleType">样式类型</param>
+            public ShowLogItem(string logText, string css, StyleType styleType)
+            {
+                this._type = styleType;
+                this._logText = logText;
+                this.Css = css;
+            }
         }
 
-        public ShowLogItem(string logText, Color color)
+        internal enum StyleType
         {
-            this._type = StyleType.Color;
-            this._logText = logText;
-            this.Color = color;
+            None,
+
+            Color,
+
+            Style,
+
+            ClassId
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logText"></param>
-        /// <param name="css"></param>
-        /// <param name="styleType">样式类型</param>
-        public ShowLogItem(string logText, string css, StyleType styleType)
-        {
-            this._type = styleType;
-            this._logText = logText;
-            this.Css = css;
-        }
-    }
-
-    internal enum StyleType
-    {
-        None,
-
-        Color,
-
-        Style,
-
-        ClassId
     }
 }

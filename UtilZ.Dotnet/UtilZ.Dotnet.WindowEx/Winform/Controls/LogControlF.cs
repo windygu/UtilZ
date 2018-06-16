@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Log.Model;
+using UtilZ.Dotnet.WindowEx.Base;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 {
     /// <summary>
     /// Winform日志控件,对WPF版本进行封装得到
     /// </summary>
-    public partial class LogControlF : UserControl
+    public partial class LogControlF : UserControl, ILogControl
     {
         /// <summary>
         /// 获取或设置最多显示项数
@@ -52,51 +53,25 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         }
 
         /// <summary>
-        /// 添加样式
+        /// 设置样式,不存在添加,存在则用新样式替换旧样式
         /// </summary>
-        /// <param name="level">日志级别</param>
-        /// <param name="foreground">字体颜色</param>
-        /// <param name="fontFamilyName">字体名称</param>
-        /// <param name="fontSize">字体大小</param>
-        public void SetStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        /// <param name="style">样式</param>
+        public void SetStyle(LogShowStyle style)
         {
-            var color = System.Windows.Media.Color.FromArgb(foreground.A, foreground.R, foreground.G, foreground.B);
-            logControl.SetStyle(level, color, fontFamilyName, fontSize);
-        }
-
-        /// <summary>
-        /// 添加样式
-        /// </summary>
-        /// <param name="styleKey">样式key</param>
-        /// <param name="foreground">字体颜色</param>
-        /// <param name="fontFamilyName">字体名称</param>
-        /// <param name="fontSize">字体大小</param>
-        public void SetStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
-        {
-            var color = System.Windows.Media.Color.FromArgb(foreground.A, foreground.R, foreground.G, foreground.B);
-            logControl.SetStyle(styleKey, color, fontFamilyName, fontSize);
+            logControl.SetStyle(style);
         }
 
         /// <summary>
         /// 移除样式
         /// </summary>
-        /// <param name="level">日志级别</param>
-        public void RemoveStyle(LogLevel level)
+        /// <param name="style">样式标识</param>
+        public void RemoveStyle(LogShowStyle style)
         {
-            logControl.RemoveStyle(level);
+            logControl.RemoveStyle(style);
         }
 
         /// <summary>
-        /// 移除样式
-        /// </summary>
-        /// <param name="styleKey">样式key</param>
-        public void RemoveStyle(int styleKey)
-        {
-            logControl.RemoveStyle(styleKey);
-        }
-
-        /// <summary>
-        /// 清除样式
+        /// 清空样式
         /// </summary>
         public void ClearStyle()
         {
@@ -104,23 +79,31 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         }
 
         /// <summary>
-        /// 添加显示日志
+        /// 获取当前所有样式数组
         /// </summary>
-        /// <param name="logText">日志文本</param>
-        /// <param name="level">日志级别</param>
-        public void AddLog(string logText, LogLevel level)
+        /// <returns>当前所有样式数组</returns>
+        public LogShowStyle[] GetStyles()
         {
-            logControl.AddLog(logText, level);
+            return this.logControl.GetStyles();
+        }
+
+        /// <summary>
+        /// 根据样式标识ID获取样式
+        /// </summary>
+        /// <param name="id">样式标识ID</param>
+        /// <returns>获取样式</returns>
+        public LogShowStyle GetStyleById(int id)
+        {
+            return logControl.GetStyleById(id);
         }
 
         /// <summary>
         /// 添加显示日志
         /// </summary>
-        /// <param name="logText">日志文本</param>
-        /// <param name="styleKey">样式key</param>
-        public void AddLog(string logText, int styleKey)
+        /// <param name="item">要显示的日志项</param>
+        public void AddLog(ShowLogItem item)
         {
-            logControl.AddLog(logText, styleKey);
+            logControl.AddLog(item);
         }
 
         /// <summary>

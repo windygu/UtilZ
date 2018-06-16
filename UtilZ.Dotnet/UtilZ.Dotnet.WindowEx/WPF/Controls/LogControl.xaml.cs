@@ -16,13 +16,14 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log.Model;
+using UtilZ.Dotnet.WindowEx.Base;
 
 namespace UtilZ.Dotnet.WindowEx.WPF.Controls
 {
     /// <summary>
     /// LogControl.xaml 的交互逻辑
     /// </summary>
-    public partial class LogControl : UserControl
+    public partial class LogControl : UserControl, ILogControl
     {
         /// <summary>
         /// 最多显示项数
@@ -115,21 +116,22 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         {
             InitializeComponent();
 
-            this._defaultStyle = new LogShowStyle(Colors.Gray, this.GetFontFamily(null), 15);
-            this.SetDefaultStyle();
+            this._defaultStyle = new LogShowStyle(0, Colors.Gray);
+            this._defaultStyle.Name = "默认样式";
+            this.AddDefaultStyle();
             this.StartRefreshLogThread();
         }
 
         /// <summary>
-        /// 设置默认样式
+        /// 添加默认样式
         /// </summary>
-        private void SetDefaultStyle()
+        private void AddDefaultStyle()
         {
-            this.SetStyle(LogLevel.Debug, Colors.Gray, null, 0);
-            this.SetStyle(LogLevel.Error, Colors.Red, "", 0);
-            this.SetStyle(LogLevel.Faltal, Colors.Red, "", 0);
-            this.SetStyle(LogLevel.Info, Colors.WhiteSmoke, "", 0);
-            this.SetStyle(LogLevel.Warn, Colors.Yellow, null, 0);
+            this.SetStyle(new LogShowStyle(LogLevel.Debug, Colors.Gray));
+            this.SetStyle(new LogShowStyle(LogLevel.Error, Colors.Red));
+            this.SetStyle(new LogShowStyle(LogLevel.Faltal, Colors.Red));
+            this.SetStyle(new LogShowStyle(LogLevel.Info, Colors.WhiteSmoke));
+            this.SetStyle(new LogShowStyle(LogLevel.Warn, Colors.Yellow));
         }
 
         /// <summary>
@@ -201,20 +203,18 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             try
             {
                 List<ShowLogItem> items = (List<ShowLogItem>)state;
+                FontFamily fontFamily;
                 foreach (var item in items)
                 {
-                    LogShowStyle style = this.GetStyle(item.StyleKey);
+                    LogShowStyle style = this.GetStyleById(item.StyleID);
                     var run = new Run();
                     run.Text = item.LogText;
-                    run.Foreground = style.Foreground;
-                    if (style.FontSize > 0)
+                    run.Foreground = style.ForegroundBrush;
+                    run.FontSize = style.FontSize;
+                    fontFamily = style.FontFamily;
+                    if (fontFamily != null)
                     {
-                        run.FontSize = style.FontSize;
-                    }
-
-                    if (style.FontFamily != null)
-                    {
-                        run.FontFamily = style.FontFamily;
+                        run.FontFamily = fontFamily;
                     }
 
                     content.Inlines.Add(run);
@@ -245,97 +245,67 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         }
 
         /// <summary>
-        /// 添加样式
+        /// 设置样式,不存在添加,存在则用新样式替换旧样式
         /// </summary>
-        /// <param name="level">日志级别</param>
-        /// <param name="foreground">字体颜色</param>
-        /// <param name="fontFamilyName">字体名称</param>
-        /// <param name="fontSize">字体大小</param>
-        public void SetStyle(LogLevel level, Color foreground, string fontFamilyName = null, double fontSize = 15d)
+        /// <param name="style">样式</param>
+        public void SetStyle(LogShowStyle style)
         {
-            this.SetStyle((int)level, foreground, fontFamilyName, fontSize);
-        }
-
-        /// <summary>
-        /// 添加样式
-        /// </summary>
-        /// <param name="styleKey">样式key</param>
-        /// <param name="foreground">字体颜色</param>
-        /// <param name="fontFamilyName">字体名称</param>
-        /// <param name="fontSize">字体大小</param>
-        public void SetStyle(int styleKey, Color foreground, string fontFamilyName = null, double fontSize = 15d)
-        {
-            FontFamily fontFamily = this.GetFontFamily(fontFamilyName);
-            var style = new LogShowStyle(foreground, fontFamily, fontSize);
-            if (this._styleDic.ContainsKey(styleKey))
+            var id = style.ID;
+            if (this._styleDic.ContainsKey(id))
             {
-                this._styleDic[styleKey] = style;
+                this._styleDic[id] = style;
             }
             else
             {
-                this._styleDic.Add(styleKey, style);
+                this._styleDic.Add(id, style);
             }
-        }
-
-        private FontFamily GetFontFamily(string fontName)
-        {
-            FontFamily fontFamily;
-            if (string.IsNullOrWhiteSpace(fontName))
-            {
-                fontFamily = null;
-                //fontName = "Microsoft YaHei UI";
-            }
-            else
-            {
-                var fonts = UtilZ.Dotnet.Ex.Base.FontEx.GetSystemInstallFonts();
-                bool existYahei = (from tmpItem in fonts where string.Equals(tmpItem.Name, fontName, StringComparison.OrdinalIgnoreCase) select tmpItem).Count() > 0;
-                if (existYahei)
-                {
-                    fontFamily = new FontFamily(fontName);
-                }
-                else
-                {
-                    fontFamily = null;
-                }
-            }
-
-            return fontFamily;
         }
 
         /// <summary>
         /// 移除样式
         /// </summary>
-        /// <param name="level">日志级别</param>
-        public void RemoveStyle(LogLevel level)
+        /// <param name="style">样式标识</param>
+        public void RemoveStyle(LogShowStyle style)
         {
-            this.RemoveStyle((int)level);
-        }
-
-        /// <summary>
-        /// 移除样式
-        /// </summary>
-        /// <param name="styleKey">样式key</param>
-        public void RemoveStyle(int styleKey)
-        {
-            if (this._styleDic.ContainsKey(styleKey))
+            if (style == null)
             {
-                this._styleDic.Remove(styleKey);
+                return;
+            }
+
+            var id = style.ID;
+            if (this._styleDic.ContainsKey(id))
+            {
+                this._styleDic.Remove(id);
             }
         }
 
         /// <summary>
-        /// 清除样式
+        /// 清空样式
         /// </summary>
         public void ClearStyle()
         {
             this._styleDic.Clear();
         }
 
-        private LogShowStyle GetStyle(int styleKey)
+        /// <summary>
+        /// 获取当前所有样式数组
+        /// </summary>
+        /// <returns>当前所有样式数组</returns>
+        public LogShowStyle[] GetStyles()
         {
-            if (this._styleDic.ContainsKey(styleKey))
+            return this._styleDic.Values.ToArray();
+        }
+
+        /// <summary>
+        /// 根据样式标识ID获取样式
+        /// </summary>
+        /// <param name="id">样式标识ID</param>
+        /// <returns>获取样式</returns>
+        public LogShowStyle GetStyleById(int id)
+        {
+            if (this._styleDic.ContainsKey(id))
             {
-                return this._styleDic[styleKey];
+                return this._styleDic[id];
             }
 
             return this._defaultStyle;
@@ -345,21 +315,9 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <summary>
         /// 添加显示日志
         /// </summary>
-        /// <param name="logText">日志文本</param>
-        /// <param name="level">日志级别</param>
-        public void AddLog(string logText, LogLevel level)
+        /// <param name="item">要显示的日志项</param>
+        public void AddLog(ShowLogItem item)
         {
-            this.AddLog(logText, (int)level);
-        }
-
-        /// <summary>
-        /// 添加显示日志
-        /// </summary>
-        /// <param name="logText">日志文本</param>
-        /// <param name="styleKey">样式key</param>
-        public void AddLog(string logText, int styleKey)
-        {
-            var item = new ShowLogItem(logText, styleKey);
             bool result;
             lock (this._addLogLock)
             {
@@ -385,50 +343,6 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         {
             this.content.Inlines.Clear();
             this._lines.Clear();
-        }
-    }
-
-    internal class LogShowStyle
-    {
-        public Brush Foreground { get; private set; }
-        public double FontSize { get; private set; }
-        public FontFamily FontFamily { get; private set; }
-
-        public LogShowStyle(Color foreground, FontFamily fontFamily, double fontSize)
-        {
-            this.Foreground = new SolidColorBrush(foreground);
-            this.FontFamily = fontFamily;
-            this.FontSize = fontSize;
-        }
-    }
-
-    internal class ShowLogItem
-    {
-        private int _styleKey;
-        public int StyleKey { get { return _styleKey; } }
-
-        private string _logText;
-        public string LogText { get { return _logText; } }
-
-        private const string _newLine = "\r\n";
-
-        public ShowLogItem(string logText, int styleKey)
-        {
-            logText += _newLine;
-            //if (logText == null)
-            //{
-            //    logText = string.Empty;
-            //}
-            //else
-            //{
-            //    if (!logText.EndsWith(_newLine))
-            //    {
-            //        logText += _newLine;
-            //    }
-            //}
-
-            this._logText = logText;
-            this._styleKey = styleKey;
         }
     }
 }

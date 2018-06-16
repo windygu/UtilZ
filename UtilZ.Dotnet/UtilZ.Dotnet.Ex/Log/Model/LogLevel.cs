@@ -38,6 +38,6 @@ namespace UtilZ.Dotnet.Ex.Log.Model
         /// <summary>
         /// 关闭
         /// </summary>
-        Off
+        Off = 6
     }
 }

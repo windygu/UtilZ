@@ -50,6 +50,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\ILogControl.cs" />
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteBase.cs" />
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
     <Compile Include="Base\PartAsynWait\Interface\IPartAsynExcute.cs" />
