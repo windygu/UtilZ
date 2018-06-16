@@ -29,8 +29,8 @@ namespace TestE.Winform
         {
             while (!token.IsCancellationRequested)
             {
-                logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Info asdfsdafsdafsdafdfgfdsgdfsg logControl1.AddStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray" +
-                    "sadf", DateTime.Now, _index++), LogLevel.Info));
+                logControl1.AddLog(string.Format("{0}_{1} Info asdfsdafsdafsdafdfgfdsgdfsg logControl1.AddStyle(LogLevel.Debug, System.Windows.Media.Colors.Gray" +
+                    "sadf", DateTime.Now, _index++), LogLevel.Info);
                 Thread.Sleep(30);
             }
         }
@@ -69,18 +69,18 @@ namespace TestE.Winform
         private int _index = 0;
         private void btnTest_Click(object sender, EventArgs e)
         {
-            logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Debug", DateTime.Now, _index++), LogLevel.Debug));
-            logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Error", DateTime.Now, _index++), LogLevel.Error));
-            logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), LogLevel.Faltal));
-            logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Info", DateTime.Now, _index++), LogLevel.Info));
-            logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Warn", DateTime.Now, _index++), LogLevel.Warn));
+            logControl1.AddLog(string.Format("{0}_{1} Debug", DateTime.Now, _index++), LogLevel.Debug);
+            logControl1.AddLog(string.Format("{0}_{1} Error", DateTime.Now, _index++), LogLevel.Error);
+            logControl1.AddLog(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), LogLevel.Faltal);
+            logControl1.AddLog(string.Format("{0}_{1} Info", DateTime.Now, _index++), LogLevel.Info);
+            logControl1.AddLog(string.Format("{0}_{1} Warn", DateTime.Now, _index++), LogLevel.Warn);
 
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Debugsdafasdfsda sdag agfdgdsfg  private void btnThreadTest_Click(" +
-                "object sender, EventArgs e) private void btnThreadTest_Click(object sender, EventArgs e)", DateTime.Now, _index++), LogLevel.Debug));
+            logControl1.AddLog(string.Format("{0}_{1} Debugsdafasdfsda sdag agfdgdsfg  private void btnThreadTest_Click(" +
+                "object sender, EventArgs e) private void btnThreadTest_Click(object sender, EventArgs e)", DateTime.Now, _index++), LogLevel.Debug);
         }
 
         private void btnThreadTest_Click(object sender, EventArgs e)
@@ -110,11 +110,11 @@ namespace TestE.Winform
                 _watch = Stopwatch.StartNew();
                 for (int i = 0; i < count; i++)
                 {
-                    logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Debugsdafasdfsda sdag agfdgdsfg  private void btnThreadTest_Click(" +
-                        "object sender, EventArgs e) private void btnThreadTest_Click(object sender, EventArgs e)", DateTime.Now, _index++), LogLevel.Debug));
+                    logControl1.AddLog(string.Format("{0}_{1} Debugsdafasdfsda sdag agfdgdsfg  private void btnThreadTest_Click(" +
+                        "object sender, EventArgs e) private void btnThreadTest_Click(object sender, EventArgs e)", DateTime.Now, _index++), LogLevel.Debug);
                 }
 
-                logControl1.AddLog(new ShowLogItem(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), LogLevel.Faltal));
+                logControl1.AddLog(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), LogLevel.Faltal);
             });
         }
     }

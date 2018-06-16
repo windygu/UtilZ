@@ -100,10 +100,21 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
         /// <summary>
         /// 添加显示日志
         /// </summary>
-        /// <param name="item">要显示的日志项</param>
-        public void AddLog(ShowLogItem item)
+        /// <param name="logText">显示内容</param>
+        /// <param name="level">日志级别</param>
+        public void AddLog(string logText, LogLevel level)
         {
-            logControl.AddLog(item);
+            logControl.AddLog(logText, level);
+        }
+
+        /// <summary>
+        /// 添加显示日志
+        /// </summary>
+        /// <param name="logText">显示内容</param>
+        /// <param name="styleId">样式标识ID</param>
+        public void AddLog(string logText, int styleId)
+        {
+            logControl.AddLog(logText, styleId);
         }
 
         /// <summary>

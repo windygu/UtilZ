@@ -61,74 +61,21 @@ namespace UtilZ.Dotnet.WindowEx.Base
         /// <summary>
         /// 添加显示日志
         /// </summary>
-        /// <param name="item">要显示的日志项</param>
-        void AddLog(ShowLogItem item);
+        /// <param name="logText">显示内容</param>
+        /// <param name="level">日志级别</param>
+        void AddLog(string logText, LogLevel level);
+
+        /// <summary>
+        /// 添加显示日志
+        /// </summary>
+        /// <param name="logText">显示内容</param>
+        /// <param name="styleId">样式标识ID</param>
+        void AddLog(string logText, int styleId);
 
         /// <summary>
         /// 清空日志
         /// </summary>
         void Clear();
-    }
-
-    /// <summary>
-    /// 显示的日志项
-    /// </summary>
-    [Serializable]
-    public class ShowLogItem
-    {
-        private int _styleId;
-        /// <summary>
-        /// 样式标识ID
-        /// </summary>
-        public int StyleID
-        {
-            get { return _styleId; }
-        }
-
-        private string _logText;
-        /// <summary>
-        /// 文本内容
-        /// </summary>
-        public string LogText
-        {
-            get { return _logText; }
-        }
-
-        private const string _newLine = "\r\n";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logText"></param>
-        /// <param name="id"></param>
-        public ShowLogItem(string logText, int id)
-        {
-            logText += _newLine;
-            //if (logText == null)
-            //{
-            //    logText = string.Empty;
-            //}
-            //else
-            //{
-            //    if (!logText.EndsWith(_newLine))
-            //    {
-            //        logText += _newLine;
-            //    }
-            //}
-
-            this._logText = logText;
-            this._styleId = id;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logText"></param>
-        /// <param name="level">日志级别</param>
-        public ShowLogItem(string logText, LogLevel level) :
-            this(logText, (int)level)
-        {
-        }
     }
 
     /// <summary>
