@@ -34,7 +34,7 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             string dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
+            if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
@@ -184,7 +184,7 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             string dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
+            if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
