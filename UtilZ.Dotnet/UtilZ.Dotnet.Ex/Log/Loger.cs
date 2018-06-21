@@ -78,6 +78,7 @@ namespace UtilZ.Dotnet.Ex.Log
                     else
                     {
                         _log = new NullLog();
+                        _log.Start();
                     }
                 }
             }

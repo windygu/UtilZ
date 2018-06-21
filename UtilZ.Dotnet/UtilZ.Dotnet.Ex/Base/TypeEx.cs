@@ -43,7 +43,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 if (string.IsNullOrEmpty(Path.GetPathRoot(assemblyFileName)))
                 {
                     //相对工作目录的路径
-                    assemblyPath = Path.Combine(Environment.CurrentDirectory, assemblyFileName);
+                    assemblyPath = Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyFileName);
                 }
                 else
                 {

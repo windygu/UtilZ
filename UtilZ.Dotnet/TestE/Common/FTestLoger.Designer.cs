@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
+            this.logControlF1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF();
             this.SuspendLayout();
             // 
             // button1
@@ -41,11 +42,21 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // logControlF1
+            // 
+            this.logControlF1.IsLock = false;
+            this.logControlF1.Location = new System.Drawing.Point(31, 79);
+            this.logControlF1.MaxItemCount = 100;
+            this.logControlF1.Name = "logControlF1";
+            this.logControlF1.Size = new System.Drawing.Size(745, 350);
+            this.logControlF1.TabIndex = 1;
+            // 
             // FTestLoger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.logControlF1);
             this.Controls.Add(this.button1);
             this.Name = "FTestLoger";
             this.Text = "FTestLoger";
@@ -57,5 +68,6 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
+        private UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF logControlF1;
     }
 }

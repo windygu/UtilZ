@@ -262,7 +262,7 @@ namespace UtilZ.Dotnet.Ex.Base
                     if (!System.IO.File.Exists(assemblyName))
                     {
                         //如果请求的程序集目录中没有程序集,则在工作目录中查找
-                        assemblyFullPath = System.IO.Path.Combine(Environment.CurrentDirectory, assemblyName);
+                        assemblyFullPath = System.IO.Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyName);
                     }
 
                     if (System.IO.File.Exists(assemblyName))

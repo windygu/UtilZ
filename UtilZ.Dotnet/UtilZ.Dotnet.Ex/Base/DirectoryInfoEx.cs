@@ -12,6 +12,24 @@ namespace UtilZ.Dotnet.Ex.Base
     public static class DirectoryInfoEx
     {
         /// <summary>
+        /// 当前程序集所在目录
+        /// </summary>
+        private static readonly string _currentAssemblyDirectory;
+
+        /// <summary>
+        /// 获取当前程序集所在目录
+        /// </summary>
+        public static string CurrentAssemblyDirectory
+        {
+            get { return _currentAssemblyDirectory; }
+        }
+
+        static DirectoryInfoEx()
+        {
+            _currentAssemblyDirectory = Path.GetDirectoryName(typeof(DirectoryInfoEx).Assembly.Location);
+        }
+
+        /// <summary>
         /// 复制文件夹内容到指定目录
         /// </summary>
         /// <param name="srcDir">原目录</param>
@@ -124,7 +142,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
 
                 //拼接日志目录
-                srcPath = Path.Combine(Environment.CurrentDirectory, srcPath);
+                srcPath = Path.Combine(CurrentAssemblyDirectory, srcPath);
             }
 
             return srcPath;

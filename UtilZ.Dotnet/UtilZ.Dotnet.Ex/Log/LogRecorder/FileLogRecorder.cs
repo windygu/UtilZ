@@ -321,9 +321,9 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
         /// 获得日志文件路径
         /// </summary>
         /// <param name="item">日志项</param>
-        /// <param name="fileName">文件名</param>
+        /// <param name="filterName">过滤日志名称</param>
         /// <returns>日志文件路径</returns>
-        private string GetLogFilePath(LogItem item, string fileName)
+        private string GetLogFilePath(LogItem item, string filterName)
         {
             //日志存放目录
             string logDirectory = this._config.LogDirectory;
@@ -333,7 +333,7 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
             }
 
             //创建日志文件路径
-            string logFilePath = LogUtil.CreateFilePath(item.Time, ref this._lastTime, ref this._logIndex, LogConstant.LOGDATAFORMAT, logDirectory, fileName, LogConstant.LOGEXTENSION, Convert.ToUInt32(this.Config.LogFileSize));
+            string logFilePath = LogUtil.CreateFilePath(item.Time, ref this._lastTime, ref this._logIndex, LogConstant.LOGDATAFORMAT, logDirectory, filterName, LogConstant.LOGEXTENSION, Convert.ToUInt32(this.Config.LogFileSize));
             //清除过期日志
             this.ClearOverdueLog(this.Config.Days, logDirectory, item.Time, LogConstant.LOGEXTENSION);
             //目录是否存在

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.Ex.Log
 {
@@ -13,6 +14,8 @@ namespace UtilZ.Dotnet.Ex.Log
     /// </summary>
     internal class LogUtil
     {
+
+
         /// <summary>
         /// 创建需要分隔大小的文件路径[2014-10-27_1.log]
         /// </summary>
@@ -239,7 +242,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
 
                 //拼接日志目录
-                srcPath = Path.Combine(Environment.CurrentDirectory, srcPath);
+                srcPath = Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, srcPath);
             }
 
             return srcPath;
@@ -268,7 +271,7 @@ namespace UtilZ.Dotnet.Ex.Log
             if (string.IsNullOrEmpty(Path.GetPathRoot(assemblyFileName)))
             {
                 //相对工作目录的路径
-                assemblyPath = Path.Combine(Environment.CurrentDirectory, assemblyFileName);
+                assemblyPath = Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyFileName);
             }
             else
             {
