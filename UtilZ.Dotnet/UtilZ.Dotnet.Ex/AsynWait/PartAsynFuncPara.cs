@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Interface;
 
-namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
+namespace UtilZ.Dotnet.Ex.AsynWait
 {
     /// <summary>
     /// 异步执行执行委托参数

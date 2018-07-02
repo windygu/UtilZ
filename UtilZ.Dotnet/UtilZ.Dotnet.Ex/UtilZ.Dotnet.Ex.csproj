@@ -186,6 +186,8 @@
     <Compile Include="MemoryCache\ZMemoryCache.cs" />
     <Compile Include="MemoryCache\ZMemoryStoreMode.cs" />
     <Compile Include="MemoryCache\ZMemoryTimeOutType.cs" />
+    <Compile Include="AsynWait\IPartAsynWait.cs" />
+    <Compile Include="AsynWait\PartAsynFuncPara.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
@@ -198,6 +200,8 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

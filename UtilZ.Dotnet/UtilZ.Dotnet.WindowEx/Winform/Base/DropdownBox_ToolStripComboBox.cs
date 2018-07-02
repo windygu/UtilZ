@@ -138,36 +138,28 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         /// </summary>
         /// <typeparam name="T">泛型类型</typeparam>
         /// <param name="toolStripComboBox">ToolStripComboBox</param>
-        /// <param name="items">要绑定的集合</param>
-        /// <param name="displayMember">显示的成员,属性名或字段名,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <param name="bindItemss">要绑定的集合</param>
         /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>  
-        public static void BindingIEnumerableGenericToToolStripComboBox<T>(System.Windows.Forms.ToolStripComboBox toolStripComboBox, IEnumerable<T> items, string displayMember = null, T selectedItem = null) where T : class
+        private static void BindingIEnumerableGenericToToolStripComboBox<T>(System.Windows.Forms.ToolStripComboBox toolStripComboBox, List<DropdownBindingItem> bindItemss, T selectedItem = null) where T : class
         {
             if (toolStripComboBox == null)
             {
                 throw new ArgumentNullException(ObjectEx.GetVarName(p => toolStripComboBox), "目标控件不能为null");
             }
 
-            if (items == null)
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => items), "集合不能为null");
-            }
-
             try
             {
                 toolStripComboBox.Items.Clear();
-                if (items.Count() == 0)
+                if (bindItemss.Count == 0)
                 {
                     return;
                 }
 
-                List<DropdownBindingItem> dbiItems = DropdownBoxHelper.CreateBindingList<T>(items, displayMember);
-                int selectedIndex = -1;
+                int selectedIndex = 0;
                 DropdownBindingItem item = null;
-
-                for (int i = 0; i < dbiItems.Count; i++)
+                for (int i = 0; i < bindItemss.Count; i++)
                 {
-                    item = dbiItems[i];
+                    item = bindItemss[i];
                     if (item.Value == selectedItem || object.Equals(item.Value, selectedItem))
                     {
                         selectedIndex = i;
@@ -176,12 +168,40 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
                     toolStripComboBox.Items.Add(item);
                 }
 
-                toolStripComboBox.SelectedIndex = selectedIndex == -1 ? 0 : selectedIndex;
+                toolStripComboBox.SelectedIndex = selectedIndex;
             }
             catch (Exception ex)
             {
                 throw new Exception("绑定值失败", ex);
             }
+        }
+
+        /// <summary>
+        /// 绑定集合到ToolStripComboBox
+        /// </summary>
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="toolStripComboBox">ToolStripComboBox</param>
+        /// <param name="items">要绑定的集合</param>
+        /// <param name="displayMember">显示的成员,属性名或字段名,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>  
+        public static void BindingIEnumerableGenericToToolStripComboBox<T>(System.Windows.Forms.ToolStripComboBox toolStripComboBox, IEnumerable<T> items, string displayMember = null, T selectedItem = null) where T : class
+        {
+            List<DropdownBindingItem> bindItems = DropdownBindingItem.GenericToDropdownBindingItems<T>(items, displayMember);
+            BindingIEnumerableGenericToToolStripComboBox<T>(toolStripComboBox, bindItems);
+        }
+
+        /// <summary>
+        /// 绑定泛型集合到ComboBox
+        /// </summary>
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="toolStripComboBox">ToolStripComboBox</param>
+        /// <param name="displayFun">显示的委托,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <param name="items">要绑定的集合</param>
+        /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>        
+        public static void BindingIEnumerableGenericToToolStripComboBox<T>(System.Windows.Forms.ToolStripComboBox toolStripComboBox, Func<T, string> displayFun, IEnumerable<T> items, T selectedItem = null) where T : class
+        {
+            List<DropdownBindingItem> bindItems = DropdownBindingItem.GenericToDropdownBindingItems<T>(items, displayFun);
+            BindingIEnumerableGenericToToolStripComboBox<T>(toolStripComboBox, bindItems);
         }
 
         /// <summary>

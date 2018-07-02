@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.AsynWait;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model;
 

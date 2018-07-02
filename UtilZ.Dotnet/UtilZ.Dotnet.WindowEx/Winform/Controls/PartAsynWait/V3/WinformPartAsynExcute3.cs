@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.AsynWait;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model;
 
@@ -168,11 +169,25 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
             //设置对象锁结束
             PartAsynUIParaProxy.UnLock(this._asynWaitPara);
             this.ReleseResource();
+            this.OnRaiseCompleted(asynExcuteResult);
+        }
 
-            var endAction = this._asynWaitPara.Completed;
-            if (endAction != null)
+        private void OnRaiseCompleted(PartAsynExcuteResult<T, TResult> asynExcuteResult)
+        {
+            if (this._asynWaitPara.AsynWait.InvokeRequired)
             {
-                endAction(asynExcuteResult);
+                this._asynWaitPara.AsynWait.Invoke(new Action(() =>
+                {
+                    this.OnRaiseCompleted(asynExcuteResult);
+                }));
+            }
+            else
+            {
+                var endAction = this._asynWaitPara.Completed;
+                if (endAction != null)
+                {
+                    endAction(asynExcuteResult);
+                }
             }
         }
 

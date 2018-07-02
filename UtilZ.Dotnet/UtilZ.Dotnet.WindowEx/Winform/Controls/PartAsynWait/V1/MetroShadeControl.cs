@@ -36,15 +36,48 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V1
         {
             get
             {
-                return labelControlCaption.Text;
+                return this.GetCaption();
             }
             set
             {
-                labelControlCaption.Text = value;
+                this.SetCaption(value);
+            }
+        }
+
+        private void SetCaption(string caption)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    this.SetCaption(caption);
+                }));
+            }
+            else
+            {
+                labelControlCaption.Text = caption;
                 int captionX = (int)((labelControlTitle.Parent.Width - labelControlCaption.Width) / 2);
                 int captionY = (int)((labelControlTitle.Parent.Height - labelControlCaption.Height) / 2);
                 labelControlCaption.Location = new Point(captionX, captionY);
             }
+        }
+
+        private string GetCaption()
+        {
+            string caption = null;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    caption = labelControlCaption.Text;
+                }));
+            }
+            else
+            {
+                caption = labelControlCaption.Text;
+            }
+
+            return caption;
         }
 
         /// <summary>
@@ -60,15 +93,48 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V1
         {
             get
             {
-                return labelControlTitle.Text;
+                return this.GetHint();
             }
             set
             {
-                labelControlTitle.Text = value;
+                this.SetHint(value);
+            }
+        }
+
+        private void SetHint(string hint)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    this.SetHint(hint);
+                }));
+            }
+            else
+            {
+                labelControlTitle.Text = hint;
                 int titleX = (int)((labelControlTitle.Parent.Width - labelControlTitle.Width) / 2);
                 int titleY = (int)((labelControlTitle.Parent.Height - labelControlTitle.Height) / 2);
                 labelControlTitle.Location = new Point(titleX, titleY);
             }
+        }
+
+        private string GetHint()
+        {
+            string hint = null;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    hint = labelControlTitle.Text;
+                }));
+            }
+            else
+            {
+                hint = labelControlTitle.Text;
+            }
+
+            return hint;
         }
 
         /// <summary>

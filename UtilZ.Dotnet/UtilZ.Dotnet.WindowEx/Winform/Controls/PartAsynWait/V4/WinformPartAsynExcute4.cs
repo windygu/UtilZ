@@ -8,6 +8,7 @@ using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.AsynWait;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V4
 {

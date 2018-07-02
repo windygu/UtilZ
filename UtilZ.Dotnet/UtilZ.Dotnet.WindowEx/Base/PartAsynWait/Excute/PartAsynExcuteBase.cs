@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using UtilZ.Dotnet.Ex.AsynWait;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Interface;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model;
 

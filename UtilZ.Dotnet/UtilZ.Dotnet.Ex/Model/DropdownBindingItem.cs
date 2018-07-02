@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace UtilZ.Dotnet.Ex.Model
@@ -93,12 +94,73 @@ namespace UtilZ.Dotnet.Ex.Model
         }
 
         /// <summary>
-        /// 重写GetHashCode
+        /// 转换泛型集合为DropdownBindingItem列表
         /// </summary>
-        /// <returns>HashCode</returns>
-        public override int GetHashCode()
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="srcItems">原始泛型集合</param>
+        /// <param name="displayMember">显示的成员,属性名或字段名,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <returns>DropdownBindingItem列表</returns>
+        public static List<DropdownBindingItem> GenericToDropdownBindingItems<T>(IEnumerable<T> srcItems, string displayMember = null) where T : class
         {
-            return base.GetHashCode();
+            if (srcItems == null || srcItems.Count() == 0)
+            {
+                return new List<DropdownBindingItem>();
+            }
+
+            List<DropdownBindingItem> items;
+            if (string.IsNullOrWhiteSpace(displayMember))
+            {
+                items = srcItems.Select(t => { return new DropdownBindingItem(t?.ToString(), t); }).ToList();
+            }
+            else
+            {
+                Type type = typeof(T);
+                PropertyInfo proInfo = type.GetProperty(displayMember);
+                if (proInfo != null)
+                {
+                    items = srcItems.Select(t => { return new DropdownBindingItem(proInfo.GetValue(t, null)?.ToString(), t); }).ToList();
+                }
+                else
+                {
+                    FieldInfo fieldInfo = type.GetField(displayMember);
+                    if (fieldInfo != null)
+                    {
+                        items = srcItems.Select(t => { return new DropdownBindingItem(fieldInfo.GetValue(t)?.ToString(), t); }).ToList();
+                    }
+                    else
+                    {
+                        items = srcItems.Select(t => { return new DropdownBindingItem(t?.ToString(), t); }).ToList();
+                    }
+                }
+            }
+
+            return items;
+        }
+
+        /// <summary>
+        /// 转换泛型集合为DropdownBindingItem列表
+        /// </summary>
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="srcItems">原始泛型集合</param>
+        /// <param name="displayFun">显示转换委托</param>
+        /// <returns>DropdownBindingItem列表</returns>
+        public static List<DropdownBindingItem> GenericToDropdownBindingItems<T>(IEnumerable<T> srcItems, Func<T, string> displayFun = null) where T : class
+        {
+            if (srcItems == null || srcItems.Count() == 0)
+            {
+                return new List<DropdownBindingItem>();
+            }
+
+            List<DropdownBindingItem> items;
+            if (displayFun == null)
+            {
+                items = srcItems.Select(t => { return new DropdownBindingItem(t?.ToString(), t); }).ToList();
+            }
+            else
+            {
+                items = srcItems.Select(t => { return new DropdownBindingItem(displayFun(t), t); }).ToList();
+            }
+            return items;
         }
     }
 }

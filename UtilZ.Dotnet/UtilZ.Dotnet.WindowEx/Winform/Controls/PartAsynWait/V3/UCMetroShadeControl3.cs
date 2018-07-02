@@ -41,11 +41,34 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         {
             get
             {
-                return labelControlCaption.Text;
+                string hint = null;
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        hint = labelControlCaption.Text;
+                    }));
+                }
+                else
+                {
+                    hint = labelControlCaption.Text;
+                }
+
+                return hint;
             }
             set
             {
-                labelControlCaption.Text = value;
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        labelControlCaption.Text = value;
+                    }));
+                }
+                else
+                {
+                    labelControlCaption.Text = value;
+                }
             }
         }
 
@@ -60,11 +83,34 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         {
             get
             {
-                return labelControlTitle.Text;
+                string hint = null;
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        hint = labelControlTitle.Text;
+                    }));
+                }
+                else
+                {
+                    hint = labelControlTitle.Text;
+                }
+
+                return hint;
             }
             set
             {
-                labelControlTitle.Text = value;
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        labelControlTitle.Text = value;
+                    }));
+                }
+                else
+                {
+                    labelControlTitle.Text = value;
+                }
             }
         }
 
@@ -77,8 +123,37 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         [EditorBrowsable(EditorBrowsableState.Always)]
         public bool IsShowCancel
         {
-            get { return btnCancell.Visible; }
-            set { btnCancell.Visible = value; }
+            get
+            {
+                bool isShowCancel = false;
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        isShowCancel = btnCancell.Visible;
+                    }));
+                }
+                else
+                {
+                    isShowCancel = btnCancell.Visible;
+                }
+
+                return isShowCancel;
+            }
+            set
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        btnCancell.Visible = value;
+                    }));
+                }
+                else
+                {
+                    btnCancell.Visible = value;
+                }
+            }
         }
 
         /// <summary>
@@ -89,8 +164,37 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color AsynWaitBackground
         {
-            get { return this.BackColor; }
-            set { this.BackColor = value; }
+            get
+            {
+                Color asynWaitBackground = default(Color);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        asynWaitBackground = this.BackColor;
+                    }));
+                }
+                else
+                {
+                    asynWaitBackground = this.BackColor;
+                }
+
+                return asynWaitBackground;
+            }
+            set
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.BackColor = value;
+                    }));
+                }
+                else
+                {
+                    this.BackColor = value;
+                }
+            }
         }
 
         /// <summary>
@@ -108,8 +212,9 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         /// </summary>
         public void Cancel()
         {
-            if (this._isCanceled)
+            if (this.InvokeRequired)
             {
+                this.Invoke(new Action(this.Cancel));
                 return;
             }
 
@@ -123,19 +228,8 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
                 this._isCanceled = true;
             }
 
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() =>
-                {
-                    btnCancell.Text = "正在取消";
-                    btnCancell.Enabled = false;
-                }));
-            }
-            else
-            {
-                btnCancell.Text = "正在取消";
-                btnCancell.Enabled = false;
-            }
+            btnCancell.Text = "正在取消";
+            btnCancell.Enabled = false;
 
             var handler = this.Canceled;
             if (handler != null)
@@ -174,9 +268,16 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         /// </summary>
         public void Reset()
         {
-            this._isCanceled = false;
-            btnCancell.Text = "取消";
-            btnCancell.Enabled = true;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(this.Reset));
+            }
+            else
+            {
+                this._isCanceled = false;
+                btnCancell.Text = "取消";
+                btnCancell.Enabled = true;
+            }
         }
 
         /// <summary>
@@ -184,7 +285,23 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
         /// </summary>
         public bool UIDesignMode
         {
-            get { return this.DesignMode; }
+            get
+            {
+                bool isDesignMode = false;
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        isDesignMode = this.DesignMode;
+                    }));
+                }
+                else
+                {
+                    isDesignMode = this.DesignMode;
+                }
+
+                return isDesignMode;
+            }
         }
         #endregion
 
@@ -198,7 +315,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3
 
         private void UCMetroShadeControl2_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnCancell_Click(object sender, EventArgs e)

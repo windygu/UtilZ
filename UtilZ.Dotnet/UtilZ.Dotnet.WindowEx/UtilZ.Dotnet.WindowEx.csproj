@@ -54,10 +54,8 @@
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteBase.cs" />
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
     <Compile Include="Base\PartAsynWait\Interface\IPartAsynExcute.cs" />
-    <Compile Include="Base\PartAsynWait\Interface\IPartAsynWait.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynExcuteResult.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynExcuteStatus.cs" />
-    <Compile Include="Base\PartAsynWait\Model\PartAsynFuncPara.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynUIPara.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynUIParaProxy.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynWaitPara.cs" />
@@ -68,7 +66,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Winform\Base\DropdownBox_DropdownBoxHelper.cs" />
     <Compile Include="Winform\Base\ScrollableControlEx.cs" />
     <Compile Include="Winform\Base\WindowNestProcess.cs" />
     <Compile Include="Winform\Base\WinformControlEx.cs" />

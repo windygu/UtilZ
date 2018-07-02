@@ -141,10 +141,9 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         /// </summary>
         /// <typeparam name="T">泛型类型</typeparam>
         /// <param name="combox">ComboBox</param>
-        /// <param name="items">要绑定的集合</param>
-        /// <param name="displayMember">显示的成员,属性名或字段名,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <param name="bindItems">要绑定的集合</param>
         /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>        
-        public static void BindingIEnumerableGenericToComboBox<T>(System.Windows.Forms.ComboBox combox, IEnumerable<T> items, string displayMember = null, T selectedItem = null) where T : class
+        private static void BindingIEnumerableGenericToComboBox<T>(System.Windows.Forms.ComboBox combox, List<DropdownBindingItem> bindItems, T selectedItem = null) where T : class
         {
             if (combox == null)
             {
@@ -153,19 +152,18 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
 
             try
             {
-                combox.DataSource = items;
-                combox.DisplayMember = displayMember;
-
-                if (items == null)
+                combox.DataSource = bindItems;
+                combox.DisplayMember = nameof(DropdownBindingItem.DisplayName);
+                if (bindItems.Count == 0)
                 {
                     return;
                 }
 
-                T tmpItem;
-                for (int i = 0; i < items.Count(); i++)
+                DropdownBindingItem tmpItem;
+                for (int i = 0; i < bindItems.Count; i++)
                 {
-                    tmpItem = items.ElementAt(i);
-                    if (selectedItem == tmpItem || object.Equals(selectedItem, tmpItem))
+                    tmpItem = bindItems[i];
+                    if (selectedItem == tmpItem.Value || object.Equals(selectedItem, tmpItem.Value))
                     {
                         combox.SelectedIndex = i;
                         break;
@@ -176,6 +174,34 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             {
                 throw new Exception("绑定值失败", ex);
             }
+        }
+
+        /// <summary>
+        /// 绑定泛型集合到ComboBox
+        /// </summary>
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="combox">ComboBox</param>
+        /// <param name="items">要绑定的集合</param>
+        /// <param name="displayMember">显示的成员,属性名或字段名,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>        
+        public static void BindingIEnumerableGenericToComboBox<T>(System.Windows.Forms.ComboBox combox, IEnumerable<T> items, string displayMember = null, T selectedItem = null) where T : class
+        {
+            List<DropdownBindingItem> bindItems = DropdownBindingItem.GenericToDropdownBindingItems<T>(items, displayMember);
+            BindingIEnumerableGenericToComboBox<T>(combox, bindItems);
+        }
+
+        /// <summary>
+        /// 绑定泛型集合到ComboBox
+        /// </summary>
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="combox">ComboBox</param>
+        /// <param name="displayFun">显示的委托,当为null时调用成员的ToString方法的值作为显示值[默认值为null]</param>
+        /// <param name="items">要绑定的集合</param>
+        /// <param name="selectedItem">默认选中项,不设置默认选中时该值为null[默认值为null]</param>        
+        public static void BindingIEnumerableGenericToComboBox<T>(System.Windows.Forms.ComboBox combox, Func<T, string> displayFun, IEnumerable<T> items, T selectedItem = null) where T : class
+        {
+            List<DropdownBindingItem> bindItems = DropdownBindingItem.GenericToDropdownBindingItems<T>(items, displayFun);
+            BindingIEnumerableGenericToComboBox<T>(combox, bindItems);
         }
 
         /// <summary>
@@ -197,11 +223,11 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
 
             try
             {
-                object tmpItem;
+                object value = null;
                 for (int i = 0; i < combox.Items.Count; i++)
                 {
-                    tmpItem = combox.Items[i];
-                    if (selectedItem == tmpItem || object.Equals(selectedItem, tmpItem))
+                    value = ((DropdownBindingItem)combox.Items[i]).Value;
+                    if (selectedItem == value || object.Equals(selectedItem, value))
                     {
                         combox.SelectedIndex = i;
                         return;
@@ -236,7 +262,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
 
             try
             {
-                return (T)combox.SelectedItem;
+                return (T)((DropdownBindingItem)combox.SelectedItem).Value;
             }
             catch (Exception ex)
             {
