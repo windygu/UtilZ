@@ -471,7 +471,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         }
 
         /// <summary>
-        /// 移除位于开始处的指定个数对象
+        /// 移除满足条件的元素
         /// </summary>
         /// <param name="predicate">用于定义要移除的元素应满足的条件</param>
         /// <returns>移除项集合</returns>
