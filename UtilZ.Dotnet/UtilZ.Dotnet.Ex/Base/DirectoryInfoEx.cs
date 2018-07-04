@@ -44,7 +44,6 @@ namespace UtilZ.Dotnet.Ex.Base
             CopyFolder(new DirectoryInfo(srcDir), dstDir);
         }
 
-
         /// <summary>
         /// 复制文件夹内容到指定目录
         /// </summary>
@@ -173,6 +172,78 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,{0}", selectPath));
+        }
+
+        /// <summary>
+        /// 检查目录是否存在,如果不存在则创建
+        /// </summary>
+        /// <param name="dir">目录</param>
+        public static void CheckDirectory(string dir)
+        {
+            if (string.IsNullOrWhiteSpace(dir))
+            {
+                throw new ArgumentNullException(nameof(dir));
+            }
+
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
+        /// <summary>
+        /// 检查目录是否存在,如果不存在则创建
+        /// </summary>
+        /// <param name="dir">目录</param>
+        /// <param name="directorySecurity">要应用于此目录的访问控制</param>
+        public static void CheckDirectory(string dir, System.Security.AccessControl.DirectorySecurity directorySecurity)
+        {
+            if (string.IsNullOrWhiteSpace(dir))
+            {
+                throw new ArgumentNullException(nameof(dir));
+            }
+
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir, directorySecurity);
+            }
+        }
+
+        /// <summary>
+        /// 检查文件路径中所包含的目录是否存在,如果不存在则创建
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        public static void CheckFilePathDirectory(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
+        /// <summary>
+        /// 检查文件路径中所包含的目录是否存在,如果不存在则创建
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <param name="directorySecurity">要应用于此目录的访问控制</param>
+        public static void CheckFilePathDirectory(string filePath, System.Security.AccessControl.DirectorySecurity directorySecurity)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir, directorySecurity);
+            }
         }
     }
 }
