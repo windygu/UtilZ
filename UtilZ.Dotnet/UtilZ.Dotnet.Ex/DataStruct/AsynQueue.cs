@@ -455,29 +455,55 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// 移除位于开始处的指定个数对象
         /// </summary>
         /// <param name="count">要移除的项数</param>
+        /// <returns>移除项集合</returns>
         public List<T> Remove(int count)
         {
             var items = new List<T>();
-            T result;
-            int removeCount = 0;
             lock (this.SyncRoot)
             {
-                while (removeCount < count)
+                while (items.Count < count && this._queue.Count > 0)
                 {
-                    //如果为空了就跳出
-                    if (this._queue.Count == 0)
-                    {
-                        break;
-                    }
-
-                    //移除一项
-                    result = this._queue.Dequeue();
-                    items.Add(result);
-                    removeCount++;
+                    items.Add(this._queue.Dequeue());
                 }
             }
 
             return items;
+        }
+
+        /// <summary>
+        /// 移除位于开始处的指定个数对象
+        /// </summary>
+        /// <param name="predicate">用于定义要移除的元素应满足的条件</param>
+        /// <returns>移除项集合</returns>
+        public IEnumerable<T> Remove(Func<T, bool> predicate)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            lock (this.SyncRoot)
+            {
+                T[] array = this._queue.ToArray();
+                var removeItems = array.Where(predicate);
+                if (removeItems.Count() > 0)
+                {
+                    this._queue.Clear();
+                    foreach (var item in array)
+                    {
+                        if (removeItems.Contains(item))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            this._queue.Enqueue(item);
+                        }
+                    }
+                }
+
+                return removeItems;
+            }
         }
 
         /// <summary>

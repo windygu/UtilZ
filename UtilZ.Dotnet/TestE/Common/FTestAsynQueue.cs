@@ -29,10 +29,27 @@ namespace TestE.Common
             _asynQueue = new AsynQueue<int>((i) =>
             {
                 Thread.Sleep(100);
+
                 this.Invoke(new Action(() =>
                 {
                     textBox1.Text = i.ToString();
                 }));
+
+                if (_asynQueue.Count > 10)
+                {
+                    var removeItems = _asynQueue.Remove((t) => { return t % 10 > 4; });
+                    var removeCount = removeItems.Count();
+                    if (removeCount > 0)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            textBox1.Text = string.Format("移除:{0}项", removeCount);
+                        }));
+
+                        Thread.Sleep(2000);
+                    }
+                }
+
                 Application.DoEvents();
             }, "消费者线程", true, false);
 
@@ -42,7 +59,7 @@ namespace TestE.Common
                 while (!token.IsCancellationRequested)
                 {
                     ret = _asynQueue.Enqueue(_index++);
-                    Thread.Sleep(30);
+                    Thread.Sleep(20);
                 }
             }, "生产者线程", true);
 
