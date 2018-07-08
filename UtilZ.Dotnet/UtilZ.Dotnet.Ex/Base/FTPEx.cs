@@ -12,7 +12,7 @@ namespace UtilZ.Dotnet.Ex.Base
     /// <summary>
     /// ftp辅助类
     /// </summary>
-    public class FTPEx
+    public class FtpEx
     {
         /// <summary>
         /// init ftp url
@@ -76,7 +76,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="userName">用户名</param>
         /// <param name="password">密码</param>
         /// <param name="proxy">代理</param>
-        public FTPEx(string ftpUrl, string userName = null, string password = null, IWebProxy proxy = null)
+        public FtpEx(string ftpUrl, string userName = null, string password = null, IWebProxy proxy = null)
         {
             if (string.IsNullOrWhiteSpace(ftpUrl))
             {
@@ -784,12 +784,54 @@ namespace UtilZ.Dotnet.Ex.Base
                 return;
             }
 
-            string ftpUrl = Path.Combine(this._ftpRootUrl, remoteDir);
+            //删除当前子目录
+            string ftpUrl = this.GetFullPath(remoteDir);
             FtpWebRequest ftpWebRequest = this.CreateRequest(ftpUrl, WebRequestMethods.Ftp.RemoveDirectory);
             using (var response = ftpWebRequest.GetResponse())
             {
 
             }
+        }
+
+        /// <summary>
+        /// 删除FTP服务器上的目录
+        /// </summary>
+        /// <param name="remoteDir">FTP服务器上的相对目录</param>
+        /// <param name="recursive">若要移除 path 中的目录、子目录和文件，则为 true；否则为 false</param>
+        public void DeleteDirectory(string remoteDir, bool recursive)
+        {
+            if (recursive)
+            {
+                this.DeleteSubDirectoryAndFile(remoteDir);
+            }
+            else
+            {
+                this.DeleteDirectory(remoteDir);
+            }
+        }
+
+        private void DeleteSubDirectoryAndFile(string remoteDir)
+        {
+            var ftpFileInfos = this.GetFileList(remoteDir);
+            foreach (var ftpFileInfo in ftpFileInfos)
+            {
+                //删除当前目录中的文件
+                this.DeleteFile(Path.Combine(remoteDir, ftpFileInfo.Name));
+            }
+
+            var ftpDirInfos = this.GetDirectoryList(remoteDir);
+            foreach (var ftpDirInfo in ftpDirInfos)
+            {
+                string remoteDirSub = Path.Combine(remoteDir, ftpDirInfo.Name);
+
+                //删除子目录中的下级子目录及文件
+                this.DeleteSubDirectoryAndFile(remoteDirSub);
+
+                //删除子目录
+                this.DeleteDirectory(remoteDirSub);
+            }
+
+            this.DeleteDirectory(remoteDir);
         }
     }
 
@@ -891,5 +933,92 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             return this.Name;
         }
+    }
+
+    /// <summary>
+    /// Ftp错误码定义类
+    /// </summary>
+    public class FtpErrorCode
+    {
+        /// <summary>
+        /// 同时连接该ftp的人数过多，一般ftp网站都有同时登陆人数的上限，超过该上限就会出现421错误
+        /// 解决办法：在ftp软件中，把重试次数改为999，重试间隔改为60秒，一般几分钟到半小时就会连上，要注意的是，有些网站有连接时间的设定，连上后，超过一定时间不下载，就会自动断开，所以要经常去看看有没有连上
+        /// </summary>
+        public const int ConnectionMore = 401;
+
+        /// <summary>
+        /// 用户名或密码错误
+        /// </summary>
+        public const int AccountInfoError = 530;
+
+        /// <summary>
+        /// Url错误或没权限
+        /// </summary>
+        public const int UrlErrorOrNoAuthority = 550;
+        /*
+        1xx – 肯定的初步答复
+这些状态代码指示一项* 作已经成功开始，但客户端希望在继续* 作新命令前得到另一个答复。 
+● 110 重新启动标记答复。 
+● 120 服务已就绪，在 nnn 分钟后开始。 
+● 125 数据连接已打开，正在开始传输。 
+● 150 文件状态正常，准备打开数据连接。
+
+
+2xx – 肯定的完成答复
+一项* 作已经成功完成。客户端可以执行新命令。 
+● 200 命令确定。 
+● 202 未执行命令，站点上的命令过多。 
+● 211 系统状态，或系统帮助答复。 
+● 212 目录状态。 
+● 213 文件状态。 
+● 214 帮助消息。 
+● 215 NAME 系统类型，其中，NAME 是 Assigned Numbers 文档中所列的正式系统名称。 
+● 220 服务就绪，可以执行新用户的请求。 
+● 221 服务关闭控制连接。如果适当，请注销。 
+● 225 数据连接打开，没有进行中的传输。 
+● 226 关闭数据连接。请求的文件* 作已成功（例如，传输文件或放弃文件）。 
+● 227 进入被动模式(h1, h2, h3, h4, p1, p2)。 
+● 230 用户已登录，继续进行。 
+● 250 请求的文件* 作正确，已完成。 
+● 257 已创建“PATHNAME”。
+
+3xx – 肯定的中间答复
+该命令已成功，但服务器需要更多来自客户端的信息以完成对请求的处理。 
+● 331 用户名正确，需要密码。 
+● 332 需要登录帐户。 
+● 350 请求的文件* 作正在等待进一步的信息。
+
+4xx – 瞬态否定的完成答复
+该命令不成功，但错误是暂时的。如果客户端重试命令，可能会执行成功。 
+● 421 服务不可用，正在关闭控制连接。如果服务确定它必须关闭，将向任何命令发送这一应答。 
+● 425 无法打开数据连接。 
+● 426 Connection closed; transfer aborted.
+● 450 未执行请求的文件* 作。文件不可用（例如，文件繁忙）。 
+● 451 请求的* 作异常终止：正在处理本地错误。 
+● 452 未执行请求的* 作。系统存储空间不够。
+
+5xx – 永久性否定的完成答复
+该命令不成功，错误是永久性的。如果客户端重试命令，将再次出现同样的错误。 
+● 500 语法错误，命令无法识别。这可能包括诸如命令行太长之类的错误。 
+● 501 在参数中有语法错误。 
+● 502 未执行命令。 
+● 503 错误的命令序列。 
+● 504 未执行该参数的命令。 
+● 530 未登录。 
+● 532 存储文件需要帐户。 
+● 550 未执行请求的* 作。文件不可用（例如，未找到文件，没有访问权限）。 
+● 551 请求的* 作异常终止：未知的页面类型。 
+● 552 请求的文件* 作异常终止：超出存储分配（对于当前目录或数据集）。 
+● 553 未执行请求的* 作。不允许的文件名。
+
+常见的 FTP 状态代码及其原因
+● 150 – FTP 使用两个端口：21 用于发送命令，20 用于发送数据。状态代码 150 表示服务器准备在端口 20 上打开新连接，发送一些数据。 
+● 226 – 命令在端口 20 上打开数据连接以执行* 作，如传输文件。该* 作成功完成，数据连接已关闭。 
+● 230 – 客户端发送正确的密码后，显示该状态代码。它表示用户已成功登录。 
+● 331 – 客户端发送用户名后，显示该状态代码。无论所提供的用户名是否为系统中的有效帐户，都将显示该状态代码。 
+● 426 – 命令打开数据连接以执行* 作，但该* 作已被取消，数据连接已关闭。 
+● 530 – 该状态代码表示用户无法登录，因为用户名和密码组合无效。如果使用某个用户帐户登录，可能键入错误的用户名或密码，也可能选择只允许匿名访问。如果使用匿名帐户登录，IIS 的配置可能拒绝匿名访问。 
+● 550 – 命令未被执行，因为指定的文件不可用。例如，要 GET 的文件并不存在，或试图将文件 PUT 到您没有写入权限的目录。
+          */
     }
 }

@@ -61,7 +61,7 @@
     <Compile Include="Base\FileEx.cs" />
     <Compile Include="Base\FileStringCodingEx.cs" />
     <Compile Include="Base\FontEx.cs" />
-    <Compile Include="Base\FTPEx.cs" />
+    <Compile Include="Base\FtpEx.cs" />
     <Compile Include="Base\HashEx.cs" />
     <Compile Include="Base\ImageEx.cs" />
     <Compile Include="Base\IPAddressEx.cs" />

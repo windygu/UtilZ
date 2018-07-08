@@ -90,7 +90,7 @@ namespace ConsoleApp
             Console.WriteLine(ftpUrl);
             try
             {
-                new FTPEx(ftpUrl);
+                new FtpEx(ftpUrl);
             }
             catch (Exception ex)
             {

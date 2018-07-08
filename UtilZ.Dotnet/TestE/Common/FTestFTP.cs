@@ -9,15 +9,15 @@ namespace TestE.Common
 {
     public partial class FTestFTP : Form
     {
-        private readonly FTPEx _ftp;
+        private readonly FtpEx _ftp;
         public FTestFTP()
         {
             InitializeComponent();
 
-            string ftpUrl = @"ftp://192.168.0.103/";
+            string ftpUrl = @"ftp://192.168.0.102/";
             string ftpUserName = string.Empty;
             string ftpPassword = string.Empty;
-            this._ftp = new FTPEx(ftpUrl, ftpUserName, ftpPassword);
+            this._ftp = new FtpEx(ftpUrl, ftpUserName, ftpPassword);
         }
 
         private void FTestFTP_Load(object sender, EventArgs e)
@@ -178,7 +178,7 @@ namespace TestE.Common
                 remoteFilePath = @"feiq.rar";
                 this._extendFTP.UploadFile(localFilePath, remoteFilePath, 2048, true);*/
 
-               
+
                 remoteFilePath = @"12/刀剑心.mp3";
                 localFilePath = @"F:\刀剑心.mp3";
                 using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -344,6 +344,10 @@ namespace TestE.Common
             try
             {
                 string remoteDir = @"Soft";
+                remoteDir = @"新寻22";
+                //this._ftp.DeleteDirectory(remoteDir, true);
+
+                remoteDir = @"bb";
                 this._ftp.DeleteDirectory(remoteDir);
             }
             catch (Exception ex)
