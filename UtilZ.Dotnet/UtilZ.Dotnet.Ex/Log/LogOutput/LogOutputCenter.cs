@@ -61,25 +61,28 @@ namespace UtilZ.Dotnet.Ex.Log.LogOutput
         /// </summary>
         public bool Enable
         {
-            get { return _enable; }
+            get { return this._enable; }
             set
             {
                 lock (this._enableMonitor)
                 {
-                    if (_enable == value)
+                    if (this._enable == value)
                     {
                         return;
                     }
 
-                    _enable = value;
+                    this._enable = value;
                     if (this._enable)
                     {
                         this._logOutputObject = new LogOutputObject(this.LogOutput);
                     }
                     else
                     {
-                        this._logOutputObject.Dispose();
-                        this._logOutputObject = null;
+                        if (this._logOutputObject != null)
+                        {
+                            this._logOutputObject.Dispose();
+                            this._logOutputObject = null;
+                        }
                     }
                 }
             }
@@ -212,6 +215,7 @@ namespace UtilZ.Dotnet.Ex.Log.LogOutput
             if (this._logOutputObject != null)
             {
                 this._logOutputObject.Dispose();
+                this._logOutputObject = null;
             }
         }
         #endregion
