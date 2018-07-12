@@ -99,6 +99,7 @@
     <Compile Include="LMQ\LMQConfigManager.cs" />
     <Compile Include="LMQ\SubscibeGroup.cs" />
     <Compile Include="LMQ\SubscibeItem.cs" />
+    <Compile Include="Log\LogOutput\LogOutputObject.cs" />
     <Compile Include="LRPC\LRPCCenter.cs" />
     <Compile Include="LRPC\LRPCChannel.cs" />
     <Compile Include="Log\Config\Core\BaseLogConfig.cs" />

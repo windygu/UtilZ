@@ -26,6 +26,7 @@ namespace TestE.Common
             subLog.LogOutput += SubLog_LogOutput;
             Loger.LogOutput.AddLogOutput(subLog);
             Loger.LogOutput.Enable = true;
+            checkBox1.Checked = Loger.LogOutput.Enable;
         }
 
         private void LogSysInnerLog_Log(object sender, UtilZ.Dotnet.Ex.Log.Model.InnerLogOutputArgs e)
@@ -142,6 +143,11 @@ namespace TestE.Common
             {
                 throw new ApplicationException("333", ex);
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Loger.LogOutput.Enable = checkBox1.Checked;
         }
     }
 }
