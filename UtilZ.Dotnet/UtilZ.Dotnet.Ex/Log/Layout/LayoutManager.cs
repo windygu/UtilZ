@@ -18,7 +18,8 @@ namespace UtilZ.Dotnet.Ex.Log.Layout
         static LayoutManager()
         {
             //_defaultLayout = string.Format("时间:{0}\r\n级别:{1}\r\n线程:{2}\r\n事件ID:{3}\r\n日志:{4}\r\n堆栈:{5}", _TIME, _LEVEL, _THREAD, _EVENT, _CONTENT, _STACKTRACE);
-            _defaultLayout = string.Format("{0} {1} {2}。堆栈:{3}", _TIME, _LEVEL, _CONTENT, _STACKTRACE);
+            _defaultLayout = string.Format("{0} {1} {2}堆栈:{3}", _TIME, _LEVEL, _CONTENT, _STACKTRACE);
+            //_defaultLayout = string.Format("{0} {1} {2}", _TIME, _LEVEL, _CONTENT);
         }
 
         #region 日志布局字段

@@ -38,7 +38,6 @@ namespace UtilZ.Dotnet.Ex.Log.Model
             this.Exception = ex;
             this.Name = name;
             this.ExtendInfo = extendInfo;
-            this._isAnalyzeStackTrace = true;
         }
 
         /// <summary>
@@ -63,7 +62,6 @@ namespace UtilZ.Dotnet.Ex.Log.Model
             this.Exception = ex;
             this.Name = name;
             this.ExtendInfo = extendInfo;
-            this._isAnalyzeStackTrace = false;
         }
 
         /// <summary>
@@ -76,14 +74,9 @@ namespace UtilZ.Dotnet.Ex.Log.Model
         /// </summary>
         public static bool GetStackTraceMethodParameterNameType
         {
-            get { return LogItem._getStackTraceMethodParameterNameType; }
-            set { LogItem._getStackTraceMethodParameterNameType = value; }
+            get { return _getStackTraceMethodParameterNameType; }
+            set { _getStackTraceMethodParameterNameType = value; }
         }
-
-        /// <summary>
-        /// 日志项是否需要分析堆栈信息
-        /// </summary>
-        private readonly bool _isAnalyzeStackTrace;
 
         /// <summary>
         /// 日志项是否已分析过
@@ -191,31 +184,75 @@ namespace UtilZ.Dotnet.Ex.Log.Model
                 return;
             }
 
-            if (this._isAnalyzeStackTrace)
+            var ex = this.Exception;
+            this.GenerateStackTraceInfo(ex);
+            this.GenerateContent(ex);
+            this._isAnalyzed = true;
+        }
+
+        private void GenerateContent(Exception ex)
+        {
+            StringBuilder sbContent = new StringBuilder();
+            string message = this.Message;
+            if (!string.IsNullOrEmpty(message))
             {
-                this.StackTraceInfo = this.GetStackTraceInfo();
+                sbContent.Append(message);
+                sbContent.Append("。");
+            }
+
+            while (ex != null)
+            {
+                sbContent.Append(string.Format("{0}: {1}", ex.GetType().FullName, ex.Message));
+                ex = ex.InnerException;
+                if (ex != null)
+                {
+                    sbContent.Append(" ---> ");
+                }
+            }
+
+            this.Content = sbContent.ToString();
+        }
+
+        private void GenerateStackTraceInfo(Exception ex)
+        {
+            string stackTraceInfo;
+            if (ex == null)
+            {
+                stackTraceInfo = this.GetStackTraceInfo();
             }
             else
             {
-                this.StackTraceInfo = this.Exception.StackTrace;
-            }
-
-            //拼接日志基本信息
-            string content = this.Message;
-            if (this.Exception != null)
-            {
-                if (string.IsNullOrEmpty(content))
+                if (ex.InnerException != null)
                 {
-                    content = string.Format("{0}: {1}", this.Exception.GetType().FullName, this.Exception.Message);
+                    var innerExList = new List<Exception>();
+                    Exception innerEx = ex;
+                    while (innerEx.InnerException != null)
+                    {
+                        innerExList.Add(innerEx);
+                        innerEx = innerEx.InnerException;
+                    }
+
+                    StringBuilder sbStackTraceInfo = new StringBuilder();
+                    sbStackTraceInfo.AppendLine(innerEx.StackTrace);
+                    for (int i = innerExList.Count - 1; i >= 0; i--)
+                    {
+                        sbStackTraceInfo.AppendLine("   --- 内部异常堆栈跟踪的结尾 ---");
+                        sbStackTraceInfo.Append(innerExList[i].StackTrace);
+                        if (i > 0)
+                        {
+                            sbStackTraceInfo.AppendLine();
+                        }
+                    }
+
+                    stackTraceInfo = sbStackTraceInfo.ToString();
                 }
                 else
                 {
-                    content = string.Format("{0}。{1}: {2}", content, this.Exception.GetType().FullName, this.Exception.Message);
+                    stackTraceInfo = ex.StackTrace;
                 }
             }
 
-            this.Content = content;
-            this._isAnalyzed = true;
+            this.StackTraceInfo = stackTraceInfo;
         }
 
         /// <summary>
