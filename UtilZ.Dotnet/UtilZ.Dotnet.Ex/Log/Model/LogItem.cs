@@ -197,16 +197,24 @@ namespace UtilZ.Dotnet.Ex.Log.Model
             if (!string.IsNullOrEmpty(message))
             {
                 sbContent.Append(message);
-                sbContent.Append("。");
             }
 
-            while (ex != null)
+            if (ex != null)
             {
-                sbContent.Append(string.Format("{0}: {1}", ex.GetType().FullName, ex.Message));
-                ex = ex.InnerException;
-                if (ex != null)
+                if (sbContent.Length > 0)
                 {
-                    sbContent.Append(" ---> ");
+                    sbContent.Append("。");
+                }
+
+                Exception innerEx = ex;
+                while (innerEx != null)
+                {
+                    sbContent.Append(string.Format("{0}: {1}", innerEx.GetType().FullName, innerEx.Message));
+                    innerEx = innerEx.InnerException;
+                    if (innerEx != null)
+                    {
+                        sbContent.Append(" ---> ");
+                    }
                 }
             }
 
