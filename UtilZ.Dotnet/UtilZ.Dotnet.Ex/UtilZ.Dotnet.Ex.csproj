@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Attributes\DisplayOrderAttribute.cs" />
     <Compile Include="Base\ActivatorEx.cs" />
+    <Compile Include="DataStruct\Array64.cs" />
     <Compile Include="Base\ArrayEx.cs" />
     <Compile Include="Base\AssemblyEx.cs" />
     <Compile Include="Base\AttributeEx.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Base\TypeEx.cs" />
     <Compile Include="Base\XmlEx.cs" />
     <Compile Include="DataStruct\AlarmClock.cs" />
+    <Compile Include="DataStruct\Array64Page.cs" />
     <Compile Include="DataStruct\AsynPriorityQueue.cs" />
     <Compile Include="DataStruct\AsynParallelQueue.cs" />
     <Compile Include="DataStruct\AsynQueue.cs" />

@@ -19,17 +19,31 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var subLog = new UtilZ.Dotnet.Ex.Log.LogOutput.LogOutputSubscribeItem(null, null);
-            subLog.LogOutput += SubLog_LogOutput;
-            Loger.LogOutput.AddLogOutput(subLog);
-            Loger.LogOutput.Enable = true;
+            //var subLog = new UtilZ.Dotnet.Ex.Log.LogOutput.LogOutputSubscribeItem(null, null);
+            //subLog.LogOutput += SubLog_LogOutput;
+            //Loger.LogOutput.AddLogOutput(subLog);
+            //Loger.LogOutput.Enable = true;
 
 
             //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, "测试服务", ProCallback, 3);
             //ts.Start();
 
+            TestArray64();
+
             Console.WriteLine("Press any key exit");
             Console.ReadKey();
+        }
+
+        private static void TestArray64()
+        {
+            try
+            {
+                byte[] buffer = new byte[0];
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         private static void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)

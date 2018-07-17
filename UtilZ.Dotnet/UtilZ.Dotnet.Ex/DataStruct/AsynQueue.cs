@@ -343,6 +343,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             {
                 this.ThreadRunFinish();
+                return;
             }
 
             this.ThreadRunFinish();
@@ -402,6 +403,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             {
                 this.ThreadRunFinish();
+                return;
             }
 
             this.ThreadRunFinish();
