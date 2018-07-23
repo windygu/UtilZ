@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.Model;
 
@@ -38,7 +39,23 @@ namespace ConsoleApp
         {
             try
             {
-                byte[] buffer = new byte[0];
+                Array64<byte> array = new Array64<byte>(102, 20, 5, 4);
+                long beginIndex = 0;
+                byte[] buffer = new byte[5];
+                array.Set(beginIndex, buffer, buffer.Length);
+                beginIndex += buffer.Length;
+
+                buffer = new byte[34];
+                array.Set(beginIndex, buffer, buffer.Length);
+                beginIndex += buffer.Length;
+
+                buffer = new byte[50];
+                array.Set(beginIndex, buffer, buffer.Length);
+                beginIndex += buffer.Length;
+
+                buffer = new byte[3];
+                array.Set(beginIndex, buffer, buffer.Length);
+                beginIndex += buffer.Length;
             }
             catch(Exception ex)
             {

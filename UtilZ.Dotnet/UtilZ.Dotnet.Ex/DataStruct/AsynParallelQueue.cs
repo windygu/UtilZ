@@ -281,20 +281,20 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                     //并行处理
                     Parallel.ForEach(items, (t, parallelLoopState) =>
                     {
-                       lock (this._threadMonitor)
-                       {
-                           if (this._status)
-                           {
-                               this._parallelLoopStates.Add(parallelLoopState);
-                           }
-                           else
-                           {
-                               parallelLoopState.Stop();
-                               return;
-                           }
-                       }
+                        lock (this._threadMonitor)
+                        {
+                            if (this._status)
+                            {
+                                this._parallelLoopStates.Add(parallelLoopState);
+                            }
+                            else
+                            {
+                                parallelLoopState.Stop();
+                                return;
+                            }
+                        }
 
-                       results.Add(processHandler(t, token));
+                        results.Add(processHandler(t, token));
                     });
                     items.Clear();
 
@@ -311,11 +311,10 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             catch (ThreadAbortException)
             {
                 this.ThreadRunFinish();
+                return;
             }
-            finally
-            {
-                this.ThreadRunFinish();
-            }
+
+            this.ThreadRunFinish();
         }
 
         private void ThreadRunFinish()
