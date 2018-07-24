@@ -19,6 +19,24 @@ namespace UtilZ.Dotnet.Ex.DataStruct
          * (p0,r3)+++++++    (p1,r3)+++++++    
          ************************************************************************************/
 
+        /// <summary>
+        /// 存储页大小
+        /// </summary>
+        private readonly long _pageSize;
+
+        /// <summary>
+        /// 存储页中的列大小
+        /// </summary>
+        private readonly int _colSize;
+
+        /// <summary>
+        /// 存储页中的行大小
+        /// </summary>
+        private readonly int _rowSize;
+
+        /// <summary>
+        /// 数组长度
+        /// </summary>
         private readonly long _length;
         /// <summary>
         /// 获取数组长度
@@ -27,10 +45,6 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             get { return this._length; }
         }
-
-        private readonly long _pageSize;
-        private readonly int _colSize;
-        private readonly int _rowSize;
 
         /// <summary>
         /// 页集合
@@ -46,31 +60,50 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             get
             {
-                return this.GetPageByPosition(index).GetValueByPosition(index);
+                return this.GetPageByPosition(index)[index];
             }
             set
             {
-                this.GetPageByPosition(index).SetValueByPosition(index, value);
+                this.GetPageByPosition(index)[index] = value;
             }
+        }
+
+        /// <summary>
+        /// 获取指定位置索引所在存储页对象
+        /// </summary>
+        /// <param name="position">目标位置索引</param>
+        /// <returns>指定位置索引所在存储页对象</returns>
+        private Array64Page<T> GetPageByPosition(long position)
+        {
+            if (position < 0 || position > this._length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(position));
+            }
+
+            int pageIndex = (int)(position / this._pageSize);
+            return this._pages[pageIndex];
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="length">数组长度</param>
-        /// <param name="pageSize">存储页大小</param>
+        public Array64(long length) : this(length, int.MaxValue, int.MaxValue)
+        {
+
+        }
+
+        /// <summary>
+        /// 构造函数(根据需要指定存储页相关信息可提升性能)
+        /// </summary>
+        /// <param name="length">数组长度</param>
         /// <param name="colSize">存储页中的列大小</param>
         /// <param name="rowSize">存储页中的行大小</param>
-        public Array64(long length, long pageSize = (long)int.MaxValue * int.MaxValue, int colSize = int.MaxValue, int rowSize = int.MaxValue)
+        public Array64(long length, int colSize, int rowSize)
         {
             if (length < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(length));
-            }
-
-            if (pageSize < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pageSize));
             }
 
             if (colSize < 1)
@@ -83,10 +116,11 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 throw new ArgumentOutOfRangeException(nameof(rowSize));
             }
 
+            long pageSize = (long)colSize * rowSize;
             long pageCount = length / pageSize;
             if (pageCount > int.MaxValue)
             {
-                throw new ArgumentException("数据长度过长,页大小太小");
+                throw new ArgumentException("存储页中的行列值过小");
             }
 
             this._length = length;
@@ -120,7 +154,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="array">已知数组</param>
+        /// <param name="array">Array64</param>
         public Array64(Array64<T> array)
         {
             if (array == null)
@@ -140,29 +174,26 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             }
         }
 
-        private Array64Page<T> GetPageByPosition(long position)
+        /// <summary>
+        /// 设置数组对象数据,返回实际设置数据长度
+        /// </summary>
+        /// <param name="offset">当前数组对象中偏移量</param>
+        /// <param name="buffer">要设置的源数据数组</param>
+        /// <param name="bufferOffset">源数据数组中中的偏移量</param>
+        /// <param name="length">源数据数组中要写入的数据长度,如果超出当前数组范围,则以当前数组实际长度为准</param>
+        /// <returns>实际设置数据长度</returns>
+        public int Set(long offset, T[] buffer, int bufferOffset, int length)
         {
-            if (position < 0 || position > this._length)
+            if (offset < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(position));
+                throw new ArgumentOutOfRangeException(nameof(offset));
             }
 
-            int pageIndex = (int)(position / this._pageSize);
-            return this._pages[pageIndex];
-        }
-
-        public void Set(long beginIndex, T[] buffer, int length)
-        {
-            if (beginIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(beginIndex));
-            }
-
-            if (beginIndex == this._length ||
+            if (offset == this._length ||
                 buffer == null || buffer.Length == 0 ||
                 length < 1)
             {
-                return;
+                return 0;
             }
 
             if (length > buffer.Length)
@@ -170,19 +201,17 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 length = buffer.Length;
             }
 
-            if (beginIndex + length > this._length)
+            if (offset + length > this._length)
             {
-                length = (int)(this._length - beginIndex);
+                length = (int)(this._length - offset);
             }
 
-            int pageIndex = (int)(beginIndex / this._pageSize);
-            Array64Page<T> page;
-            int bufferOffset = 0, currentSetLength;
-            long setBeginIndex = beginIndex;
+            int pageIndex = (int)(offset / this._pageSize);
+            int currentSetLength;
+            long setBeginIndex = offset;
             for (int i = pageIndex; i < this._pages.Length; i++)
             {
-                page = this._pages[i];
-                currentSetLength = page.Set(buffer, bufferOffset, setBeginIndex, length);
+                currentSetLength = this._pages[i].Set(buffer, bufferOffset, setBeginIndex, length);
                 length -= currentSetLength;
                 bufferOffset += currentSetLength;
                 setBeginIndex += currentSetLength;
@@ -191,8 +220,16 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                     break;
                 }
             }
+
+            return (int)(setBeginIndex - offset);
         }
 
+        /// <summary>
+        /// 从指定偏移位置获取指定长度的数组,如果从偏移位置起目标长度超出数组范围,则以实际数组长度为准
+        /// </summary>
+        /// <param name="offset">当前对象中数据数据偏移量</param>
+        /// <param name="length">要获取的数据长度</param>
+        /// <returns>获取到的数据数组</returns>
         public T[] Get(long offset, int length)
         {
             if (offset < 0)
@@ -221,16 +258,23 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             int pageIndex = (int)(offset / this._pageSize);
             for (int i = pageIndex; i < this._pages.Length; i++)
             {
-                Array64Page<T> page = this._pages[pageIndex];
-                currentGetLength = page.Get(buffer, bufferOffset, getIndex, length);
+                currentGetLength = this._pages[i].Get(buffer, bufferOffset, getIndex, length);
                 length -= currentGetLength;
                 offset += currentGetLength;
                 bufferOffset += currentGetLength;
+                if (length <= 0)
+                {
+                    break;
+                }
             }
 
             return buffer;
         }
 
+        /// <summary>
+        /// 创建一个数组
+        /// </summary>
+        /// <returns>新数组</returns>
         public Array64<T> ToArray()
         {
             return new Array64<T>(this);

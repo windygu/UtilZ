@@ -35,32 +35,172 @@ namespace ConsoleApp
             Console.ReadKey();
         }
 
+        private static byte _index = 0;
         private static void TestArray64()
+        {
+            TestArray64_1(102, 1, 7);
+            TestArray64_1(102, 2, 7);
+            TestArray64_1(102, 3, 7);
+            TestArray64_1(102, 4, 7);
+            TestArray64_1(102, 5, 7);
+            TestArray64_1(102, 6, 7);
+            TestArray64_1(102, 7, 7);
+            TestArray64_1(102, 8, 7);
+            TestArray64_1(102, 9, 7);
+            TestArray64_1(102, 10, 7);
+            TestArray64_1(102, 11, 7);
+            TestArray64_1(102, 12, 7);
+
+            TestArray64_2(102, 1, 7);
+            TestArray64_2(102, 2, 7);
+            TestArray64_2(102, 3, 7);
+            TestArray64_2(102, 4, 7);
+            TestArray64_2(102, 5, 7);
+            TestArray64_2(102, 6, 7);
+            TestArray64_2(102, 7, 7);
+            TestArray64_2(102, 8, 7);
+            TestArray64_2(102, 9, 7);
+            TestArray64_2(102, 10, 7);
+            TestArray64_2(102, 11, 7);
+            TestArray64_2(102, 12, 7);
+        }
+
+        private static void TestArray64_2(long length, int colSize, int rowSize)
         {
             try
             {
-                Array64<byte> array = new Array64<byte>(102, 20, 5, 4);
+                _index = 0;
+                var array = new Array64<byte>(length, colSize, rowSize);
+                //var array = new Array64<byte>(102);
                 long beginIndex = 0;
-                byte[] buffer = new byte[5];
-                array.Set(beginIndex, buffer, buffer.Length);
-                beginIndex += buffer.Length;
+                byte[] buffer = GetBuffer(7);
+                int ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
 
-                buffer = new byte[34];
-                array.Set(beginIndex, buffer, buffer.Length);
-                beginIndex += buffer.Length;
+                buffer = GetBuffer(34);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
 
-                buffer = new byte[50];
-                array.Set(beginIndex, buffer, buffer.Length);
-                beginIndex += buffer.Length;
+                buffer = GetBuffer(59);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
 
-                buffer = new byte[3];
-                array.Set(beginIndex, buffer, buffer.Length);
-                beginIndex += buffer.Length;
+                buffer = GetBuffer(13);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer(3);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = array.Get(0, (int)beginIndex + 10);
+                if (buffer.Length != beginIndex)
+                {
+                    Console.WriteLine("Error");
+                    return;
+                }
+
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    try
+                    {
+                        Console.WriteLine(i);
+                        if (buffer[i] != array[i])
+                        {
+                            Console.WriteLine("Error");
+                            return;
+                        }
+                    }
+                    catch (Exception exi)
+                    {
+                        Console.WriteLine(exi.Message);
+                        return;
+                    }
+                }
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = _index;
+                    buffer[i] = _index++;
+                }
+
+                for (int i = 1; i < buffer.Length; i++)
+                {
+                    if (array[i] != buffer[i])
+                    {
+                        Console.WriteLine("Error");
+                        return;
+                    }
+                }
+
+                Console.WriteLine("OK");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
+        }
+
+        private static void TestArray64_1(long length, int colSize, int rowSize)
+        {
+            try
+            {
+                _index = 0;
+                var array = new Array64<byte>(length, colSize, rowSize);
+                //var array = new Array64<byte>(102);
+                long beginIndex = 0;
+                byte[] buffer = GetBuffer(7);
+                int ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer(34);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer(59);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer(13);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer(3);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = array.Get(0, (int)beginIndex + 10);
+                if (buffer.Length != beginIndex)
+                {
+                    Console.WriteLine("Error");
+                    return;
+                }
+
+                for (int i = 1; i < buffer.Length; i++)
+                {
+                    if (buffer[i - 1] + 1 != buffer[i])
+                    {
+                        Console.WriteLine("Error");
+                        return;
+                    }
+                }
+
+                Console.WriteLine("OK");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static byte[] GetBuffer(int length)
+        {
+            byte[] buffer = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                buffer[i] = _index++;
+            }
+            return buffer;
         }
 
         private static void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)
