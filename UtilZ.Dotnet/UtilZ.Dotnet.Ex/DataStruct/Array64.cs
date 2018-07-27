@@ -88,7 +88,8 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// 构造函数
         /// </summary>
         /// <param name="length">数组长度</param>
-        public Array64(long length) : this(length, int.MaxValue, int.MaxValue)
+        public Array64(long length) :
+            this(length, int.MaxValue, int.MaxValue)
         {
 
         }

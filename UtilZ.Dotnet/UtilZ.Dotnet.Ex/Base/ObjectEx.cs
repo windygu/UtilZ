@@ -186,5 +186,16 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
             }
         }
+
+        /// <summary>
+        /// 获取当前可用物理内存大小(Microsoft.VisualBasic程序集->Microsoft.VisualBasic.Devices.ComputerInfo.AvailablePhysicalMemory)
+        /// </summary>
+        /// <returns>当前可用物理内存大小</returns>
+        public static ulong GetAvailablePhysicalMemory()
+        {
+            //var cm = new Microsoft.VisualBasic.Devices.ComputerInfo();
+            //return cm.AvailablePhysicalMemory;
+            throw new NotImplementedException();
+        }
     }
 }

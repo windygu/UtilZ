@@ -38,6 +38,102 @@ namespace ConsoleApp
         private static byte _index = 0;
         private static void TestArray64()
         {
+            var cm = new Microsoft.VisualBasic.Devices.ComputerInfo();
+            ulong needMemorySize = cm.AvailablePhysicalMemory - 500 * 1024 * 1024;
+            long length = (long)(needMemorySize / sizeof(long) / 20);
+            //long length = (long)(needMemorySize);
+
+            int colSize = int.MaxValue / (sizeof(long) + 1);
+            int rowSize = int.MaxValue / 10;
+            try
+            {
+                _index = 0;
+                //var array = new Array64<long>(length, colSize, rowSize);
+                var array = new Array64<long>(length);
+                //var array = new Array64<byte>(102);
+                long beginIndex = 0;
+                long[] buffer = GetBuffer2(length / 2);
+                int ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer2(length / 4);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer2(length / 8);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer2(length / 4);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = GetBuffer2(654);
+                ret = array.Set(beginIndex, buffer, 0, buffer.Length);
+                beginIndex += ret;
+
+                buffer = array.Get(0, (int)beginIndex + 10);
+                if (buffer.Length != beginIndex)
+                {
+                    Console.WriteLine("Error");
+                    return;
+                }
+
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    try
+                    {
+                        Console.WriteLine(i);
+                        if (buffer[i] != array[i])
+                        {
+                            Console.WriteLine("Error");
+                            return;
+                        }
+                    }
+                    catch (Exception exi)
+                    {
+                        Console.WriteLine(exi.Message);
+                        return;
+                    }
+                }
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = _index;
+                    buffer[i] = _index++;
+                }
+
+                for (int i = 1; i < buffer.Length; i++)
+                {
+                    if (array[i] != buffer[i])
+                    {
+                        Console.WriteLine("Error");
+                        return;
+                    }
+                }
+
+                Console.WriteLine("OK");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static long _lindex = 0;
+        private static long[] GetBuffer2(long length)
+        {
+            long[] buffer = new long[length];
+            for (int i = 0; i < length; i++)
+            {
+                buffer[i] = _lindex++;
+            }
+
+            return buffer;
+        }
+
+        private static void TestArray64_basic()
+        {
             TestArray64_1(102, 1, 7);
             TestArray64_1(102, 2, 7);
             TestArray64_1(102, 3, 7);
@@ -51,6 +147,20 @@ namespace ConsoleApp
             TestArray64_1(102, 11, 7);
             TestArray64_1(102, 12, 7);
 
+
+            TestArray64_1(102, 7, 1);
+            TestArray64_1(102, 7, 2);
+            TestArray64_1(102, 7, 3);
+            TestArray64_1(102, 7, 4);
+            TestArray64_1(102, 7, 5);
+            TestArray64_1(102, 7, 6);
+            TestArray64_1(102, 7, 7);
+            TestArray64_1(102, 7, 8);
+            TestArray64_1(102, 7, 9);
+            TestArray64_1(102, 7, 10);
+            TestArray64_1(102, 7, 11);
+            TestArray64_1(102, 7, 12);
+
             TestArray64_2(102, 1, 7);
             TestArray64_2(102, 2, 7);
             TestArray64_2(102, 3, 7);
@@ -63,6 +173,19 @@ namespace ConsoleApp
             TestArray64_2(102, 10, 7);
             TestArray64_2(102, 11, 7);
             TestArray64_2(102, 12, 7);
+
+            TestArray64_2(102, 7, 1);
+            TestArray64_2(102, 7, 2);
+            TestArray64_2(102, 7, 3);
+            TestArray64_2(102, 7, 4);
+            TestArray64_2(102, 7, 5);
+            TestArray64_2(102, 7, 6);
+            TestArray64_2(102, 7, 7);
+            TestArray64_2(102, 7, 8);
+            TestArray64_2(102, 7, 9);
+            TestArray64_2(102, 7, 10);
+            TestArray64_2(102, 7, 11);
+            TestArray64_2(102, 7, 12);
         }
 
         private static void TestArray64_2(long length, int colSize, int rowSize)

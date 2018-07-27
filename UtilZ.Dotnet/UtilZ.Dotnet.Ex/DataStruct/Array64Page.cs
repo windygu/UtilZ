@@ -89,7 +89,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
             long length = end - begin;
             long rowCount = length / colSize;
-            long mod = length % colSize;
+            int mod = (int)(length % colSize);
             if (mod > 0)
             {
                 rowCount += 1;
@@ -97,15 +97,22 @@ namespace UtilZ.Dotnet.Ex.DataStruct
 
             this._data = new T[rowCount][];
             long lastIndex = rowCount - 1;
+
+            int rowlength = colSize;
             for (int i = 0; i < rowCount; i++)
             {
                 if (i == lastIndex && mod > 0)
                 {
-                    this._data[i] = new T[mod];
+                    rowlength = mod;
                 }
-                else
+
+                try
                 {
-                    this._data[i] = new T[colSize];
+                    this._data[i] = new T[rowlength];
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    throw new Exception("当前可用物理内存不足", ex);
                 }
             }
         }
