@@ -146,23 +146,51 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         internal int Get(T[] destBuffer, int destOffset, long beginIndex, int length)
         {
             int needReadLength = destBuffer.Length - destOffset;
+            long currentNeedOffset = beginIndex - this._begin;
+            int pageIndex = (int)(currentNeedOffset / this._colSize);
+            int mod = (int)(currentNeedOffset % this._colSize);
+            int rowCount = this._data.GetLength(0);
+            T[] rowBuffer;
             int readLength = 0;
-            T[] buffer;
-            for (int i = 0; i < this._data.GetLength(0); i++)
+            for (int i = pageIndex; i < rowCount; i++)
             {
-                buffer = this._data[i];
-                if (needReadLength <= buffer.Length)
+                rowBuffer = this._data[i];
+                if (i == pageIndex && mod > 0)
                 {
-                    Array.Copy(buffer, 0, destBuffer, destOffset, needReadLength);
-                    readLength += needReadLength;
-                    break;
+                    int availableLenth = rowBuffer.Length - mod;
+                    if (needReadLength <= availableLenth)
+                    {
+                        Array.Copy(rowBuffer, mod, destBuffer, destOffset, needReadLength);
+                        readLength += needReadLength;
+                        needReadLength -= needReadLength;
+                        destOffset += needReadLength;
+                        break;
+                    }
+                    else
+                    {
+                        Array.Copy(rowBuffer, mod, destBuffer, destOffset, availableLenth);
+                        readLength += availableLenth;
+                        destOffset += availableLenth;
+                        needReadLength -= availableLenth;
+                    }
                 }
                 else
                 {
-                    Array.Copy(buffer, 0, destBuffer, destOffset, buffer.Length);
-                    needReadLength = needReadLength - buffer.Length;
-                    readLength += buffer.Length;
-                    destOffset += buffer.Length;
+                    if (needReadLength <= rowBuffer.Length)
+                    {
+                        Array.Copy(rowBuffer, 0, destBuffer, destOffset, needReadLength);
+                        readLength += needReadLength;
+                        needReadLength -= needReadLength;
+                        destOffset += needReadLength;
+                        break;
+                    }
+                    else
+                    {
+                        Array.Copy(rowBuffer, 0, destBuffer, destOffset, rowBuffer.Length);
+                        needReadLength -= rowBuffer.Length;
+                        readLength += rowBuffer.Length;
+                        destOffset += rowBuffer.Length;
+                    }
                 }
             }
 

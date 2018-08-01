@@ -29,10 +29,64 @@ namespace ConsoleApp
             //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, "测试服务", ProCallback, 3);
             //ts.Start();
 
-            TestArray64();
+            //TestArray64_basic();
+
+            //TestArray64();
+
+            TestByteArray64();
 
             Console.WriteLine("Press any key exit");
             Console.ReadKey();
+        }
+
+
+        private static void TestByteArray64()
+        {
+            try
+            {
+                string srcFilePath, destFilePath;
+                srcFilePath = @"E:\Music\凡心大动.ape";
+                srcFilePath = @"F:\Movie\黑客帝国\黑客帝国1_开始.RMVB";
+                srcFilePath = @"F:\Movie\《加菲猫1》Garfield.2004.720p.BluRay.x264-AVS720-人人影视高清发布组\加菲猫Garfield.2004.720p.mkv";
+                destFilePath = Path.Combine(@"G:\Tmp", Path.GetFileName(srcFilePath));
+
+                using (Stream stream = File.OpenRead(srcFilePath))
+                {
+                    //var array = new ByteArray64(stream, 0, (long)(stream.Length * 0.6), int.MaxValue / 10);
+                    var array = new ByteArray64(stream, 0, stream.Length, int.MaxValue / 10);
+                    int bufferSize = 1024 * 1024 * 10;
+                    long offset = 0;
+                    using (Stream fw = File.OpenWrite(destFilePath))
+                    {
+                        while (true)
+                        {
+                            try
+                            {
+                                byte[] buffer = array.Get(offset, bufferSize);
+                                if (buffer.Length == 0)
+                                {
+                                    break;
+                                }
+
+                                offset += buffer.Length;
+                                fw.Write(buffer, 0, buffer.Length);
+                                fw.Flush();
+                                //File.WriteAllBytes(destFilePath, buffer);
+                            }
+                            catch (Exception exi)
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            GC.WaitForFullGCComplete();
         }
 
         private static byte _index = 0;
@@ -193,7 +247,8 @@ namespace ConsoleApp
             try
             {
                 _index = 0;
-                var array = new Array64<byte>(length, colSize, rowSize);
+                //var array = new Array64<byte>(length, colSize, rowSize);
+                var array = new ByteArray64(length, colSize, rowSize);
                 //var array = new Array64<byte>(102);
                 long beginIndex = 0;
                 byte[] buffer = GetBuffer(7);
