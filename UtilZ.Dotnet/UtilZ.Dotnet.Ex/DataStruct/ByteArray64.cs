@@ -47,7 +47,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="length">数组长度</param>
         /// <param name="colSize">存储页中的列大小</param>
         /// <param name="rowSize">存储页中的行大小</param>
-        public ByteArray64(IntPtr ptr, long length, int colSize = int.MaxValue, int rowSize = int.MaxValue) :
+        public ByteArray64(IntPtr ptr, long length, int colSize = DefaultColSize, int rowSize = DefaultRowSize) :
                base(length, colSize, rowSize)
         {
             this.Set(0, ptr, 0, length);
@@ -61,10 +61,21 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <param name="length">源数据数组中要写入的数据长度,如果超出当前数组范围,则以当前数组实际长度为准</param>
         /// <param name="colSize">存储页中的列大小</param>
         /// <param name="rowSize">存储页中的行大小</param>
-        public ByteArray64(Stream stream, long position, long length, int colSize = int.MaxValue, int rowSize = int.MaxValue) :
+        public ByteArray64(Stream stream, long position, long length, int colSize = DefaultColSize, int rowSize = DefaultRowSize) :
             this(stream.Length, colSize, rowSize)
         {
             this.Set(0, stream, position, stream.Length);
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="buffer">数据</param>
+        /// <param name="index">数据起始位置</param>
+        /// <param name="count">数据个数</param>
+        public ByteArray64(byte[] buffer, int index, int count) : this(buffer.Length)
+        {
+            this.Set(0, buffer, index, count);
         }
 
         /// <summary>

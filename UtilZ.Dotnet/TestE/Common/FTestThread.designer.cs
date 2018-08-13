@@ -31,7 +31,8 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnAbort = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.checkBoxSync = new System.Windows.Forms.CheckBox();
+            this.logControlF1 = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF();
             this.SuspendLayout();
             // 
             // btnStart
@@ -56,7 +57,7 @@
             // 
             // btnAbort
             // 
-            this.btnAbort.Location = new System.Drawing.Point(174, 23);
+            this.btnAbort.Location = new System.Drawing.Point(283, 23);
             this.btnAbort.Name = "btnAbort";
             this.btnAbort.Size = new System.Drawing.Size(75, 23);
             this.btnAbort.TabIndex = 8;
@@ -64,21 +65,32 @@
             this.btnAbort.UseVisualStyleBackColor = true;
             this.btnAbort.Click += new System.EventHandler(this.btnAbort_Click);
             // 
-            // richTextBox1
+            // checkBoxSync
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(13, 53);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(405, 337);
-            this.richTextBox1.TabIndex = 9;
-            this.richTextBox1.Text = "";
+            this.checkBoxSync.AutoSize = true;
+            this.checkBoxSync.Location = new System.Drawing.Point(175, 29);
+            this.checkBoxSync.Name = "checkBoxSync";
+            this.checkBoxSync.Size = new System.Drawing.Size(72, 16);
+            this.checkBoxSync.TabIndex = 10;
+            this.checkBoxSync.Text = "同步停止";
+            this.checkBoxSync.UseVisualStyleBackColor = true;
+            // 
+            // logControlF1
+            // 
+            this.logControlF1.IsLock = false;
+            this.logControlF1.Location = new System.Drawing.Point(13, 66);
+            this.logControlF1.MaxItemCount = 100;
+            this.logControlF1.Name = "logControlF1";
+            this.logControlF1.Size = new System.Drawing.Size(405, 324);
+            this.logControlF1.TabIndex = 11;
             // 
             // FTestThread
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(430, 402);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.logControlF1);
+            this.Controls.Add(this.checkBoxSync);
             this.Controls.Add(this.btnAbort);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -86,6 +98,7 @@
             this.Text = "FTestThread";
             this.Load += new System.EventHandler(this.FTestThread_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -94,6 +107,7 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnAbort;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.CheckBox checkBoxSync;
+        private UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF logControlF1;
     }
 }

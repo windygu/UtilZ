@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace UtilZ.Dotnet.Ex.DataStruct
@@ -8,7 +9,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
     /// <summary>
     /// 长度为Int64的数组类
     /// </summary>
-    [Serializable]
+    [Serializable, ComVisible(true)]
     public class Array64<T>
     {
         /************************************************************************************
@@ -18,6 +19,16 @@ namespace UtilZ.Dotnet.Ex.DataStruct
          * (p0,r2)+++++++    (p1,r2)+++++++    (p3,r2)+++++
          * (p0,r3)+++++++    (p1,r3)+++++++    
          ************************************************************************************/
+
+        /// <summary>
+        /// 默认数据页列大小500MB
+        /// </summary>
+        public const int DefaultColSize = 524288000;
+
+        /// <summary>
+        /// 默认数据页行数小500MB
+        /// </summary>
+        public const int DefaultRowSize = 524288000;
 
         /// <summary>
         /// 存储页大小
@@ -89,7 +100,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// </summary>
         /// <param name="length">数组长度</param>
         public Array64(long length) :
-            this(length, int.MaxValue, int.MaxValue)
+            this(length, DefaultColSize, DefaultRowSize)
         {
 
         }

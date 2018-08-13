@@ -510,12 +510,17 @@ namespace UtilZ.Dotnet.Ex.Base
 
                 this._cts.Cancel();
                 this._isReqAbort = true;
-                if (isSycn)
+                this._thread = null;
+            }
+
+            if (isSycn)
+            {
+                try
                 {
                     this._syncStopAutoResetEvent.WaitOne(synMillisecondsTimeout);
                 }
-
-                this._thread = null;
+                catch (ObjectDisposedException)
+                { }
             }
         }
 

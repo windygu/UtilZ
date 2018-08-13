@@ -35,8 +35,19 @@ namespace ConsoleApp
 
             TestByteArray64();
 
+            //TestConvertEx();
+
             Console.WriteLine("Press any key exit");
             Console.ReadKey();
+        }
+
+        private static void TestConvertEx()
+        {
+            string str = "123";
+            int a = ConvertEx.ToNumber<int>(str);
+
+            str = "123xs";
+            int b = ConvertEx.ToNumber<int>(str, 10);
         }
 
 
@@ -53,7 +64,7 @@ namespace ConsoleApp
                 using (Stream stream = File.OpenRead(srcFilePath))
                 {
                     //var array = new ByteArray64(stream, 0, (long)(stream.Length * 0.6), int.MaxValue / 10);
-                    var array = new ByteArray64(stream, 0, stream.Length, int.MaxValue / 10);
+                    var array = new ByteArray64(stream, 0, stream.Length);
                     int bufferSize = 1024 * 1024 * 10;
                     long offset = 0;
                     using (Stream fw = File.OpenWrite(destFilePath))

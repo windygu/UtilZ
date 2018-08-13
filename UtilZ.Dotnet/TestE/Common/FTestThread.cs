@@ -28,20 +28,7 @@ namespace TestE.Common
 
         private void ApendText(string str)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => { ApendText(str); }));
-            }
-            else
-            {
-                if (richTextBox1.Lines.Count() > 50)
-                {
-                    richTextBox1.Clear();
-                }
-
-                richTextBox1.AppendText(str);
-                richTextBox1.AppendText(Environment.NewLine);
-            }
+            logControlF1.AddLog(str, 1);
         }
 
 
@@ -65,7 +52,7 @@ namespace TestE.Common
             while (!token.IsCancellationRequested)
             {
                 ApendText(DateTime.Now.ToString() + " " + obj.ToString() + " ThreadID:" + Thread.CurrentThread.ManagedThreadId.ToString());
-                Thread.Sleep(5000);
+                Thread.Sleep(500);
             }
         }
 
@@ -73,7 +60,7 @@ namespace TestE.Common
         {
             if (_ext != null)
             {
-                _ext.Stop();
+                _ext.Stop(checkBoxSync.Checked);
             }
         }
 
