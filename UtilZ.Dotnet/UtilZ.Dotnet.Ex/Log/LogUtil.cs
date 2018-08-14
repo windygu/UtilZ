@@ -14,8 +14,6 @@ namespace UtilZ.Dotnet.Ex.Log
     /// </summary>
     internal class LogUtil
     {
-
-
         /// <summary>
         /// 创建需要分隔大小的文件路径[2014-10-27_1.log]
         /// </summary>
