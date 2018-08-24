@@ -33,10 +33,13 @@ namespace ConsoleApp
 
             //TestArray64();
 
-            TestByteArray64();
+            //TestByteArray64();
 
             //TestConvertEx();
+            string frt = "yyyy-MM-dd_HH_mm_ss.fffffff";
+            string str = DateTime.Now.ToString(frt);
 
+            TestMemoryMappedFile.Test();
             Console.WriteLine("Press any key exit");
             Console.ReadKey();
         }
