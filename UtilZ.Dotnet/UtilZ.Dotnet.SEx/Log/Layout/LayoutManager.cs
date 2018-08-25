@@ -108,14 +108,9 @@ namespace UtilZ.Dotnet.SEx.Log.Layout
                 }
 
                 //是否显示分隔线
-                if (config.SeparatorCount > 1)
+                int separatorCount = config.SeparatorCount;
+                if (separatorCount > 1)
                 {
-                    int separatorCount = config.SeparatorCount;
-                    if (separatorCount <= 0)
-                    {
-                        separatorCount = 140;
-                    }
-
                     layoutFormat = string.Format("{0}\r\n{1}", config.SeparatorLine, layoutFormat);
                 }
 

@@ -10,20 +10,27 @@ namespace TestSE
         {
             try
             {
-                Console.WriteLine("ane key continue...");
-                Console.ReadKey();
+                //string format = @"yyyy-MM-dd_HH_mm_ss.fffffff";
+                //string timeStr = DateTime.Now.ToString(format);
+
+                //DateTime time;
+                //bool xx = DateTime.TryParseExact(timeStr, format, null, System.Globalization.DateTimeStyles.None, out time);
+
+
+                //Console.WriteLine("ane key continue...");
+                //Console.ReadKey();
 
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
                 Loger.Debug("dsfa");
-                ILoger loger = Loger.GetLoger(null);
-                loger.Error("sadfsdafdsf");
+                //ILoger loger = Loger.GetLoger(null);
+                //loger.Error("sadfsdafdsf");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
 
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Any key exit..");
             Console.ReadKey();
         }
 
@@ -33,7 +40,7 @@ namespace TestSE
             {
                 Console.Write(e.SEx.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }

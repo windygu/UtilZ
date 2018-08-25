@@ -44,7 +44,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// <summary>
         /// 分隔线
         /// </summary>
-        private string _separatorLine = null;
+        private string _separatorLine = new string('-', 140);
         /// <summary>
         /// 获取分隔线
         /// </summary>

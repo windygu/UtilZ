@@ -36,7 +36,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             this._config = new FileAppenderConfig(ele);
             this._maxFileSize = this._config.MaxFileSize * 1024L;
-            this._logFilePath = new LogFilePath(this._config.FilePath);
+            this._logFilePath = new LogFilePath(this._config);
         }
 
         /// <summary>
@@ -56,6 +56,11 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 mutex = this.GetMutex();
                 //获得日志文件路径
                 string logFilePath = this.GetLogFilePath();
+                if (string.IsNullOrWhiteSpace(logFilePath))
+                {
+                    return;
+                }
+
                 ILogSecurityPolicy securityPolicy = this._securityPolicy;
                 string logMsg;
                 using (var sw = File.AppendText(logFilePath))
@@ -103,21 +108,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
 
             this._fileSize = 0;
-            string filePath = this._logFilePath.GetLogFilePath();
-            string dir = Path.GetDirectoryName(filePath);
-            if (Directory.Exists(dir))
-            {
-                while (File.Exists(filePath))
-                {
-                    filePath = this._logFilePath.GetLogFilePath();
-                }
-            }
-            else
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            this._filePath = filePath;
+            this._filePath = this._logFilePath.GetLogFilePath();
             return this._filePath;
         }
 
@@ -179,60 +170,102 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 
     internal class LogFilePath
     {
+        private readonly FileAppenderConfig _config;
         private readonly SubPathInfo[] _subPathInfos;
-        public bool Status { get; private set; }
-        public LogFilePath(string filePath)
+        private readonly bool _status;
+        public bool Status
+        {
+            get { return _status; }
+        }
+
+        private bool _isFirstGetFilePath = true;
+        public LogFilePath(FileAppenderConfig config)
         {
             try
             {
+                this._config = config;
+                string filePath = config.FilePath;
                 if (string.IsNullOrWhiteSpace(filePath))
                 {
                     filePath = @"Log\@yyyy-MM-dd_HH_mm_ss.fffffff@.log";
                 }
-
-                filePath = filePath.Trim();
-                switch (Environment.OSVersion.Platform)
+                else
                 {
-                    case PlatformID.Unix:
-                        filePath = filePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                        break;
-                    case PlatformID.Win32NT:
-                    default:
-                        filePath = filePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-                        break;
+                    filePath = filePath.Trim();
                 }
 
                 string[] paths = filePath.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
                 if (paths.Length == 0)
                 {
-                    this.Status = false;
+                    this._status = false;
                     return;
                 }
 
                 this._subPathInfos = paths.Select(t => { return new SubPathInfo(t); }).ToArray();
-
-                this.Status = true;
+                this._status = true;
             }
             catch (Exception ex)
             {
                 LogSysInnerLog.OnRaiseLog(this, ex);
-                this.Status = false;
+                this._status = false;
             }
         }
 
         public string GetLogFilePath()
         {
-            if (this.Status)
+            if (this._status)
             {
                 string[] paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
-                string logFilePath = Path.Combine(paths);
-                //string dir = Path.GetDirectoryName(logFilePath);
-                //string extension = Path.GetExtension(logFilePath);
-                //string[] oldLogFilePaths = Directory.GetFiles(dir, extension, SearchOption.TopDirectoryOnly);
-                //if (oldLogFilePaths.Length > 日志文件个数)
-                //{
+                string tmpLogFileFullPath = Path.GetFullPath(Path.Combine(paths));
+                string dir = Path.GetDirectoryName(tmpLogFileFullPath);
+                string logFilePath;
 
-                //}
+                if (this._isFirstGetFilePath && this._config.IsAppend)
+                {
+                    this._isFirstGetFilePath = false;
+                    if (Directory.Exists(dir))
+                    {
+                        logFilePath = this.GetLastLogFilePath(dir, Path.GetExtension(tmpLogFileFullPath));
+                        if (string.IsNullOrWhiteSpace(logFilePath))
+                        {
+                            while (File.Exists(tmpLogFileFullPath))
+                            {
+                                paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
+                                tmpLogFileFullPath = Path.GetFullPath(Path.Combine(paths));
+                            }
+
+                            logFilePath = tmpLogFileFullPath;
+                        }
+                        else
+                        {
+                            this.ClearExpireLogFile();
+                        }
+                    }
+                    else
+                    {
+                        logFilePath = tmpLogFileFullPath;
+                        Directory.CreateDirectory(dir);
+                    }
+                }
+                else
+                {
+                    if (Directory.Exists(dir))
+                    {
+                        while (File.Exists(tmpLogFileFullPath))
+                        {
+                            paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
+                            tmpLogFileFullPath = Path.GetFullPath(Path.Combine(paths));
+                        }
+
+                        logFilePath = tmpLogFileFullPath;
+                        this.ClearExpireLogFile();
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(dir);
+                        logFilePath = tmpLogFileFullPath;
+                    }
+                }
 
                 return logFilePath;
             }
@@ -241,6 +274,83 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 return null;
             }
         }
+
+        private string GetLastLogFilePath(string dir, string extension)
+        {
+            string searchPattern = string.Format("*{0}", extension);
+            string[] existlogFilePaths = Directory.GetFiles(dir, searchPattern, SearchOption.TopDirectoryOnly);
+            if (existlogFilePaths.Length == 0)
+            {
+                return null;
+            }
+
+            var fileNamePathInfo = this._subPathInfos[this._subPathInfos.Length - 1];
+            //[Key:创建时间;Value:日志文件路径]
+            var orderLogFilePath = new SortedList<DateTime, string>();
+            DateTime time;
+            string fileName;
+            foreach (var existLogFilePath in existlogFilePaths)
+            {
+                fileName = Path.GetFileName(existLogFilePath);
+                if (fileNamePathInfo.TryGetDateByFilePath(fileName, out time))
+                {
+                    orderLogFilePath.Add(time, existLogFilePath);
+                }
+            }
+
+            if (orderLogFilePath.Count == 0)
+            {
+                //当前日志目录下没有符合路径标准的日志文件
+                return null;
+            }
+
+            var existLastLogFilePath = orderLogFilePath.ElementAt(orderLogFilePath.Count - 1).Value;
+            var existLastLogFileInfo = new FileInfo(existLastLogFilePath);
+            var currentTime = DateTime.Now;
+            if (existLastLogFileInfo.Length < this._config.MaxFileSize &&
+                existLastLogFileInfo.CreationTime.Year == currentTime.Year &&
+                existLastLogFileInfo.CreationTime.Month == currentTime.Month &&
+                existLastLogFileInfo.CreationTime.Day == currentTime.Day)
+            {
+                //最后一个文件是当天创建且小于目标大小
+                return existLastLogFilePath;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 清理过期的日志文件
+        /// </summary>
+        private void ClearExpireLogFile()
+        {
+            int days = this._config.Days;
+            string logRootDirFullPath = Path.GetFullPath(this._subPathInfos[0].GetPath());
+            DirectoryInfo logRootDirParentDirInfo = Directory.GetParent(logRootDirFullPath);
+            //string appDir = Path.GetDirectoryName(logRootDirFullPath);
+            foreach (var subPathInfo in this._subPathInfos)
+            {
+                if (subPathInfo.Flag)
+                {
+                    subPathInfo.
+                }
+                else
+                {
+                    subPathInfo.GetPath
+                }
+            }
+
+            //string dir = Path.GetDirectoryName(logFilePath);
+            //string extension = Path.GetExtension(logFilePath);
+            //string[] oldLogFilePaths = Directory.GetFiles(dir, extension, SearchOption.TopDirectoryOnly);
+            //if (oldLogFilePaths.Length > 日志文件个数)
+            //{
+
+            //}
+
+        }
     }
 
     internal class SubPathInfo
@@ -248,10 +358,17 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private const char DatePatternFlagChar = '*';
         private readonly string _datePattern;
         private readonly string _path;
+        private readonly int _datePatternIndex;
+        private readonly int _datePatternLength;
+
         /// <summary>
         /// true:datePattern;false:path
         /// </summary>
         private readonly bool _flag;
+        public bool Flag
+        {
+            get { return _flag; }
+        }
 
         public SubPathInfo(string datePattern)
         {
@@ -272,7 +389,9 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 int length = end - begin;
                 string leftStr = datePattern.Substring(0, begin);
                 string rightStr = datePattern.Substring(end + 1);
-                datePattern = datePattern.Substring(begin + 1, end - begin - 1);
+                this._datePatternIndex = begin;
+                this._datePatternLength = end - begin - 1;
+                datePattern = datePattern.Substring(begin + 1, this._datePatternLength);
                 string str = DateTime.Now.ToString(datePattern);
                 this._datePattern = datePattern;
                 this._path = leftStr + "{0}" + rightStr;
@@ -298,6 +417,19 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
 
             return path;
+        }
+
+
+        public bool TryGetDateByFilePath(string path, out DateTime time)
+        {
+            time = DateTime.Now;
+            if (string.IsNullOrWhiteSpace(path) || path.Length < (this._datePatternIndex + this._datePatternLength))
+            {
+                return false;
+            }
+
+            string timeStr = path.Substring(this._datePatternIndex, this._datePatternLength);
+            return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out time);
         }
     }
 }

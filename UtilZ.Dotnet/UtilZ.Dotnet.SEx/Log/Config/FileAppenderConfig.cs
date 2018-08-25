@@ -31,7 +31,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             set { _maxFileCount = value; }
         }
 
-        private int _maxFileSize = 10;
+        private int _maxFileSize = 10 * 1024 * 1024;
         /// <summary>
         /// 日志文件上限大小,当文件超过此值则分隔成多个日志文件,单位/MB
         /// </summary>
@@ -57,6 +57,16 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         {
             get { return _filePath; }
             set { _filePath = value; }
+        }
+
+        private bool _isAppend = true;
+        /// <summary>
+        /// 是否追加日志
+        /// </summary>
+        public bool IsAppend
+        {
+            get { return _isAppend; }
+            set { _isAppend = value; }
         }
 
         /// <summary>
@@ -96,12 +106,15 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 }
             }
 
-            if (int.TryParse(base.GetChildXElementValue(ele, "MaxFileSize"), out this._maxFileSize))
+            int maxFileSize;
+            if (int.TryParse(base.GetChildXElementValue(ele, "MaxFileSize"), out maxFileSize))
             {
-                if (this._maxFileSize < 1)
+                if (maxFileSize < 1)
                 {
-                    this._maxFileSize = 10;
+                    maxFileSize = 10;
                 }
+
+                this._maxFileSize = maxFileSize * 1024 * 1024;
             }
 
             string filePath = base.GetChildXElementValue(ele, "FilePath").Trim();
@@ -110,6 +123,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 this._filePath = filePath;
             }
 
+            bool.TryParse(base.GetChildXElementValue(ele, "IsAppend").Trim(), out this._isAppend);
             this.SecurityPolicy = base.GetChildXElementValue(ele, "SecurityPolicy").Trim();
             this.MutexName = base.GetChildXElementValue(ele, "MutexName ").Trim();
         }
