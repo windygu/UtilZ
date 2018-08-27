@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UtilZ.Dotnet.SEx.Log;
 using UtilZ.Dotnet.SEx.Log.Core;
 
@@ -10,6 +11,8 @@ namespace TestSE
         {
             try
             {
+                
+                
                 //string format = @"yyyy-MM-dd_HH_mm_ss.fffffff";
                 //string timeStr = DateTime.Now.ToString(format);
 
