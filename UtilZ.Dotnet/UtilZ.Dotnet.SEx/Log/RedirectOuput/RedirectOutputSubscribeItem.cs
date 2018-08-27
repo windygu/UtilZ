@@ -30,7 +30,7 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// 日志输出
         /// </summary>
         /// <param name="logItem">要输出的日志项</param>
-        public void Logoutput(RedirectOuputArgs logItem)
+        internal void OnRaiseLogOutput(RedirectOuputArgs logItem)
         {
             var handler = this.LogOutput;
             if (handler != null)

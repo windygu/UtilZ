@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 using UtilZ.Dotnet.SEx.Log.Model;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
@@ -27,6 +28,12 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             get { return _name; }
             internal set { _name = value; }
         }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="ele"></param>
+        public abstract void Init(XElement ele);
 
         /// <summary>
         /// 写日志

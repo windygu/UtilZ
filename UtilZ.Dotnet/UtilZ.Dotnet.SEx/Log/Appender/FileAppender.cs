@@ -31,12 +31,20 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <summary>
         /// 构造函数
         /// </summary>
-        ///  <param name="ele">配置元素节点</param>
-        public FileAppender(XElement ele) : base()
+        public FileAppender() : base()
         {
-            this._config = new FileAppenderConfig(ele);
+            this._config = new FileAppenderConfig();
             this._maxFileSize = this._config.MaxFileSize * 1024L;
             this._logFilePath = new FileLogPathInfo(this._config);
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="ele"></param>
+        public override void Init(XElement ele)
+        {
+            this._config.Parse(ele);
         }
 
         /// <summary>

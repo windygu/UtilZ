@@ -113,7 +113,67 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素节点</param>
-        public BaseConfig(XElement ele)
+        public BaseConfig()
+        {
+
+        }
+
+        /// <summary>
+        /// 获取节点指定特性值
+        /// </summary>
+        /// <param name="ele"></param>
+        /// <param name="attriName"></param>
+        /// <returns></returns>
+        protected string GetAttributeValue(XElement ele, string attriName)
+        {
+            string value;
+            var attri = ele.Attribute(attriName);
+            if (attri != null)
+            {
+                value = attri.Value;
+            }
+            else
+            {
+                value = string.Empty;
+            }
+
+            return value;
+
+        }
+
+        /// <summary>
+        /// 获取节点下指定名称子节点特性值
+        /// </summary>
+        /// <param name="ele"></param>
+        /// <param name="childName"></param>
+        /// <param name="attriName"></param>
+        /// <returns></returns>
+        protected string GetChildXElementValue(XElement ele, string childName, string attriName = null)
+        {
+            string value;
+            var childEle = ele.XPathSelectElement(childName);
+            if (childEle == null)
+            {
+                value = string.Empty;
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(attriName))
+                {
+                    attriName = "value";
+                }
+
+                value = this.GetAttributeValue(childEle, attriName);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// 解析配置
+        /// </summary>
+        /// <param name="ele"></param>
+        public virtual void Parse(XElement ele)
         {
             if (ele == null)
             {
@@ -176,57 +236,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                     LogSysInnerLog.OnRaiseLog(this, ex);
                 }
             }
-        }
-
-        /// <summary>
-        /// 获取节点指定特性值
-        /// </summary>
-        /// <param name="ele"></param>
-        /// <param name="attriName"></param>
-        /// <returns></returns>
-        protected string GetAttributeValue(XElement ele, string attriName)
-        {
-            string value;
-            var attri = ele.Attribute(attriName);
-            if (attri != null)
-            {
-                value = attri.Value;
-            }
-            else
-            {
-                value = string.Empty;
-            }
-
-            return value;
-
-        }
-
-        /// <summary>
-        /// 获取节点下指定名称子节点特性值
-        /// </summary>
-        /// <param name="ele"></param>
-        /// <param name="childName"></param>
-        /// <param name="attriName"></param>
-        /// <returns></returns>
-        protected string GetChildXElementValue(XElement ele, string childName, string attriName = null)
-        {
-            string value;
-            var childEle = ele.XPathSelectElement(childName);
-            if (childEle == null)
-            {
-                value = string.Empty;
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(attriName))
-                {
-                    attriName = "value";
-                }
-
-                value = this.GetAttributeValue(childEle, attriName);
-            }
-
-            return value;
         }
 
         /// <summary>

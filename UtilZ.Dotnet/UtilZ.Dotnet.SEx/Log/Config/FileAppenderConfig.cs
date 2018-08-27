@@ -82,14 +82,23 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="ele">配置元素节点</param>
-        public FileAppenderConfig(XElement ele) : base(ele)
+        public FileAppenderConfig() : base()
+        {
+
+        }
+
+        /// <summary>
+        /// 解析配置
+        /// </summary>
+        /// <param name="ele"></param>
+        public override void Parse(XElement ele)
         {
             if (ele == null)
             {
                 return;
             }
 
+            base.Parse(ele);
             if (int.TryParse(base.GetChildXElementValue(ele, "Days"), out this._days))
             {
                 if (this._days < 1)

@@ -2,6 +2,7 @@
 using System.IO;
 using UtilZ.Dotnet.SEx.Log;
 using UtilZ.Dotnet.SEx.Log.Core;
+using UtilZ.Dotnet.SEx.Log.RedirectOuput;
 
 namespace TestSE
 {
@@ -11,8 +12,10 @@ namespace TestSE
         {
             try
             {
-                
-                
+                var subItem = new RedirectOutputSubscribeItem();
+                subItem.LogOutput += SubItem_LogOutput;
+                RedirectOuputCenter.Instance.AddLogOutput(subItem);
+
                 //string format = @"yyyy-MM-dd_HH_mm_ss.fffffff";
                 //string timeStr = DateTime.Now.ToString(format);
 
@@ -35,6 +38,18 @@ namespace TestSE
 
             Console.WriteLine("Any key exit..");
             Console.ReadKey();
+        }
+
+        private static void SubItem_LogOutput(object sender, RedirectOuputArgs e)
+        {
+            try
+            {
+                Console.Write(e.Item.Content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private static void LogSysInnerLog_Log(object sender, UtilZ.Dotnet.SEx.Log.Model.InnerLogOutputArgs e)

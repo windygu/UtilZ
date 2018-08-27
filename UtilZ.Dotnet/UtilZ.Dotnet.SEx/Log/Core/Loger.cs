@@ -36,7 +36,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         {
             _defaultLoger = new Loger();
             _defaultLoger._logerName = string.Empty;
-            _defaultLoger._appenders.Add(new FileAppender(null));
+            _defaultLoger._appenders.Add(new FileAppender());
         }
 
         public static void LoadConfig(string url)

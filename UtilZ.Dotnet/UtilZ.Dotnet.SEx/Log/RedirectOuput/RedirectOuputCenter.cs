@@ -113,7 +113,7 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
 
             foreach (var logOutputSubscribeItem in logOutputSubscribeItems)
             {
-                logOutputSubscribeItem.Logoutput(logItem);
+                logOutputSubscribeItem.OnRaiseLogOutput(logItem);
             }
         }
         #endregion
@@ -200,7 +200,7 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// </summary>
         /// <param name="appenderName">日志追加器名称</param>
         /// <param name="logItem">日志项</param>
-        public void AddOutputLog(string appenderName, LogItem logItem)
+        internal void AddOutputLog(string appenderName, LogItem logItem)
         {
             this._logOutputQueue.Enqueue(new RedirectOuputArgs(appenderName, logItem));
             this._logOutputAutoResetEvent.Set();
