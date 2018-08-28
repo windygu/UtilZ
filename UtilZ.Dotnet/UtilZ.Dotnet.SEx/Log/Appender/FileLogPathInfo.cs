@@ -9,7 +9,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 {
     internal class FileLogPathInfo
     {
-        private readonly static char[] _pathSplitChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+        private readonly static char[] _pathSplitChars = new char[] { '\\', '/' };
         private readonly FileAppenderConfig _config;
         private readonly FileLogSubPathInfo[] _subPathInfos;
         private readonly bool _status;
@@ -60,8 +60,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             if (this._status)
             {
-                string[] paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
-                string tmpLogFileFullPath = Path.GetFullPath(Path.Combine(paths));
+                string tmpLogFileFullPath = this.GetPlatformLogFilePath();
                 string dir = Path.GetDirectoryName(tmpLogFileFullPath);
                 string searchPattern = string.Format("*{0}", Path.GetExtension(tmpLogFileFullPath));
                 string logFilePath;
@@ -74,12 +73,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                         logFilePath = this.GetLastLogFilePath(dir, searchPattern);
                         if (string.IsNullOrWhiteSpace(logFilePath))
                         {
-                            while (File.Exists(tmpLogFileFullPath))
-                            {
-                                paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
-                                tmpLogFileFullPath = Path.GetFullPath(Path.Combine(paths));
-                            }
-
                             logFilePath = tmpLogFileFullPath;
                         }
                         else
@@ -97,12 +90,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 {
                     if (Directory.Exists(dir))
                     {
-                        while (File.Exists(tmpLogFileFullPath))
-                        {
-                            paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
-                            tmpLogFileFullPath = Path.GetFullPath(Path.Combine(paths));
-                        }
-
                         logFilePath = tmpLogFileFullPath;
                         this.ClearExpireLogFile(searchPattern);
                     }
@@ -166,37 +153,68 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
         }
 
+        private string GetPlatformLogFilePath()
+        {
+            string logFileFullPath = this.PrimitiveGetPlatformLogFilePath();
+            while (File.Exists(logFileFullPath))
+            {
+                logFileFullPath = this.PrimitiveGetPlatformLogFilePath();
+            }
+
+            return logFileFullPath;
+        }
+
+        private string PrimitiveGetPlatformLogFilePath()
+        {
+            string[] paths = this._subPathInfos.Select(t => { return t.GetPath(); }).ToArray();
+            string logFileFullPath = Path.GetFullPath(Path.Combine(paths));
+            return logFileFullPath;
+        }
+
         private DateTime _lastClearExpireDaysTime = DateTime.Now.AddMonths(-1);
         /// <summary>
         /// 清理过期的日志文件
         /// </summary>
         private void ClearExpireLogFile(string searchPattern)
         {
-            int days = this._config.Days;
-            string logRootDirFullPath = Path.GetFullPath(this._subPathInfos[0].GetPath());
-            DirectoryInfo logRootDirParentDirInfo = Directory.GetParent(logRootDirFullPath);
-            List<FileInfo> fileInfos = this.GetAllLogFileInfos(logRootDirParentDirInfo, searchPattern);
-            var currentClearTime = DateTime.Now;
-            var hsDelLogFileDirs = new HashSet<string>();
+            try
+            {
+                int days = this._config.Days;
+                string logRootFullPath = Path.GetFullPath(this._subPathInfos[0].GetPath());
+                DirectoryInfo logRootDirParentDirInfo = Directory.GetParent(logRootFullPath);
+                List<FileInfo> fileInfos = this.GetAllLogFileInfos(logRootFullPath, logRootDirParentDirInfo, searchPattern);
+                var currentClearTime = DateTime.Now;
+                var hsDelLogFileDirs = new HashSet<string>();
 
-            //按日志保留天数删除
-            this.DeleteLogFileByDays(fileInfos, currentClearTime, hsDelLogFileDirs);
+                //按日志保留天数删除
+                this.DeleteLogFileByDays(fileInfos, currentClearTime, hsDelLogFileDirs);
 
-            //按日志文件个数删除日志
-            this.DeleteLogFileByFileCount(fileInfos, hsDelLogFileDirs);
+                //按日志文件个数删除日志
+                this.DeleteLogFileByFileCount(fileInfos, hsDelLogFileDirs);
 
-            //删除空目录
-            this.DeleteEmptyLogDir(logRootDirParentDirInfo, hsDelLogFileDirs);
+                //删除空目录
+                this.DeleteEmptyLogDir(logRootDirParentDirInfo.FullName.Length, hsDelLogFileDirs);
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog("清除过期日志异常", ex);
+            }
         }
 
-        private void DeleteEmptyLogDir(DirectoryInfo logRootDirParentDirInfo, HashSet<string> hsDelLogFileDirs)
+        private void DeleteEmptyLogDir(int rootDirLength, HashSet<string> hsDelLogFileDirs)
         {
             if (hsDelLogFileDirs.Count > 0)
             {
-                int rootDirLength = logRootDirParentDirInfo.FullName.Length;
                 foreach (var delLogFileDir in hsDelLogFileDirs)
                 {
-                    this.DelEmptyLogDir(delLogFileDir, rootDirLength);
+                    try
+                    {
+                        this.DelEmptyLogDir(delLogFileDir, rootDirLength);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogSysInnerLog.OnRaiseLog(this, ex);
+                    }
                 }
             }
         }
@@ -277,33 +295,37 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                     return;
                 }
             }
-
-            //logDir = string.Empty;
-            //foreach (var dir in dirs)
-            //{
-            //    logDir = Path.Combine(logDir, dir);
-            //    if (Directory.GetFiles(logDir, "*.*", SearchOption.AllDirectories).Length == 0)
-            //    {
-            //        try
-            //        {
-            //            Directory.Delete(logFileDir, true);
-            //            return;
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            LogSysInnerLog.OnRaiseLog(this, ex);
-            //        }
-            //    }
-            //}
         }
 
-        private List<FileInfo> GetAllLogFileInfos(DirectoryInfo logRootDirParentDirInfo, string searchPattern)
+        private List<FileInfo> GetAllLogFileInfos(string logRootFullPath, DirectoryInfo logRootDirParentDirInfo, string searchPattern)
         {
-            var fileInfoArray = logRootDirParentDirInfo.GetFiles(searchPattern, SearchOption.AllDirectories);
-            List<FileInfo> fileInfos = fileInfoArray.ToList();
+            List<FileInfo> srcFileInfos = new List<FileInfo>();
+            if (this._subPathInfos.Length > 1)
+            {
+                DirectoryInfo[] dirInfos = new DirectoryInfo(logRootFullPath).GetDirectories();
+                dirInfos = dirInfos.Where(t => { return !this._subPathInfos[1].CheckInvailidLogFilePath(t.Name); }).ToArray();
+                foreach (var dirInfo in dirInfos)
+                {
+                    try
+                    {
+                        srcFileInfos.AddRange(dirInfo.GetFiles(searchPattern, SearchOption.AllDirectories));
+                    }
+                    catch (Exception ex)
+                    {
+                        LogSysInnerLog.OnRaiseLog("获取日志文件信息异常", ex);
+                    }
+                }
+            }
+            else
+            {
+                var fileInfoArray = logRootDirParentDirInfo.GetFiles(searchPattern, SearchOption.TopDirectoryOnly);
+                srcFileInfos.AddRange(fileInfoArray);
+            }
+
+            List<FileInfo> fileInfos = srcFileInfos.ToList();
             int rootDirLength = logRootDirParentDirInfo.FullName.Length;
             string filePath;
-            foreach (var fileInfo in fileInfoArray)
+            foreach (var fileInfo in srcFileInfos)
             {
                 filePath = fileInfo.FullName.Substring(rootDirLength);
                 if (this.CheckInvailidLogFilePath(filePath))

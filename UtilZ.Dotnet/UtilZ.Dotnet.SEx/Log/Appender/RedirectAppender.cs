@@ -9,7 +9,7 @@ using UtilZ.Dotnet.SEx.Log.RedirectOuput;
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
     /// <summary>
-    /// 重定向日志输出
+    /// 重定向日志输出追加器
     /// </summary>
     public class RedirectAppender : AppenderBase
     {
@@ -38,12 +38,19 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <param name="item">日志项</param>
         public override void WriteLog(LogItem item)
         {
-            if (this._config == null || !this._config.Validate(item))
+            try
             {
-                return;
-            }
+                if (this._config == null || !this._config.Validate(item))
+                {
+                    return;
+                }
 
-            RedirectOuputCenter.Instance.AddOutputLog(this.Name, item);
+                RedirectOuputCenter.Instance.AddOutputLog(this.Name, item);
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(this, ex);
+            }
         }
     }
 }

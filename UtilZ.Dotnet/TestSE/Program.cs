@@ -22,6 +22,9 @@ namespace TestSE
 
                 //File.WriteAllText("SpecialFolder.txt", sb.ToString());
 
+                Console.WriteLine("ane key continue...");
+                Console.ReadKey();
+
                 Loger.LoadConfig(@"logconfig.xml");
 
                 var subItem = new RedirectOutputSubscribeItem();
@@ -35,8 +38,7 @@ namespace TestSE
                 //bool xx = DateTime.TryParseExact(timeStr, format, null, System.Globalization.DateTimeStyles.None, out time);
 
 
-                Console.WriteLine("ane key continue...");
-                Console.ReadKey();
+              
 
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
                 Loger.Debug("dsfa");
@@ -56,7 +58,7 @@ namespace TestSE
         {
             try
             {
-                Console.Write(e.Item.Content);
+                Console.WriteLine("SubItem_LogOutput:" + e.Item.Content);
             }
             catch (Exception ex)
             {

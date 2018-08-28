@@ -125,7 +125,14 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             if (!this._flag)
             {
-                return false;
+                if (string.Equals(this._targetPath, path))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
 
             if (path.Length != this._pathLength)
