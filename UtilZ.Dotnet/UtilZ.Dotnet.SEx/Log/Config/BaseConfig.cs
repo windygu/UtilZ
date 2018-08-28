@@ -119,57 +119,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         }
 
         /// <summary>
-        /// 获取节点指定特性值
-        /// </summary>
-        /// <param name="ele"></param>
-        /// <param name="attriName"></param>
-        /// <returns></returns>
-        protected string GetAttributeValue(XElement ele, string attriName)
-        {
-            string value;
-            var attri = ele.Attribute(attriName);
-            if (attri != null)
-            {
-                value = attri.Value;
-            }
-            else
-            {
-                value = string.Empty;
-            }
-
-            return value;
-
-        }
-
-        /// <summary>
-        /// 获取节点下指定名称子节点特性值
-        /// </summary>
-        /// <param name="ele"></param>
-        /// <param name="childName"></param>
-        /// <param name="attriName"></param>
-        /// <returns></returns>
-        protected string GetChildXElementValue(XElement ele, string childName, string attriName = null)
-        {
-            string value;
-            var childEle = ele.XPathSelectElement(childName);
-            if (childEle == null)
-            {
-                value = string.Empty;
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(attriName))
-                {
-                    attriName = "value";
-                }
-
-                value = this.GetAttributeValue(childEle, attriName);
-            }
-
-            return value;
-        }
-
-        /// <summary>
         /// 解析配置
         /// </summary>
         /// <param name="ele"></param>
@@ -180,17 +129,27 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 return;
             }
 
-            this.Name = this.GetAttributeValue(ele, "name");
-            bool.TryParse(this.GetAttributeValue(ele, "enable"), out this._enable);
-            this.Layout = this.GetChildXElementValue(ele, "Layout");
-            this.DateFormat = this.GetChildXElementValue(ele, "Layout");
-            int.TryParse(this.GetChildXElementValue(ele, "SeparatorCount"), out this._separatorCount);
-            if (this._separatorCount > 0)
+            this.Name = LogUtil.GetAttributeValue(ele, "name");
+
+            bool enable;
+            if (bool.TryParse(LogUtil.GetAttributeValue(ele, "enable"), out enable))
             {
-                this._separatorLine = new string('-', this._separatorCount);
+                this._enable = enable;
             }
 
-            string levels = this.GetChildXElementValue(ele, "Levels").Trim();
+            this.Layout = LogUtil.GetChildXElementValue(ele, "Layout");
+            this.DateFormat = LogUtil.GetChildXElementValue(ele, "DateFormat");
+            int separatorCount;
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "SeparatorCount"), out separatorCount))
+            {
+                this._separatorCount = separatorCount;
+                if (separatorCount > 0)
+                {
+                    this._separatorLine = new string('-', separatorCount);
+                }
+            }
+
+            string levels = LogUtil.GetChildXElementValue(ele, "Levels").Trim();
             if (!string.IsNullOrWhiteSpace(levels))
             {
                 string[] levelStrs = levels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -198,7 +157,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 LogLevel level;
                 foreach (var levelStr in levelStrs)
                 {
-                    if (Enum.TryParse<LogLevel>(levelStr, out level))
+                    if (Enum.TryParse<LogLevel>(levelStr, true, out level))
                     {
                         logLevels.Add(level);
                     }
@@ -207,24 +166,29 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 this.Levels = logLevels.ToArray();
             }
 
-            if (int.TryParse(this.GetChildXElementValue(ele, "EventIdMin"), out this._eventIdMin))
+            int eventId;
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "EventIdMin"), out eventId))
             {
-                if (this._eventIdMin < LogConstant.DefaultEventId)
+                if (eventId < LogConstant.DefaultEventId)
                 {
-                    this._eventIdMin = LogConstant.DefaultEventId;
+                    eventId = LogConstant.DefaultEventId;
                 }
+
+                this._eventIdMin = eventId;
             }
 
-            if (int.TryParse(this.GetChildXElementValue(ele, "EventIdMax"), out this._eventIdMax))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "EventIdMax"), out eventId))
             {
-                if (this._eventIdMax < LogConstant.DefaultEventId)
+                if (eventId < LogConstant.DefaultEventId)
                 {
-                    this._eventIdMax = LogConstant.DefaultEventId;
+                    eventId = LogConstant.DefaultEventId;
                 }
+
+                this._eventIdMax = eventId;
             }
 
-            this.MatchString = this.GetChildXElementValue(ele, "MatchString");
-            string matchExceptionTypeName = this.GetChildXElementValue(ele, "MatchExceptionType").Trim();
+            this.MatchString = LogUtil.GetChildXElementValue(ele, "MatchString");
+            string matchExceptionTypeName = LogUtil.GetChildXElementValue(ele, "MatchExceptionType").Trim();
             if (!string.IsNullOrWhiteSpace(matchExceptionTypeName))
             {
                 try

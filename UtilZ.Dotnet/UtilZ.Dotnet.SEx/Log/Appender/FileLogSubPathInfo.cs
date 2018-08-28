@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
+using UtilZ.Dotnet.SEx.Base;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
     internal class FileLogSubPathInfo
     {
+        private readonly static HashSet<string> _hsSpecialFolders = new HashSet<string>();
         private const char DatePatternFlagChar = '*';
         private readonly int _pathLength;
         private readonly string _datePattern;
@@ -22,7 +26,16 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             get { return _flag; }
         }
 
-        public FileLogSubPathInfo(string path)
+        static FileLogSubPathInfo()
+        {
+            Array specialFolderArray = Enum.GetValues(typeof(Environment.SpecialFolder));//特殊目录集合
+            foreach (var specialFolder in specialFolderArray)
+            {
+                _hsSpecialFolders.Add(specialFolder.ToString());
+            }
+        }
+
+        public FileLogSubPathInfo(string path, bool isFirstSubPath)
         {
             /***********************************************************
              * datePattern:  
@@ -45,11 +58,27 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 this._datePatternIndex = begin;
                 this._datePatternLength = end - begin - 1;
                 string datePattern = path.Substring(begin + 1, this._datePatternLength);
-                string str = DateTime.Now.ToString(datePattern);
-                this._datePattern = datePattern;
-                this._pathLength = path.Length - 2;
-                this._targetPath = leftStr + "{0}" + rightStr;
-                this._flag = true;
+
+                if (isFirstSubPath && _hsSpecialFolders.Contains(datePattern))
+                {
+                    Environment.SpecialFolder specialFolder;
+                    if (Enum.TryParse<Environment.SpecialFolder>(datePattern, true, out specialFolder))
+                    {
+                        path = string.Format("{0}{1}{2}", leftStr, Environment.GetFolderPath(specialFolder), rightStr);
+                    }
+
+                    this._targetPath = path;
+                    this._pathLength = path.Length;
+                    this._flag = false;
+                }
+                else
+                {
+                    string str = DateTime.Now.ToString(datePattern);
+                    this._datePattern = datePattern;
+                    this._pathLength = path.Length - 2;
+                    this._targetPath = leftStr + "{0}" + rightStr;
+                    this._flag = true;
+                }
             }
             else
             {

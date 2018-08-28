@@ -23,10 +23,10 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// 日志安全策略
         /// </summary>
         private ILogSecurityPolicy _securityPolicy = null;
-        private readonly long _maxFileSize;
+        private long _maxFileSize;
         private string _filePath;
         private long _fileSize = 0;
-        private readonly FileLogPathInfo _logFilePath;
+        private FileLogPathInfo _logFilePath;
 
         /// <summary>
         /// 构造函数
@@ -44,7 +44,14 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <param name="ele"></param>
         public override void Init(XElement ele)
         {
+            if (ele == null)
+            {
+                return;
+            }
+
             this._config.Parse(ele);
+            this._maxFileSize = this._config.MaxFileSize * 1024L;
+            this._logFilePath = new FileLogPathInfo(this._config);
         }
 
         /// <summary>

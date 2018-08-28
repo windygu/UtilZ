@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <logconfig>
   <loger name="" level="debug" enable="true">
-    <appender name="fileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Config.FileAppender,UtilZ.Dotnet.SEx">
+    <appender name="fileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
       <param name="Layout" value="" des="日志布局"/>
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
@@ -16,27 +16,49 @@
       <param name="Days" value="7"  des="日志保留天数"/>
       <param name="MaxFileCount" value="-1" des="MaxSizeRollBackups最多产生的日志文件数，超过则只保留最新的n个,－1为不限文件数"/>
       <param name="MaxFileSize" value="10"  des="日志文件上限大小,当文件超过此值则分隔成多个日志文件,单位/MB"/>
-      <param name="FilePath" value="Log\*yyyy-MM-dd_HH_mm_ss.fffffff*.log"  des="日志存放目录"/>      
+      <param name="FilePath" value="Log\*yyyy-MM-dd_HH_mm_ss.fffffff*.log"  des="日志存放目录"/>
       <!--<param name="FilePath" value="Log\*yyyy-MM-dd*\*HH_mm_ss.fffffff*.log"  des="日志存放目录"/>-->
       <param name="IsAppend" value="true"  des="是否追加日志"/>
       <param name="SecurityPolicy" value=""  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>
       <param name="MutexName" value=""  des="进程同步锁名称"/>
     </appender>
 
-    <appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.RedirectAppender">
+    <appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.RedirectAppender,UtilZ.Dotnet.SEx">
 
 
 
     </appender>
 
-    <appender name="fileAppender" type="UtilZ.Dotnet.SEx.Log.Config.FileAppender">
+    <appender name="fileAppenderSpecDir" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
+      <param name="Layout" value="" des="日志布局"/>
+      <param name="DateFormat" value="yyyy_MM_dd_HH:mm:ss.ff" des="时间格式"/>
+      <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
+
+      <param name="Levels" value="debug,info,warn"  des="过滤日志级别集合"/>
+      <param name="EventIdMin" value="-1" des="事件ID最小值(包含该值,默认值为不限)"/>
+      <param name="EventIdMax" value="-1" des="事件ID最大值(包含该值,默认值为不限)"/>
+      <param name="MatchString" value="" des="消息匹配指定的字符串才被记录,为空或null不匹配(默认为null)"/>
+      <param name="MatchExceptionType" value="" des="要记录的异常的类型为指定类型或其子类才被记录,为null不匹配(默认为null)"/>
+
+
+      <param name="Days" value="7"  des="日志保留天数"/>
+      <param name="MaxFileCount" value="-1" des="MaxSizeRollBackups最多产生的日志文件数，超过则只保留最新的n个,－1为不限文件数"/>
+      <param name="MaxFileSize" value="10"  des="日志文件上限大小,当文件超过此值则分隔成多个日志文件,单位/MB"/>
+      <param name="FilePath" value="*MyDocuments*\Log\*yyyy-MM-dd_HH_mm_ss.fffffff*.log"  des="日志存放目录"/>
+      <!--<param name="FilePath" value="Log\*yyyy-MM-dd*\*HH_mm_ss.fffffff*.log"  des="日志存放目录"/>-->
+      <param name="IsAppend" value="true"  des="是否追加日志"/>
+      <param name="SecurityPolicy" value=""  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>
+      <param name="MutexName" value=""  des="进程同步锁名称"/>
+    </appender>
+
+    <!--<appender name="fileAppender" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
       <param name="LogFileSize" value="10" />
       <param name="LogDirectory" value="Log\info" />
       <param name="FilterFrom" value="info" />
       <param name="FilterTo" value="warn" />
     </appender>
 
-    <appender name="FileAppender" type="UtilZ.Dotnet.SEx.Log.Config.FileAppender">
+    <appender name="FileAppender" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
       <param name="LogFileSize" value="10" />
       <param name="LogDirectory" value="Log\error" />
       <param name="FilterFrom" value="error" />
@@ -48,24 +70,24 @@
       <param name="LogDirectory" value="Log\error" />
       <param name="FilterFrom" value="error" />
       <param name="FilterTo" value="faltal" />
-    </appender>
+    </appender>-->
   </loger>
 
-  <loger name="flow" level="warn" enable="true">
+  <!--<loger name="flow" level="warn" enable="true">
 
   </loger>
 
   <loger name="loginfo" level="debug"  enable="true">
-    <appender name="fileAppender" type="UtilZ.Dotnet.SEx.Log.Config.FileLogConfig">
+    <appender name="fileAppender" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
       <param name="RollingStyle" value="Date" />
       <param name="FilterFrom" value="info" />
       <param name="FilterTo" value="error" />
     </appender>
 
-    <appender name="mailAppender" type="UtilZ.Dotnet.SEx.Log.Config.MailLogConfig">
+    <appender name="mailAppender" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
       <param name="RollingStyle" value="Date" />
       <param name="FilterFrom" value="error" />
       <param name="FilterTo" value="faltal" />
     </appender>
-  </loger>
+  </loger>-->
 </logconfig>

@@ -20,7 +20,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
     public sealed class Loger : LogerBase
     {
         private static readonly ILoger _emptyLoger = new EmptyLoger();
-        private static readonly Loger _defaultLoger;
+        private static Loger _defaultLoger;
 
         /// <summary>
         /// [key:LogerName;Value:Loger]
@@ -32,6 +32,9 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// </summary>
         private readonly List<AppenderBase> _appenders = new List<AppenderBase>();
 
+        /// <summary>
+        /// 静态构造函数(初始化默认日志追加器)
+        /// </summary>
         static Loger()
         {
             _defaultLoger = new Loger();
@@ -39,29 +42,109 @@ namespace UtilZ.Dotnet.SEx.Log.Core
             _defaultLoger._appenders.Add(new FileAppender());
         }
 
-        public static void LoadConfig(string url)
+        /// <summary>
+        /// 加载配置
+        /// </summary>
+        /// <param name="configFilePath">配置文件路径</param>
+        public static void LoadConfig(string configFilePath)
         {
             _htLoger.Clear();
-            if (!File.Exists(url))
+            if (!File.Exists(configFilePath))
             {
                 return;
             }
 
-            var xdoc = XDocument.Load(url);
+            var xdoc = XDocument.Load(configFilePath);
             IEnumerable<XElement> logerEles = xdoc.XPathSelectElements(@"logconfig/loger");
             if (logerEles.Count() == 0)
             {
                 return;
             }
-            else
-            {
 
+            foreach (var logerEle in logerEles)
+            {
+                ParseLogerConfig(logerEle);
             }
         }
 
-        private static void CreateDefault()
+        private static void ParseLogerConfig(XElement logerEle)
         {
+            try
+            {
+                string name = LogUtil.GetAttributeValue(logerEle, "name");
+                if (string.IsNullOrEmpty(name))
+                {
+                    _defaultLoger = null;
+                }
 
+                var loger = new Loger();
+                loger.Name = name;
+                LogLevel level;
+                if (Enum.TryParse<LogLevel>(LogUtil.GetAttributeValue(logerEle, "level"), true, out level))
+                {
+                    loger.Level = level;
+                }
+
+                bool enable;
+                if (bool.TryParse(LogUtil.GetAttributeValue(logerEle, "enable"), out enable))
+                {
+                    loger.Enable = enable;
+                }
+
+                IEnumerable<XElement> appenderEles = logerEle.XPathSelectElements("appender");
+                foreach (var appenderEle in appenderEles)
+                {
+                    try
+                    {
+                        CreateAppender(appenderEle, loger);
+                    }
+                    catch (Exception exi)
+                    {
+                        LogSysInnerLog.OnRaiseLog(null, exi);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(name))
+                {
+                    _defaultLoger = loger;
+                }
+                else
+                {
+                    _htLoger[name] = loger;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog("解析配置文件异常", ex);
+            }
+        }
+
+        private static void CreateAppender(XElement appenderEle, Loger loger)
+        {
+            string appenderName = LogUtil.GetAttributeValue(appenderEle, "name");
+            try
+            {
+                string appenderTypeName = LogUtil.GetAttributeValue(appenderEle, "type");
+                if (string.IsNullOrWhiteSpace(appenderTypeName))
+                {
+                    return;
+                }
+
+                object obj = LogUtil.CreateInstance(appenderTypeName);
+                AppenderBase appender = obj as AppenderBase;
+                if (appender == null)
+                {
+                    return;
+                }
+
+                appender.Name = appenderName;
+                appender.Init(appenderEle);
+                loger._appenders.Add(appender);
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(string.Format("解析:{0}日志追加器异常", appenderName), ex);
+            }
         }
 
         /// <summary>
@@ -89,8 +172,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
             return loger;
         }
 
-
-
+        #region 日志记录器实例成员
         /// <summary>
         /// 日志记录器名称
         /// </summary>
@@ -192,6 +274,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
                 LogSysInnerLog.OnRaiseLog(this, exi);
             }
         }
+        #endregion
         #endregion
 
         #region 静态记录日志方法,默认日志快捷方法

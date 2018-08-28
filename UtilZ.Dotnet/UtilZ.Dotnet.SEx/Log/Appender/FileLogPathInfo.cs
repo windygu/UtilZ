@@ -41,7 +41,12 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                     return;
                 }
 
-                this._subPathInfos = paths.Select(t => { return new FileLogSubPathInfo(t); }).ToArray();
+                this._subPathInfos = new FileLogSubPathInfo[paths.Length];
+                this._subPathInfos[0] = new FileLogSubPathInfo(paths[0], true);
+                for (int i = 1; i < paths.Length; i++)
+                {
+                    this._subPathInfos[i] = new FileLogSubPathInfo(paths[i], false);
+                }
                 this._status = true;
             }
             catch (Exception ex)

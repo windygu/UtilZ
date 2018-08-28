@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using UtilZ.Dotnet.SEx.Log;
 using UtilZ.Dotnet.SEx.Log.Core;
 using UtilZ.Dotnet.SEx.Log.RedirectOuput;
@@ -12,6 +13,17 @@ namespace TestSE
         {
             try
             {
+                //Array array = Enum.GetValues(typeof(Environment.SpecialFolder));//特殊目录集合
+                //StringBuilder sb = new StringBuilder();
+                //foreach (var item in array)
+                //{
+                //    sb.AppendLine(item.ToString());
+                //}
+
+                //File.WriteAllText("SpecialFolder.txt", sb.ToString());
+
+                Loger.LoadConfig(@"logconfig.xml");
+
                 var subItem = new RedirectOutputSubscribeItem();
                 subItem.LogOutput += SubItem_LogOutput;
                 RedirectOuputCenter.Instance.AddLogOutput(subItem);
@@ -23,8 +35,8 @@ namespace TestSE
                 //bool xx = DateTime.TryParseExact(timeStr, format, null, System.Globalization.DateTimeStyles.None, out time);
 
 
-                //Console.WriteLine("ane key continue...");
-                //Console.ReadKey();
+                Console.WriteLine("ane key continue...");
+                Console.ReadKey();
 
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
                 Loger.Debug("dsfa");

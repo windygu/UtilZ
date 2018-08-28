@@ -99,24 +99,30 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             }
 
             base.Parse(ele);
-            if (int.TryParse(base.GetChildXElementValue(ele, "Days"), out this._days))
+            int days;
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "Days"), out days))
             {
-                if (this._days < 1)
+                if (days < 1)
                 {
-                    this._days = 7;
+                    days = 7;
                 }
+
+                this._days = days;
             }
 
-            if (int.TryParse(base.GetChildXElementValue(ele, "MaxFileCount"), out this._maxFileCount))
+            int maxFileCount;
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "MaxFileCount"), out maxFileCount))
             {
-                if (this._maxFileCount < 1 && this._maxFileCount != -1)
+                if (maxFileCount < 1 && maxFileCount != -1)
                 {
-                    this._maxFileCount = -1;
+                    maxFileCount = -1;
                 }
+
+                this._maxFileCount = maxFileCount;
             }
 
             int maxFileSize;
-            if (int.TryParse(base.GetChildXElementValue(ele, "MaxFileSize"), out maxFileSize))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "MaxFileSize"), out maxFileSize))
             {
                 if (maxFileSize < 1)
                 {
@@ -126,15 +132,20 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 this._maxFileSize = maxFileSize * 1024 * 1024;
             }
 
-            string filePath = base.GetChildXElementValue(ele, "FilePath").Trim();
+            string filePath = LogUtil.GetChildXElementValue(ele, "FilePath").Trim();
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 this._filePath = filePath;
             }
 
-            bool.TryParse(base.GetChildXElementValue(ele, "IsAppend").Trim(), out this._isAppend);
-            this.SecurityPolicy = base.GetChildXElementValue(ele, "SecurityPolicy").Trim();
-            this.MutexName = base.GetChildXElementValue(ele, "MutexName ").Trim();
+            bool isAppend;
+            if (bool.TryParse(LogUtil.GetChildXElementValue(ele, "IsAppend").Trim(), out isAppend))
+            {
+                this._isAppend = isAppend;
+            }
+
+            this.SecurityPolicy = LogUtil.GetChildXElementValue(ele, "SecurityPolicy").Trim();
+            this.MutexName = LogUtil.GetChildXElementValue(ele, "MutexName ").Trim();
         }
     }
 }
