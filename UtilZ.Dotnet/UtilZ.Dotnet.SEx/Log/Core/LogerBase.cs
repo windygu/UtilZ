@@ -57,6 +57,16 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         }
 
         /// <summary>
+        /// 静态方法添加日志的方法
+        /// </summary>
+        /// <param name="level">日志级别</param>
+        /// <param name="msg">消息</param>
+        /// <param name="ex">异常</param>
+        /// <param name="eventID">事件ID</param>
+        /// <param name="args">格式参数</param>
+        internal abstract void ObjectAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args);
+
+        /// <summary>
         /// 实例添加日志
         /// </summary>
         /// <param name="skipFrames">跳过堆栈帧数</param>
@@ -338,6 +348,25 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         }
         #endregion
         #endregion
+        #endregion
+
+        #region IDisposable接口
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// 释放资源方法
+        /// </summary>
+        /// <param name="isDisposing">是否释放标识</param>
+        protected virtual void Dispose(bool isDisposing)
+        {
+
+        }
         #endregion
     }
 }

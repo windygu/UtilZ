@@ -19,8 +19,9 @@ namespace UtilZ.Dotnet.SEx.Log.Core
     /// </summary>
     public sealed class Loger : LogerBase
     {
-        private static readonly ILoger _emptyLoger = new EmptyLoger();
-        private static Loger _defaultLoger;
+        #region 静态成员
+        private static readonly LogerBase _emptyLoger = new EmptyLoger();
+        private static LogerBase _defaultLoger;
 
         /// <summary>
         /// [key:LogerName;Value:Loger]
@@ -37,18 +38,37 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// </summary>
         static Loger()
         {
-            _defaultLoger = new Loger();
-            _defaultLoger._logerName = string.Empty;
-            _defaultLoger._appenders.Add(new FileAppender());
+            var defaultLoger = new Loger();
+            defaultLoger._logerName = string.Empty;
+            defaultLoger._appenders.Add(new FileAppender());
+            _defaultLoger = defaultLoger;
         }
 
         /// <summary>
-        /// 加载配置
+        /// 清空所有配置,包括默认
+        /// </summary>
+        public static void Clear()
+        {
+            foreach (ILoger loger in _htLoger.Values)
+            {
+                loger.Dispose();
+            }
+
+            if (_defaultLoger != _emptyLoger && _defaultLoger != null)
+            {
+                _defaultLoger.Dispose();
+            }
+
+            _defaultLoger = _emptyLoger;
+            _htLoger.Clear();
+        }
+
+        /// <summary>
+        /// 加载配置,加载前清空旧的配置
         /// </summary>
         /// <param name="configFilePath">配置文件路径</param>
         public static void LoadConfig(string configFilePath)
         {
-            _htLoger.Clear();
             if (!File.Exists(configFilePath))
             {
                 return;
@@ -74,7 +94,12 @@ namespace UtilZ.Dotnet.SEx.Log.Core
                 string name = LogUtil.GetAttributeValue(logerEle, "name");
                 if (string.IsNullOrEmpty(name))
                 {
-                    _defaultLoger = null;
+                    if (_defaultLoger != _emptyLoger && _defaultLoger != null)
+                    {
+                        _defaultLoger.Dispose();
+                    }
+
+                    _defaultLoger = _emptyLoger;
                 }
 
                 var loger = new Loger();
@@ -171,6 +196,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
 
             return loger;
         }
+        #endregion
 
         #region 日志记录器实例成员
         /// <summary>
@@ -190,8 +216,10 @@ namespace UtilZ.Dotnet.SEx.Log.Core
 
         private readonly Thread _logThread;
         private BlockingCollection<LogItem> _logQueue;
+        private readonly CancellationTokenSource _cts;
         private Loger() : base()
         {
+            this._cts = new CancellationTokenSource();
             this._logQueue = new BlockingCollection<LogItem>(new ConcurrentQueue<LogItem>());
             this._logThread = new Thread(this.LogThreadMethod);
             this._logThread.IsBackground = true;
@@ -200,12 +228,13 @@ namespace UtilZ.Dotnet.SEx.Log.Core
 
         private void LogThreadMethod()
         {
+            CancellationToken token = this._cts.Token;
             LogItem item;
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    if (this._logQueue.TryTake(out item, Timeout.Infinite))
+                    if (this._logQueue.TryTake(out item, Timeout.Infinite, token))
                     {
                         item.LogProcess();
                         foreach (var appender in this._appenders)
@@ -221,11 +250,23 @@ namespace UtilZ.Dotnet.SEx.Log.Core
                         }
                     }
                 }
+                catch (OperationCanceledException)
+                {
+                    break;//线程停止
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;//已释放
+                }
                 catch (ArgumentNullException ex)
                 {
                     //微软BUG,不晓得.net core里面还有没此BUG
                     LogSysInnerLog.OnRaiseLog(this, new Exception("this._logQueue.TryTake.ArgumentNullException", ex));
                     continue;
+                }
+                catch (ThreadAbortException)
+                {
+                    break;
                 }
                 catch (Exception ex)
                 {
@@ -243,7 +284,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="ex">异常</param>
         /// <param name="eventID">事件ID</param>
         /// <param name="args">格式参数</param>
-        internal void ObjectAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args)
+        internal override void ObjectAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args)
         {
             this.PrimitiveAddLog(5, level, msg, ex, eventID, args);
         }
@@ -275,6 +316,16 @@ namespace UtilZ.Dotnet.SEx.Log.Core
             }
         }
         #endregion
+
+        /// <summary>
+        /// 释放资源方法
+        /// </summary>
+        /// <param name="isDisposing">是否释放标识</param>
+        protected override void Dispose(bool isDisposing)
+        {
+            this._cts.Cancel();
+            this._logQueue.Dispose();
+        }
         #endregion
 
         #region 静态记录日志方法,默认日志快捷方法

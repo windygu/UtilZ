@@ -8,7 +8,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
     /// <summary>
     /// 日志接口
     /// </summary>
-    public interface ILoger
+    public interface ILoger : IDisposable
     {
         /// <summary>
         /// 日志记录器名称
