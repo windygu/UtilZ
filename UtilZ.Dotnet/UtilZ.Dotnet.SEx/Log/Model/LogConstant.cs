@@ -90,7 +90,7 @@ namespace UtilZ.Dotnet.SEx.Log.Model
                 case LogLevel.Error:
                     title = ERRORSTR;
                     break;
-                case LogLevel.Faltal:
+                case LogLevel.Fatal:
                     title = FATALSTR;
                     break;
                 default:

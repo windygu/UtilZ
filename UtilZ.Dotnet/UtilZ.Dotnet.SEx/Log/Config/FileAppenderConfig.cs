@@ -13,7 +13,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
     {
         private int _days = 7;
         /// <summary>
-        /// 日志保留天数
+        /// 日志保留天数小于1表示永不清除
         /// </summary>
         public int Days
         {
@@ -49,7 +49,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
          * yyyy-MM-dd\HH_mm_ss;_flow.log  =>  2018-08-19\17_05_12_flow.log
          ********************************************************************/
 
-        private string _filePath = @"Log/*yyyy-MM-dd_HH_mm_ss*.log";
+        private string _filePath = @"Log/*yyyy-MM-dd_HH_mm_ss.fffffff*.log";
         /// <summary>
         /// 日志存放路径
         /// </summary>
@@ -135,7 +135,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             string filePath = LogUtil.GetChildXElementValue(ele, "FilePath").Trim();
             if (!string.IsNullOrWhiteSpace(filePath))
             {
-                this._filePath = filePath;
+                this._filePath = filePath.Trim();
             }
 
             bool isAppend;

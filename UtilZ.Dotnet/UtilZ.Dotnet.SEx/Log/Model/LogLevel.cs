@@ -38,7 +38,7 @@ namespace UtilZ.Dotnet.SEx.Log.Model
         /// <summary>
         /// 致命
         /// </summary>
-        Faltal = 16,
+        Fatal = 16,
 
         /// <summary>
         /// 关闭

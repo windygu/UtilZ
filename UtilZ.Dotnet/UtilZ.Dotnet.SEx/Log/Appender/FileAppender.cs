@@ -26,7 +26,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private long _maxFileSize;
         private string _filePath;
         private long _fileSize = 0;
-        private FileLogPathInfo _logFilePath;
+        private FileAppenderPathManager _logFilePath;
 
         /// <summary>
         /// 构造函数
@@ -35,7 +35,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             this._config = new FileAppenderConfig();
             this._maxFileSize = this._config.MaxFileSize * 1024L;
-            this._logFilePath = new FileLogPathInfo(this._config);
+            this._logFilePath = new FileAppenderPathManager(this._config);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 
             this._config.Parse(ele);
             this._maxFileSize = this._config.MaxFileSize * 1024L;
-            this._logFilePath = new FileLogPathInfo(this._config);
+            this._logFilePath = new FileAppenderPathManager(this._config);
         }
 
         /// <summary>
@@ -76,15 +76,14 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                     return;
                 }
 
-                ILogSecurityPolicy securityPolicy = this._securityPolicy;
                 string logMsg;
                 using (var sw = File.AppendText(logFilePath))
                 {
                     //日志处理
                     logMsg = LayoutManager.LayoutLog(item, this._config);
-                    if (securityPolicy != null)
+                    if (this._securityPolicy != null)
                     {
-                        logMsg = securityPolicy.Encryption(logMsg);
+                        logMsg = this._securityPolicy.Encryption(logMsg);
                     }
 
                     sw.WriteLine(logMsg);
@@ -123,7 +122,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
 
             this._fileSize = 0;
-            this._filePath = this._logFilePath.GetLogFilePath();
+            this._filePath = this._logFilePath.CreateLogFilePath();
             return this._filePath;
         }
 

@@ -15,12 +15,12 @@ namespace UtilZ.Dotnet.SEx.Log.Model
         /// <param name="ex">异常</param>
         public InnerLogOutputArgs(Exception ex)
         {
-            this.SEx = ex;
+            this.Ex = ex;
         }
 
         /// <summary>
         /// 异常
         /// </summary>
-        public Exception SEx { get; private set; }
+        public Exception Ex { get; private set; }
     }
 }

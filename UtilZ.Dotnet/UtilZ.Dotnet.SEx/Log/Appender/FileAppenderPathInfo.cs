@@ -7,7 +7,7 @@ using UtilZ.Dotnet.SEx.Base;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
-    internal class FileLogSubPathInfo
+    internal class FileAppenderPathInfo
     {
         private readonly static HashSet<string> _hsSpecialFolders = new HashSet<string>();
         private const char DatePatternFlagChar = '*';
@@ -26,7 +26,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             get { return _flag; }
         }
 
-        static FileLogSubPathInfo()
+        static FileAppenderPathInfo()
         {
             Array specialFolderArray = Enum.GetValues(typeof(Environment.SpecialFolder));//特殊目录集合
             foreach (var specialFolder in specialFolderArray)
@@ -35,7 +35,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
         }
 
-        public FileLogSubPathInfo(string path, bool isFirstSubPath)
+        public FileAppenderPathInfo(string path, bool isFirstSubPath)
         {
             /***********************************************************
              * datePattern:  
@@ -88,7 +88,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
         }
 
-        public string GetPath()
+        public string CreatePath()
         {
             string path;
             if (this._flag)
@@ -107,17 +107,24 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         public bool TryGetDateByFilePath(string path, out DateTime time)
         {
             time = DateTime.Now;
-            if (!this._flag || string.IsNullOrWhiteSpace(path) || path.Length < (this._datePatternIndex + this._datePatternLength))
+            if (this.CheckInvailidLogFilePath(path))
+            {
+                if (!this._flag || string.IsNullOrWhiteSpace(path) || path.Length < (this._datePatternIndex + this._datePatternLength))
+                {
+                    return false;
+                }
+
+                string timeStr = path.Substring(this._datePatternIndex, this._datePatternLength);
+                return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out time);
+            }
+            else
             {
                 return false;
             }
-
-            string timeStr = path.Substring(this._datePatternIndex, this._datePatternLength);
-            return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out time);
         }
 
         /// <summary>
-        /// 检查日志文件路径是否是无效路径[无效返回true;有效返回false]
+        /// 检查日志文件路径是否是无效路径[有效返回true;无效返回false]
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -127,30 +134,22 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             {
                 if (string.Equals(this._targetPath, path))
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             }
 
             if (path.Length != this._pathLength)
             {
-                return true;
+                return false;
             }
 
             string timeStr = path.Substring(this._datePatternIndex, this._datePatternLength);
             DateTime time;
-            bool parseResult = DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out time);
-            if (parseResult)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out time);
         }
     }
 }

@@ -311,7 +311,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="args">参数数组</param>
         void ILoger.Faltal(string formatMsg, params object[] args)
         {
-            this.InsAddLog(LogLevel.Faltal, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Fatal, formatMsg, null, LogConstant.DefaultEventId, args);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="args">参数数组</param>
         void ILoger.Faltal(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
         {
-            this.InsAddLog(LogLevel.Faltal, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Fatal, formatMsg, null, eventID, args);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="eventID">事件ID</param>
         void ILoger.Faltal(Exception ex, int eventID = LogConstant.DefaultEventId)
         {
-            this.InsAddLog(LogLevel.Faltal, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Fatal, null, ex, eventID, null);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="args">参数数组</param>
         void ILoger.Faltal(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
         {
-            this.InsAddLog(LogLevel.Faltal, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Fatal, formatMsg, ex, eventID, args);
         }
         #endregion
         #endregion

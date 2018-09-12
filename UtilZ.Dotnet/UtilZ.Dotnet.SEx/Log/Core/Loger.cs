@@ -574,7 +574,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="args">参数数组</param>
         public static void Faltal(string formatMsg, params object[] args)
         {
-            SAddLog(LogLevel.Faltal, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Fatal, formatMsg, null, LogConstant.DefaultEventId, args);
         }
 
         /// <summary>
@@ -585,7 +585,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="args">参数数组</param>
         public static void Faltal(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
         {
-            SAddLog(LogLevel.Faltal, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Fatal, formatMsg, null, eventID, args);
         }
 
         /// <summary>
@@ -595,7 +595,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="eventID">事件ID</param>
         public static void Faltal(Exception ex, int eventID = LogConstant.DefaultEventId)
         {
-            SAddLog(LogLevel.Faltal, null, ex, eventID, null);
+            SAddLog(LogLevel.Fatal, null, ex, eventID, null);
         }
 
         /// <summary>
@@ -607,7 +607,7 @@ namespace UtilZ.Dotnet.SEx.Log.Core
         /// <param name="args">参数数组</param>
         public static void Faltal(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
         {
-            SAddLog(LogLevel.Faltal, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Fatal, formatMsg, ex, eventID, args);
         }
         #endregion
         #endregion
