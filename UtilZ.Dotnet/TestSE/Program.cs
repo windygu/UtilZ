@@ -13,6 +13,27 @@ namespace TestSE
         {
             try
             {
+                //string logRootFullPath = @"G:\Tmp\test\123.log";
+                //var isRelativePath = string.IsNullOrWhiteSpace(Path.GetPathRoot(logRootFullPath));
+
+
+                //string srcRelativePath = @"test\123.log";
+                //string srcAbsolutePath = Path.GetFullPath(srcRelativePath);
+                //string rootDir = srcAbsolutePath.Substring(0,srcAbsolutePath.Length - srcRelativePath.Length);
+
+
+                //string logFilePath = @"G:\Tmp\test\124.log";
+                //string parentDir = Directory.GetParent(Path.GetDirectoryName(logRootFullPath)).FullName;
+                //if (logFilePath.Length < parentDir.Length)
+                //{
+
+                //}
+
+                //logFilePath = logFilePath.Substring(parentDir.Length);
+
+                //string[] allDirs = Directory.GetDirectories(logRootFullPath, "*.*", SearchOption.AllDirectories);
+                //var dirInfos = new DirectoryInfo(logRootFullPath).GetDirectories("*.*", SearchOption.AllDirectories);
+
                 //Array array = Enum.GetValues(typeof(Environment.SpecialFolder));//特殊目录集合
                 //StringBuilder sb = new StringBuilder();
                 //foreach (var item in array)
@@ -38,7 +59,7 @@ namespace TestSE
                 //bool xx = DateTime.TryParseExact(timeStr, format, null, System.Globalization.DateTimeStyles.None, out time);
 
 
-              
+
 
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
                 Loger.Debug("dsfa");
@@ -70,7 +91,7 @@ namespace TestSE
         {
             try
             {
-                Console.Write(e.SEx.Message);
+                Console.Write(e.Ex.Message);
             }
             catch (Exception ex)
             {
