@@ -43,8 +43,8 @@ namespace TestSE
 
                 //File.WriteAllText("SpecialFolder.txt", sb.ToString());
 
-                Console.WriteLine("ane key continue...");
-                Console.ReadKey();
+                //Console.WriteLine("ane key continue...");
+                //Console.ReadKey();
 
                 Loger.LoadConfig(@"logconfig.xml");
 

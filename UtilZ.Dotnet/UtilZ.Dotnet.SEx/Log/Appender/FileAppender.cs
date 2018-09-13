@@ -55,6 +55,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             try
             {
                 this._logFilePath = new FileAppenderPathManager(this._config);
+                this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
                 this._status = true;
             }
             catch (Exception ex)
