@@ -27,6 +27,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private string _filePath;
         private long _fileSize = 0;
         private FileAppenderPathManager _logFilePath;
+        private bool _status;
 
         /// <summary>
         /// 构造函数
@@ -51,7 +52,16 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 
             this._config.Parse(ele);
             this._maxFileSize = this._config.MaxFileSize * 1024L;
-            this._logFilePath = new FileAppenderPathManager(this._config);
+            try
+            {
+                this._logFilePath = new FileAppenderPathManager(this._config);
+                this._status = true;
+            }
+            catch (Exception ex)
+            {
+                this._status = false;
+                LogSysInnerLog.OnRaiseLog(this, ex);
+            }
         }
 
         /// <summary>
@@ -60,7 +70,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <param name="item">日志项</param>
         public override void WriteLog(LogItem item)
         {
-            if (this._config == null || !this._config.Validate(item) || !this._logFilePath.Status)
+            if (this._config == null || !this._config.Validate(item) || !this._status)
             {
                 return;
             }
