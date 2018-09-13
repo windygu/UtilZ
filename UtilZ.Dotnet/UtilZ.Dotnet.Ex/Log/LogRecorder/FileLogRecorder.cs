@@ -209,6 +209,13 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
         /// <param name="items">日志项集合</param>
         public override void WriteLog(List<LogItem> items)
         {
+            string logRecorderName = this.Config != null ? this.Config.Name : string.Empty;
+            foreach (var item in items)
+            {
+                //输出日志
+                this.OutputLog(logRecorderName, item);
+            }
+
             if (this.Config == null || !this.Config.Enable || items == null || items.Count == 0)
             {
                 return;
@@ -219,7 +226,6 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
             {
                 mutex = this.GetMutex();
                 var groups = items.GroupBy((item) => { return item.Level; });
-                string logRecorderName = this.Config.Name;
 
                 foreach (var group in groups)
                 {
@@ -237,9 +243,6 @@ namespace UtilZ.Dotnet.Ex.Log.LogRecorder
                     {
                         foreach (var item in group)
                         {
-                            //输出日志
-                            this.OutputLog(logRecorderName, item);
-
                             //日志处理
                             logMsg = LayoutManager.LayoutLog(item, this._config);
                             if (securityPolicy != null)
