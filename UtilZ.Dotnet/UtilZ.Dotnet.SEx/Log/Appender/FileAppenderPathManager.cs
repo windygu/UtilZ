@@ -21,7 +21,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 
         private readonly static HashSet<string> _hsSpecialFolders = new HashSet<string>();
         private readonly static char[] _pathSplitChars = new char[] { '\\', '/' };
-        private readonly IFileAppenderPathBuilder _pathBuilder;
+        private readonly FileAppenderPathBuilderBase _pathBuilder;
         public FileAppenderPathManager(FileAppenderConfig config)
         {
             string filePath = config.FilePath;

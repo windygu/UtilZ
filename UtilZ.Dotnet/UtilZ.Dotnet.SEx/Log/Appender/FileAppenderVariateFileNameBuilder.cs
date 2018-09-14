@@ -8,43 +8,19 @@ using UtilZ.Dotnet.SEx.Log.Model;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
-    internal class FileAppenderVariateFileNameBuilder : IFileAppenderPathBuilder
+    internal class FileAppenderVariateFileNameBuilder : FileAppenderPathBuilderBase
     {
-        private readonly char[] _pathSplitChars;
-        private readonly FileAppenderConfig _config;
-        private readonly string _rootDir;
-        private readonly FileAppenderPathItem[] _pathItems;
-        private bool _isFirstGetFilePath = true;
-
-        public FileAppenderVariateFileNameBuilder(FileAppenderConfig config, string[] paths, char[] pathSplitChars)
+        private readonly FileAppenderPathItem _lastPathItem;
+        public FileAppenderVariateFileNameBuilder(FileAppenderConfig config, string[] paths, char[] pathSplitChars) :
+            base(config, paths, pathSplitChars)
         {
-            this._config = config;
-            this._pathSplitChars = pathSplitChars;
-            int rootDirPathCount = paths.Length - 1;
-            for (int i = 0; i < paths.Length - 1; i++)
-            {
-                if (paths[i].Contains(LogConstant.DatePatternFlagChar))
-                {
-                    rootDirPathCount = i + 1;
-                    break;
-                }
-            }
-
-            string[] rootPaths = paths.Take(rootDirPathCount).ToArray();
-            this._rootDir = Path.Combine(rootPaths);
-            string[] relativePaths = paths.Skip(rootDirPathCount).ToArray();
-            this._pathItems = new FileAppenderPathItem[relativePaths.Length];
-            for (int i = 0; i < relativePaths.Length; i++)
-            {
-                this._pathItems[i] = new FileAppenderPathItem(relativePaths[i]);
-            }
+            this._lastPathItem = this._pathItems.Last();
         }
 
-        public string CreateLogFilePath()
+        public override string CreateLogFilePath()
         {
-            string tmpFilePath = this.PrimitiveCreateLogFilePath();
+            string tmpFilePath = this.PrimitiveCreateLogFilePath2();
             string dir = Path.GetDirectoryName(tmpFilePath);
-            string searchPattern = string.Format("*{0}", Path.GetExtension(tmpFilePath));
             string logFilePath;
 
             if (this._isFirstGetFilePath && this._config.IsAppend)
@@ -52,14 +28,14 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 this._isFirstGetFilePath = false;
                 if (Directory.Exists(dir))
                 {
-                    logFilePath = this.GetLastLogFilePath(dir, searchPattern);
+                    logFilePath = base.GetLastLogFilePath(dir);
                     if (string.IsNullOrWhiteSpace(logFilePath))
                     {
                         logFilePath = tmpFilePath;
                     }
                     else
                     {
-                        this.ClearExpireLogFile(searchPattern, dir);
+                        this.ClearExpireLogFile(dir);
                     }
                 }
                 else
@@ -73,7 +49,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 logFilePath = tmpFilePath;
                 if (Directory.Exists(dir))
                 {
-                    this.ClearExpireLogFile(searchPattern, dir);
+                    this.ClearExpireLogFile(dir);
                 }
                 else
                 {
@@ -87,18 +63,18 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <summary>
         /// 清理过期的日志文件
         /// </summary>
-        private void ClearExpireLogFile(string searchPattern, string currentLogDir)
+        private void ClearExpireLogFile(string currentLogDir)
         {
             try
             {
-                List<FileInfo> fileInfos = this.GetAllLogFileInfos(searchPattern);
+                List<FileInfo> fileInfos = this.GetAllLogFileInfos();
                 var hsDelLogFileFullPathDirs = new HashSet<string>();
 
                 //按日志保留天数删除
-                this.DeleteLogFileByDays(fileInfos, hsDelLogFileFullPathDirs);
+                base.DeleteLogFileByDays(fileInfos, hsDelLogFileFullPathDirs);
 
                 //按日志文件个数删除日志
-                this.DeleteLogFileByFileCount(fileInfos, hsDelLogFileFullPathDirs);
+                base.DeleteLogFileByFileCount(fileInfos, hsDelLogFileFullPathDirs);
 
                 //排除本次写日志目录
                 if (hsDelLogFileFullPathDirs.Contains(currentLogDir))
@@ -159,75 +135,13 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
         }
 
-        private void DeleteLogFileByFileCount(List<FileInfo> fileInfos, HashSet<string> hsDelLogFileFullPathDirs)
+        private List<FileInfo> GetAllLogFileInfos()
         {
-            if (this._config.MaxFileCount > -1 && fileInfos.Count > this._config.MaxFileCount)
-            {
-                int delCount = fileInfos.Count - this._config.MaxFileCount;
-                if (delCount > 0)
-                {
-                    var delFileInfos = fileInfos.OrderBy(t => { return t.CreationTime; }).Take(delCount).ToArray();
-                    foreach (var delFileInfo in delFileInfos)
-                    {
-                        try
-                        {
-                            delFileInfo.Delete();
-                            hsDelLogFileFullPathDirs.Add(delFileInfo.Directory.FullName);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogSysInnerLog.OnRaiseLog(this, ex);
-                        }
-                    }
-                }
-            }
-        }
-
-        private DateTime _lastClearExpireDaysTime = DateTime.Now.AddMonths(-1);
-        private void DeleteLogFileByDays(List<FileInfo> fileInfos, HashSet<string> hsDelLogFileFullPathDirs)
-        {
-            int days = this._config.Days;
-            if (days < 1)
-            {
-                return;
-            }
-
-            var currentClearTime = DateTime.Now;
-            if (currentClearTime.Year != this._lastClearExpireDaysTime.Year ||
-            currentClearTime.Month != this._lastClearExpireDaysTime.Month ||
-            currentClearTime.Day != this._lastClearExpireDaysTime.Day)
-            {
-                TimeSpan tsDuration;
-                foreach (var fileInfo in fileInfos.ToArray())
-                {
-                    tsDuration = currentClearTime - fileInfo.CreationTime;
-                    if (tsDuration.TotalDays - days > 0)
-                    {
-                        try
-                        {
-                            fileInfo.Delete();
-                            fileInfos.Remove(fileInfo);
-                            hsDelLogFileFullPathDirs.Add(fileInfo.Directory.FullName);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogSysInnerLog.OnRaiseLog(this, ex);
-                        }
-                    }
-                }
-
-                this._lastClearExpireDaysTime = currentClearTime;
-            }
-        }
-
-        private List<FileInfo> GetAllLogFileInfos(string searchPattern)
-        {
-            var rootDirInfo = new DirectoryInfo(this._rootDir);
-            List<FileInfo> srcFileInfos = thisGetAllLogFileInfo(searchPattern, rootDirInfo);
+            List<FileInfo> srcFileInfos = this.GetAllLogFileInfo();
             List<FileInfo> fileInfos = new List<FileInfo>();
             foreach (var fileInfo in srcFileInfos)
             {
-                if (this.CheckInvalidLogFilePath(fileInfo.FullName))
+                if (this.ValidatePath(fileInfo.FullName))
                 {
                     fileInfos.Add(fileInfo);
                 }
@@ -241,7 +155,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private bool CheckInvalidLogFilePath(string path)
+        private bool ValidatePath(string path)
         {
             if (!string.IsNullOrWhiteSpace(Path.GetPathRoot(path)))
             {
@@ -265,7 +179,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             return true;
         }
 
-        private List<FileInfo> thisGetAllLogFileInfo(string searchPattern, DirectoryInfo rootDirInfo)
+        private List<FileInfo> GetAllLogFileInfo()
         {
             List<FileInfo> srcFileInfos = new List<FileInfo>();
             try
@@ -273,17 +187,17 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 if (this._pathItems.Length == 1)
                 {
                     //存放于日志根目录
-                    srcFileInfos.AddRange(rootDirInfo.GetFiles(searchPattern, SearchOption.TopDirectoryOnly));
+                    srcFileInfos.AddRange(base.RootDirectoryInfo.GetFiles(base._searchPattern, SearchOption.TopDirectoryOnly));
                 }
                 else
                 {
                     //存放于需要实时创建目录的子目录
-                    var dirInfos = rootDirInfo.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
+                    var dirInfos = base.RootDirectoryInfo.GetDirectories("*.*", SearchOption.TopDirectoryOnly);
                     foreach (var dirInfo in dirInfos)
                     {
                         try
                         {
-                            srcFileInfos.AddRange(dirInfo.GetFiles(searchPattern, SearchOption.AllDirectories));
+                            srcFileInfos.AddRange(dirInfo.GetFiles(base._searchPattern, SearchOption.AllDirectories));
                         }
                         catch (Exception exi)
                         {
@@ -300,67 +214,45 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             return srcFileInfos;
         }
 
-        private string GetLastLogFilePath(string dir, string searchPattern)
+        protected override bool CompareLastLogFilePath(FileInfo lastLogFileInfo)
         {
-            string[] existlogFilePaths = Directory.GetFiles(dir, searchPattern, SearchOption.TopDirectoryOnly);
-            if (existlogFilePaths.Length == 0)
-            {
-                return null;
-            }
-
-            var fileNamePathItem = this._pathItems.Last();
-            //[Key:创建时间;Value:日志文件路径]
-            var orderLogFilePath = new SortedList<DateTime, string>();
-            foreach (var existLogFilePath in existlogFilePaths)
-            {
-                if (fileNamePathItem.CheckPath(Path.GetFileName(existLogFilePath)))
-                {
-                    orderLogFilePath.Add(File.GetCreationTime(existLogFilePath), existLogFilePath);
-                }
-            }
-
-            if (orderLogFilePath.Count == 0)
-            {
-                //当前日志目录下没有符合路径标准的日志文件
-                return null;
-            }
-
-            KeyValuePair<DateTime, string> existLastLogFilePathInfo = orderLogFilePath.ElementAt(orderLogFilePath.Count - 1);
-            DateTime createTime = existLastLogFilePathInfo.Key;
-            var existLastLogFilePath = existLastLogFilePathInfo.Value;
-            var existLastLogFileInfo = new FileInfo(existLastLogFilePath);
-
             var time = DateTime.Now;
-            if (existLastLogFileInfo.Length < this._config.MaxFileSize &&
+            var createTime = lastLogFileInfo.CreationTime;
+            if (lastLogFileInfo.Length < this._config.MaxFileSize &&
                 createTime.Year == time.Year &&
                 createTime.Month == time.Month &&
                 createTime.Day == time.Day)
             {
                 //最后一个文件是当天创建且小于目标大小
-                return existLastLogFilePath;
+                return true;
             }
             else
             {
-                return null;
+                return false;
             }
         }
 
-        private string PrimitiveCreateLogFilePath()
+        /// <summary>
+        /// 检查日志文件路径是否是有效路径[有效返回true;无效返回false]
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        protected override bool CheckPath(string filePath)
         {
-            string logFileFullPath = this.PrimitiveCreateLogFilePath2();
+            return this._lastPathItem.CheckPath(Path.GetFileName(filePath));
+        }
+
+        private string PrimitiveCreateLogFilePath2()
+        {
+            string logFileFullPath = base.PrimitiveCreateLogFilePath();
             while (File.Exists(logFileFullPath))
             {
-                logFileFullPath = this.PrimitiveCreateLogFilePath2();
+                logFileFullPath = base.PrimitiveCreateLogFilePath();
             }
 
             return logFileFullPath;
         }
 
-        private string PrimitiveCreateLogFilePath2()
-        {
-            var paths = this._pathItems.Select(t => { return t.CreatePath(); }).ToList();
-            paths.Insert(0, this._rootDir);
-            return Path.Combine(paths.ToArray());
-        }
+
     }
 }

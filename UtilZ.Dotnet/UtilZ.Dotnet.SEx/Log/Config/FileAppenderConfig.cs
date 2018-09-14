@@ -23,7 +23,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
 
         private int _maxFileCount = -1;
         /// <summary>
-        /// 最多产生的日志文件数，超过则只保留最新的n个,－1为不限文件数
+        /// 最多产生的日志文件数，超过则只保留最新的n个,小于1为不限文件数
         /// </summary>
         public int MaxFileCount
         {
