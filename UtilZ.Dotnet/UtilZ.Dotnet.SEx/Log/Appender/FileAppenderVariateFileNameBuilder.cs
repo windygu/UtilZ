@@ -252,7 +252,5 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 
             return logFileFullPath;
         }
-
-
     }
 }
