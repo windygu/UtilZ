@@ -201,56 +201,5 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                 }
             }
         }
-
-        /// <summary>
-        /// 验证日志是否允许输出[返回值true:允许输出;false:丢弃]
-        /// </summary>
-        /// <param name="item">要验证输出的日志项</param>
-        /// <returns>true:允许输出;false:丢弃</returns>
-        public bool Validate(LogItem item)
-        {
-            if (item == null)
-            {
-                return false;
-            }
-
-            if (!this.Enable)
-            {
-                return false;
-            }
-
-            if (this.Levels != null && !this.Levels.Contains(item.Level))
-            {
-                return false;
-            }
-
-            if (this.EventIdMin != LogConstant.DefaultEventId && item.EventID < this.EventIdMin)
-            {
-                return false;
-            }
-
-            if (this.EventIdMax != LogConstant.DefaultEventId && item.EventID > this.EventIdMax)
-            {
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(this.MatchString) &&
-                !string.IsNullOrEmpty(item.Message) &&
-                !Regex.IsMatch(item.Message, MatchString))
-            {
-                return false;
-            }
-
-            if (this._matchExceptionType != null && item.Exception != null)
-            {
-                Type exType = item.Exception.GetType();
-                if (exType != this._matchExceptionType && !exType.IsSubclassOf(this._matchExceptionType))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
     }
 }

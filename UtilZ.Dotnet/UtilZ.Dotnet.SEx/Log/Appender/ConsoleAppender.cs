@@ -40,7 +40,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             try
             {
-                if (this._config == null || !this._config.Validate(item))
+                if (this._config == null || !base.Validate(this._config, item))
                 {
                     return;
                 }

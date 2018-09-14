@@ -46,7 +46,7 @@ namespace UtilZ.Dotnet.SEx.Log.Layout
         /// <summary>
         /// 事件ID
         /// </summary>
-        private readonly static string _EVENT = "%i";
+        private readonly static string _EVENT = "%e";
 
         /// <summary>
         /// 事件ID

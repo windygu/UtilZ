@@ -104,6 +104,6 @@ namespace UtilZ.Dotnet.SEx.Log.Model
         /// <summary>
         /// 
         /// </summary>
-        public const char DatePatternFlagChar = '@';
+        public const char DatePatternFlagChar = '*';
     }
 }

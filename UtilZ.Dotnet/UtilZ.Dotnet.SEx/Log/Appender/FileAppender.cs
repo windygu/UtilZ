@@ -26,7 +26,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private long _maxFileSize;
         private string _filePath;
         private long _fileSize = 0;
-        private FileAppenderPathManager _logFilePath;
+        private FileAppenderPathManager _pathManager;
         private bool _status;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             this._config = new FileAppenderConfig();
             this._maxFileSize = this._config.MaxFileSize * 1024L;
-            this._logFilePath = new FileAppenderPathManager(this._config);
+            this._pathManager = new FileAppenderPathManager(this._config);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             this._maxFileSize = this._config.MaxFileSize * 1024L;
             try
             {
-                this._logFilePath = new FileAppenderPathManager(this._config);
+                this._pathManager = new FileAppenderPathManager(this._config);
                 this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
                 this._status = true;
             }
@@ -71,7 +71,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <param name="item">日志项</param>
         public override void WriteLog(LogItem item)
         {
-            if (this._config == null || !this._config.Validate(item) || !this._status)
+            if (this._config == null || !base.Validate(this._config, item) || !this._status)
             {
                 return;
             }
@@ -133,7 +133,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
 
             this._fileSize = 0;
-            this._filePath = this._logFilePath.CreateLogFilePath();
+            this._filePath = this._pathManager.CreateLogFilePath();
             return this._filePath;
         }
 

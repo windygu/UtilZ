@@ -13,6 +13,12 @@ namespace TestSE
         {
             try
             {
+                //*MyDocuments*
+                //string firstPath = "*MyDocuments*";
+                //string wildcardStr = firstPath.Substring(1, firstPath.Length - 2);
+                //int a = 123;
+
+
                 //string logRootFullPath = @"G:\Tmp\test\123.log";
                 //var isRelativePath = string.IsNullOrWhiteSpace(Path.GetPathRoot(logRootFullPath));
 
@@ -62,7 +68,8 @@ namespace TestSE
 
 
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
-                Loger.Debug("dsfa");
+                Loger.Debug("dsfa", 10);
+                //Loger.Debug("dsfa", 100);
                 //ILoger loger = Loger.GetLoger(null);
                 //loger.Error("sadfsdafdsf");
             }
