@@ -8,7 +8,7 @@ using UtilZ.Dotnet.SEx.Log.Model;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
-    internal class FileAppenderPathBuilder : IFileAppenderPathBuilder
+    internal class FileAppenderVariateFileNameBuilder : IFileAppenderPathBuilder
     {
         private readonly char[] _pathSplitChars;
         private readonly FileAppenderConfig _config;
@@ -16,7 +16,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private readonly FileAppenderPathItem[] _pathItems;
         private bool _isFirstGetFilePath = true;
 
-        public FileAppenderPathBuilder(FileAppenderConfig config, string[] paths, char[] pathSplitChars)
+        public FileAppenderVariateFileNameBuilder(FileAppenderConfig config, string[] paths, char[] pathSplitChars)
         {
             this._config = config;
             this._pathSplitChars = pathSplitChars;

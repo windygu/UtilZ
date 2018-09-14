@@ -35,7 +35,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             paths[0] = paths[0] + Path.DirectorySeparatorChar;
             if (paths[paths.Length - 1].Contains(LogConstant.DatePatternFlagChar))
             {
-                this._pathBuilder = new FileAppenderPathBuilder(config, paths, _pathSplitChars);
+                this._pathBuilder = new FileAppenderVariateFileNameBuilder(config, paths, _pathSplitChars);
             }
             else
             {
