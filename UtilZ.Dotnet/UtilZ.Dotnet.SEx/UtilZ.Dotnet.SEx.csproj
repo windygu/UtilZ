@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Log\Appenders\AppendMail\" />
+    <Folder Include="Log\Appenders\AppendDatabase\" />
+    <Folder Include="Log\Appenders\AppendSystem\" />
     <Folder Include="Model\" />
   </ItemGroup>
 

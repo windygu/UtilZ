@@ -5,10 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using UtilZ.Dotnet.SEx.Log.Config;
-using UtilZ.Dotnet.SEx.Log.Layout;
-using UtilZ.Dotnet.SEx.Log.Model;
-using UtilZ.Dotnet.SEx.Log.Security;
+using UtilZ.Dotnet.SEx.Log.AppenderConfig;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
@@ -27,7 +24,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private string _filePath;
         private long _fileSize = 0;
         private FileAppenderPathManager _pathManager;
-        private bool _status;
 
         /// <summary>
         /// 构造函数
@@ -45,23 +41,18 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <param name="ele"></param>
         public override void Init(XElement ele)
         {
-            if (ele == null)
-            {
-                return;
-            }
-
-            this._config.Parse(ele);
-            this._maxFileSize = this._config.MaxFileSize * 1024L;
             try
             {
+                this._config.Parse(ele);
+                this._maxFileSize = this._config.MaxFileSize * 1024L;
                 this._pathManager = new FileAppenderPathManager(this._config);
                 this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
-                this._status = true;
+                base._status = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this._status = false;
-                LogSysInnerLog.OnRaiseLog(this, ex);
+                base._status = false;
+                throw;
             }
         }
 

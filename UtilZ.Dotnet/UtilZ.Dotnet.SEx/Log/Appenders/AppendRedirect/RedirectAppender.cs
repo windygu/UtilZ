@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
-using UtilZ.Dotnet.SEx.Log.Config;
-using UtilZ.Dotnet.SEx.Log.Model;
-using UtilZ.Dotnet.SEx.Log.RedirectOuput;
+using UtilZ.Dotnet.SEx.Log.AppenderConfig;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
@@ -29,7 +27,16 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <param name="ele"></param>
         public override void Init(XElement ele)
         {
-            this._config.Parse(ele);
+            try
+            {
+                this._config.Parse(ele);
+                base._status = true;
+            }
+            catch (Exception)
+            {
+                base._status = false;
+                throw;
+            }
         }
 
         /// <summary>

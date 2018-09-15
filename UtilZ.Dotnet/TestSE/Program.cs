@@ -2,8 +2,6 @@
 using System.IO;
 using System.Text;
 using UtilZ.Dotnet.SEx.Log;
-using UtilZ.Dotnet.SEx.Log.Core;
-using UtilZ.Dotnet.SEx.Log.RedirectOuput;
 
 namespace TestSE
 {
@@ -13,10 +11,13 @@ namespace TestSE
         {
             try
             {
+                //string appenderName = "a";
+                //var ret = string.Equals(appenderName, "abc");
+
                 //*MyDocuments*
                 //string firstPath = "*MyDocuments*";
                 //string wildcardStr = firstPath.Substring(1, firstPath.Length - 2);
-                //int a = 123;
+                int a = 123;
 
 
                 //string logRootFullPath = @"G:\Tmp\test\123.log";
@@ -54,9 +55,9 @@ namespace TestSE
 
                 Loger.LoadConfig(@"logconfig.xml");
 
-                var subItem = new RedirectOutputSubscribeItem();
+                var subItem = new RedirectOutputSubscribeItem("redirectAppender");
                 subItem.LogOutput += SubItem_LogOutput;
-                RedirectOuputCenter.Instance.AddLogOutput(subItem);
+                RedirectOuputCenter.Add(subItem);
 
                 //string format = @"yyyy-MM-dd_HH_mm_ss.fffffff";
                 //string timeStr = DateTime.Now.ToString(format);
@@ -94,11 +95,11 @@ namespace TestSE
             }
         }
 
-        private static void LogSysInnerLog_Log(object sender, UtilZ.Dotnet.SEx.Log.Model.InnerLogOutputArgs e)
+        private static void LogSysInnerLog_Log(object sender, InnerLogOutputArgs e)
         {
             try
             {
-                Console.Write(e.Ex.Message);
+                Console.WriteLine(e.Ex.Message);
             }
             catch (Exception ex)
             {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.SEx.Log.Security
+namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
     /// 日志安全策略接口

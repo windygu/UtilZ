@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using UtilZ.Dotnet.SEx.Log.Config;
-using UtilZ.Dotnet.SEx.Log.Model;
+using UtilZ.Dotnet.SEx.Log.AppenderConfig;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {
@@ -21,6 +20,11 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
 
         }
+
+        /// <summary>
+        /// 当前日志追加器状态是否可用[true:可用;false:不可用]
+        /// </summary>
+        protected bool _status = true;
 
         private string _name = null;
         /// <summary>

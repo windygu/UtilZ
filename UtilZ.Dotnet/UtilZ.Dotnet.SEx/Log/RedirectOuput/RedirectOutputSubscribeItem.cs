@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using UtilZ.Dotnet.SEx.Log.Model;
 
-namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
+namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
     /// 输出日志订阅项
     /// </summary>
     [Serializable]
-    public class RedirectOutputSubscribeItem : IRedirectOuputSubscribeItem
+    public class RedirectOutputSubscribeItem
     {
         /// <summary>
         /// 日志输出事件

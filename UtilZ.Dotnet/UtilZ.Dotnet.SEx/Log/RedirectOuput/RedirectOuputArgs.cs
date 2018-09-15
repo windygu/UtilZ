@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.SEx.Log.Model;
 
-namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
+namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
     /// 外部日志输出事件参数

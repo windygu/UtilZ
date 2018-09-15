@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UtilZ.Dotnet.SEx.Log.Model
+namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
     /// 日志常量

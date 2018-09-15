@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.SEx.Log.Config;
-using UtilZ.Dotnet.SEx.Log.Model;
+using UtilZ.Dotnet.SEx.Log.AppenderConfig;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {

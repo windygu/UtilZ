@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
-namespace UtilZ.Dotnet.SEx.Log.Model
+namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
     /// 日志信息类

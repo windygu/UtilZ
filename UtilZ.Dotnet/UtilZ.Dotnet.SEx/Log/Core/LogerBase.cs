@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UtilZ.Dotnet.SEx.Log.Model;
 
-namespace UtilZ.Dotnet.SEx.Log.Core
+namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
     /// 日志记录器基类
