@@ -212,13 +212,20 @@ namespace UtilZ.Dotnet.SEx.Log
         /// </summary>
         public LogLevel Level { get; private set; } = LogLevel.Trace;
 
+        /// <summary>
+        /// 日志外部队列
+        /// </summary>
+        private readonly ConcurrentQueue<LogItem> _logQueue = new ConcurrentQueue<LogItem>();
+
+        /// <summary>
+        /// 日志外部队列线程通知对象
+        /// </summary>
+        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
         private readonly Thread _logThread;
-        private BlockingCollection<LogItem> _logQueue;
         private readonly CancellationTokenSource _cts;
         private Loger() : base()
         {
             this._cts = new CancellationTokenSource();
-            this._logQueue = new BlockingCollection<LogItem>(new ConcurrentQueue<LogItem>());
             this._logThread = new Thread(this.LogThreadMethod);
             this._logThread.IsBackground = true;
             this._logThread.Start();
@@ -226,49 +233,42 @@ namespace UtilZ.Dotnet.SEx.Log
 
         private void LogThreadMethod()
         {
-            CancellationToken token = this._cts.Token;
             LogItem item;
+            var token = this._cts.Token;
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    if (this._logQueue.TryTake(out item, Timeout.Infinite, token))
+                    if (this._logQueue.Count == 0)
+                    {
+                        this._logThread.IsBackground = true;
+                        this._autoResetEvent.WaitOne();
+                    }
+
+                    if (this._logQueue.TryDequeue(out item))
                     {
                         item.LogProcess();
-                        foreach (var appender in this._appenders)
-                        {
-                            try
-                            {
-                                appender.WriteLog(item);
-                            }
-                            catch (Exception exi)
-                            {
-                                LogSysInnerLog.OnRaiseLog(this, exi);
-                            }
-                        }
+                        this.RecordLog(item);
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    break;//线程停止
-                }
-                catch (ObjectDisposedException)
-                {
-                    break;//已释放
-                }
-                catch (ArgumentNullException ex)
-                {
-                    //微软BUG,不晓得.net core里面还有没此BUG
-                    LogSysInnerLog.OnRaiseLog(this, new Exception("this._logQueue.TryTake.ArgumentNullException", ex));
-                    continue;
-                }
-                catch (ThreadAbortException)
-                {
-                    break;
                 }
                 catch (Exception ex)
                 {
                     LogSysInnerLog.OnRaiseLog(this, ex);
+                }
+            }
+        }
+
+        private void RecordLog(LogItem item)
+        {
+            foreach (var appender in this._appenders)
+            {
+                try
+                {
+                    appender.WriteLog(item);
+                }
+                catch (Exception exi)
+                {
+                    LogSysInnerLog.OnRaiseLog(this, exi);
                 }
             }
         }
@@ -306,7 +306,13 @@ namespace UtilZ.Dotnet.SEx.Log
                 }
 
                 var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, base._logerName, eventID, true, args);
-                this._logQueue.Add(item);
+                this._logQueue.Enqueue(item);
+                if (this._logThread.IsBackground)
+                {
+                    this._logThread.IsBackground = false;
+                }
+
+                this._autoResetEvent.Set();
             }
             catch (Exception exi)
             {
@@ -322,7 +328,7 @@ namespace UtilZ.Dotnet.SEx.Log
         protected override void Dispose(bool isDisposing)
         {
             this._cts.Cancel();
-            this._logQueue.Dispose();
+            this._autoResetEvent.Set();
         }
         #endregion
 
