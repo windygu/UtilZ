@@ -12,24 +12,6 @@ namespace UtilZ.Dotnet.SEx.Base
     public static class DirectoryInfoEx
     {
         /// <summary>
-        /// 当前程序集所在目录
-        /// </summary>
-        private static readonly string _currentAssemblyDirectory;
-
-        /// <summary>
-        /// 获取当前程序集所在目录
-        /// </summary>
-        public static string CurrentAssemblyDirectory
-        {
-            get { return _currentAssemblyDirectory; }
-        }
-
-        static DirectoryInfoEx()
-        {
-            _currentAssemblyDirectory = Path.GetDirectoryName(typeof(DirectoryInfoEx).Assembly.Location);
-        }
-
-        /// <summary>
         /// 复制文件夹内容到指定目录
         /// </summary>
         /// <param name="srcDir">原目录</param>
@@ -90,61 +72,6 @@ namespace UtilZ.Dotnet.SEx.Base
                     throw new NotSupportedException(string.Format("未知的文件系统类型:{0}", info.GetType().Name));
                 }
             }
-        }
-
-        /// <summary>
-        /// 获取路径中有携带特殊目录的路径转换为完整路径
-        /// </summary>
-        /// <param name="srcPath">有携带特殊目录的路径</param>
-        /// <returns>完整路径</returns>
-        public static string GetFullPath(this string srcPath)
-        {
-            if (string.IsNullOrWhiteSpace(srcPath) || !string.IsNullOrEmpty(Path.GetPathRoot(srcPath)))
-            {
-                return srcPath;
-            }
-
-            //验证目录是否是特殊目录
-            string tmpLogDirectory = srcPath.ToLower();
-            Array array = Enum.GetValues(typeof(Environment.SpecialFolder));//特殊目录集合
-            string specialFolderReg;//特殊目录正则表达式
-            bool isFind = false;//是否找到已特殊目录开始标识[true:找到;false:未找到]
-            foreach (var item in array)
-            {
-                specialFolderReg = string.Format("(?<name>^%{0}%[\\|/]?)", item.ToString()).ToLower();
-                System.Text.RegularExpressions.Match match = System.Text.RegularExpressions.Regex.Match(tmpLogDirectory, specialFolderReg);
-                if (match.Success)
-                {
-                    isFind = true;
-                    //替换日志存放目录中的特殊目录
-                    string specialFolder = match.Groups["name"].Value;
-                    srcPath = srcPath.Remove(0, specialFolder.Length);
-                    srcPath = string.Format("{0}/{1}", Environment.GetFolderPath((Environment.SpecialFolder)item), srcPath);
-                    break;
-                }
-            }
-
-            //移除目录最后的/或\
-            if (srcPath.EndsWith(@"\") || srcPath.EndsWith(@"/"))
-            {
-                srcPath = srcPath.Remove(srcPath.Length - 1, 1);
-            }
-
-            if (!isFind)
-            {
-                //如果日志目录中不存在特殊目录,则根据日志分组策略设定目录
-
-                //移除目录起始位置的/或\
-                if (srcPath.StartsWith(@"\") || srcPath.StartsWith(@"/"))
-                {
-                    srcPath = srcPath.Remove(0, 1);
-                }
-
-                //拼接日志目录
-                srcPath = Path.Combine(CurrentAssemblyDirectory, srcPath);
-            }
-
-            return srcPath;
         }
 
         /// <summary>

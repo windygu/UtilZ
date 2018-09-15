@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UtilZ.Dotnet.SEx.Base;
 
 namespace UtilZ.Dotnet.SEx.Log
 {
@@ -16,6 +15,16 @@ namespace UtilZ.Dotnet.SEx.Log
     /// </summary>
     internal static class LogUtil
     {
+        /// <summary>
+        /// 当前程序集所在目录
+        /// </summary>
+        private static readonly string _currentAssemblyDirectory;
+
+        static LogUtil()
+        {
+            _currentAssemblyDirectory = Path.GetDirectoryName(typeof(LogUtil).Assembly.Location);
+        }
+
         /// <summary>
         /// 获取节点指定特性值
         /// </summary>
@@ -90,7 +99,8 @@ namespace UtilZ.Dotnet.SEx.Log
             if (string.IsNullOrEmpty(Path.GetPathRoot(assemblyFileName)))
             {
                 //相对工作目录的路径
-                assemblyPath = Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyFileName);
+                var currentAssemblyDirectory = Path.GetDirectoryName(typeof(LogUtil).Assembly.Location);
+                assemblyPath = Path.Combine(currentAssemblyDirectory, assemblyFileName);
             }
             else
             {
