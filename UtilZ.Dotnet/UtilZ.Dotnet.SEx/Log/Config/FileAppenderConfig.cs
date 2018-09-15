@@ -18,7 +18,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int Days
         {
             get { return _days; }
-            set { _days = value; }
         }
 
         private int _maxFileCount = -1;
@@ -28,7 +27,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int MaxFileCount
         {
             get { return _maxFileCount; }
-            set { _maxFileCount = value; }
         }
 
         private int _maxFileSize = 10 * 1024 * 1024;
@@ -38,7 +36,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int MaxFileSize
         {
             get { return _maxFileSize; }
-            set { _maxFileSize = value; }
         }
 
         /********************************************************************
@@ -56,7 +53,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public string FilePath
         {
             get { return _filePath; }
-            set { _filePath = value; }
         }
 
         private bool _isAppend = true;
@@ -66,18 +62,17 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public bool IsAppend
         {
             get { return _isAppend; }
-            set { _isAppend = value; }
         }
 
         /// <summary>
         /// 日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法
         /// </summary>
-        public string SecurityPolicy { get; set; }
+        public string SecurityPolicy { get; private set; }
 
         /// <summary>
         /// 进程同步锁名称
         /// </summary>
-        public string MutexName { get; set; }
+        public string MutexName { get; private set; }
 
         /// <summary>
         /// 构造函数

@@ -18,17 +18,17 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// <summary>
         /// 日志记录器名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// 日志布局
         /// </summary>
-        public string Layout { get; set; } = null;
+        public string Layout { get; private set; } = null;
 
         /// <summary>
         /// 时间格式
         /// </summary>
-        public string DateFormat { get; set; } = null;
+        public string DateFormat { get; private set; } = null;
 
         private int _separatorCount = 140;
         /// <summary>
@@ -37,7 +37,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int SeparatorCount
         {
             get { return _separatorCount; }
-            set { _separatorCount = value; }
         }
 
         /// <summary>
@@ -64,13 +63,12 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public bool Enable
         {
             get { return _enable; }
-            set { _enable = value; }
         }
 
         /// <summary>
         /// 过滤日志级别
         /// </summary>
-        public LogLevel[] Levels { get; set; }
+        public LogLevel[] Levels { get; private set; }
 
         private int _eventIdMin = LogConstant.DefaultEventId;
         /// <summary>
@@ -79,7 +77,6 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int EventIdMin
         {
             get { return _eventIdMin; }
-            set { _eventIdMin = value; }
         }
 
         private int _eventIdMax = LogConstant.DefaultEventId;
@@ -89,13 +86,12 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int EventIdMax
         {
             get { return _eventIdMax; }
-            set { _eventIdMax = value; }
         }
 
         /// <summary>
         /// 消息匹配指定的字符串才被记录,为空或null不匹配(默认为null)
         /// </summary>
-        public string MatchString { get; set; } = null;
+        public string MatchString { get; private set; } = null;
 
         private Type _matchExceptionType = null;
         /// <summary>
@@ -104,14 +100,12 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public Type MatchExceptionType
         {
             get { return _matchExceptionType; }
-            set { _matchExceptionType = value; }
         }
         #endregion
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="ele">配置元素节点</param>
         public BaseConfig()
         {
 
