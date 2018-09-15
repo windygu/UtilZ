@@ -24,7 +24,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="ele"></param>
+        /// <param name="ele">配置元素</param>
         public override void Init(XElement ele)
         {
             try

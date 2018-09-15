@@ -8,10 +8,4 @@
     <DocumentationFile>bin\Debug\netstandard2.0\UtilZ.Dotnet.SEx.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Log\Appenders\AppendMail\" />
-    <Folder Include="Log\Appenders\AppendDatabase\" />
-    <Folder Include="Log\Appenders\AppendSystem\" />
-  </ItemGroup>
-
 </Project>
