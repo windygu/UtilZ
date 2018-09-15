@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using UtilZ.Dotnet.SEx.Log.AppenderConfig;
+using UtilZ.Dotnet.SEx.Log.Config;
 
 namespace UtilZ.Dotnet.SEx.Log.Appender
 {

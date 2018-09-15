@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UtilZ.Dotnet.SEx.Log.AppenderConfig
+namespace UtilZ.Dotnet.SEx.Log.Config
 {
     /// <summary>
     /// 日志追加器配置

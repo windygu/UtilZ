@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace UtilZ.Dotnet.SEx.Log.AppenderConfig
+namespace UtilZ.Dotnet.SEx.Log.Config
 {
     /// <summary>
     /// 基础配置
