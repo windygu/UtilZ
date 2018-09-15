@@ -11,90 +11,67 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
     /// <summary>
     /// 重定向输出中心
     /// </summary>
-    public sealed class RedirectOuputCenter : IDisposable
+    public sealed class RedirectOuputCenter
     {
-        #region 单实例
         static RedirectOuputCenter()
         {
-            _instance = new RedirectOuputCenter();
-        }
-
-        /// <summary>
-        /// 日志订阅中心实例
-        /// </summary>
-        private static readonly RedirectOuputCenter _instance = null;
-
-        /// <summary>
-        /// 获取日志订阅中心实例
-        /// </summary>
-        public static RedirectOuputCenter Instance
-        {
-            get { return _instance; }
-        }
-        #endregion
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        private RedirectOuputCenter()
-        {
-            this._logOutputThread = new Thread(this.LogOutputThreadMethod);
-            this._logOutputThread.IsBackground = true;
-            this._logOutputThread.Name = "日志输出中心.日志输出线程";
-            this._logOutputThread.Start();
+            _logOutputThread = new Thread(LogOutputThreadMethod);
+            _logOutputThread.IsBackground = true;
+            _logOutputThread.Name = "日志输出中心.日志输出线程";
+            _logOutputThread.Start();
         }
 
         #region 日志输出线程
         /// <summary>
         /// 日志输出线程
         /// </summary>
-        private readonly Thread _logOutputThread;
+        private static readonly Thread _logOutputThread;
 
         /// <summary>
         /// 线程取消通知对象
         /// </summary>
-        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+        private static readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
         /// <summary>
         /// 日志输出线程同步对象
         /// </summary>
-        private readonly AutoResetEvent _logOutputAutoResetEvent = new AutoResetEvent(false);
+        private static readonly AutoResetEvent _logOutputAutoResetEvent = new AutoResetEvent(false);
 
         /// <summary>
         /// 日志输出队列
         /// </summary>
-        private readonly ConcurrentQueue<RedirectOuputArgs> _logOutputQueue = new ConcurrentQueue<RedirectOuputArgs>();
+        private static readonly ConcurrentQueue<RedirectOuputArgs> _logOutputQueue = new ConcurrentQueue<RedirectOuputArgs>();
 
         /// <summary>
         /// 日志输出线程方法
         /// </summary>
         /// <param name="obj">参数</param>
-        private void LogOutputThreadMethod(object obj)
+        private static void LogOutputThreadMethod(object obj)
         {
-            var token = this._cts.Token;
+            var token = _cts.Token;
             RedirectOuputArgs item;
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    if (this._logOutputQueue.Count == 0)
+                    if (_logOutputQueue.Count == 0)
                     {
-                        this._logOutputAutoResetEvent.WaitOne();
+                        _logOutputAutoResetEvent.WaitOne();
                     }
 
-                    if (this._logOutputQueue.Count == 0)
+                    if (_logOutputQueue.Count == 0)
                     {
                         continue;
                     }
 
-                    if (this._logOutputQueue.TryDequeue(out item))
+                    if (_logOutputQueue.TryDequeue(out item))
                     {
-                        this.LogOutput(item);
+                        LogOutput(item);
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogSysInnerLog.OnRaiseLog(this, ex);
+                    LogSysInnerLog.OnRaiseLog(null, ex);
                 }
             }
         }
@@ -103,12 +80,12 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// 日志输出
         /// </summary>
         /// <param name="logItem"></param>
-        private void LogOutput(RedirectOuputArgs logItem)
+        private static void LogOutput(RedirectOuputArgs logItem)
         {
-            List<RedirectOutputSubscribeItem> logOutputSubscribeItems;
-            lock (this._logOutputSubscribeItemsMonitor)
+            RedirectOutputSubscribeItem[] logOutputSubscribeItems;
+            lock (_logOutputSubscribeItemsMonitor)
             {
-                logOutputSubscribeItems = this._logOutputSubscribeItems.ToList();
+                logOutputSubscribeItems = _logOutputSubscribeItems.ToArray();
             }
 
             foreach (var logOutputSubscribeItem in logOutputSubscribeItems)
@@ -122,16 +99,16 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// <summary>
         /// 日志输出订阅项集合
         /// </summary>
-        private readonly List<RedirectOutputSubscribeItem> _logOutputSubscribeItems = new List<RedirectOutputSubscribeItem>();
+        private static readonly List<RedirectOutputSubscribeItem> _logOutputSubscribeItems = new List<RedirectOutputSubscribeItem>();
 
         /// <summary>
         /// 获取日志输出订阅项集合
         /// </summary>
-        public List<RedirectOutputSubscribeItem> LogOutputSubscribeItems
+        public static List<RedirectOutputSubscribeItem> LogOutputSubscribeItems
         {
             get
             {
-                lock (this._logOutputSubscribeItemsMonitor)
+                lock (_logOutputSubscribeItemsMonitor)
                 {
                     return _logOutputSubscribeItems.ToList();
                 }
@@ -141,24 +118,24 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// <summary>
         /// 日志输出订阅项集合线程锁
         /// </summary>
-        private readonly object _logOutputSubscribeItemsMonitor = new object();
+        private static readonly object _logOutputSubscribeItemsMonitor = new object();
 
         /// <summary>
         /// 添加日志输出订阅项
         /// </summary>
         /// <param name="item">日志输出订阅项</param>
-        public void AddLogOutput(RedirectOutputSubscribeItem item)
+        public static void Add(RedirectOutputSubscribeItem item)
         {
             if (item == null)
             {
                 return;
             }
 
-            lock (this._logOutputSubscribeItemsMonitor)
+            lock (_logOutputSubscribeItemsMonitor)
             {
-                if (!this._logOutputSubscribeItems.Contains(item))
+                if (!_logOutputSubscribeItems.Contains(item))
                 {
-                    this._logOutputSubscribeItems.Add(item);
+                    _logOutputSubscribeItems.Add(item);
                 }
             }
         }
@@ -167,18 +144,18 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// 移除日志输出订阅项
         /// </summary>
         /// <param name="item">日志输出订阅项</param>
-        public void RemoveLogOutput(RedirectOutputSubscribeItem item)
+        public static void Remove(RedirectOutputSubscribeItem item)
         {
             if (item == null)
             {
                 return;
             }
 
-            lock (this._logOutputSubscribeItemsMonitor)
+            lock (_logOutputSubscribeItemsMonitor)
             {
-                if (this._logOutputSubscribeItems.Contains(item))
+                if (_logOutputSubscribeItems.Contains(item))
                 {
-                    this._logOutputSubscribeItems.Remove(item);
+                    _logOutputSubscribeItems.Remove(item);
                 }
             }
         }
@@ -186,38 +163,24 @@ namespace UtilZ.Dotnet.SEx.Log.RedirectOuput
         /// <summary>
         /// 清空日志输出订阅项
         /// </summary>
-        public void ClearOutputLog()
+        public static void Clear()
         {
-            lock (this._logOutputSubscribeItemsMonitor)
+            lock (_logOutputSubscribeItemsMonitor)
             {
-                this._logOutputSubscribeItems.Clear();
+                _logOutputSubscribeItems.Clear();
             }
         }
         #endregion
 
         /// <summary>
-        /// 添加输出日志
+        /// 输出日志
         /// </summary>
         /// <param name="appenderName">日志追加器名称</param>
         /// <param name="logItem">日志项</param>
-        internal void AddOutputLog(string appenderName, LogItem logItem)
+        internal static void Output(string appenderName, LogItem logItem)
         {
-            this._logOutputQueue.Enqueue(new RedirectOuputArgs(appenderName, logItem));
-            this._logOutputAutoResetEvent.Set();
+            _logOutputQueue.Enqueue(new RedirectOuputArgs(appenderName, logItem));
+            _logOutputAutoResetEvent.Set();
         }
-
-        #region IDisposable
-        /// <summary>
-        /// 释放资源
-        /// </summary>
-        public void Dispose()
-        {
-            this._cts.Cancel();
-            this._logOutputAutoResetEvent.Set();
-
-            this._cts.Dispose();
-            this._logOutputAutoResetEvent.Dispose();
-        }
-        #endregion
     }
 }

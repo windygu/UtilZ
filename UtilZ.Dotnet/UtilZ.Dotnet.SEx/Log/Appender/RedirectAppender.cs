@@ -45,7 +45,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                     return;
                 }
 
-                RedirectOuputCenter.Instance.AddOutputLog(this.Name, item);
+                RedirectOuputCenter.Output(base.Name, item);
             }
             catch (Exception ex)
             {
