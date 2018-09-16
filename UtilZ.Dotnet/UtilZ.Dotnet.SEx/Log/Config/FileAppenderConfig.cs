@@ -69,18 +69,13 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// </summary>
         public string SecurityPolicy { get; private set; }
 
+        private LockingModel _lockingModel = LockingModel.Exclusive;
         /// <summary>
-        /// 进程同步锁名称
+        /// 锁类模型[Exclusive,InterProcess,Minimal]
         /// </summary>
-        public string MutexName { get; private set; }
-
-        private bool _isRealTimeCloseStream = false;
-        /// <summary>
-        /// 是否实时关闭文件流,为false时"进程同步锁"无效[true:实时关闭;false:直到当前日志文件写满或进程关闭才关闭]
-        /// </summary>
-        public bool IsRealTimeCloseStream
+        public LockingModel LockingModel
         {
-            get { return _isRealTimeCloseStream; }
+            get { return _lockingModel; }
         }
 
         /// <summary>
@@ -149,13 +144,33 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             }
 
             this.SecurityPolicy = LogUtil.GetChildXElementValue(ele, "SecurityPolicy").Trim();
-            this.MutexName = LogUtil.GetChildXElementValue(ele, "MutexName ").Trim();
 
-            bool isRealTimeCloseStream = false;
-            if (bool.TryParse(LogUtil.GetChildXElementValue(ele, "IsRealTimeCloseStream").Trim(), out isRealTimeCloseStream))
+            LockingModel lockingType;
+            if (Enum.TryParse<LockingModel>(LogUtil.GetChildXElementValue(ele, "LockingModel").Trim(), out lockingType))
             {
-                this._isRealTimeCloseStream = isRealTimeCloseStream;
+                this._lockingModel = lockingType;
             }
         }
+    }
+
+    /// <summary>
+    /// 锁类模型
+    /// </summary>
+    public enum LockingModel
+    {
+        /// <summary>
+        /// 独占
+        /// </summary>
+        Exclusive,
+
+        /// <summary>
+        /// 相互写
+        /// </summary>
+        InterProcess,
+
+        /// <summary>
+        /// 最小,用完就关
+        /// </summary>
+        Minimal
     }
 }

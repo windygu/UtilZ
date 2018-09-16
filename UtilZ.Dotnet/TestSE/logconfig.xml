@@ -92,7 +92,7 @@
       <param name="IsAppend" value="true"  des="是否追加日志"/>
       <param name="SecurityPolicy" value=""  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>
       <param name="MutexName" value=""  des="进程同步锁名称"/>
-      <param name="IsRealTimeCloseStream" value="true"  des="是否实时关闭文件流,为false时进程同步锁无效[true:实时关闭;false:直到当前日志文件写满或进程关闭才关闭]"/>
+      <param name="LockingModel" value="Exclusive"  des="锁类模型[Exclusive,InterProcess,Minimal]"/>
     </appender>
 
     <appender name="MyDocumentsfileAppenderSpecDir" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">

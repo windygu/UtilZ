@@ -24,7 +24,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private string _filePath;
         private long _fileSize = 0;
         private FileAppenderPathManager _pathManager;
-        private StreamWriter _sw = null;
 
         /// <summary>
         /// 构造函数
@@ -68,17 +67,25 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 return;
             }
 
-            if (this._config.IsRealTimeCloseStream)
+            switch (this._config.LockingModel)
             {
-                this.RealTimeCloseStreamWriteLog(item);
-            }
-            else
-            {
-                this.KeepStreamWriteLog(item);
+                case LockingModel.Exclusive:
+                    this.ExclusiveWriteLog(item);
+                    break;
+                case LockingModel.Minimal:
+                    this.MinimalWriteLog(item);
+                    break;
+                case LockingModel.InterProcess:
+                    this.InterProcessWriteLog(item);
+                    break;
+                default:
+                    LogSysInnerLog.OnRaiseLog(this, new Exception(string.Format("不支持的锁模型:{0}", this._config.LockingModel.ToString())));
+                    break;
             }
         }
 
-        private void KeepStreamWriteLog(LogItem item)
+        private StreamWriter _sw = null;
+        private void ExclusiveWriteLog(LogItem item)
         {
             try
             {
@@ -118,13 +125,10 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             }
         }
 
-
-        private void RealTimeCloseStreamWriteLog(LogItem item)
+        private void MinimalWriteLog(LogItem item)
         {
-            Mutex mutex = null;
             try
             {
-                mutex = this.GetMutex();
                 //获得日志文件路径
                 string logFilePath = this.GetLogFilePath();
                 if (string.IsNullOrWhiteSpace(logFilePath))
@@ -150,9 +154,92 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             {
                 LogSysInnerLog.OnRaiseLog(this, ex);
             }
+        }
+
+        private void InterProcessWriteLog(LogItem item)
+        {
+            Mutex mutex = null;
+            try
+            {
+                //获得日志文件路径
+                string logFilePath = this.GetLogFilePath();
+                if (string.IsNullOrWhiteSpace(logFilePath))
+                {
+                    return;
+                }
+
+                mutex = this.GetMutex(logFilePath);
+                using (var sw = File.AppendText(logFilePath))
+                {
+                    //日志处理
+                    string logMsg = LayoutManager.LayoutLog(item, this._config);
+                    if (this._securityPolicy != null)
+                    {
+                        logMsg = this._securityPolicy.Encryption(logMsg);
+                    }
+
+                    sw.WriteLine(logMsg);
+                    sw.Flush();
+                    this._fileSize = sw.BaseStream.Length;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(this, ex);
+            }
             finally
             {
                 this.ReleaseMutex(mutex);
+            }
+        }
+
+        /// <summary>
+        /// 获取进程锁
+        /// </summary>
+        /// <returns>进程锁</returns>
+        private Mutex GetMutex(string logFilePath)
+        {
+            string mutexName = logFilePath.Replace("\\", "_").Replace(":", "_").Replace("/", "_");
+            Mutex mutex = null;
+            while (mutex == null)
+            {
+                try
+                {
+                    //如果此命名互斥对象已存在则请求打开
+                    if (!Mutex.TryOpenExisting(mutexName, out mutex))
+                    {
+                        //打开失败则创建一个
+                        mutex = new Mutex(false, mutexName);
+                    }
+
+                    mutex.WaitOne();
+                }
+                catch (Exception ex)
+                {
+                    LogSysInnerLog.OnRaiseLog(this, ex);
+                    Thread.Sleep(1);
+                }
+            }
+
+            return mutex;
+        }
+
+        /// <summary>
+        /// 释放进程锁
+        /// </summary>
+        /// <param name="mutex">进程锁</param>
+        private void ReleaseMutex(Mutex mutex)
+        {
+            try
+            {
+                if (mutex != null)
+                {
+                    mutex.ReleaseMutex();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(this, ex);
             }
         }
 
@@ -179,61 +266,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             this._fileSize = 0;
             this._filePath = this._pathManager.CreateLogFilePath();
             return this._filePath;
-        }
-
-        /// <summary>
-        /// 获取进程锁
-        /// </summary>
-        /// <returns>进程锁</returns>
-        private Mutex GetMutex()
-        {
-            string mutexName = this._config.MutexName;
-            if (string.IsNullOrWhiteSpace(mutexName))
-            {
-                return null;
-            }
-
-            Mutex mutex = null;
-            try
-            {
-                try
-                {
-                    //如果此命名互斥对象已存在则请求打开
-                    mutex = Mutex.OpenExisting(mutexName);
-                }
-                catch (WaitHandleCannotBeOpenedException)
-                {
-                    //如果初次运行没有已命名的互斥对象则创建一个
-                    mutex = new Mutex(false, mutexName);
-                }
-
-                mutex.WaitOne();
-            }
-            catch (Exception ex)
-            {
-                LogSysInnerLog.OnRaiseLog(this, ex);
-            }
-
-            return mutex;
-        }
-
-        /// <summary>
-        /// 释放进程锁
-        /// </summary>
-        /// <param name="mutex">进程锁</param>
-        private void ReleaseMutex(Mutex mutex)
-        {
-            try
-            {
-                if (mutex != null)
-                {
-                    mutex.ReleaseMutex();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSysInnerLog.OnRaiseLog(this, ex);
-            }
         }
     }
 }
