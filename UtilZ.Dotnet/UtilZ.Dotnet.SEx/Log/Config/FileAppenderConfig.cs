@@ -74,6 +74,15 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// </summary>
         public string MutexName { get; private set; }
 
+        private bool _isRealTimeCloseStream = false;
+        /// <summary>
+        /// 是否实时关闭文件流,为false时"进程同步锁"无效[true:实时关闭;false:直到当前日志文件写满或进程关闭才关闭]
+        /// </summary>
+        public bool IsRealTimeCloseStream
+        {
+            get { return _isRealTimeCloseStream; }
+        }
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -141,6 +150,12 @@ namespace UtilZ.Dotnet.SEx.Log.Config
 
             this.SecurityPolicy = LogUtil.GetChildXElementValue(ele, "SecurityPolicy").Trim();
             this.MutexName = LogUtil.GetChildXElementValue(ele, "MutexName ").Trim();
+
+            bool isRealTimeCloseStream = false;
+            if (bool.TryParse(LogUtil.GetChildXElementValue(ele, "IsRealTimeCloseStream").Trim(), out isRealTimeCloseStream))
+            {
+                this._isRealTimeCloseStream = isRealTimeCloseStream;
+            }
         }
     }
 }

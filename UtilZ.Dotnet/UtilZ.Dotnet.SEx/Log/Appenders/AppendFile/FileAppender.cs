@@ -24,6 +24,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private string _filePath;
         private long _fileSize = 0;
         private FileAppenderPathManager _pathManager;
+        private StreamWriter _sw = null;
 
         /// <summary>
         /// 构造函数
@@ -67,6 +68,59 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 return;
             }
 
+            if (this._config.IsRealTimeCloseStream)
+            {
+                this.RealTimeCloseStreamWriteLog(item);
+            }
+            else
+            {
+                this.KeepStreamWriteLog(item);
+            }
+        }
+
+        private void KeepStreamWriteLog(LogItem item)
+        {
+            try
+            {
+                if (this._sw == null)
+                {
+                    //获得日志文件路径
+                    string logFilePath = this.GetLogFilePath();
+                    if (string.IsNullOrWhiteSpace(logFilePath))
+                    {
+                        return;
+                    }
+
+                    this._sw = File.AppendText(logFilePath);
+                }
+                else
+                {
+                    if (this._sw.BaseStream.Length >= this._maxFileSize)
+                    {
+                        this._sw.Close();
+                    }
+                }
+
+                //日志处理
+                string logMsg = LayoutManager.LayoutLog(item, this._config);
+                if (this._securityPolicy != null)
+                {
+                    logMsg = this._securityPolicy.Encryption(logMsg);
+                }
+
+                this._sw.WriteLine(logMsg);
+                this._sw.Flush();
+                this._fileSize = this._sw.BaseStream.Length;
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(this, ex);
+            }
+        }
+
+
+        private void RealTimeCloseStreamWriteLog(LogItem item)
+        {
             Mutex mutex = null;
             try
             {
@@ -78,11 +132,10 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                     return;
                 }
 
-                string logMsg;
                 using (var sw = File.AppendText(logFilePath))
                 {
                     //日志处理
-                    logMsg = LayoutManager.LayoutLog(item, this._config);
+                    string logMsg = LayoutManager.LayoutLog(item, this._config);
                     if (this._securityPolicy != null)
                     {
                         logMsg = this._securityPolicy.Encryption(logMsg);
