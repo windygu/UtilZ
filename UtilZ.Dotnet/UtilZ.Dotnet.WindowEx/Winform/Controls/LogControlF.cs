@@ -6,8 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using UtilZ.Dotnet.Ex.Log.Model;
 using UtilZ.Dotnet.WindowEx.Base;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 {

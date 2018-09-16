@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using UtilZ.Dotnet.SEx.Log.Config;
+using UtilZ.Dotnet.Ex.Log.Config;
 
-namespace UtilZ.Dotnet.SEx.Log.Appender
+namespace UtilZ.Dotnet.Ex.Log.Appender
 {
     /// <summary>
     /// 日志追加器基类
@@ -41,12 +41,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// </summary>
         /// <param name="ele">配置元素</param>
         public abstract void Init(XElement ele);
-
-        ///// <summary>
-        ///// 初始化
-        ///// </summary>
-        ///// <param name="config">配置元素</param>
-        //public abstract void Init(BaseConfig config);
 
         /// <summary>
         /// 写日志

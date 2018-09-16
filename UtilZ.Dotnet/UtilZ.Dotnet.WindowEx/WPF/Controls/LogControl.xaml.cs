@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using UtilZ.Dotnet.Ex.DataStruct;
-using UtilZ.Dotnet.Ex.Log.Model;
+using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base;
 
 namespace UtilZ.Dotnet.WindowEx.WPF.Controls
@@ -129,7 +129,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         {
             this.SetStyle(new LogShowStyle(LogLevel.Debug, Colors.Gray));
             this.SetStyle(new LogShowStyle(LogLevel.Error, Colors.Red));
-            this.SetStyle(new LogShowStyle(LogLevel.Faltal, Colors.Red));
+            this.SetStyle(new LogShowStyle(LogLevel.Fatal, Colors.Red));
             this.SetStyle(new LogShowStyle(LogLevel.Info, Colors.WhiteSmoke));
             this.SetStyle(new LogShowStyle(LogLevel.Warn, Colors.Yellow));
         }

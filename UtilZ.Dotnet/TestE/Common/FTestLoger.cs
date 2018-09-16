@@ -22,14 +22,13 @@ namespace TestE.Common
             //System.Threading.Thread.Sleep(20 * 1000);
             //Loger.LoadInit();
 
-            var subLog = new UtilZ.Dotnet.Ex.Log.LogOutput.LogOutputSubscribeItem(null, null);
+            var subLog = new RedirectOutputSubscribeItem(null);
             subLog.LogOutput += SubLog_LogOutput;
-            Loger.LogOutput.AddLogOutput(subLog);
-            Loger.LogOutput.Enable = true;
-            checkBox1.Checked = Loger.LogOutput.Enable;
+            RedirectOuputCenter.Add(subLog);
+            checkBox1.Checked = true;
         }
 
-        private void LogSysInnerLog_Log(object sender, UtilZ.Dotnet.Ex.Log.Model.InnerLogOutputArgs e)
+        private void LogSysInnerLog_Log(object sender, InnerLogOutputArgs e)
         {
             string str;
             if (e.Ex == null)
@@ -44,7 +43,7 @@ namespace TestE.Common
             logControlF1.AddLog(str, 1);
         }
 
-        private void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)
+        private void SubLog_LogOutput(object sender, RedirectOuputArgs e)
         {
             string str;
             try
@@ -61,7 +60,7 @@ namespace TestE.Common
 
         private void FTestLoger_Load(object sender, EventArgs e)
         {
-            //Loger.Info("Info Test");
+            Loger.Info("Info Test");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -147,7 +146,17 @@ namespace TestE.Common
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            Loger.LogOutput.Enable = checkBox1.Checked;
+            if (checkBox1.Checked)
+            {
+                var subLog = new RedirectOutputSubscribeItem(null);
+                subLog.LogOutput += SubLog_LogOutput;
+                RedirectOuputCenter.Add(subLog);
+            }
+            else
+            {
+                RedirectOuputCenter.Clear();
+            }
+
         }
     }
 }

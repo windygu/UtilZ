@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Log.Model
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
-    /// 日志常量类
+    /// 日志常量
     /// </summary>
     public class LogConstant
     {
+        /// <summary>
+        /// 默认事件ID
+        /// </summary>
+        public const int DefaultEventId = -1;
+
         #region 日志级别中文字符串常量
+        /// <summary>
+        /// 追踪
+        /// </summary>
+        public const string TRACESTR = "追踪";
+
         /// <summary>
         /// 调试
         /// </summary>
@@ -55,80 +64,6 @@ namespace UtilZ.Dotnet.Ex.Log.Model
         /// 等待重试时间,毫秒
         /// </summary>
         public const int WAITREPEATTIME = 200;
-        #endregion
-
-        #region 日志表字段名称
-        /// <summary>
-        /// 日志表名
-        /// </summary>
-        public const string TableName = "NLOG";
-
-        /// <summary>
-        /// 主键列名
-        /// </summary>
-        public const string IDColName = "ID";
-
-        /// <summary>
-        /// 时间列名
-        /// </summary>
-        public const string TimeColName = "TIME";
-
-        /// <summary>
-        /// 线程ID列名
-        /// </summary>
-        public const string ThreadIDColName = "THREADID";
-
-        /// <summary>
-        /// 线程名称列名
-        /// </summary>
-        public const string ThreadNameColName = "THREADNAME";
-
-        /// <summary>
-        /// EventID列名
-        /// </summary>
-        public const string EVENTIDColName = "EVENTID";
-
-        /// <summary>
-        /// 日志级别文本列名
-        /// </summary>
-        public const string LevelColName = "LOGLEVEL";
-
-        /// <summary>
-        /// 日志产生类名称列名
-        /// </summary>
-        public const string LogerColName = "LOGGER";
-
-        /// <summary>
-        /// 日志信息对象列名
-        /// </summary>
-        public const string MessageColName = "MESSAGE";
-
-        /// <summary>
-        /// 异常信息列名
-        /// </summary>
-        public const string ExceptionColName = "EXCEPTION";
-        #endregion
-
-        /// <summary>
-        /// 默认日志记录器名称
-        /// </summary>
-        //public static string DefaultLogRecorderName = @"445B5705-A7BB-490D-8C44-8540DA15AFF2";
-        public static string DefaultLogRecorderName = @"DefaultLog";
-
-        /// <summary>
-        /// 默认空日志记录器名称
-        /// </summary>
-        public static string DefaultNullLogRecorderName = @"DefaultNullLog";
-
-        /// <summary>
-        /// 默认日志事件ID
-        /// </summary>
-        public static int DefaultEventID = 0;
-
-        /// <summary>
-        /// 日志配置Section节点名称
-        /// </summary>
-        public const string ConfigSectionName = @"logConfigSection";
 
         /// <summary>
         /// 获取日志等级名称
@@ -140,20 +75,23 @@ namespace UtilZ.Dotnet.Ex.Log.Model
             string title = null;
             switch (level)
             {
+                case LogLevel.Trace:
+                    title = TRACESTR;
+                    break;
                 case LogLevel.Debug:
-                    title = LogConstant.DEBUGSTR;
+                    title = DEBUGSTR;
                     break;
                 case LogLevel.Info:
-                    title = LogConstant.INFOSTR;
+                    title = INFOSTR;
                     break;
                 case LogLevel.Warn:
-                    title = LogConstant.WARNSTR;
+                    title = WARNSTR;
                     break;
                 case LogLevel.Error:
-                    title = LogConstant.ERRORSTR;
+                    title = ERRORSTR;
                     break;
-                case LogLevel.Faltal:
-                    title = LogConstant.FATALSTR;
+                case LogLevel.Fatal:
+                    title = FATALSTR;
                     break;
                 default:
                     throw new Exception(string.Format("未知的日志级别:{0}", level));
@@ -161,5 +99,11 @@ namespace UtilZ.Dotnet.Ex.Log.Model
 
             return title;
         }
+        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char DatePatternFlagChar = '*';
     }
 }

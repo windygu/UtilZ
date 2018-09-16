@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Log.Model
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 内部日志输出事件参数

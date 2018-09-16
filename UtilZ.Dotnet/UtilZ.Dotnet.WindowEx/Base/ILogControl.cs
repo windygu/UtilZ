@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.Log.Model;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.WindowEx.Base
 {

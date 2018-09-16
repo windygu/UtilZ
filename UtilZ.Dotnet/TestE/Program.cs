@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using TestE.Common;
 using TestE.DB;
 using TestE.Winform;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace TestE
 {
@@ -16,9 +17,10 @@ namespace TestE
         [STAThread]
         static void Main()
         {
+            Loger.LoadConfig(@"logconfig.xml");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestThread());
+            Application.Run(new FTestLoger());
         }
     }
 }

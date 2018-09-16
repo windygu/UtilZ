@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
-using UtilZ.Dotnet.Ex.Log.LogOutput;
 
 namespace TestE.Common
 {
@@ -63,13 +62,12 @@ namespace TestE.Common
                 }
             }, "生产者线程", true);
 
-            var subLog = new LogOutputSubscribeItem(null, null);
+            var subLog = new RedirectOutputSubscribeItem(null);
             subLog.LogOutput += SubLog_LogOutput;
-            Loger.LogOutput.AddLogOutput(subLog);
-            Loger.LogOutput.Enable = true;
+            RedirectOuputCenter.Add(subLog);
         }
 
-        private void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)
+        private void SubLog_LogOutput(object sender, RedirectOuputArgs e)
         {
             this.Invoke(new Action(() =>
             {

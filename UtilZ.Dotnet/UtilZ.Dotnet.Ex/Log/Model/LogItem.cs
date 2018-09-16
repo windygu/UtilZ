@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
-namespace UtilZ.Dotnet.Ex.Log.Model
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 日志信息类
@@ -25,8 +25,9 @@ namespace UtilZ.Dotnet.Ex.Log.Model
         /// <param name="ex">异常信息</param>
         /// <param name="name">日志记录器名称</param>
         /// <param name="eventID">事件ID</param>
-        /// <param name="extendInfo">扩展信息</param>
-        public LogItem(DateTime time, Thread thread, int skipFrames, LogLevel level, string msg, Exception ex, string name, int eventID, object extendInfo)
+        /// <param name="getStackTraceMethodParameterNameType">获取堆栈方法参数名称类型</param>
+        /// <param name="args">格式参数</param>
+        public LogItem(DateTime time, Thread thread, int skipFrames, LogLevel level, string msg, Exception ex, string name, int eventID, bool getStackTraceMethodParameterNameType, params object[] args)
         {
             this.Time = time;
             this.ThreadID = thread.ManagedThreadId;
@@ -37,60 +38,19 @@ namespace UtilZ.Dotnet.Ex.Log.Model
             this.Message = msg;
             this.Exception = ex;
             this.Name = name;
-            this.ExtendInfo = extendInfo;
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="time">时间</param>
-        /// <param name="thread">线程</param>
-        /// <param name="level">日志级别</param>
-        /// <param name="msg">日志信息</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="name">日志记录器名称</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="extendInfo">扩展信息</param>
-        public LogItem(DateTime time, Thread thread, LogLevel level, string msg, Exception ex, string name, int eventID, object extendInfo)
-        {
-            this.Time = time;
-            this.ThreadID = thread.ManagedThreadId;
-            this.ThreadName = thread.Name;
-            this.EventID = eventID;
-            this.Level = level;
-            this.Message = msg;
-            this.Exception = ex;
-            this.Name = name;
-            this.ExtendInfo = extendInfo;
+            this._getStackTraceMethodParameterNameType = getStackTraceMethodParameterNameType;
+            this.Args = args;
         }
 
         /// <summary>
         /// 获取堆栈方法参数名称类型[true:代码方式false:系统堆栈方式(eg:List`string),默认为true]
         /// </summary>
-        private static bool _getStackTraceMethodParameterNameType = true;
-
-        /// <summary>
-        /// 获取或设置获取堆栈方法参数名称类型[true:代码方式false:系统堆栈方式(eg:List`string),默认为true]
-        /// </summary>
-        public static bool GetStackTraceMethodParameterNameType
-        {
-            get { return _getStackTraceMethodParameterNameType; }
-            set { _getStackTraceMethodParameterNameType = value; }
-        }
+        private bool _getStackTraceMethodParameterNameType;
 
         /// <summary>
         /// 日志项是否已分析过
         /// </summary>
         private bool _isAnalyzed = false;
-
-        /// <summary>
-        /// 获取日志项是否已分析过
-        /// </summary>
-        public bool IsAnalyzed
-        {
-            get { return _isAnalyzed; }
-            set { _isAnalyzed = value; }
-        }
 
         #region 属性
         /// <summary>
@@ -139,14 +99,14 @@ namespace UtilZ.Dotnet.Ex.Log.Model
         public string Message { get; private set; }
 
         /// <summary>
+        /// 格式参数
+        /// </summary>
+        public object[] Args { get; private set; }
+
+        /// <summary>
         /// 异常信息
         /// </summary>
         public Exception Exception { get; private set; }
-
-        /// <summary>
-        /// 扩展信息
-        /// </summary>
-        public object ExtendInfo { get; private set; }
 
         /// <summary>
         /// 日志产生类名称
@@ -196,6 +156,18 @@ namespace UtilZ.Dotnet.Ex.Log.Model
             string message = this.Message;
             if (!string.IsNullOrEmpty(message))
             {
+                if (this.Args != null && this.Args.Length > 0)
+                {
+                    try
+                    {
+                        message = string.Format(message, this.Args);
+                    }
+                    catch (Exception exi)
+                    {
+                        LogSysInnerLog.OnRaiseLog(this, exi);
+                    }
+                }
+
                 sbContent.Append(message);
             }
 

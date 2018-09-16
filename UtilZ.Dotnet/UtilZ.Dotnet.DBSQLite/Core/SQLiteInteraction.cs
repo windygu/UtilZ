@@ -93,14 +93,14 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                 Directory.CreateDirectory(dbDir);
             }
 
-            if (visitType == DBVisitType.R)
-            {
-                scsb.ReadOnly = true;
-            }
-            else
-            {
-                scsb.ReadOnly = false;
-            }
+            //if (visitType == DBVisitType.R)
+            //{
+            //    scsb.ReadOnly = true;
+            //}
+            //else
+            //{
+            //    scsb.ReadOnly = false;
+            //}
 
             return scsb.ConnectionString;
         }

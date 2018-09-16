@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UtilZ.Dotnet.SEx.Log.Appender;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
-namespace UtilZ.Dotnet.SEx.Log
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 日志记录器

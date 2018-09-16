@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using UtilZ.Dotnet.SEx.Log.Config;
+using UtilZ.Dotnet.Ex.Log.Config;
 
-namespace UtilZ.Dotnet.SEx.Log.Appender
+namespace UtilZ.Dotnet.Ex.Log.Appender
 {
     /// <summary>
     /// 文件日志追加器
@@ -55,32 +55,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 throw;
             }
         }
-
-        ///// <summary>
-        ///// 初始化
-        ///// </summary>
-        ///// <param name="config">配置元素</param>
-        //public override void Init(BaseConfig config)
-        //{
-        //    try
-        //    {
-        //        this._config = config as FileAppenderConfig;
-        //        if (this._config == null)
-        //        {
-        //            return;
-        //        }
-
-        //        this._maxFileSize = this._config.MaxFileSize * 1024L;
-        //        this._pathManager = new FileAppenderPathManager(this._config);
-        //        this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
-        //        base._status = true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        base._status = false;
-        //        throw;
-        //    }
-        //}
 
         /// <summary>
         /// 写日志
@@ -232,7 +206,12 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 try
                 {
                     //如果此命名互斥对象已存在则请求打开
-                    if (!Mutex.TryOpenExisting(mutexName, out mutex))
+                    try
+                    {
+                        //如果此命名互斥对象已存在则请求打开
+                        mutex = Mutex.OpenExisting(mutexName);
+                    }
+                    catch (WaitHandleCannotBeOpenedException)
                     {
                         //打开失败则创建一个
                         mutex = new Mutex(false, mutexName);

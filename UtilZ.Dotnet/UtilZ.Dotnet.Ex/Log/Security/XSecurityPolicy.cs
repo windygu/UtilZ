@@ -4,9 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using UtilZ.Dotnet.Ex.Log.Config.Interface;
 
-namespace UtilZ.Dotnet.Ex.Log.Security
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// X日志安全策略类

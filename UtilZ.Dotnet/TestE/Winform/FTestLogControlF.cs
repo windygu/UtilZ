@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
-using UtilZ.Dotnet.Ex.Log.Model;
+using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base;
 
 namespace TestE.Winform
@@ -50,7 +50,7 @@ namespace TestE.Winform
         {
             logControl1.AddLog(string.Format("{0}_{1} Debug", DateTime.Now, _index++), LogLevel.Debug);
             logControl1.AddLog(string.Format("{0}_{1} Error", DateTime.Now, _index++), LogLevel.Error);
-            logControl1.AddLog(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), LogLevel.Faltal);
+            logControl1.AddLog(string.Format("{0}_{1} Faltal", DateTime.Now, _index++), LogLevel.Fatal);
             logControl1.AddLog(string.Format("{0}_{1} Info", DateTime.Now, _index++), LogLevel.Info);
             logControl1.AddLog(string.Format("{0}_{1} Warn", DateTime.Now, _index++), LogLevel.Warn);
         }

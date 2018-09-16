@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Log;
-using UtilZ.Dotnet.Ex.Log.Core;
-using UtilZ.Dotnet.Ex.Log.Layout;
+using UtilZ.Dotnet.Ex.Log.Appender;
 using UtilZ.Dotnet.WindowEx.Winform.Controls;
 
 namespace TestE.Common
@@ -49,9 +48,11 @@ namespace TestE.Common
         private readonly string _logName = "YFLog";
         private void btnTestLog_Click(object sender, EventArgs e)
         {
-            var log = Loger.Log as XLog;
+            ILoger loger = Loger.GetLoger(null);
             string layout = string.Format(@"{0} {1}", LayoutManager.TIME, LayoutManager.CONTENT);
-            log.AddLogRecorder(this._logName, string.Format(@"Log\{0}", _logName), layout);
+            AppenderBase appender = new FileAppender();
+            //appender.Init();
+            loger.AddAppender(appender);
         }
 
         private void btnWriteLog_Click(object sender, EventArgs e)
