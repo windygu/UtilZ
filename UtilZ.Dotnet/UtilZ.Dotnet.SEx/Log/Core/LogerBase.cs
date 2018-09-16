@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UtilZ.Dotnet.SEx.Log.Appender;
 
 namespace UtilZ.Dotnet.SEx.Log
 {
@@ -9,6 +10,16 @@ namespace UtilZ.Dotnet.SEx.Log
     /// </summary>
     public abstract class LogerBase : ILoger
     {
+        /// <summary>
+        /// 日志追加器集合
+        /// </summary>
+        protected readonly List<AppenderBase> _appenders = new List<AppenderBase>();
+
+        /// <summary>
+        /// 日志追加器集合线程锁
+        /// </summary>
+        protected readonly object _appendersLock = new object();
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -40,6 +51,23 @@ namespace UtilZ.Dotnet.SEx.Log
         LogLevel ILoger.Level
         {
             get { return _level; }
+        }
+
+        /// <summary>
+        /// 添加日志追加器
+        /// </summary>
+        /// <param name="appender">日志追加器</param>
+        void ILoger.AddAppender(AppenderBase appender)
+        {
+            if (appender == null)
+            {
+                return;
+            }
+
+            lock (this._appendersLock)
+            {
+                this._appenders.Add(appender);
+            }
         }
 
         /// <summary>

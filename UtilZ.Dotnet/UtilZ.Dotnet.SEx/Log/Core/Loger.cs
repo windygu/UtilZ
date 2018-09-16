@@ -19,17 +19,12 @@ namespace UtilZ.Dotnet.SEx.Log
     {
         #region 静态成员
         private static readonly LogerBase _emptyLoger = new EmptyLoger();
-        private static LogerBase _defaultLoger;
+        private static ILoger _defaultLoger;
 
         /// <summary>
         /// [key:LogerName;Value:Loger]
         /// </summary>
         private static readonly Hashtable _htLoger = Hashtable.Synchronized(new Hashtable());
-
-        /// <summary>
-        /// 日志追加器集合
-        /// </summary>
-        private readonly List<AppenderBase> _appenders = new List<AppenderBase>();
 
         /// <summary>
         /// 静态构造函数(初始化默认日志追加器)
@@ -47,18 +42,21 @@ namespace UtilZ.Dotnet.SEx.Log
         /// </summary>
         public static void Clear()
         {
-            foreach (ILoger loger in _htLoger.Values)
+            lock (_htLoger.SyncRoot)
             {
-                loger.Dispose();
-            }
+                foreach (ILoger loger in _htLoger.Values)
+                {
+                    loger.Dispose();
+                }
 
-            if (_defaultLoger != _emptyLoger && _defaultLoger != null)
-            {
-                _defaultLoger.Dispose();
-            }
+                if (_defaultLoger != _emptyLoger && _defaultLoger != null)
+                {
+                    _defaultLoger.Dispose();
+                }
 
-            _defaultLoger = _emptyLoger;
-            _htLoger.Clear();
+                _defaultLoger = _emptyLoger;
+                _htLoger.Clear();
+            }
         }
 
         /// <summary>
@@ -133,7 +131,15 @@ namespace UtilZ.Dotnet.SEx.Log
                 }
                 else
                 {
-                    _htLoger[name] = loger;
+                    lock (_htLoger.SyncRoot)
+                    {
+                        if (_htLoger.ContainsKey(name))
+                        {
+                            ((ILoger)_htLoger[name]).Dispose();
+                        }
+
+                        _htLoger[name] = loger;
+                    }
                 }
             }
             catch (Exception ex)
@@ -184,7 +190,10 @@ namespace UtilZ.Dotnet.SEx.Log
             }
             else
             {
-                loger = _htLoger[logerName] as ILoger;
+                lock (_htLoger.SyncRoot)
+                {
+                    loger = _htLoger[logerName] as ILoger;
+                }
             }
 
             if (loger == null)
@@ -193,6 +202,41 @@ namespace UtilZ.Dotnet.SEx.Log
             }
 
             return loger;
+        }
+
+        /// <summary>
+        /// 添加日志记录器
+        /// </summary>
+        /// <param name="loger">日志记录器</param>
+        public static void AddLoger(ILoger loger)
+        {
+            if (loger == null)
+            {
+                return;
+            }
+
+            string logerName = loger.LogerName;
+            if (string.IsNullOrEmpty(logerName))
+            {
+                if (_defaultLoger != null)
+                {
+                    _defaultLoger.Dispose();
+                }
+
+                _defaultLoger = loger;
+            }
+            else
+            {
+                lock (_htLoger.SyncRoot)
+                {
+                    if (_htLoger.ContainsKey(logerName))
+                    {
+                        ((ILoger)_htLoger[logerName]).Dispose();
+                    }
+
+                    _htLoger[logerName] = loger;
+                }
+            }
         }
         #endregion
 
@@ -260,7 +304,13 @@ namespace UtilZ.Dotnet.SEx.Log
 
         private void RecordLog(LogItem item)
         {
-            foreach (var appender in this._appenders)
+            AppenderBase[] appenders;
+            lock (base._appendersLock)
+            {
+                appenders = base._appenders.ToArray();
+            }
+
+            foreach (var appender in appenders)
             {
                 try
                 {
@@ -337,7 +387,13 @@ namespace UtilZ.Dotnet.SEx.Log
         {
             try
             {
-                _defaultLoger.ObjectAddLog(level, msg, ex, eventID, args);
+                var loger = _defaultLoger as LogerBase;
+                if (loger == null)
+                {
+                    return;
+                }
+
+                loger.ObjectAddLog(level, msg, ex, eventID, args);
             }
             catch (Exception exi)
             {

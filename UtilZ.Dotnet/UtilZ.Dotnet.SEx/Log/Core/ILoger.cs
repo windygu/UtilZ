@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UtilZ.Dotnet.SEx.Log.Appender;
 
 namespace UtilZ.Dotnet.SEx.Log
 {
@@ -18,6 +19,12 @@ namespace UtilZ.Dotnet.SEx.Log
         /// 获取日志级别
         /// </summary>
         LogLevel Level { get; }
+
+        /// <summary>
+        /// 添加日志追加器
+        /// </summary>
+        /// <param name="appender">日志追加器</param>
+        void AddAppender(AppenderBase appender);
 
         #region 记录日志方法
         #region Trace
