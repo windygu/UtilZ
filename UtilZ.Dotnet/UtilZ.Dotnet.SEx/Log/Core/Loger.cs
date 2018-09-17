@@ -166,8 +166,23 @@ namespace UtilZ.Dotnet.SEx.Log
                     return;
                 }
 
-                object obj = LogUtil.CreateInstance(appenderTypeName);
-                AppenderBase appender = obj as AppenderBase;
+                appenderTypeName = appenderTypeName.Trim();
+                AppenderBase appender;
+                if (appenderTypeName.Length == 1)
+                {
+                    appender = CreateAppenderByAppenderPattern(appenderTypeName);
+                }
+                else if (!appenderTypeName.Contains('.') && !appenderTypeName.Contains(','))
+                {
+                    Type type = typeof(AppenderBase);
+                    appenderTypeName = string.Format("{0}.{1},{2}", type.Namespace, appenderTypeName, Path.GetFileName(type.Assembly.Location));
+                    appender = LogUtil.CreateInstance(appenderTypeName) as AppenderBase;
+                }
+                else
+                {
+                    appender = LogUtil.CreateInstance(appenderTypeName) as AppenderBase;
+                }
+
                 if (appender == null)
                 {
                     return;
@@ -181,6 +196,37 @@ namespace UtilZ.Dotnet.SEx.Log
             {
                 LogSysInnerLog.OnRaiseLog(string.Format("解析:{0}日志追加器异常", appenderName), ex);
             }
+        }
+
+        private static AppenderBase CreateAppenderByAppenderPattern(string appenderTypeName)
+        {
+            AppenderBase appender;
+            switch (appenderTypeName[0])
+            {
+                case LogConstant.FileAppenderPattern:
+                    appender = new FileAppender();
+                    break;
+                case LogConstant.RedirectAppenderPattern:
+                    appender = new RedirectAppender();
+                    break;
+                case LogConstant.ConsoleAppenderPattern:
+                    appender = new ConsoleAppender();
+                    break;
+                case LogConstant.DatabaseAppenderPattern:
+                    appender = new DatabaseAppender();
+                    break;
+                case LogConstant.MailAppenderPattern:
+                    appender = new MailAppender();
+                    break;
+                case LogConstant.SystemAppenderPattern:
+                    appender = new SystemLogAppender();
+                    break;
+                default:
+                    appender = null;
+                    break;
+            }
+
+            return appender;
         }
 
         /// <summary>

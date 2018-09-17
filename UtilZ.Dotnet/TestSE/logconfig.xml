@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <logconfig>
   <loger name="" level="debug" enable="true">
-    <appender name="fileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
+    <!--FileAppender[F],RedirectAppender[R],ConsoleAppender[C],DatabaseAppender[D],MailAppender[M],SystemLogAppender[S]-->
+    <!--<appender name="fileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">-->
+    <appender name="fileAppender" enable="true" type="F">
       <!--<param name="Layout" value="%d %l %e %c 堆栈:%s" des="日志布局"/>-->
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
@@ -25,7 +27,7 @@
       <param name="MutexName" value=""  des="进程同步锁名称"/>
     </appender>
 
-    <appender name="rootFileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
+    <appender name="rootFileAppender" enable="true" type="FileAppender">
       <!--<param name="Layout" value="%d %l %e %c 堆栈:%s" des="日志布局"/>-->
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
@@ -65,15 +67,17 @@
       <param name="MutexName" value=""  des="进程同步锁名称"/>
     </appender>
 
-    <appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.RedirectAppender,UtilZ.Dotnet.SEx">
 
+    <!--<appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.RedirectAppender,UtilZ.Dotnet.SEx">-->
+    <appender name="redirectAppender" enable="true" type="R">
     </appender>
 
-    <appender name="ConsoleAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.ConsoleAppender,UtilZ.Dotnet.SEx">
+    <!--<appender name="ConsoleAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.ConsoleAppender,UtilZ.Dotnet.SEx">-->
+    <appender name="ConsoleAppender" enable="true" type="ConsoleAppender">
       <param name="SeparatorCount" value="0" des="分隔线长度,0表示无分隔线"/>
     </appender>
 
-    <appender name="MyDocumentsfileAppenderSpecDir" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
+    <appender name="MyDocumentsfileAppenderSpecDir" enable="true" type="F">
       <param name="Layout" value="" des="日志布局"/>
       <param name="DateFormat" value="yyyy_MM_dd_HH:mm:ss.ff" des="时间格式"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>

@@ -32,7 +32,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             var fullPath = this.ConvertToFullPath(filePath);
             string[] paths = fullPath.Split(_pathSplitChars, StringSplitOptions.RemoveEmptyEntries);
             paths[0] = paths[0] + Path.DirectorySeparatorChar;
-            if (paths[paths.Length - 1].Contains(LogConstant.DatePatternFlagChar))
+            if (paths[paths.Length - 1].Contains(LogConstant.PatternFlagChar))
             {
                 this._pathBuilder = new FileAppenderVariateFileNameBuilder(config, paths, _pathSplitChars);
             }
@@ -66,7 +66,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             {
                 string[] paths = filePath.Split(_pathSplitChars, StringSplitOptions.RemoveEmptyEntries);
                 string firstPath = paths[0];
-                if (firstPath[0] == LogConstant.DatePatternFlagChar && firstPath[firstPath.Length - 1] == LogConstant.DatePatternFlagChar)
+                if (firstPath[0] == LogConstant.PatternFlagChar && firstPath[firstPath.Length - 1] == LogConstant.PatternFlagChar)
                 {
                     //*MyDocuments*
                     string pattern = firstPath.Substring(1, firstPath.Length - 2).ToLower();
@@ -81,7 +81,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                         filePath = Path.GetFullPath(filePath);
                     }
                 }
-                else if (firstPath.Contains(LogConstant.DatePatternFlagChar))
+                else if (firstPath.Contains(LogConstant.PatternFlagChar))
                 {
                     string dir = Path.GetDirectoryName(typeof(FileAppenderPathManager).Assembly.Location);
                     filePath = string.Format(@"{0}/{1}", dir, filePath);

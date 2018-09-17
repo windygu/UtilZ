@@ -37,7 +37,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             int rootDirPathCount = paths.Length - 1;
             for (int i = 0; i < paths.Length - 1; i++)
             {
-                if (paths[i].Contains(LogConstant.DatePatternFlagChar))
+                if (paths[i].Contains(LogConstant.PatternFlagChar))
                 {
                     rootDirPathCount = i;
                     break;

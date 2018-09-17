@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml.Linq;
 using UtilZ.Dotnet.SEx.Log.Appender;
 
-namespace UtilZ.Dotnet.SEx.Log.Appenders
+namespace UtilZ.Dotnet.SEx.Log.Appender
 {
     /// <summary>
     /// 邮件日志输出追加器

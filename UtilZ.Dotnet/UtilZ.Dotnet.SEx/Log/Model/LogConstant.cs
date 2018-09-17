@@ -102,8 +102,40 @@ namespace UtilZ.Dotnet.SEx.Log
         #endregion
 
         /// <summary>
-        /// 
+        /// 通配符
         /// </summary>
-        public const char DatePatternFlagChar = '*';
+        public const char PatternFlagChar = '*';
+
+        #region 日志追加器简称通配符
+        /// <summary>
+        /// File
+        /// </summary>
+        public const char FileAppenderPattern = 'F';
+
+        /// <summary>
+        /// Redirect
+        /// </summary>
+        public const char RedirectAppenderPattern = 'R';
+
+        /// <summary>
+        /// Console
+        /// </summary>
+        public const char ConsoleAppenderPattern = 'C';
+
+        /// <summary>
+        /// Database
+        /// </summary>
+        public const char DatabaseAppenderPattern = 'D';
+
+        /// <summary>
+        /// Mail
+        /// </summary>
+        public const char MailAppenderPattern = 'M';
+
+        /// <summary>
+        /// System
+        /// </summary>
+        public const char SystemAppenderPattern = 'S';
+        #endregion
     }
 }
