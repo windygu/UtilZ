@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using UtilZ.Dotnet.Ex.Log.Appender;
+using UtilZ.Dotnet.Ex.Log.Config;
 
-namespace UtilZ.Dotnet.Ex.Log.Appenders
+namespace UtilZ.Dotnet.Ex.Log.Appender
 {
     /// <summary>
     /// 操作系统日志输出追加器
@@ -14,17 +15,26 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SystemLogAppender() : base()
+        /// <param name="ele">配置元素</param>
+        public SystemLogAppender(XElement ele) : base(ele)
         {
-            throw new NotImplementedException();
-            //this._config = new ConsoleAppenderConfig();
+
         }
 
         /// <summary>
-        /// 初始化
+        /// 构造函数
         /// </summary>
-        /// <param name="ele">配置元素</param>
-        public override void Init(XElement ele)
+        /// <param name="config">配置对象</param>
+        public SystemLogAppender(BaseConfig config) : base(config)
+        {
+
+        }
+
+        /// <summary>
+        /// 创建配置对象实例
+        /// </summary>
+        /// <returns>配置对象实例</returns>
+        protected override BaseConfig CreateConfig()
         {
             throw new NotImplementedException();
         }

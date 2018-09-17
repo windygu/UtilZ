@@ -77,11 +77,11 @@ namespace UtilZ.Dotnet.Ex.Log
         }
 
         /// <summary>
-        /// 创建数据库连接对象
+        /// 根据字符串信息获取程序集中的类型
         /// </summary>
         /// <param name="typeFullName">类型名称[格式:类型名,程序集命名.例如:Oracle.ManagedDataAccess.Client.OracleConnection,Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342]</param>
         /// <returns>实例</returns>
-        public static object CreateInstance(string typeFullName)
+        public static Type GetType(string typeFullName)
         {
             if (string.IsNullOrWhiteSpace(typeFullName))
             {
@@ -150,7 +150,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 return null;
             }
 
-            return Activator.CreateInstance(type);
+            return type;
         }
     }
 }

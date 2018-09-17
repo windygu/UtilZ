@@ -68,32 +68,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             return new FileAppenderConfig();
         }
 
-        ///// <summary>
-        ///// 初始化
-        ///// </summary>
-        ///// <param name="config">配置元素</param>
-        //public override void Init(BaseConfig config)
-        //{
-        //    try
-        //    {
-        //        this._config = config as FileAppenderConfig;
-        //        if (this._config == null)
-        //        {
-        //            return;
-        //        }
-
-        //        this._maxFileSize = this._config.MaxFileSize * 1024L;
-        //        this._pathManager = new FileAppenderPathManager(this._config);
-        //        this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
-        //        base._status = true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        base._status = false;
-        //        throw;
-        //    }
-        //}
-
         /// <summary>
         /// 写日志
         /// </summary>

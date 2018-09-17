@@ -14,7 +14,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
     /// </summary>
     public class FileAppender : AppenderBase
     {
-        private readonly FileAppenderConfig _config;
+        private FileAppenderConfig _fileAppenderConfig;
 
         /// <summary>
         /// 日志安全策略
@@ -26,34 +26,46 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         private FileAppenderPathManager _pathManager;
 
         /// <summary>
+        /// 日志写线程队列
+        /// </summary>
+        private LogAsynQueue<LogItem> _logWriteQueue;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
-        public FileAppender() : base()
+        /// <param name="ele">配置元素</param>
+        public FileAppender(XElement ele) : base(ele)
         {
-            this._config = new FileAppenderConfig();
-            this._maxFileSize = this._config.MaxFileSize * 1024L;
-            this._pathManager = new FileAppenderPathManager(this._config);
+            this.Init();
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="config">配置对象</param>
+        public FileAppender(BaseConfig config) : base(config)
+        {
+            this.Init();
         }
 
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="ele">配置元素</param>
-        public override void Init(XElement ele)
+        private void Init()
         {
-            try
-            {
-                this._config.Parse(ele);
-                this._maxFileSize = this._config.MaxFileSize * 1024L;
-                this._pathManager = new FileAppenderPathManager(this._config);
-                this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
-                base._status = true;
-            }
-            catch (Exception)
-            {
-                base._status = false;
-                throw;
-            }
+            this._fileAppenderConfig = (FileAppenderConfig)base._config;
+            this._maxFileSize = this._fileAppenderConfig.MaxFileSize * 1024L;
+            this._pathManager = new FileAppenderPathManager(this._fileAppenderConfig);
+            this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, "默认日志输出线程");
+        }
+
+        /// <summary>
+        /// 创建配置对象实例
+        /// </summary>
+        /// <returns>配置对象实例</returns>
+        protected override BaseConfig CreateConfig()
+        {
+            return new FileAppenderConfig();
         }
 
         /// <summary>
@@ -62,12 +74,21 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// <param name="item">日志项</param>
         public override void WriteLog(LogItem item)
         {
-            if (this._config == null || !base.Validate(this._config, item) || !this._status)
+            this._logWriteQueue.Enqueue(item);
+        }
+
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="item">日志项</param>
+        private void PrimitiveWriteLog(LogItem item)
+        {
+            if (this._fileAppenderConfig == null || !base.Validate(this._fileAppenderConfig, item) || !this._status)
             {
                 return;
             }
 
-            switch (this._config.LockingModel)
+            switch (this._fileAppenderConfig.LockingModel)
             {
                 case LockingModel.Exclusive:
                     this.ExclusiveWriteLog(item);
@@ -79,7 +100,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                     this.InterProcessWriteLog(item);
                     break;
                 default:
-                    LogSysInnerLog.OnRaiseLog(this, new Exception(string.Format("不支持的锁模型:{0}", this._config.LockingModel.ToString())));
+                    LogSysInnerLog.OnRaiseLog(this, new Exception(string.Format("不支持的锁模型:{0}", this._fileAppenderConfig.LockingModel.ToString())));
                     break;
             }
         }
@@ -109,7 +130,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 }
 
                 //日志处理
-                string logMsg = LayoutManager.LayoutLog(item, this._config);
+                string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
                 if (this._securityPolicy != null)
                 {
                     logMsg = this._securityPolicy.Encryption(logMsg);
@@ -139,7 +160,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 using (var sw = File.AppendText(logFilePath))
                 {
                     //日志处理
-                    string logMsg = LayoutManager.LayoutLog(item, this._config);
+                    string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
                     if (this._securityPolicy != null)
                     {
                         logMsg = this._securityPolicy.Encryption(logMsg);
@@ -172,7 +193,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 using (var sw = File.AppendText(logFilePath))
                 {
                     //日志处理
-                    string logMsg = LayoutManager.LayoutLog(item, this._config);
+                    string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
                     if (this._securityPolicy != null)
                     {
                         logMsg = this._securityPolicy.Encryption(logMsg);
@@ -271,6 +292,21 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             this._fileSize = 0;
             this._filePath = this._pathManager.CreateLogFilePath();
             return this._filePath;
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        /// <param name="disposing">释放资源标识</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (this._logWriteQueue == null)
+            {
+                return;
+            }
+
+            this._logWriteQueue.Dispose();
+            this._logWriteQueue = null;
         }
     }
 }

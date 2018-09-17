@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.Log.Appender;
+using UtilZ.Dotnet.Ex.Log.Config;
 using UtilZ.Dotnet.WindowEx.Winform.Controls;
 
 namespace TestE.Common
@@ -50,8 +51,7 @@ namespace TestE.Common
         {
             ILoger loger = Loger.GetLoger(null);
             string layout = string.Format(@"{0} {1}", LayoutManager.TIME, LayoutManager.CONTENT);
-            AppenderBase appender = new FileAppender();
-            //appender.Init();
+            AppenderBase appender = new FileAppender(new FileAppenderConfig());
             loger.AddAppender(appender);
         }
 

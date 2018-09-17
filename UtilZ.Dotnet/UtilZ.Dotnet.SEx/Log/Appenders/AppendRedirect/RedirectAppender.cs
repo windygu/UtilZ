@@ -37,7 +37,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// <returns>配置对象实例</returns>
         protected override BaseConfig CreateConfig()
         {
-            throw new NotImplementedException();
+            return new RedirectAppendConfig();
         }
 
         /// <summary>

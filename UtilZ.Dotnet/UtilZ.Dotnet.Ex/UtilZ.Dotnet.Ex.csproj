@@ -114,6 +114,7 @@
     <Compile Include="Log\Appenders\AppendMail\MailAppender.cs" />
     <Compile Include="Log\Appenders\AppendRedirect\RedirectAppender.cs" />
     <Compile Include="Log\Appenders\AppendSystem\SystemLogAppender.cs" />
+    <Compile Include="Log\Common\LogAsynQueue.cs" />
     <Compile Include="Log\Common\LogSysInnerLog.cs" />
     <Compile Include="Log\Common\LogUtil.cs" />
     <Compile Include="Log\Config\BaseConfig.cs" />

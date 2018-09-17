@@ -9,6 +9,7 @@ using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using UtilZ.Dotnet.Ex.Log.Appender;
+using UtilZ.Dotnet.Ex.Log.Config;
 
 namespace UtilZ.Dotnet.Ex.Log
 {
@@ -33,7 +34,7 @@ namespace UtilZ.Dotnet.Ex.Log
         {
             var defaultLoger = new Loger();
             defaultLoger._logerName = string.Empty;
-            defaultLoger._appenders.Add(new FileAppender());
+            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig()));
             _defaultLoger = defaultLoger;
         }
 
@@ -166,21 +167,72 @@ namespace UtilZ.Dotnet.Ex.Log
                     return;
                 }
 
-                object obj = LogUtil.CreateInstance(appenderTypeName);
-                AppenderBase appender = obj as AppenderBase;
+                appenderTypeName = appenderTypeName.Trim();
+                AppenderBase appender;
+                if (appenderTypeName.Length == 1)
+                {
+                    appender = CreateAppenderByAppenderPattern(appenderTypeName, appenderEle);
+                }
+                else
+                {
+                    if (!appenderTypeName.Contains('.') && !appenderTypeName.Contains(','))
+                    {
+                        Type appenderBaseType = typeof(AppenderBase);
+                        appenderTypeName = string.Format("{0}.{1},{2}", appenderBaseType.Namespace, appenderTypeName, Path.GetFileName(appenderBaseType.Assembly.Location));
+                    }
+
+                    Type appenderType = LogUtil.GetType(appenderTypeName);
+                    if (appenderType == null)
+                    {
+                        return;
+                    }
+
+                    appender = Activator.CreateInstance(appenderType, new object[] { (object)appenderEle }) as AppenderBase;
+                }
+
                 if (appender == null)
                 {
                     return;
                 }
 
                 appender.Name = appenderName;
-                appender.Init(appenderEle);
                 loger._appenders.Add(appender);
             }
             catch (Exception ex)
             {
                 LogSysInnerLog.OnRaiseLog(string.Format("解析:{0}日志追加器异常", appenderName), ex);
             }
+        }
+
+        private static AppenderBase CreateAppenderByAppenderPattern(string appenderTypeName, XElement appenderEle)
+        {
+            AppenderBase appender;
+            switch (appenderTypeName[0])
+            {
+                case LogConstant.FileAppenderPattern:
+                    appender = new FileAppender(appenderEle);
+                    break;
+                case LogConstant.RedirectAppenderPattern:
+                    appender = new RedirectAppender(appenderEle);
+                    break;
+                case LogConstant.ConsoleAppenderPattern:
+                    appender = new ConsoleAppender(appenderEle);
+                    break;
+                case LogConstant.DatabaseAppenderPattern:
+                    appender = new DatabaseAppender(appenderEle);
+                    break;
+                case LogConstant.MailAppenderPattern:
+                    appender = new MailAppender(appenderEle);
+                    break;
+                case LogConstant.SystemAppenderPattern:
+                    appender = new SystemLogAppender(appenderEle);
+                    break;
+                default:
+                    appender = null;
+                    break;
+            }
+
+            return appender;
         }
 
         /// <summary>
@@ -264,49 +316,13 @@ namespace UtilZ.Dotnet.Ex.Log
         public LogLevel Level { get; private set; } = LogLevel.Trace;
 
         /// <summary>
-        /// 日志外部队列
+        /// 日志分发线程队列
         /// </summary>
-        private readonly ConcurrentQueue<LogItem> _logQueue = new ConcurrentQueue<LogItem>();
+        private readonly LogAsynQueue<LogItem> _logDispatcherQueue;
 
-        /// <summary>
-        /// 日志外部队列线程通知对象
-        /// </summary>
-        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
-        private readonly Thread _logThread;
-        private readonly CancellationTokenSource _cts;
         private Loger() : base()
         {
-            this._cts = new CancellationTokenSource();
-            this._logThread = new Thread(this.LogThreadMethod);
-            this._logThread.IsBackground = true;
-            this._logThread.Start();
-        }
-
-        private void LogThreadMethod()
-        {
-            LogItem item;
-            var token = this._cts.Token;
-            while (!token.IsCancellationRequested)
-            {
-                try
-                {
-                    if (this._logQueue.Count == 0)
-                    {
-                        this._logThread.IsBackground = true;
-                        this._autoResetEvent.WaitOne();
-                    }
-
-                    if (this._logQueue.TryDequeue(out item))
-                    {
-                        item.LogProcess();
-                        this.RecordLog(item);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogSysInnerLog.OnRaiseLog(this, ex);
-                }
-            }
+            this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLog, "日志分发线程");
         }
 
         private void RecordLog(LogItem item)
@@ -317,6 +333,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 appenders = base._appenders.ToArray();
             }
 
+            item.LogProcess();
             foreach (var appender in appenders)
             {
                 try
@@ -363,13 +380,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
 
                 var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, base._logerName, eventID, true, args);
-                this._logQueue.Enqueue(item);
-                if (this._logThread.IsBackground)
-                {
-                    this._logThread.IsBackground = false;
-                }
-
-                this._autoResetEvent.Set();
+                this._logDispatcherQueue.Enqueue(item);
             }
             catch (Exception exi)
             {
@@ -384,8 +395,21 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="isDisposing">是否释放标识</param>
         protected override void Dispose(bool isDisposing)
         {
-            this._cts.Cancel();
-            this._autoResetEvent.Set();
+            this._logDispatcherQueue.Dispose();
+            lock (this._appendersLock)
+            {
+                foreach (var appender in this._appenders)
+                {
+                    try
+                    {
+                        appender.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogSysInnerLog.OnRaiseLog(this, ex);
+                    }
+                }
+            }
         }
         #endregion
 
