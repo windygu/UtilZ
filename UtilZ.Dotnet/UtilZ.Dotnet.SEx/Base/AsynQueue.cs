@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace UtilZ.Dotnet.SEx.DataStruct
+namespace UtilZ.Dotnet.SEx.Base
 {
     /// <summary>
     /// 异步队列

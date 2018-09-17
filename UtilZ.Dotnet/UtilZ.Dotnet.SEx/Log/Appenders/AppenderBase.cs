@@ -11,7 +11,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
     /// <summary>
     /// 日志追加器基类
     /// </summary>
-    public abstract class AppenderBase
+    public abstract class AppenderBase : IDisposable
     {
         /// <summary>
         /// 构造函数
@@ -140,6 +140,29 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         public override string ToString()
         {
             return this._name == null ? base.ToString() : this._name;
+        }
+
+        //构造函数释放非托管资源 
+        ~AppenderBase()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        /// <param name="disposing">释放资源标识</param>
+        protected virtual void Dispose(bool disposing)
+        {
+
         }
     }
 }

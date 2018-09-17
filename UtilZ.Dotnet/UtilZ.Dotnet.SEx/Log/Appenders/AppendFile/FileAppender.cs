@@ -26,6 +26,11 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         private FileAppenderPathManager _pathManager;
 
         /// <summary>
+        /// 日志写线程队列
+        /// </summary>
+        private LogAsynQueue<LogItem> _logWriteQueue;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         public FileAppender() : base()
@@ -33,6 +38,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             this._config = new FileAppenderConfig();
             this._maxFileSize = this._config.MaxFileSize * 1024L;
             this._pathManager = new FileAppenderPathManager(this._config);
+            this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, "默认日志输出线程");
         }
 
         /// <summary>
@@ -47,6 +53,8 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
                 this._maxFileSize = this._config.MaxFileSize * 1024L;
                 this._pathManager = new FileAppenderPathManager(this._config);
                 this._securityPolicy = LogUtil.CreateInstance(this._config.SecurityPolicy) as ILogSecurityPolicy;
+                this._logWriteQueue.Dispose();
+                this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
                 base._status = true;
             }
             catch (Exception)
@@ -87,6 +95,15 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         /// </summary>
         /// <param name="item">日志项</param>
         public override void WriteLog(LogItem item)
+        {
+            this._logWriteQueue.Enqueue(item);
+        }
+
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="item">日志项</param>
+        private void PrimitiveWriteLog(LogItem item)
         {
             if (this._config == null || !base.Validate(this._config, item) || !this._status)
             {
@@ -292,6 +309,21 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             this._fileSize = 0;
             this._filePath = this._pathManager.CreateLogFilePath();
             return this._filePath;
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        /// <param name="disposing">释放资源标识</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (this._logWriteQueue == null)
+            {
+                return;
+            }
+
+            this._logWriteQueue.Dispose();
+            this._logWriteQueue = null;
         }
     }
 }

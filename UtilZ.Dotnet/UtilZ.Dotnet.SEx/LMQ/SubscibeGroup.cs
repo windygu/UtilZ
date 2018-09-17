@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UtilZ.Dotnet.SEx.DataStruct;
+using UtilZ.Dotnet.SEx.Base;
 
 namespace UtilZ.Dotnet.SEx.LocalMessageCenter.LMQ
 {
