@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 using UtilZ.Dotnet.SEx.Log;
+using UtilZ.Dotnet.SEx.Log.Appender;
+using UtilZ.Dotnet.SEx.Log.Config;
 
 namespace TestSE
 {
@@ -67,13 +69,13 @@ namespace TestSE
                 //bool xx = DateTime.TryParseExact(timeStr, format, null, System.Globalization.DateTimeStyles.None, out time);
 
 
-
-
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
                 Loger.Debug("dsfa", 10);
+
                 //Loger.Debug("dsfa", 100);
-                //ILoger loger = Loger.GetLoger(null);
-                //loger.Error("sadfsdafdsf");
+                ILoger loger = Loger.GetLoger(null);
+                loger.AddAppender(new FileAppender(new FileAppenderConfig() { FilePath = @"Log2\*yyyy-MM-dd_HH_mm_ss.fffffff*.log" }));
+                loger.Error("新版本");
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using UtilZ.Dotnet.SEx.Log.Appender;
+using UtilZ.Dotnet.SEx.Log.Config;
 
 namespace UtilZ.Dotnet.SEx.Log
 {
@@ -33,7 +34,7 @@ namespace UtilZ.Dotnet.SEx.Log
         {
             var defaultLoger = new Loger();
             defaultLoger._logerName = string.Empty;
-            defaultLoger._appenders.Add(new FileAppender());
+            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig()));
             _defaultLoger = defaultLoger;
         }
 
@@ -170,17 +171,23 @@ namespace UtilZ.Dotnet.SEx.Log
                 AppenderBase appender;
                 if (appenderTypeName.Length == 1)
                 {
-                    appender = CreateAppenderByAppenderPattern(appenderTypeName);
-                }
-                else if (!appenderTypeName.Contains('.') && !appenderTypeName.Contains(','))
-                {
-                    Type type = typeof(AppenderBase);
-                    appenderTypeName = string.Format("{0}.{1},{2}", type.Namespace, appenderTypeName, Path.GetFileName(type.Assembly.Location));
-                    appender = LogUtil.CreateInstance(appenderTypeName) as AppenderBase;
+                    appender = CreateAppenderByAppenderPattern(appenderTypeName, appenderEle);
                 }
                 else
                 {
-                    appender = LogUtil.CreateInstance(appenderTypeName) as AppenderBase;
+                    if (!appenderTypeName.Contains('.') && !appenderTypeName.Contains(','))
+                    {
+                        Type appenderBaseType = typeof(AppenderBase);
+                        appenderTypeName = string.Format("{0}.{1},{2}", appenderBaseType.Namespace, appenderTypeName, Path.GetFileName(appenderBaseType.Assembly.Location));
+                    }
+
+                    Type appenderType = LogUtil.GetType(appenderTypeName);
+                    if (appenderType == null)
+                    {
+                        return;
+                    }
+
+                    appender = Activator.CreateInstance(appenderType, new object[] { (object)appenderEle }) as AppenderBase;
                 }
 
                 if (appender == null)
@@ -189,7 +196,6 @@ namespace UtilZ.Dotnet.SEx.Log
                 }
 
                 appender.Name = appenderName;
-                appender.Init(appenderEle);
                 loger._appenders.Add(appender);
             }
             catch (Exception ex)
@@ -198,28 +204,28 @@ namespace UtilZ.Dotnet.SEx.Log
             }
         }
 
-        private static AppenderBase CreateAppenderByAppenderPattern(string appenderTypeName)
+        private static AppenderBase CreateAppenderByAppenderPattern(string appenderTypeName, XElement appenderEle)
         {
             AppenderBase appender;
             switch (appenderTypeName[0])
             {
                 case LogConstant.FileAppenderPattern:
-                    appender = new FileAppender();
+                    appender = new FileAppender(appenderEle);
                     break;
                 case LogConstant.RedirectAppenderPattern:
-                    appender = new RedirectAppender();
+                    appender = new RedirectAppender(appenderEle);
                     break;
                 case LogConstant.ConsoleAppenderPattern:
-                    appender = new ConsoleAppender();
+                    appender = new ConsoleAppender(appenderEle);
                     break;
                 case LogConstant.DatabaseAppenderPattern:
-                    appender = new DatabaseAppender();
+                    appender = new DatabaseAppender(appenderEle);
                     break;
                 case LogConstant.MailAppenderPattern:
-                    appender = new MailAppender();
+                    appender = new MailAppender(appenderEle);
                     break;
                 case LogConstant.SystemAppenderPattern:
-                    appender = new SystemLogAppender();
+                    appender = new SystemLogAppender(appenderEle);
                     break;
                 default:
                     appender = null;

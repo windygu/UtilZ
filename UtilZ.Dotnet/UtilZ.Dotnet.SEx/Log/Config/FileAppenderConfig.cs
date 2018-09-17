@@ -11,72 +11,40 @@ namespace UtilZ.Dotnet.SEx.Log.Config
     [Serializable]
     public class FileAppenderConfig : BaseConfig
     {
-        private int _days = 7;
         /// <summary>
         /// 日志保留天数小于1表示永不清除
         /// </summary>
-        public int Days
-        {
-            get { return _days; }
-        }
+        public int Days { get; set; } = 7;
 
-        private int _maxFileCount = -1;
         /// <summary>
         /// 最多产生的日志文件数，超过则只保留最新的n个,小于1为不限文件数
         /// </summary>
-        public int MaxFileCount
-        {
-            get { return _maxFileCount; }
-        }
+        public int MaxFileCount { get; set; } = -1;
 
-        private int _maxFileSize = 10 * 1024 * 1024;
         /// <summary>
-        /// 日志文件上限大小,当文件超过此值则分隔成多个日志文件,单位/MB
+        /// 日志文件上限大小,当文件超过此值则分隔成多个日志文件,小于1不限制,单位/字节
         /// </summary>
-        public int MaxFileSize
-        {
-            get { return _maxFileSize; }
-        }
+        public int MaxFileSize { get; set; } = 10 * 1024 * 1024;
 
-        /********************************************************************
-         * Log\yyyy-MM-dd_HH_mm_ss;_flow.log  =>  Log\2018-08-19_17_05_12_flow.log
-         * yyyy-MM-dd\info.log  =>  2018-08-19\info_1.log 或 2018-08-19\info_n.log
-         * yyyy-MM-dd\yyyy-MM-dd_HH_mm_ss;_flow.log  =>  2018-08-19\2018-08-19_17_05_12_flow.log
-         * 或
-         * yyyy-MM-dd\HH_mm_ss;_flow.log  =>  2018-08-19\17_05_12_flow.log
-         ********************************************************************/
-
-        private string _filePath = @"Log/*yyyy-MM-dd_HH_mm_ss.fffffff*.log";
         /// <summary>
         /// 日志存放路径
         /// </summary>
-        public string FilePath
-        {
-            get { return _filePath; }
-        }
+        public string FilePath { get; set; } = @"Log/*yyyy-MM-dd_HH_mm_ss.fffffff*.log";
 
-        private bool _isAppend = true;
         /// <summary>
         /// 是否追加日志
         /// </summary>
-        public bool IsAppend
-        {
-            get { return _isAppend; }
-        }
+        public bool IsAppend { get; set; } = true;
 
         /// <summary>
         /// 日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法
         /// </summary>
-        public string SecurityPolicy { get; private set; }
+        public string SecurityPolicy { get; set; } = null;
 
-        private LockingModel _lockingModel = LockingModel.Exclusive;
         /// <summary>
         /// 锁类模型[Exclusive,InterProcess,Minimal]
         /// </summary>
-        public LockingModel LockingModel
-        {
-            get { return _lockingModel; }
-        }
+        public LockingModel LockingModel { get; set; } = LockingModel.Exclusive;
 
         /// <summary>
         /// 构造函数
@@ -101,12 +69,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             int days;
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, "Days"), out days))
             {
-                if (days < 1)
-                {
-                    days = 7;
-                }
-
-                this._days = days;
+                this.Days = days;
             }
 
             int maxFileCount;
@@ -117,7 +80,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                     maxFileCount = -1;
                 }
 
-                this._maxFileCount = maxFileCount;
+                this.MaxFileCount = maxFileCount;
             }
 
             int maxFileSize;
@@ -128,19 +91,19 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                     maxFileSize = 10;
                 }
 
-                this._maxFileSize = maxFileSize * 1024 * 1024;
+                this.MaxFileSize = maxFileSize * 1024 * 1024;
             }
 
             string filePath = LogUtil.GetChildXElementValue(ele, "FilePath").Trim();
             if (!string.IsNullOrWhiteSpace(filePath))
             {
-                this._filePath = filePath.Trim();
+                this.FilePath = filePath.Trim();
             }
 
             bool isAppend;
             if (bool.TryParse(LogUtil.GetChildXElementValue(ele, "IsAppend").Trim(), out isAppend))
             {
-                this._isAppend = isAppend;
+                this.IsAppend = isAppend;
             }
 
             this.SecurityPolicy = LogUtil.GetChildXElementValue(ele, "SecurityPolicy").Trim();
@@ -148,7 +111,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             LockingModel lockingType;
             if (Enum.TryParse<LockingModel>(LogUtil.GetChildXElementValue(ele, "LockingModel").Trim(), out lockingType))
             {
-                this._lockingModel = lockingType;
+                this.LockingModel = lockingType;
             }
         }
     }

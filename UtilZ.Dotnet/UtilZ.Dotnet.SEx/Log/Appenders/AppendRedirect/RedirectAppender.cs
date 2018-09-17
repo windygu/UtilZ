@@ -11,32 +11,33 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
     /// </summary>
     public class RedirectAppender : AppenderBase
     {
-        private readonly RedirectAppendConfig _config;
+        private readonly RedirectAppendConfig _redirectAppendConfig;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public RedirectAppender() : base()
+        /// <param name="ele">配置元素</param>
+        public RedirectAppender(XElement ele) : base(ele)
         {
-            this._config = new RedirectAppendConfig();
+            this._redirectAppendConfig = (RedirectAppendConfig)base._config;
         }
 
         /// <summary>
-        /// 初始化
+        /// 构造函数
         /// </summary>
-        /// <param name="ele">配置元素</param>
-        public override void Init(XElement ele)
+        /// <param name="config">配置对象</param>
+        public RedirectAppender(BaseConfig config) : base(config)
         {
-            try
-            {
-                this._config.Parse(ele);
-                base._status = true;
-            }
-            catch (Exception)
-            {
-                base._status = false;
-                throw;
-            }
+            this._redirectAppendConfig = (RedirectAppendConfig)base._config;
+        }
+
+        /// <summary>
+        /// 创建配置对象实例
+        /// </summary>
+        /// <returns>配置对象实例</returns>
+        protected override BaseConfig CreateConfig()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             try
             {
-                if (this._config == null || !base.Validate(this._config, item))
+                if (this._redirectAppendConfig == null || !base.Validate(this._redirectAppendConfig, item))
                 {
                     return;
                 }

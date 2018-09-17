@@ -18,17 +18,33 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// <summary>
         /// 日志记录器名称
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; } = null;
 
         /// <summary>
         /// 日志布局
         /// </summary>
-        public string Layout { get; private set; } = null;
+        public string Layout { get; set; } = null;
 
+        private string _dateFormat = null;
         /// <summary>
         /// 时间格式
         /// </summary>
-        public string DateFormat { get; private set; } = null;
+        public string DateFormat
+        {
+            get { return _dateFormat; }
+            set
+            {
+                try
+                {
+                    DateTime.Now.ToString(value);
+                    _dateFormat = value;
+                }
+                catch (Exception ex)
+                {
+                    LogSysInnerLog.OnRaiseLog(this, ex);
+                }
+            }
+        }
 
         private int _separatorCount = 140;
         /// <summary>
@@ -37,6 +53,16 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         public int SeparatorCount
         {
             get { return _separatorCount; }
+            set
+            {
+                if (value < 0 || value > 1000)
+                {
+                    return;
+                }
+
+                _separatorCount = value;
+                this._separatorLine = new string('-', _separatorCount);
+            }
         }
 
         /// <summary>
@@ -46,7 +72,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// <summary>
         /// 获取分隔线
         /// </summary>
-        public string SeparatorLine
+        internal string SeparatorLine
         {
             get
             {
@@ -56,51 +82,35 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         #endregion
 
         #region 过滤
-        private bool _enable = true;
         /// <summary>
         /// 是否启用日志追加器
         /// </summary>
-        public bool Enable
-        {
-            get { return _enable; }
-        }
+        public bool Enable { get; set; } = true;
 
         /// <summary>
         /// 过滤日志级别
         /// </summary>
-        public LogLevel[] Levels { get; private set; }
+        public LogLevel[] Levels { get; set; } = null;
 
-        private int _eventIdMin = LogConstant.DefaultEventId;
         /// <summary>
         /// 事件ID最小值(包含该值,默认值为不限)
         /// </summary>
-        public int EventIdMin
-        {
-            get { return _eventIdMin; }
-        }
+        public int EventIdMin { get; set; } = LogConstant.DefaultEventId;
 
-        private int _eventIdMax = LogConstant.DefaultEventId;
         /// <summary>
         /// 事件ID最大值(包含该值,默认值为不限)
         /// </summary>
-        public int EventIdMax
-        {
-            get { return _eventIdMax; }
-        }
+        public int EventIdMax { get; set; } = LogConstant.DefaultEventId;
 
         /// <summary>
         /// 消息匹配指定的字符串才被记录,为空或null不匹配(默认为null)
         /// </summary>
-        public string MatchString { get; private set; } = null;
+        public string MatchString { get; set; } = null;
 
-        private Type _matchExceptionType = null;
         /// <summary>
         /// 要记录的异常的类型为指定类型或其子类才被记录,为null不匹配(默认为null)
         /// </summary>
-        public Type MatchExceptionType
-        {
-            get { return _matchExceptionType; }
-        }
+        public Type MatchExceptionType { get; set; } = null;
         #endregion
 
         /// <summary>
@@ -127,7 +137,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             bool enable;
             if (bool.TryParse(LogUtil.GetAttributeValue(ele, "enable"), out enable))
             {
-                this._enable = enable;
+                this.Enable = enable;
             }
 
             this.Layout = LogUtil.GetChildXElementValue(ele, "Layout");
@@ -167,7 +177,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                     eventId = LogConstant.DefaultEventId;
                 }
 
-                this._eventIdMin = eventId;
+                this.EventIdMin = eventId;
             }
 
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, "EventIdMax"), out eventId))
@@ -177,7 +187,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
                     eventId = LogConstant.DefaultEventId;
                 }
 
-                this._eventIdMax = eventId;
+                this.EventIdMax = eventId;
             }
 
             this.MatchString = LogUtil.GetChildXElementValue(ele, "MatchString");
@@ -186,7 +196,7 @@ namespace UtilZ.Dotnet.SEx.Log.Config
             {
                 try
                 {
-                    this._matchExceptionType = Type.GetType(matchExceptionTypeName);
+                    this.MatchExceptionType = LogUtil.GetType(matchExceptionTypeName);
                 }
                 catch (Exception ex)
                 {

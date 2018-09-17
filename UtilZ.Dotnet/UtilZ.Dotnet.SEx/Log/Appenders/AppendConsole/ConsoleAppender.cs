@@ -11,32 +11,33 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
     /// </summary>
     public class ConsoleAppender : AppenderBase
     {
-        private readonly ConsoleAppenderConfig _config;
+        private readonly ConsoleAppenderConfig _consoleAppenderConfig;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ConsoleAppender() : base()
+        /// <param name="ele">配置元素</param>
+        public ConsoleAppender(XElement ele) : base(ele)
         {
-            this._config = new ConsoleAppenderConfig();
+            this._consoleAppenderConfig = (ConsoleAppenderConfig)base._config;
         }
 
         /// <summary>
-        /// 初始化
+        /// 构造函数
         /// </summary>
-        /// <param name="ele">配置元素</param>
-        public override void Init(XElement ele)
+        /// <param name="config">配置对象</param>
+        public ConsoleAppender(BaseConfig config) : base(config)
         {
-            try
-            {
-                this._config.Parse(ele);
-                base._status = true;
-            }
-            catch (Exception)
-            {
-                base._status = false;
-                throw;
-            }
+            this._consoleAppenderConfig = (ConsoleAppenderConfig)base._config;
+        }
+
+        /// <summary>
+        /// 创建配置对象实例
+        /// </summary>
+        /// <returns>配置对象实例</returns>
+        protected override BaseConfig CreateConfig()
+        {
+            return new ConsoleAppenderConfig();
         }
 
         /// <summary>
@@ -47,12 +48,12 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         {
             try
             {
-                if (this._config == null || !base.Validate(this._config, item))
+                if (this._consoleAppenderConfig == null || !base.Validate(this._consoleAppenderConfig, item))
                 {
                     return;
                 }
 
-                string logMsg = LayoutManager.LayoutLog(item, this._config);
+                string logMsg = LayoutManager.LayoutLog(item, this._consoleAppenderConfig);
                 Console.WriteLine(logMsg);
             }
             catch (Exception ex)

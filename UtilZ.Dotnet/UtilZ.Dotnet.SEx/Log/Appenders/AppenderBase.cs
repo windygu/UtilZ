@@ -14,17 +14,9 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
     public abstract class AppenderBase : IDisposable
     {
         /// <summary>
-        /// 构造函数
-        /// </summary>
-        public AppenderBase()
-        {
-
-        }
-
-        /// <summary>
         /// 当前日志追加器状态是否可用[true:可用;false:不可用]
         /// </summary>
-        protected bool _status = true;
+        protected readonly bool _status = true;
 
         private string _name = null;
         /// <summary>
@@ -37,16 +29,41 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         }
 
         /// <summary>
-        /// 初始化
+        /// 配置对象
+        /// </summary>
+        protected readonly BaseConfig _config;
+
+        /// <summary>
+        /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
-        public abstract void Init(XElement ele);
+        public AppenderBase(XElement ele)
+        {
+            this._config = this.CreateConfig();
+            this._config.Parse(ele);
+            this._status = true;
+        }
 
-        ///// <summary>
-        ///// 初始化
-        ///// </summary>
-        ///// <param name="config">配置元素</param>
-        //public abstract void Init(BaseConfig config);
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="config">配置对象</param>
+        public AppenderBase(BaseConfig config)
+        {
+            if (config == null)
+            {
+                config = this.CreateConfig();
+            }
+
+            this._config = config;
+            this._status = true;
+        }
+
+        /// <summary>
+        /// 创建配置对象实例
+        /// </summary>
+        /// <returns></returns>
+        protected abstract BaseConfig CreateConfig();
 
         /// <summary>
         /// 写日志
@@ -109,31 +126,6 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
         }
 
         /// <summary>
-        /// 重写Equals,日志追加器名称相同认为同一个日志追加器
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            var ex = obj as AppenderBase;
-            if (ex == null)
-            {
-                return false;
-            }
-
-            return string.Equals(ex.Name, this._name);
-        }
-
-        /// <summary>
-        /// 重写GetHashCode
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return this._name == null ? base.GetHashCode() : this._name.GetHashCode();
-        }
-
-        /// <summary>
         /// 重写ToString
         /// </summary>
         /// <returns></returns>
@@ -142,7 +134,9 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
             return this._name == null ? base.ToString() : this._name;
         }
 
-        //构造函数释放非托管资源 
+        /// <summary>
+        /// 构造函数释放非托管资源
+        /// </summary>
         ~AppenderBase()
         {
             this.Dispose(false);
