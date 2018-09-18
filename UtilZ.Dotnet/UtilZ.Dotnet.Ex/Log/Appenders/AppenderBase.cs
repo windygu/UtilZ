@@ -34,14 +34,22 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         protected readonly BaseConfig _config;
 
         /// <summary>
+        /// 日志写线程队列
+        /// </summary>
+        private LogAsynQueue<LogItem> _logWriteQueue = null;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
         public AppenderBase(XElement ele)
         {
-            this._config = this.CreateConfig();
-            this._config.Parse(ele);
+            this._config = this.CreateConfig(ele);
             this._status = true;
+            if (this._config != null && this._config.EnableOutputCache)
+            {
+                this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
+            }
         }
 
         /// <summary>
@@ -52,24 +60,45 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             if (config == null)
             {
-                config = this.CreateConfig();
+                config = this.CreateConfig(null);
             }
 
             this._config = config;
             this._status = true;
+            if (this._config != null && this._config.EnableOutputCache)
+            {
+                this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
+            }
         }
-
-        /// <summary>
-        /// 创建配置对象实例
-        /// </summary>
-        /// <returns></returns>
-        protected abstract BaseConfig CreateConfig();
 
         /// <summary>
         /// 写日志
         /// </summary>
         /// <param name="item">日志项</param>
-        public abstract void WriteLog(LogItem item);
+        protected abstract void PrimitiveWriteLog(LogItem item);
+
+        /// <summary>
+        /// 创建配置对象实例
+        /// </summary>
+        /// <param name="ele">配置元素</param>
+        /// <returns>配置对象实例</returns>
+        protected abstract BaseConfig CreateConfig(XElement ele);
+
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="item">日志项</param>
+        public void WriteLog(LogItem item)
+        {
+            if (this._config.EnableOutputCache)
+            {
+                this._logWriteQueue.Enqueue(item);
+            }
+            else
+            {
+                this.PrimitiveWriteLog(item);
+            }
+        }
 
         /// <summary>
         /// 验证日志是否允许输出[返回值true:允许输出;false:丢弃]
@@ -156,7 +185,10 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// <param name="disposing">释放资源标识</param>
         protected virtual void Dispose(bool disposing)
         {
-
+            if (this._logWriteQueue != null)
+            {
+                this._logWriteQueue.Dispose();
+            }
         }
     }
 }

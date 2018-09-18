@@ -33,8 +33,7 @@ namespace UtilZ.Dotnet.Ex.Log
         static Loger()
         {
             var defaultLoger = new Loger();
-            defaultLoger._logerName = string.Empty;
-            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig()));
+            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
             _defaultLoger = defaultLoger;
         }
 
@@ -108,6 +107,7 @@ namespace UtilZ.Dotnet.Ex.Log
 
                 var loger = new Loger();
                 loger.Name = name;
+
                 LogLevel level;
                 if (Enum.TryParse<LogLevel>(LogUtil.GetAttributeValue(logerEle, "level"), true, out level))
                 {
@@ -274,7 +274,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 return;
             }
 
-            string logerName = loger.LogerName;
+            string logerName = loger.Name;
             if (string.IsNullOrEmpty(logerName))
             {
                 if (_defaultLoger != null)
@@ -301,31 +301,16 @@ namespace UtilZ.Dotnet.Ex.Log
 
         #region 日志记录器实例成员
         /// <summary>
-        /// 日志记录器名称
-        /// </summary>
-        public string Name { get; private set; } = null;
-
-        /// <summary>
-        /// 是否启用日志追加器
-        /// </summary>
-        public bool Enable { get; private set; } = true;
-
-        /// <summary>
-        /// 日志级别
-        /// </summary>
-        public LogLevel Level { get; private set; } = LogLevel.Trace;
-
-        /// <summary>
         /// 日志分发线程队列
         /// </summary>
         private readonly LogAsynQueue<LogItem> _logDispatcherQueue;
 
         private Loger() : base()
         {
-            this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLog, "日志分发线程");
+            this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLogCallback, "日志分发线程");
         }
 
-        private void RecordLog(LogItem item)
+        private void RecordLogCallback(LogItem item)
         {
             AppenderBase[] appenders;
             lock (base._appendersLock)
@@ -379,7 +364,7 @@ namespace UtilZ.Dotnet.Ex.Log
                     return;
                 }
 
-                var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, base._logerName, eventID, true, args);
+                var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, this.Name, eventID, true, args);
                 this._logDispatcherQueue.Enqueue(item);
             }
             catch (Exception exi)

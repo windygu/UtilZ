@@ -79,6 +79,11 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 return _separatorLine;
             }
         }
+
+        /// <summary>
+        /// 是否启用日志输出缓存[true:启用;false:禁用]
+        /// </summary>
+        public bool EnableOutputCache { get; set; } = false;
         #endregion
 
         #region 过滤
@@ -116,16 +121,8 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// <summary>
         /// 构造函数
         /// </summary>
-        public BaseConfig()
-        {
-
-        }
-
-        /// <summary>
-        /// 解析配置
-        /// </summary>
-        /// <param name="ele"></param>
-        public virtual void Parse(XElement ele)
+        /// <param name="ele">配置元素</param>
+        public BaseConfig(XElement ele)
         {
             if (ele == null)
             {
@@ -150,6 +147,12 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 {
                     this._separatorLine = new string('-', separatorCount);
                 }
+            }
+
+            bool enableOutputCache;
+            if (bool.TryParse(LogUtil.GetAttributeValue(ele, "EnableOutputCache"), out enableOutputCache))
+            {
+                this.EnableOutputCache = enableOutputCache;
             }
 
             string levels = LogUtil.GetChildXElementValue(ele, "Levels").Trim();

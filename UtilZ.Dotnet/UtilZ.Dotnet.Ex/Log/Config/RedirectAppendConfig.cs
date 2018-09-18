@@ -14,23 +14,10 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// <summary>
         /// 构造函数
         /// </summary>
-        public RedirectAppendConfig() : base()
+        /// <param name="ele">配置元素</param>
+        public RedirectAppendConfig(XElement ele) : base(ele)
         {
 
-        }
-
-        /// <summary>
-        /// 解析配置
-        /// </summary>
-        /// <param name="ele"></param>
-        public override void Parse(XElement ele)
-        {
-            if (ele == null)
-            {
-                return;
-            }
-
-            base.Parse(ele);
         }
     }
 }

@@ -13,12 +13,17 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 日志记录器名称
         /// </summary>
-        string LogerName { get; }
+        string Name { get; }
 
         /// <summary>
         /// 获取日志级别
         /// </summary>
         LogLevel Level { get; }
+
+        /// <summary>
+        /// 是否启用日志追加器
+        /// </summary>
+        bool Enable { get; }
 
         /// <summary>
         /// 添加日志追加器

@@ -50,9 +50,8 @@ namespace TestE.Common
         private void btnTestLog_Click(object sender, EventArgs e)
         {
             ILoger loger = Loger.GetLoger(null);
-            string layout = string.Format(@"{0} {1}", LayoutManager.TIME, LayoutManager.CONTENT);
-            AppenderBase appender = new FileAppender(new FileAppenderConfig());
-            loger.AddAppender(appender);
+            //string layout = string.Format(@"{0} {1}", LayoutManager.TIME, LayoutManager.CONTENT);
+            loger.AddAppender(new FileAppender(new FileAppenderConfig(null)));
         }
 
         private void btnWriteLog_Click(object sender, EventArgs e)

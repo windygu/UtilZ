@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace UtilZ.Dotnet.Ex.Log.Config
 {
@@ -13,8 +14,10 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ConsoleAppenderConfig() : base()
+        /// <param name="ele">配置元素</param>
+        public ConsoleAppenderConfig(XElement ele) : base(ele)
         {
+
         }
     }
 }

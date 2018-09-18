@@ -34,17 +34,18 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// <summary>
         /// 创建配置对象实例
         /// </summary>
+        /// <param name="ele">配置元素</param>
         /// <returns>配置对象实例</returns>
-        protected override BaseConfig CreateConfig()
+        protected override BaseConfig CreateConfig(XElement ele)
         {
-            return new RedirectAppendConfig();
+            return new RedirectAppendConfig(ele);
         }
 
         /// <summary>
         /// 写日志
         /// </summary>
         /// <param name="item">日志项</param>
-        public override void WriteLog(LogItem item)
+        protected override void PrimitiveWriteLog(LogItem item)
         {
             try
             {

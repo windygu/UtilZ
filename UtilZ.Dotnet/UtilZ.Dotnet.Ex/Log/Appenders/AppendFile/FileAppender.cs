@@ -26,11 +26,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         private FileAppenderPathManager _pathManager;
 
         /// <summary>
-        /// 日志写线程队列
-        /// </summary>
-        private LogAsynQueue<LogItem> _logWriteQueue;
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
@@ -56,32 +51,23 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             this._fileAppenderConfig = (FileAppenderConfig)base._config;
             this._maxFileSize = this._fileAppenderConfig.MaxFileSize * 1024L;
             this._pathManager = new FileAppenderPathManager(this._fileAppenderConfig);
-            this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, "默认日志输出线程");
         }
 
         /// <summary>
         /// 创建配置对象实例
         /// </summary>
+        /// <param name="ele">配置元素</param>
         /// <returns>配置对象实例</returns>
-        protected override BaseConfig CreateConfig()
+        protected override BaseConfig CreateConfig(XElement ele)
         {
-            return new FileAppenderConfig();
+            return new FileAppenderConfig(ele);
         }
 
         /// <summary>
         /// 写日志
         /// </summary>
         /// <param name="item">日志项</param>
-        public override void WriteLog(LogItem item)
-        {
-            this._logWriteQueue.Enqueue(item);
-        }
-
-        /// <summary>
-        /// 写日志
-        /// </summary>
-        /// <param name="item">日志项</param>
-        private void PrimitiveWriteLog(LogItem item)
+        protected override void PrimitiveWriteLog(LogItem item)
         {
             if (this._fileAppenderConfig == null || !base.Validate(this._fileAppenderConfig, item) || !this._status)
             {
@@ -292,21 +278,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             this._fileSize = 0;
             this._filePath = this._pathManager.CreateLogFilePath();
             return this._filePath;
-        }
-
-        /// <summary>
-        /// 释放资源
-        /// </summary>
-        /// <param name="disposing">释放资源标识</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (this._logWriteQueue == null)
-            {
-                return;
-            }
-
-            this._logWriteQueue.Dispose();
-            this._logWriteQueue = null;
         }
     }
 }
