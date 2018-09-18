@@ -74,7 +74,7 @@ namespace TestSE
 
                 //Loger.Debug("dsfa", 100);
                 ILoger loger = Loger.GetLoger(null);
-                loger.AddAppender(new FileAppender(new FileAppenderConfig() { FilePath = @"Log2\*yyyy-MM-dd_HH_mm_ss.fffffff*.log" }));
+                loger.AddAppender(new FileAppender(new FileAppenderConfig(null) { FilePath = @"Log2\*yyyy-MM-dd_HH_mm_ss.fffffff*.log" }));
                 loger.Error("新版本");
             }
             catch (Exception ex)

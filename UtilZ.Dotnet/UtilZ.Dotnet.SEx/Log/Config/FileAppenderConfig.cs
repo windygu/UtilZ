@@ -49,23 +49,16 @@ namespace UtilZ.Dotnet.SEx.Log.Config
         /// <summary>
         /// 构造函数
         /// </summary>
-        public FileAppenderConfig() : base()
+        /// <param name="ele">配置元素</param>
+        public FileAppenderConfig(XElement ele) : base(ele)
         {
+            base.EnableOutputCache = true;
 
-        }
-
-        /// <summary>
-        /// 解析配置
-        /// </summary>
-        /// <param name="ele"></param>
-        public override void Parse(XElement ele)
-        {
             if (ele == null)
             {
                 return;
             }
 
-            base.Parse(ele);
             int days;
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, "Days"), out days))
             {

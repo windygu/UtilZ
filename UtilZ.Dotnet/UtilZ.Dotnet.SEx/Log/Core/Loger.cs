@@ -34,7 +34,7 @@ namespace UtilZ.Dotnet.SEx.Log
         {
             var defaultLoger = new Loger();
             defaultLoger._logerName = string.Empty;
-            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig()));
+            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
             _defaultLoger = defaultLoger;
         }
 
