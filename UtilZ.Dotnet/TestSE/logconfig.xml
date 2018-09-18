@@ -7,6 +7,7 @@
       <!--<param name="Layout" value="%d %l %e %c 堆栈:%s" des="日志布局"/>-->
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
+      <param name="EnableOutputCache" value="false" des="是否启用日志输出缓存,默认为true[true:启用;false:禁用]"/>
 
       <param name="Levels" value="debug,info,warn"  des="过滤日志级别集合"/>
       <param name="EventIdMin" value="-1" des="事件ID最小值(包含该值,默认值-1为不限)"/>
@@ -71,11 +72,13 @@
 
     <!--<appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.RedirectAppender,UtilZ.Dotnet.SEx">-->
     <appender name="redirectAppender" enable="true" type="R">
+      <param name="EnableOutputCache" value="true" des="是否启用日志输出缓存,默认为false[true:启用;false:禁用]"/>
     </appender>
 
     <!--<appender name="ConsoleAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.ConsoleAppender,UtilZ.Dotnet.SEx">-->
     <appender name="ConsoleAppender" enable="true" type="ConsoleAppender">
       <param name="SeparatorCount" value="0" des="分隔线长度,0表示无分隔线"/>
+      <param name="EnableOutputCache" value="true" des="是否启用日志输出缓存,默认为false[true:启用;false:禁用]"/>
     </appender>
 
     <appender name="MyDocumentsfileAppenderSpecDir" enable="true" type="F">

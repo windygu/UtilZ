@@ -90,7 +90,7 @@ namespace TestSE
         {
             try
             {
-                Console.WriteLine("SubItem_LogOutput:" + e.Item.Content);
+                Console.WriteLine("RedirectOutput:" + e.Item.Content);
             }
             catch (Exception ex)
             {
