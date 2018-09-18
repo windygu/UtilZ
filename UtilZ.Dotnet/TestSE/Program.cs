@@ -53,8 +53,8 @@ namespace TestSE
 
                 //File.WriteAllText("SpecialFolder.txt", sb.ToString());
 
-                //Console.WriteLine("ane key continue...");
-                //Console.ReadKey();
+                Console.WriteLine("ane key continue...");
+                Console.ReadKey();
 
                 Loger.LoadConfig(@"logconfig.xml");
 
@@ -72,10 +72,10 @@ namespace TestSE
                 LogSysInnerLog.Log += LogSysInnerLog_Log;
                 Loger.Debug("dsfa", 10);
 
-                //Loger.Debug("dsfa", 100);
-                ILoger loger = Loger.GetLoger(null);
-                loger.AddAppender(new FileAppender(new FileAppenderConfig(null) { FilePath = @"Log2\*yyyy-MM-dd_HH_mm_ss.fffffff*.log" }));
-                loger.Error("新版本");
+                ////Loger.Debug("dsfa", 100);
+                //ILoger loger = Loger.GetLoger(null);
+                //loger.AddAppender(new FileAppender(new FileAppenderConfig(null) { FilePath = @"Log2\*yyyy-MM-dd_HH_mm_ss.fffffff*.log" }));
+                //loger.Error("新版本");
             }
             catch (Exception ex)
             {

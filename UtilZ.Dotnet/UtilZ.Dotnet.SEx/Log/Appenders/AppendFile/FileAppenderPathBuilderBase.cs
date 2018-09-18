@@ -46,6 +46,11 @@ namespace UtilZ.Dotnet.SEx.Log.Appender
 
             string[] rootPaths = paths.Take(rootDirPathCount).ToArray();
             this._rootDir = Path.Combine(rootPaths);
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                this._rootDir = "/" + this._rootDir;
+            }
+
             string[] relativePaths = paths.Skip(rootDirPathCount).ToArray();
             this._searchPattern = string.Format("*{0}", Path.GetExtension(relativePaths.Last()));
             this._pathItems = new FileAppenderPathItem[relativePaths.Length];
