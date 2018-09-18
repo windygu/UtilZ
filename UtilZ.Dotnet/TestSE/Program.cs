@@ -13,7 +13,7 @@ namespace TestSE
         {
             try
             {
-                var xxxxx = System.Threading.Thread.GetDomain().FriendlyName;
+                //var xxxxx = System.Threading.Thread.GetDomain().FriendlyName;
                 //string appenderName = "a";
                 //var ret = string.Equals(appenderName, "abc");
 

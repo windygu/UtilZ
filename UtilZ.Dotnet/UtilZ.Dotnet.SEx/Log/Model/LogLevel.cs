@@ -6,43 +6,43 @@ using System.Text;
 namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
-    /// 日志级别[1-5,值越大;优先级:Faltal(5)>Error(4)>Warn(3)>Info(2)>Debug(1)]
+    /// 日志级别
     /// </summary>
     public enum LogLevel
     {
         /// <summary>
-        /// 追踪
+        /// 追踪[1]
         /// </summary>
-        Trace = 11,
+        Trace = 1,
 
         /// <summary>
-        /// 调试
+        /// 调试[2]
         /// </summary>
-        Debug = 12,
+        Debug = 2,
 
         /// <summary>
-        /// 提示
+        /// 提示[4]
         /// </summary>
-        Info = 13,
+        Info = 4,
 
         /// <summary>
-        /// 警告
+        /// 警告[8]
         /// </summary>
-        Warn = 14,
+        Warn = 8,
 
         /// <summary>
-        /// 错误
+        /// 错误[16]
         /// </summary>
-        Error = 15,
+        Error = 16,
 
         /// <summary>
-        /// 致命
+        /// 致命[32]
         /// </summary>
-        Fatal = 16,
+        Fatal = 32,
 
         /// <summary>
-        /// 关闭
+        /// 关闭[100]
         /// </summary>
-        Off = 100
+        Off = 1024
     }
 }

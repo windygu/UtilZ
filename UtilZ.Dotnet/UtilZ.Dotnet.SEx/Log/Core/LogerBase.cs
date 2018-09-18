@@ -30,28 +30,19 @@ namespace UtilZ.Dotnet.SEx.Log
 
         #region ILoger接口
         /// <summary>
-        /// 日志记录器名称
-        /// </summary>
-        protected string _logerName;
-        /// <summary>
         /// 获取日志记录器名称
         /// </summary>
-        string ILoger.LogerName
-        {
-            get { return _logerName; }
-        }
+        public string Name { get; protected set; } = null;
 
-        /// <summary>
-        /// 日志级别
-        /// </summary>
-        protected LogLevel _level = LogLevel.Off;
         /// <summary>
         /// 获取获取日志级别
         /// </summary>
-        LogLevel ILoger.Level
-        {
-            get { return _level; }
-        }
+        public LogLevel Level { get; protected set; } = LogLevel.Trace;
+
+        /// <summary>
+        /// 是否启用日志追加器
+        /// </summary>
+        public bool Enable { get; protected set; } = true;
 
         /// <summary>
         /// 添加日志追加器

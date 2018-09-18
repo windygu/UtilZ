@@ -33,7 +33,6 @@ namespace UtilZ.Dotnet.SEx.Log
         static Loger()
         {
             var defaultLoger = new Loger();
-            defaultLoger._logerName = string.Empty;
             defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
             _defaultLoger = defaultLoger;
         }
@@ -108,6 +107,7 @@ namespace UtilZ.Dotnet.SEx.Log
 
                 var loger = new Loger();
                 loger.Name = name;
+
                 LogLevel level;
                 if (Enum.TryParse<LogLevel>(LogUtil.GetAttributeValue(logerEle, "level"), true, out level))
                 {
@@ -274,7 +274,7 @@ namespace UtilZ.Dotnet.SEx.Log
                 return;
             }
 
-            string logerName = loger.LogerName;
+            string logerName = loger.Name;
             if (string.IsNullOrEmpty(logerName))
             {
                 if (_defaultLoger != null)
@@ -300,21 +300,6 @@ namespace UtilZ.Dotnet.SEx.Log
         #endregion
 
         #region 日志记录器实例成员
-        /// <summary>
-        /// 日志记录器名称
-        /// </summary>
-        public string Name { get; private set; } = null;
-
-        /// <summary>
-        /// 是否启用日志追加器
-        /// </summary>
-        public bool Enable { get; private set; } = true;
-
-        /// <summary>
-        /// 日志级别
-        /// </summary>
-        public LogLevel Level { get; private set; } = LogLevel.Trace;
-
         /// <summary>
         /// 日志分发线程队列
         /// </summary>
@@ -379,7 +364,7 @@ namespace UtilZ.Dotnet.SEx.Log
                     return;
                 }
 
-                var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, base._logerName, eventID, true, args);
+                var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, this.Name, eventID, true, args);
                 this._logDispatcherQueue.Enqueue(item);
             }
             catch (Exception exi)
