@@ -307,10 +307,10 @@ namespace UtilZ.Dotnet.SEx.Log
 
         private Loger() : base()
         {
-            this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLog, "日志分发线程");
+            this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLogCallback, "日志分发线程");
         }
 
-        private void RecordLog(LogItem item)
+        private void RecordLogCallback(LogItem item)
         {
             AppenderBase[] appenders;
             lock (base._appendersLock)

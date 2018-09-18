@@ -72,7 +72,15 @@ namespace UtilZ.Dotnet.SEx.Log
                     if (this._queue.Count == 0)
                     {
                         this._thread.IsBackground = true;
-                        this._autoResetEvent.WaitOne();
+                        try
+                        {
+                            this._autoResetEvent.WaitOne();
+                            continue;
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            break;
+                        }
                     }
 
                     if (this._queue.TryDequeue(out item))
@@ -113,6 +121,7 @@ namespace UtilZ.Dotnet.SEx.Log
             }
 
             this._cts.Dispose();
+            this._autoResetEvent.Set();
             this._autoResetEvent.Dispose();
             this._cts = null;
         }
