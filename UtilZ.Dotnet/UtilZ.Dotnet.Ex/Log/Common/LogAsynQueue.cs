@@ -16,12 +16,12 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 异步队列线程
         /// </summary>
-        private Thread _thread = null;
+        private readonly Thread _thread = null;
 
         /// <summary>
         /// 线程取消通知对象
         /// </summary>
-        private CancellationTokenSource _cts = null;
+        private readonly CancellationTokenSource _cts = null;
 
         /// <summary>
         /// Queue
@@ -37,6 +37,11 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 数据处理委托
         /// </summary>
         private readonly Action<T> _processAction;
+
+        /// <summary>
+        /// 是否已释放过资源[true:已释放过;false:未释放过]
+        /// </summary>
+        private bool _isDispose = false;
 
         /// <summary>
         /// 构造函数
@@ -115,15 +120,16 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         public void Dispose()
         {
-            if (this._cts == null)
+            if (this._isDispose)
             {
                 return;
             }
 
-            this._cts.Dispose();
+            this._cts.Cancel();
             this._autoResetEvent.Set();
+            this._cts.Dispose();
             this._autoResetEvent.Dispose();
-            this._cts = null;
+            this._isDispose = true;
         }
     }
 }
