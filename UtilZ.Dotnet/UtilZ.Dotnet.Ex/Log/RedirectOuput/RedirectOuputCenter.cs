@@ -39,7 +39,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 日志输出队列
         /// </summary>
-        private static readonly ConcurrentQueue<RedirectOuputArgs> _logOutputQueue = new ConcurrentQueue<RedirectOuputArgs>();
+        private static readonly ConcurrentQueue<RedirectOuputItem> _logOutputQueue = new ConcurrentQueue<RedirectOuputItem>();
 
         /// <summary>
         /// 日志输出线程方法
@@ -48,7 +48,7 @@ namespace UtilZ.Dotnet.Ex.Log
         private static void LogOutputThreadMethod(object obj)
         {
             var token = _cts.Token;
-            RedirectOuputArgs item;
+            RedirectOuputItem item;
             while (!token.IsCancellationRequested)
             {
                 try
@@ -79,9 +79,9 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 日志输出
         /// </summary>
         /// <param name="logItem"></param>
-        private static void LogOutput(RedirectOuputArgs logItem)
+        private static void LogOutput(RedirectOuputItem logItem)
         {
-            RedirectOutputSubscribeItem[] logOutputSubscribeItems;
+            RedirectOutputChannel[] logOutputSubscribeItems;
             lock (_logOutputSubscribeItemsMonitor)
             {
                 logOutputSubscribeItems = _logOutputSubscribeItems.ToArray();
@@ -98,12 +98,12 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 日志输出订阅项集合
         /// </summary>
-        private static readonly List<RedirectOutputSubscribeItem> _logOutputSubscribeItems = new List<RedirectOutputSubscribeItem>();
+        private static readonly List<RedirectOutputChannel> _logOutputSubscribeItems = new List<RedirectOutputChannel>();
 
         /// <summary>
         /// 获取日志输出订阅项集合
         /// </summary>
-        public static List<RedirectOutputSubscribeItem> LogOutputSubscribeItems
+        public static List<RedirectOutputChannel> LogOutputSubscribeItems
         {
             get
             {
@@ -123,7 +123,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 添加日志输出订阅项
         /// </summary>
         /// <param name="item">日志输出订阅项</param>
-        public static void Add(RedirectOutputSubscribeItem item)
+        public static void Add(RedirectOutputChannel item)
         {
             if (item == null)
             {
@@ -143,7 +143,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 移除日志输出订阅项
         /// </summary>
         /// <param name="item">日志输出订阅项</param>
-        public static void Remove(RedirectOutputSubscribeItem item)
+        public static void Remove(RedirectOutputChannel item)
         {
             if (item == null)
             {
@@ -178,7 +178,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="logItem">日志项</param>
         internal static void Output(string appenderName, LogItem logItem)
         {
-            _logOutputQueue.Enqueue(new RedirectOuputArgs(appenderName, logItem));
+            _logOutputQueue.Enqueue(new RedirectOuputItem(appenderName, logItem));
             _logOutputAutoResetEvent.Set();
         }
     }

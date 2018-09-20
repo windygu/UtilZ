@@ -130,9 +130,9 @@
     <Compile Include="Log\Model\LogConstant.cs" />
     <Compile Include="Log\Model\LogItem.cs" />
     <Compile Include="Log\Model\LogLevel.cs" />
-    <Compile Include="Log\RedirectOuput\RedirectOuputArgs.cs" />
     <Compile Include="Log\RedirectOuput\RedirectOuputCenter.cs" />
-    <Compile Include="Log\RedirectOuput\RedirectOutputSubscribeItem.cs" />
+    <Compile Include="Log\RedirectOuput\RedirectOuputItem.cs" />
+    <Compile Include="Log\RedirectOuput\RedirectOutputChannel.cs" />
     <Compile Include="Log\Security\ILogSecurityPolicy.cs" />
     <Compile Include="Log\Security\XSecurityPolicy.cs" />
     <Compile Include="LRPC\LRPCCenter.cs" />

@@ -62,12 +62,10 @@ namespace TestE.Common
                 }
             }, "生产者线程", true);
 
-            var subLog = new RedirectOutputSubscribeItem(null);
-            subLog.LogOutput += SubLog_LogOutput;
-            RedirectOuputCenter.Add(subLog);
+            RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
         }
 
-        private void SubLog_LogOutput(object sender, RedirectOuputArgs e)
+        private void RedirectLogOutput(RedirectOuputItem e)
         {
             this.Invoke(new Action(() =>
             {

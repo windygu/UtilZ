@@ -85,10 +85,8 @@
     <Compile Include="Excel\MyXlsEx.cs" />
     <Compile Include="Excel\NPOIEx.cs" />
     <Compile Include="Excel\NpoiEx2.cs" />
-    <Compile Include="LogExtend\Log4ExtendInfo.cs" />
-    <Compile Include="LogExtend\Log4InnerLogAddedILogerArgs.cs" />
-    <Compile Include="LogExtend\Log4Log.cs" />
-    <Compile Include="LogExtend\Log4Loger.cs" />
+    <Compile Include="LogExtend\Log4Appender.cs" />
+    <Compile Include="LogExtend\Log4AppenderConfig.cs" />
     <Compile Include="NDatabaseEx\NDatabaseExtend.cs" />
     <Compile Include="NDatabaseEx\NDatabaseHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

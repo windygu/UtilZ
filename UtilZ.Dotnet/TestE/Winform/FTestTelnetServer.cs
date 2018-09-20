@@ -32,13 +32,11 @@ namespace TestE.Winform
 
         private void FTestTelnetServer_Load(object sender, EventArgs e)
         {
-            var subLog = new RedirectOutputSubscribeItem(null);
-            subLog.LogOutput += SubLog_LogOutput;
-            RedirectOuputCenter.Add(subLog);
+            RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
             ts.Start();
         }
 
-        private void SubLog_LogOutput(object sender, RedirectOuputArgs e)
+        private void RedirectLogOutput(RedirectOuputItem e)
         {
             logControl1.AddLog(string.Format("{0} {1}", e.Item.Time, e.Item.Content));
         }

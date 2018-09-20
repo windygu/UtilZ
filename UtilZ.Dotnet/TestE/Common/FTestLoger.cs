@@ -22,9 +22,7 @@ namespace TestE.Common
             //System.Threading.Thread.Sleep(20 * 1000);
             //Loger.LoadInit();
 
-            var subLog = new RedirectOutputSubscribeItem(null);
-            subLog.LogOutput += SubLog_LogOutput;
-            RedirectOuputCenter.Add(subLog);
+            RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
             checkBox1.Checked = true;
         }
 
@@ -43,7 +41,7 @@ namespace TestE.Common
             logControlF1.AddLog(str, 1);
         }
 
-        private void SubLog_LogOutput(object sender, RedirectOuputArgs e)
+        private void RedirectLogOutput(RedirectOuputItem e)
         {
             string str;
             try
@@ -148,9 +146,7 @@ namespace TestE.Common
         {
             if (checkBox1.Checked)
             {
-                var subLog = new RedirectOutputSubscribeItem(null);
-                subLog.LogOutput += SubLog_LogOutput;
-                RedirectOuputCenter.Add(subLog);
+                RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
             }
             else
             {
