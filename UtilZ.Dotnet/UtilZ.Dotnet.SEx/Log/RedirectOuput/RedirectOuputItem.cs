@@ -6,16 +6,16 @@ using System.Text;
 namespace UtilZ.Dotnet.SEx.Log
 {
     /// <summary>
-    /// 外部日志输出事件参数
+    /// 重定向输出项
     /// </summary>
-    public class RedirectOuputArgs : EventArgs
+    public class RedirectOuputItem
     {
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="appenderName">日志追加器名称</param>
         /// <param name="item">日志信息项</param>
-        public RedirectOuputArgs(string appenderName, LogItem item)
+        public RedirectOuputItem(string appenderName, LogItem item)
             : base()
         {
             this.AppenderName = appenderName;

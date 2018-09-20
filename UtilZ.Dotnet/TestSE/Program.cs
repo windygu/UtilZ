@@ -58,7 +58,7 @@ namespace TestSE
 
                 Loger.LoadConfig(@"logconfig.xml");
 
-                var subItem = new RedirectOutputSubscribeItem("redirectAppender");
+                var subItem = new RedirectOutputChannel("redirectAppender");
                 subItem.LogOutput += SubItem_LogOutput;
                 RedirectOuputCenter.Add(subItem);
 
@@ -86,7 +86,7 @@ namespace TestSE
             Console.ReadKey();
         }
 
-        private static void SubItem_LogOutput(object sender, RedirectOuputArgs e)
+        private static void SubItem_LogOutput(object sender, RedirectOuputItem e)
         {
             try
             {
