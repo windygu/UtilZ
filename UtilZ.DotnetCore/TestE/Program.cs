@@ -1,4 +1,5 @@
 ﻿using System;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace TestE
 {
@@ -6,7 +7,11 @@ namespace TestE
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            RedirectOuputCenter.Add(new RedirectOutputChannel((e) => { Console.WriteLine(e.Item.Content); }, null));
+
+            TestDBAccess.Test();
+            Console.WriteLine("any key exist...");
+            Console.ReadKey();
         }
     }
 }

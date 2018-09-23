@@ -102,6 +102,11 @@ namespace UtilZ.Dotnet.Ex.Log
         #endregion
 
         /// <summary>
+        /// 默认配置文件名称
+        /// </summary>
+        public const string DefaultConfigFileName = "logConfig.xml";
+
+        /// <summary>
         /// 通配符
         /// </summary>
         public const char PatternFlagChar = '*';

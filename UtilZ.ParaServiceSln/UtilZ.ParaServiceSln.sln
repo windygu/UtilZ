@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.WebApp", "UtilZ.ParaService.WebApp\UtilZ.ParaService.WebApp.csproj", "{0E6B82FD-FD99-4907-8495-514CAD5012B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.BLL", "UtilZ.ParaService.BLL\UtilZ.ParaService.BLL.csproj", "{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {897A58A2-6552-4FA5-A2D7-22F51A1254C2}
+	EndGlobalSection
+EndGlobal

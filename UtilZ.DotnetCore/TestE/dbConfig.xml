@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DBConfig>
+  <DBItems>
+    <Item DBID="1"
+         Name="SQLiteDB"
+         ConnectionType="1"
+         DatabaseName="F:\Project\Git\UtilZ\UtilZ.DotnetCore\TestE\SQLiteDB\SQLite.db"
+         DBFactory="UtilZ.Dotnet.DBSQLite.Core.SQLiteDBFactory,UtilZ.Dotnet.DBSQLite"/>
+
+    <Item DBID="2"
+          Name="SqlServerDB"
+          ConnectionType="0"
+          ConStr="data source=192.168.0.104;initial catalog=ntestdb;user id=sa;password=qweQWE123"
+          DBFactory="UtilZ.Dotnet.DBSQLServer.Core.SQLServerDBFactory,UtilZ.Dotnet.DBSQLServer"/>
+
+    <!--<Item DBID="3"
+         Name="MysqlDB"
+         ConnectionType="1"
+         Host="192.168.0.104"
+         Port="3306"
+         DatabaseName="test"
+         Account="yf"
+         Password="qweQWE123"
+         DBFactory="UtilZ.Dotnet.DBMySql.Core.MysqlDBFactory,UtilZ.Dotnet.DBMySql"/>
+
+    <Item DBID="4"
+         Name="OracleDB"
+         ConnectionType="1"
+         Host="192.168.0.104"
+         DatabaseName="ntestdb.org"
+         Account="DBUSER"
+         Password="qwe123"
+         DBFactory="UtilZ.Dotnet.DBOracle.Core.OracleDBFactory,UtilZ.Dotnet.DBOracle"/>-->
+  </DBItems>
+</DBConfig>

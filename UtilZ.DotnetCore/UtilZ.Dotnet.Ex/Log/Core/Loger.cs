@@ -32,9 +32,17 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         static Loger()
         {
-            var defaultLoger = new Loger();
-            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
-            _defaultLoger = defaultLoger;
+            const string logConfigFileName = LogConstant.DefaultConfigFileName;
+            if (File.Exists(logConfigFileName))
+            {
+                LoadConfig(logConfigFileName);
+            }
+            else
+            {
+                var defaultLoger = new Loger();
+                defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
+                _defaultLoger = defaultLoger;
+            }
         }
 
         /// <summary>

@@ -1,0 +1,11 @@
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\bin\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.deps.json
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\bin\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.runtimeconfig.json
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\bin\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.runtimeconfig.dev.json
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\bin\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.dll
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\bin\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.pdb
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\obj\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.csprojAssemblyReference.cache
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\obj\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.csproj.CoreCompileInputs.cache
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\obj\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.AssemblyInfoInputs.cache
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\obj\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.AssemblyInfo.cs
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\obj\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.dll
+F:\Project\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\obj\Debug\netcoreapp2.0\UtilZ.ParaService.WebApp.pdb
