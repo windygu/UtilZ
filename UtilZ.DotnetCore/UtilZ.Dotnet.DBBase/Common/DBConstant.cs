@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UtilZ.Dotnet.DBBase.Model
+namespace UtilZ.Dotnet.DBBase.Common
 {
     /// <summary>
     /// 常量定义类

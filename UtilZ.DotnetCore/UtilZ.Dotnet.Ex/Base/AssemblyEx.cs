@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -376,6 +377,11 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(Path.GetPathRoot(assemblyPath)))
+                {
+                    assemblyPath = Path.GetFullPath(assemblyPath);
+                }
+
                 return AssemblyName.GetAssemblyName(assemblyPath).FullName;
             }
             catch

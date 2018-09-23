@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBBase.Core
 {
@@ -11,13 +12,15 @@ namespace UtilZ.Dotnet.DBBase.Core
     public abstract partial class DBAccessBase
     {
         #region protect method
-        protected void SetParameter(IDbCommand cmd, DbParameterCollection collection)
+        protected void SetParameter(IDbCommand cmd, NDbParameterCollection collection)
         {
             if (collection != null && collection.Count > 0)
             {
                 foreach (var para in collection)
                 {
-                    cmd.Parameters.Add(para);
+                    var parameter = cmd.CreateParameter();
+                    para.SetValueToParameter(parameter);
+                    cmd.Parameters.Add(parameter);
                 }
             }
         }
@@ -30,7 +33,7 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <param name="collection">命令的参数集合</param>
         /// <param name="transaction">事务参数</param>
         /// <returns>返回执行结果</returns>
-        protected object InnerExecuteScalar(IDbConnection con, string sqlStr, DbParameterCollection collection = null, IDbTransaction transaction = null)
+        protected object InnerExecuteScalar(IDbConnection con, string sqlStr, NDbParameterCollection collection = null, IDbTransaction transaction = null)
         {
             IDbCommand cmd = con.CreateCommand();
             cmd.Transaction = transaction;
@@ -47,7 +50,7 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <param name="collection">命令的参数集合</param>
         /// <param name="transaction">事务参数</param>
         /// <returns>返回执行结果</returns>
-        protected int InnerExecuteNonQuery(IDbConnection con, string sqlStr, DbParameterCollection collection = null, IDbTransaction transaction = null)
+        protected int InnerExecuteNonQuery(IDbConnection con, string sqlStr, NDbParameterCollection collection = null, IDbTransaction transaction = null)
         {
             IDbCommand cmd = con.CreateCommand();
             cmd.Transaction = transaction;

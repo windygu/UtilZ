@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
+using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBBase.Model;
@@ -62,9 +63,6 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             {
                 this.SqlMaxLength = base._config.SqlMaxLength;
             }
-
-            //string name = string.Format("{0}写线程", string.IsNullOrEmpty(this.Config.ConName) ? "数据库编号" + this.Config.DBID.ToString() : this.Config.ConName);
-            //this._writeQueue = new AsynQueue<SQLiteWriteBase>(this.WriteThreadMethod, name, true, false);
         }
     }
 }

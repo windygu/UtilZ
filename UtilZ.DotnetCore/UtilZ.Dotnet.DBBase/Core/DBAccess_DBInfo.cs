@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
+using UtilZ.Dotnet.DBBase.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.Common;
+using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
+using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.DBBase.Core
 {
     //数据库访问基类-DBInfo
     public abstract partial class DBAccessBase
     {
-        /*
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
         /// </summary>
@@ -128,102 +132,6 @@ namespace UtilZ.Dotnet.DBBase.Core
         internal protected abstract DBTableInfo InnerGetTableInfo(IDbConnection con, string tableName, bool isGetFieldInfo = false);
         #endregion
 
-        #region 数据库表结构版本管理
-        /// <summary>
-        /// 获取或设置数据库表结构版本号表名
-        /// </summary>
-        private string _dbVersionTableName = "DBStructVersion";
-
-        /// <summary>
-        /// 获取或设置数据库表结构版本号表名
-        /// </summary>
-        public string DBStructVersionTableName
-        {
-            get { return _dbVersionTableName; }
-            set { _dbVersionTableName = value; }
-        }
-
-        /// <summary>
-        /// 数据库表结构版本号表名
-        /// </summary>
-        private readonly string _dbStructVersionColName = "Version";
-
-        /// <summary>
-        /// 获取当前数据库表结构版本号,如果该表不存在则返回-1
-        /// </summary>
-        /// <returns>当前数据库表结构版本号</returns>
-        public int GetDBVersion()
-        {
-            string dbVersionTableName = this.DBStructVersionTableName;
-            if (this.IsExistTable(dbVersionTableName))
-            {
-                string sqlStr = string.Format(@"select {0} from {1}", this._dbStructVersionColName, dbVersionTableName);
-                object obj = this.ExecuteScalar(sqlStr, DBVisitType.R);
-                return Convert.ToInt32(obj);
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
-        /// <summary>
-        /// 更新当前数据库表结构版本号[如果表存在，则更新为新版本号值,否则创建表,并设置版本号为新版本号值]
-        /// </summary>
-        public void UpdateDBVersion(int newVersion)
-        {
-            string dbVersionTableName = this.DBStructVersionTableName;
-            string dbStructVersionColName = this._dbStructVersionColName;
-            if (this.IsExistTable(dbVersionTableName))
-            {
-                //表存在，则更新为新版本号值
-                string sqlStr = string.Format(@"update {0} set {1} = {2}", dbVersionTableName, dbStructVersionColName, newVersion);
-                this.ExecuteScalar(sqlStr, DBVisitType.W);
-            }
-            else
-            {
-                //表不存在，创建表,并设置版本号为新版本号值
-                dynamic para = new System.Dynamic.ExpandoObject();
-                para.DBVersionTableName = dbVersionTableName;
-                para.DBStructVersionColName = dbStructVersionColName;
-                para.DefaultVersion = newVersion;
-                this.ExcuteAdoNetTransaction(para, new Func<IDbConnection, IDbTransaction, object, object>(this.TransactionCreateDBVersionTable));
-            }
-        }
-
-        /// <summary>
-        /// 事务创建数据库表结构版本号表
-        /// </summary>
-        /// <param name="con">数据库写连接</param>
-        /// <param name="transaction">事务对象</param>
-        /// <param name="p">参数</param>
-        /// <returns></returns>
-        private object TransactionCreateDBVersionTable(IDbConnection con, IDbTransaction transaction, object p)
-        {
-            dynamic para = p;
-            //创建表
-            IDbCommand cmdCreateTable = this.CreateCommand(con);
-            cmdCreateTable.Transaction = transaction;
-            cmdCreateTable.CommandText = this.GetCreateDBVersionTableSql(para.DBVersionTableName, para.DBStructVersionColName);
-            cmdCreateTable.ExecuteNonQuery();
-
-            //插入版本数据
-            IDbCommand cmdInsertDefaultVersion = this.CreateCommand(con);
-            cmdInsertDefaultVersion.Transaction = transaction;
-            cmdInsertDefaultVersion.CommandText = string.Format(@"insert into {0} ({1}) values ({2})", para.DBVersionTableName, para.DBStructVersionColName, para.DefaultVersion);
-            cmdInsertDefaultVersion.ExecuteNonQuery();
-            return null;
-        }
-
-        /// <summary>
-        /// 获取创建数据库表结构版本号表sql语句
-        /// </summary>
-        /// <param name="dbVersionTableName">表名</param>
-        /// <param name="dbStructVersionColName">版本列名</param>
-        /// <returns>创建数据库表结构版本号表sql语句</returns>
-        protected abstract string GetCreateDBVersionTableSql(string dbVersionTableName, string dbStructVersionColName);
-        #endregion
-        */
         /// <summary>
         /// 获取数据库版本信息
         /// </summary>

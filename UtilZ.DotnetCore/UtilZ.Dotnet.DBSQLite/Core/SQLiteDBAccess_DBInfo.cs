@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.Common;
+using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {
     //SQLServer数据库访问类-数据库信息相关
     public partial class SQLiteDBAccess
     {
-        /*
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
         /// </summary>
@@ -25,12 +29,18 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             //string sqlStr =@"select COUNT(0) from sysobjects where id = object_id('表名') and type = 'u'";
             //string sqlStr = @"select COUNT(0) from sys.tables where name='表名' and type = 'u';";
             string sqlStr = string.Format(@"select COUNT(0) from sys.tables where name={0}TABLENAME and type = 'u'", this.ParaSign);
-            var paras = new NDbParameterCollection();
-            paras.Add("TABLENAME", tableName);
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                object value = this.InnerExecuteScalar(conInfo.Con, sqlStr, paras);
-                return Convert.ToInt32(value) > 0;
+                var cmd = conInfo.Connection.CreateCommand();
+                cmd.CommandText = sqlStr;
+
+                var para = cmd.CreateParameter();
+                para.ParameterName = "TABLENAME";
+                para.Value = tableName;
+                para.DbType = System.Data.DbType.String;
+                cmd.Parameters.Add(para);
+
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
             }
         }
 
@@ -48,12 +58,24 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             }
 
             string sqlStr = @"select count(0) from syscolumns where name=@FIELDNAME and objectproperty(id,'IsUserTable')=1 and object_name(id)=@TABLENAME";
-            var paras = new NDbParameterCollection();
-            paras.Add("FIELDNAME", fieldName);
-            paras.Add("TABLENAME", tableName);
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return Convert.ToInt64(this.InnerExecuteScalar(conInfo.Con, sqlStr, paras)) > 0;
+                var cmd = conInfo.Connection.CreateCommand();
+                cmd.CommandText = sqlStr;
+
+                var para = cmd.CreateParameter();
+                para.ParameterName = "FIELDNAME";
+                para.Value = fieldName;
+                para.DbType = System.Data.DbType.String;
+                cmd.Parameters.Add(para);
+
+                var para2 = cmd.CreateParameter();
+                para2.ParameterName = "TABLENAME";
+                para2.Value = tableName;
+                para2.DbType = System.Data.DbType.String;
+                cmd.Parameters.Add(para2);
+
+                return Convert.ToInt64(cmd.ExecuteScalar()) > 0;
             }
         }
 
@@ -75,7 +97,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             if (con == null)
             {
                 conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R);
-                con = conInfo.Con;
+                con = conInfo.Connection;
             }
 
             try
@@ -90,7 +112,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                     colDBType.Add(col.ColumnName, col.DataType);
                 }
 
-                IDbCommand cmd = this.CreateCommand(con);
+                IDbCommand cmd = con.CreateCommand();
                 cmd.CommandText = string.Format(@"SELECT  C.name as [字段名]
 	                                                    ,T.name as [字段类型]
                                                         ,convert(bit,C.IsNullable)  as [可否为空]
@@ -162,11 +184,11 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             string sqlStr = @"select c.name,cast(isnull(f.[value], '') as nvarchar(100)) as remark from sys.objects c left join sys.extended_properties f on f.major_id=c.object_id and f.minor_id=0 and f.class=1 where c.type='u'";
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                DataTable dt = this.InnerQueryData(conInfo.Con, sqlStr);
+                DataTable dt = this.InnerQueryData(conInfo.Connection, sqlStr);
                 List<DBTableInfo> tables = new List<DBTableInfo>();
                 foreach (DataRow row in dt.Rows)
                 {
-                    tables.Add(this.InnerGetTableInfo(conInfo.Con, row[0].ToString(), isGetFieldInfo));
+                    tables.Add(this.InnerGetTableInfo(conInfo.Connection, row[0].ToString(), isGetFieldInfo));
                 }
 
                 return tables;
@@ -216,7 +238,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             if (con == null)
             {
                 conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R);
-                con = conInfo.Con;
+                con = conInfo.Connection;
             }
 
             try
@@ -249,7 +271,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                     if (isGetFieldInfo)//获取字段信息
                     {
                         colInfos = this.InnerGetTableFieldInfos(con, tableName);//获取表所有字段集合
-                        priKeyColInfos = from col in colInfos where col.IsPriKey select col;//获取主键列字段集合
+                        priKeyColInfos = (from col in colInfos where col.IsPriKey select col);//获取主键列字段集合
                     }
                     else//不获取字段信息
                     {
@@ -272,19 +294,6 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         }
         #endregion
 
-        #region 数据库表结构版本管理
-        /// <summary>
-        /// 获取创建数据库表结构版本号表sql语句
-        /// </summary>
-        /// <param name="dbVersionTableName">表名</param>
-        /// <param name="dbStructVersionColName">版本列名</param>
-        /// <returns>创建数据库表结构版本号表sql语句</returns>
-        protected override string GetCreateDBVersionTableSql(string dbVersionTableName, string dbStructVersionColName)
-        {
-            return string.Format(@"CREATE TABLE {0} ({1} int)", dbVersionTableName, dbStructVersionColName);
-        }
-        #endregion
-        */
         /// <summary>
         /// 获取数据库版本信息
         /// </summary>

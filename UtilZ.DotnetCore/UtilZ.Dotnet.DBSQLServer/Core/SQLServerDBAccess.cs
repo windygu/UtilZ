@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBBase.Model;

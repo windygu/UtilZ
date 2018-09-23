@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Model;
 using UtilZ.Dotnet.Ex.Base;
 

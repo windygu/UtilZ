@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
 
 namespace UtilZ.Dotnet.DBSQLServer.Core
 {
     //SQLite数据库访问类-数据库信息相关
     public partial class SQLServerDBAccess
     {
-        /*
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
         /// </summary>
@@ -78,7 +80,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             if (con == null)
             {
                 conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R);
-                con = conInfo.Con;
+                con = conInfo.Connection;
             }
 
             try
@@ -131,7 +133,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             string sqlStr = @"select tbl_name,'' from sqlite_master where type='table'";
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                DataTable dt = this.InnerQueryData(conInfo.Con, sqlStr);
+                DataTable dt = this.InnerQueryData(conInfo.Connection, sqlStr);
                 List<DBTableInfo> tables = new List<DBTableInfo>();
                 string tableName;
 
@@ -143,7 +145,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
                         continue;
                     }
 
-                    tables.Add(this.InnerGetTableInfo(conInfo.Con, tableName, isGetFieldInfo));
+                    tables.Add(this.InnerGetTableInfo(conInfo.Connection, tableName, isGetFieldInfo));
                 }
 
                 return tables;
@@ -195,7 +197,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             if (con == null)
             {
                 conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R);
-                con = conInfo.Con;
+                con = conInfo.Connection;
             }
 
             try
@@ -221,7 +223,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
                     if (isGetFieldInfo)//获取字段信息
                     {
                         colInfos = this.InnerGetTableFieldInfos(con, tableName);//获取表所有字段集合
-                        priKeyColInfos = from col in colInfos where col.IsPriKey select col;//获取主键列字段集合
+                        priKeyColInfos = (from col in colInfos where col.IsPriKey select col);//获取主键列字段集合
                     }
                     else//不获取字段信息
                     {
@@ -243,20 +245,6 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             }
         }
         #endregion
-
-        #region 数据库表结构版本管理
-        /// <summary>
-        /// 获取创建数据库表结构版本号表sql语句
-        /// </summary>
-        /// <param name="dbVersionTableName">表名</param>
-        /// <param name="dbStructVersionColName">版本列名</param>
-        /// <returns>创建数据库表结构版本号表sql语句</returns>
-        protected override string GetCreateDBVersionTableSql(string dbVersionTableName, string dbStructVersionColName)
-        {
-            return string.Format(@"CREATE TABLE {0} ({1} integer)", dbVersionTableName, dbStructVersionColName);
-        }
-        #endregion
-        */
 
         /// <summary>
         /// 获取数据库版本信息

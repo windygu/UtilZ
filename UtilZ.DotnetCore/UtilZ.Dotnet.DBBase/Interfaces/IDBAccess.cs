@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
 namespace UtilZ.Dotnet.DBBase.Interfaces
 {
@@ -69,7 +70,7 @@ namespace UtilZ.Dotnet.DBBase.Interfaces
         /// <param name="visitType">数据库访问类型</param>
         /// <param name="parameters">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        object ExecuteScalar(string sqlStr, DBVisitType visitType, DbParameterCollection parameters = null);
+        object ExecuteScalar(string sqlStr, DBVisitType visitType, NDbParameterCollection parameters = null);
 
         /// <summary>
         /// ExecuteNonQuery执行SQL语句,返回受影响的行数
@@ -78,7 +79,7 @@ namespace UtilZ.Dotnet.DBBase.Interfaces
         /// <param name="visitType">数据库访问类型</param>
         /// <param name="parameters">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        int ExecuteNonQuery(string sqlStr, DBVisitType visitType, DbParameterCollection parameters = null);
+        int ExecuteNonQuery(string sqlStr, DBVisitType visitType, NDbParameterCollection parameters = null);
         #endregion
     }
 }

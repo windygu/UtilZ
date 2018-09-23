@@ -7,6 +7,7 @@ using System.Text;
 using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBBase.Model;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.DBBase.Core
@@ -134,7 +135,7 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <param name="visitType">数据库访问类型</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        public virtual object ExecuteScalar(string sqlStr, DBVisitType visitType, DbParameterCollection collection = null)
+        public virtual object ExecuteScalar(string sqlStr, DBVisitType visitType, NDbParameterCollection collection = null)
         {
             if (string.IsNullOrWhiteSpace(sqlStr))
             {
@@ -154,7 +155,7 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <param name="visitType">数据库访问类型</param>
         /// <param name="collection">命令的参数集合</param>
         /// <returns>返回执行结果</returns>
-        public virtual int ExecuteNonQuery(string sqlStr, DBVisitType visitType, DbParameterCollection collection = null)
+        public virtual int ExecuteNonQuery(string sqlStr, DBVisitType visitType, NDbParameterCollection collection = null)
         {
             if (string.IsNullOrWhiteSpace(sqlStr))
             {

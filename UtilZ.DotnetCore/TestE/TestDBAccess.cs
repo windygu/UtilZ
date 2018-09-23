@@ -4,6 +4,7 @@ using System.Text;
 using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Interfaces;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 
 namespace TestE
@@ -20,9 +21,9 @@ namespace TestE
 
         public static void Test()
         {
-            //TestDBLib();
+            TestDBLib();
 
-            TestLoad();
+            //TestLoad();
         }
 
         private static void TestDBLib()
@@ -37,10 +38,21 @@ namespace TestE
                 //    con.Open();
 
                 //}
+
+                //string xx = AssemblyEx.GetAssemblyName(@"System.Text.Encoding.CodePages.dll");
+
+                //string conStr = @"data source=192.168.0.102;initial catalog=ntestdb;user id=sa;password=qweQWE123";
+                //using (var con = new System.Data.SqlClient.SqlConnection(conStr))
+                //{
+                //    con.Open();
+                //    Console.WriteLine("Open OK");
+                //}
+
+                //System.Data.IDbDataAdapter da = new System.Data.SqlClient.SqlDataAdapter();
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("Open faile " + ex.Message);
             }
         }
 
@@ -50,14 +62,18 @@ namespace TestE
         {
             try
             {
+                //SqlConnection
                 //int dbid;
                 //dbid = _sqliteDbid;
                 ////dbid = _sqlServerDbid;
                 //IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(dbid);
                 //DateTime sysTime = dbAccess.GetDataBaseSysTime();
                 //Console.WriteLine(sysTime.ToString());
-                TestLoad1();
-                TestLoad1();
+                //TestLoad1(_sqliteDbid);
+                //TestLoad1(_sqliteDbid);
+
+                TestLoad1(_sqlServerDbid);
+                //TestLoad1(_sqlServerDbid);
             }
             catch (Exception ex)
             {
@@ -65,13 +81,10 @@ namespace TestE
             }
         }
 
-        private static void TestLoad1()
+        private static void TestLoad1(int dbid)
         {
             try
             {
-                int dbid;
-                dbid = _sqliteDbid;
-                //dbid = _sqlServerDbid;
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(dbid);
                 DateTime sysTime = dbAccess.GetDataBaseSysTime();
                 Console.WriteLine(sysTime.ToString());

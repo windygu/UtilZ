@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
+using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
 
 namespace UtilZ.Dotnet.DBBase.Interfaces
 {
     //数据库访问接口-数据库信息相关
     public partial interface IDBAccess
     {
-        /*
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
         /// </summary>
@@ -71,24 +72,6 @@ namespace UtilZ.Dotnet.DBBase.Interfaces
         DBTableInfo GetTableInfo(string tableName, bool isGetFieldInfo = false);
         #endregion
 
-        #region 数据库表结构版本管理
-        /// <summary>
-        /// 获取或设置数据库表结构版本号表名
-        /// </summary>
-        string DBStructVersionTableName { get; set; }
-
-        /// <summary>
-        /// 获取当前数据库表结构版本号,如果该表不存在则返回-1
-        /// </summary>
-        /// <returns>当前数据库表结构版本号</returns>
-        int GetDBVersion();
-
-        /// <summary>
-        /// 更新当前数据库表结构版本号[如果表存在，则更新为新版本号值,否则创建表,并设置版本号为新版本号值]
-        /// </summary>
-        void UpdateDBVersion(int newVersion);
-        #endregion
-        */
         /// <summary>
         /// 获取数据库版本信息
         /// </summary>
