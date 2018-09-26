@@ -96,6 +96,12 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             try
             {
+                if (this._sw != null && this._sw.BaseStream.Length >= this._maxFileSize)
+                {
+                    this._sw.Close();
+                    this._sw = null;
+                }
+
                 if (this._sw == null)
                 {
                     //获得日志文件路径
@@ -107,24 +113,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
                     this._sw = File.AppendText(logFilePath);
                 }
-                else
-                {
-                    if (this._sw.BaseStream.Length >= this._maxFileSize)
-                    {
-                        this._sw.Close();
-                    }
-                }
 
-                //日志处理
-                string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
-                if (this._securityPolicy != null)
-                {
-                    logMsg = this._securityPolicy.Encryption(logMsg);
-                }
-
-                this._sw.WriteLine(logMsg);
-                this._sw.Flush();
-                this._fileSize = this._sw.BaseStream.Length;
+                this.WriteLogToFile(item, this._sw);
             }
             catch (Exception ex)
             {
@@ -145,16 +135,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
                 using (var sw = File.AppendText(logFilePath))
                 {
-                    //日志处理
-                    string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
-                    if (this._securityPolicy != null)
-                    {
-                        logMsg = this._securityPolicy.Encryption(logMsg);
-                    }
-
-                    sw.WriteLine(logMsg);
-                    sw.Flush();
-                    this._fileSize = sw.BaseStream.Length;
+                    this.WriteLogToFile(item, sw);
                 }
             }
             catch (Exception ex)
@@ -179,15 +160,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 using (var sw = File.AppendText(logFilePath))
                 {
                     //日志处理
-                    string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
-                    if (this._securityPolicy != null)
-                    {
-                        logMsg = this._securityPolicy.Encryption(logMsg);
-                    }
-
-                    sw.WriteLine(logMsg);
-                    sw.Flush();
-                    this._fileSize = sw.BaseStream.Length;
+                    this.WriteLogToFile(item, sw);
                 }
             }
             catch (Exception ex)
@@ -198,6 +171,19 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             {
                 this.ReleaseMutex(mutex);
             }
+        }
+
+        private void WriteLogToFile(LogItem item, StreamWriter sw)
+        {
+            string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
+            if (this._securityPolicy != null)
+            {
+                logMsg = this._securityPolicy.Encryption(logMsg);
+            }
+
+            sw.WriteLine(logMsg);
+            sw.Flush();
+            this._fileSize = sw.BaseStream.Length;
         }
 
         /// <summary>
@@ -224,7 +210,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 catch (Exception ex)
                 {
                     LogSysInnerLog.OnRaiseLog(this, ex);
-                    Thread.Sleep(1);
+                    Thread.Sleep(10);
                 }
             }
 
