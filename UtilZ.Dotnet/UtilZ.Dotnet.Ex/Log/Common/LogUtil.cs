@@ -13,7 +13,7 @@ namespace UtilZ.Dotnet.Ex.Log
     /// <summary>
     /// 日志操作公共类
     /// </summary>
-    public static class LogUtil
+    internal static class LogUtil
     {
         /// <summary>
         /// 当前程序集所在目录

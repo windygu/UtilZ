@@ -60,13 +60,13 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
 
             int days;
-            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "Days"), out days))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.Days)), out days))
             {
                 this.Days = days;
             }
 
             int maxFileCount;
-            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "MaxFileCount"), out maxFileCount))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.MaxFileCount)), out maxFileCount))
             {
                 if (maxFileCount < 1 && maxFileCount != -1)
                 {
@@ -77,7 +77,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
 
             int maxFileSize;
-            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "MaxFileSize"), out maxFileSize))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.MaxFileSize)), out maxFileSize))
             {
                 if (maxFileSize < 1)
                 {
@@ -87,22 +87,22 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 this.MaxFileSize = maxFileSize * 1024 * 1024;
             }
 
-            string filePath = LogUtil.GetChildXElementValue(ele, "FilePath").Trim();
+            string filePath = LogUtil.GetChildXElementValue(ele, nameof(this.FilePath)).Trim();
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 this.FilePath = filePath.Trim();
             }
 
             bool isAppend;
-            if (bool.TryParse(LogUtil.GetChildXElementValue(ele, "IsAppend").Trim(), out isAppend))
+            if (bool.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.IsAppend)).Trim(), out isAppend))
             {
                 this.IsAppend = isAppend;
             }
 
-            this.SecurityPolicy = LogUtil.GetChildXElementValue(ele, "SecurityPolicy").Trim();
+            this.SecurityPolicy = LogUtil.GetChildXElementValue(ele, nameof(this.SecurityPolicy)).Trim();
 
             LockingModel lockingType;
-            if (Enum.TryParse<LockingModel>(LogUtil.GetChildXElementValue(ele, "LockingModel").Trim(), out lockingType))
+            if (Enum.TryParse<LockingModel>(LogUtil.GetChildXElementValue(ele, nameof(this.LockingModel)).Trim(), out lockingType))
             {
                 this.LockingModel = lockingType;
             }

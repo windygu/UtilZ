@@ -46,7 +46,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
         }
 
-        private int _separatorCount = 140;
+        private int _separatorCount = 0;
         /// <summary>
         /// 分隔线长度
         /// </summary>
@@ -61,24 +61,14 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 }
 
                 _separatorCount = value;
-                this._separatorLine = new string('-', _separatorCount);
+                this.SeparatorLine = new string('-', _separatorCount);
             }
         }
 
         /// <summary>
-        /// 分隔线
-        /// </summary>
-        private string _separatorLine = new string('-', 140);
-        /// <summary>
         /// 获取分隔线
         /// </summary>
-        internal string SeparatorLine
-        {
-            get
-            {
-                return _separatorLine;
-            }
-        }
+        internal string SeparatorLine { get; private set; } = null;
 
         /// <summary>
         /// 是否启用日志输出缓存[true:启用;false:禁用]
@@ -124,38 +114,35 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// <param name="ele">配置元素</param>
         public BaseConfig(XElement ele)
         {
+            this.SeparatorCount = 140;
             if (ele == null)
             {
                 return;
             }
 
-            this.Name = LogUtil.GetAttributeValue(ele, "name");
+            this.Name = LogUtil.GetAttributeValue(ele, nameof(this.Name).ToLower());
 
             bool enable;
-            if (bool.TryParse(LogUtil.GetAttributeValue(ele, "enable"), out enable))
+            if (bool.TryParse(LogUtil.GetAttributeValue(ele, nameof(this.Enable).ToLower()), out enable))
             {
                 this.Enable = enable;
             }
 
-            this.Layout = LogUtil.GetChildXElementValue(ele, "Layout");
-            this.DateFormat = LogUtil.GetChildXElementValue(ele, "DateFormat");
+            this.Layout = LogUtil.GetChildXElementValue(ele, nameof(this.Layout));
+            this.DateFormat = LogUtil.GetChildXElementValue(ele, nameof(this.DateFormat));
             int separatorCount;
-            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "SeparatorCount"), out separatorCount))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.SeparatorCount)), out separatorCount))
             {
-                this._separatorCount = separatorCount;
-                if (separatorCount > 0)
-                {
-                    this._separatorLine = new string('-', separatorCount);
-                }
+                this.SeparatorCount = separatorCount;
             }
 
             bool enableOutputCache;
-            if (bool.TryParse(LogUtil.GetAttributeValue(ele, "EnableOutputCache"), out enableOutputCache))
+            if (bool.TryParse(LogUtil.GetAttributeValue(ele, nameof(this.EnableOutputCache)), out enableOutputCache))
             {
                 this.EnableOutputCache = enableOutputCache;
             }
 
-            string levels = LogUtil.GetChildXElementValue(ele, "Levels").Trim();
+            string levels = LogUtil.GetChildXElementValue(ele, nameof(this.Levels)).Trim();
             if (!string.IsNullOrWhiteSpace(levels))
             {
                 string[] levelStrs = levels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -173,7 +160,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
 
             int eventId;
-            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "EventIdMin"), out eventId))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.EventIdMin)), out eventId))
             {
                 if (eventId < LogConstant.DefaultEventId)
                 {
@@ -183,7 +170,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 this.EventIdMin = eventId;
             }
 
-            if (int.TryParse(LogUtil.GetChildXElementValue(ele, "EventIdMax"), out eventId))
+            if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.EventIdMax)), out eventId))
             {
                 if (eventId < LogConstant.DefaultEventId)
                 {
@@ -193,8 +180,8 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 this.EventIdMax = eventId;
             }
 
-            this.MatchString = LogUtil.GetChildXElementValue(ele, "MatchString");
-            string matchExceptionTypeName = LogUtil.GetChildXElementValue(ele, "MatchExceptionType").Trim();
+            this.MatchString = LogUtil.GetChildXElementValue(ele, nameof(this.MatchString));
+            string matchExceptionTypeName = LogUtil.GetChildXElementValue(ele, nameof(this.MatchExceptionType)).Trim();
             if (!string.IsNullOrWhiteSpace(matchExceptionTypeName))
             {
                 try
