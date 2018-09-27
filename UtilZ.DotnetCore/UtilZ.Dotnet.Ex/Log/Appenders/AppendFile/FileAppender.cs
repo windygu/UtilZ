@@ -21,7 +21,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// </summary>
         private ILogSecurityPolicy _securityPolicy = null;
         private string _filePath;
-        private long _fileSize = 0;
+        private long _fileSize = long.MinValue;
         private FileAppenderPathManager _pathManager;
 
         /// <summary>
@@ -94,7 +94,9 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             try
             {
-                if (this._sw != null && this._sw.BaseStream.Length >= this._fileAppenderConfig.MaxFileLength)
+                if (this._sw != null &&
+                    this._fileAppenderConfig.MaxFileLength > 0 &&
+                    this._sw.BaseStream.Length >= this._fileAppenderConfig.MaxFileLength)
                 {
                     this._sw.Close();
                     this._sw = null;
@@ -248,7 +250,9 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             * *yyyy-MM-dd*\*HH_mm_ss*_flow.log  =>  2018-08-19\17_05_12_flow.log
             ********************************************************************/
 
-            if (!string.IsNullOrWhiteSpace(this._filePath) && this._fileSize < this._fileAppenderConfig.MaxFileLength)
+            if (!string.IsNullOrWhiteSpace(this._filePath) &&
+                this._fileAppenderConfig.MaxFileLength > 0 &&
+                this._fileSize < this._fileAppenderConfig.MaxFileLength)
             {
                 //前一次写入的文件名尚可用
                 return this._filePath;
