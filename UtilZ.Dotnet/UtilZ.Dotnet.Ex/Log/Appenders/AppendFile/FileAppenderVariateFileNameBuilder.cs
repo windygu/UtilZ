@@ -217,7 +217,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             var time = DateTime.Now;
             var createTime = lastLogFileInfo.CreationTime;
-            if (lastLogFileInfo.Length < this._config.MaxFileSize &&
+            if (lastLogFileInfo.Length < this._config.MaxFileLength &&
                 createTime.Year == time.Year &&
                 createTime.Month == time.Month &&
                 createTime.Day == time.Day)

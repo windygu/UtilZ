@@ -99,7 +99,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             var time = DateTime.Now;
             var createTime = lastLogFileInfo.CreationTime;
-            if (lastLogFileInfo.Length < this._config.MaxFileSize)
+            if (lastLogFileInfo.Length < this._config.MaxFileLength)
             {
                 //最后一个文件是当天创建且小于目标大小
                 return true;

@@ -21,10 +21,28 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// </summary>
         public int MaxFileCount { get; set; } = -1;
 
+        private int _maxFileSize = 0;
         /// <summary>
-        /// 日志文件上限大小,当文件超过此值则分隔成多个日志文件,小于1不限制,单位/字节
+        /// 日志文件上限大小,当文件超过此值则分隔成多个日志文件,小于1不限制,单位/KB
         /// </summary>
-        public int MaxFileSize { get; set; } = 10 * 1024 * 1024;
+        public int MaxFileSize
+        {
+            get { return _maxFileSize; }
+            set
+            {
+                _maxFileSize = value;
+                _maxFileLength = _maxFileSize * 1024;
+            }
+        }
+
+        private long _maxFileLength = 0;
+        /// <summary>
+        /// 获取日志单个文件最大大小,小于等于0不限制,单位/字节
+        /// </summary>
+        internal long MaxFileLength
+        {
+            get { return _maxFileLength; }
+        }
 
         /// <summary>
         /// 日志存放路径
@@ -53,6 +71,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         public FileAppenderConfig(XElement ele) : base(ele)
         {
             base.EnableOutputCache = true;
+            this.MaxFileSize = 10 * 1024;//默认值10MB
 
             if (ele == null)
             {
@@ -79,12 +98,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             int maxFileSize;
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.MaxFileSize)), out maxFileSize))
             {
-                if (maxFileSize < 1)
-                {
-                    maxFileSize = 10;
-                }
-
-                this.MaxFileSize = maxFileSize * 1024 * 1024;
+                this.MaxFileSize = maxFileSize;
             }
 
             string filePath = LogUtil.GetChildXElementValue(ele, nameof(this.FilePath)).Trim();
