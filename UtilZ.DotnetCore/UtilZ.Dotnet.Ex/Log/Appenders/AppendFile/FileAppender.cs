@@ -84,7 +84,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                     this.InterProcessWriteLog(item);
                     break;
                 default:
-                    LogSysInnerLog.OnRaiseLog(this, new Exception(string.Format("不支持的锁模型:{0}", this._fileAppenderConfig.LockingModel.ToString())));
+                    LogSysInnerLog.OnRaiseLog(this, new NotSupportedException(string.Format("不支持的锁模型:{0}", this._fileAppenderConfig.LockingModel.ToString())));
                     break;
             }
         }
