@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TestStandardLib\TestStandardLib.csproj" />
     <ProjectReference Include="..\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj" />
+    <ProjectReference Include="..\UtilZ.Dotnet.DBFactory\UtilZ.Dotnet.DBFactory.csproj" />
     <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj" />
   </ItemGroup>
 

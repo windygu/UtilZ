@@ -1,26 +1,24 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
-using System.IO;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBBase.Model;
-using UtilZ.Dotnet.Ex.Base;
 
-namespace UtilZ.Dotnet.DBSQLServer.Core
+namespace UtilZ.Dotnet.DBMySql.Core
 {
     /// <summary>
-    /// SQLServer数据库交互类
+    /// MySql数据库交互类
     /// </summary>
-    public class SQLServerInteractiveBuilder : IDBInteractiveBuilder
+    public class MySqlInteractiveBuilder : IDBInteractiveBuilder
     {
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SQLServerInteractiveBuilder()
+        public MySqlInteractiveBuilder()
         {
 
         }
@@ -33,7 +31,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
         /// <returns>数据库连接对象</returns>
         public DbCommand CreateCommand()
         {
-            return new SqlCommand();
+            return new MySqlCommand();
         }
 
         /// <summary>
@@ -58,13 +56,13 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             {
                 if (config.Port == 0)
                 {
-                    config.Port = 1433;
+                    config.Port = 3306;
                 }
 
-                conStr = string.Format(@"data source={0},{1};initial catalog={2};user id={3};password={4}", config.Host, config.Port, config.DatabaseName, config.Account, config.Password);
+                conStr = string.Format(@"database={0};data source={1};Port={2};user id={3};password={4};SslMode=none", config.DatabaseName, config.Host, config.Port, config.Account, config.Password);
             }
 
-            return new SqlConnection(conStr);
+            return new MySqlConnection(conStr);
         }
 
         /// <summary>
@@ -73,7 +71,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
         /// <returns>创建好的DbDataAdapter</returns>
         public IDbDataAdapter CreateDbDataAdapter()
         {
-            return new SqlDataAdapter();
+            return new MySqlDataAdapter();
         }
     }
 }

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj" />
+    <ProjectReference Include="..\UtilZ.Dotnet.DBMySql\UtilZ.Dotnet.DBMySql.csproj" />
+    <ProjectReference Include="..\UtilZ.Dotnet.DBOracle\UtilZ.Dotnet.DBOracle.csproj" />
+    <ProjectReference Include="..\UtilZ.Dotnet.DBSQLite\UtilZ.Dotnet.DBSQLite.csproj" />
+    <ProjectReference Include="..\UtilZ.Dotnet.DBSQLServer\UtilZ.Dotnet.DBSQLServer.csproj" />
+    <ProjectReference Include="..\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj" />
+  </ItemGroup>
+
+</Project>

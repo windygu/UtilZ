@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Model;
 using UtilZ.Dotnet.DBIBase.DBModel.Common;
 using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
-namespace UtilZ.Dotnet.DBSQLServer.Core
+namespace UtilZ.Dotnet.DBMySql.Core
 {
-    //SQLServer-数据库信息相关
-    public partial class SQLServerDBAccess
+    //MySql数据库访问类-数据库信息相关
+    public partial class MySqlDBAccess
     {
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -25,21 +27,15 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
                 return false;
             }
 
-            //string sqlStr =@"select COUNT(0) from sysobjects where id = object_id('表名') and type = 'u'";
-            //string sqlStr = @"select COUNT(0) from sys.tables where name='表名' and type = 'u';";
-            string sqlStr = string.Format(@"select COUNT(0) from sys.tables where name={0}TABLENAME and type = 'u'", this.ParaSign);
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                var cmd = conInfo.Connection.CreateCommand();
-                cmd.CommandText = sqlStr;
-
-                var para = cmd.CreateParameter();
-                para.ParameterName = "TABLENAME";
-                para.Value = tableName;
-                para.DbType = System.Data.DbType.String;
-                cmd.Parameters.Add(para);
-
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                // string sqlStr =@"SHOW TABLES LIKE '表名'";   -- 当前连接库中是否存在表
+                // string sqlStr = @"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME='表名' AND TABLE_SCHEMA='数据库名'";
+                string sqlStr = string.Format(@"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME=?TABLENAME AND TABLE_SCHEMA='{0}'", conInfo.Connection.Database);
+                var paras = new NDbParameterCollection();
+                paras.Add("TABLENAME", tableName);
+                object value = base.InnerExecuteScalar(conInfo.Connection, sqlStr, paras);
+                return Convert.ToInt32(value) > 0;
             }
         }
 
@@ -56,25 +52,14 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
                 return false;
             }
 
-            string sqlStr = @"select count(0) from syscolumns where name=@FIELDNAME and objectproperty(id,'IsUserTable')=1 and object_name(id)=@TABLENAME";
+            //string sqlStr = string.Format(@"SHOW COLUMNS FROM {0}TABLENAME where Field={0}FIELDNAME", dbParaSign);
+            string sqlStr = string.Format(@"select count(0) from information_schema.columns WHERE table_name =?TABLENAME and column_name=?FIELDNAME");
+            var paras = new NDbParameterCollection();
+            paras.Add("FIELDNAME", fieldName);
+            paras.Add("TABLENAME", tableName);
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                var cmd = conInfo.Connection.CreateCommand();
-                cmd.CommandText = sqlStr;
-
-                var para = cmd.CreateParameter();
-                para.ParameterName = "FIELDNAME";
-                para.Value = fieldName;
-                para.DbType = System.Data.DbType.String;
-                cmd.Parameters.Add(para);
-
-                var para2 = cmd.CreateParameter();
-                para2.ParameterName = "TABLENAME";
-                para2.Value = tableName;
-                para2.DbType = System.Data.DbType.String;
-                cmd.Parameters.Add(para2);
-
-                return Convert.ToInt64(cmd.ExecuteScalar()) > 0;
+                return Convert.ToInt64(base.InnerExecuteScalar(conInfo.Connection, sqlStr, paras)) > 0;
             }
         }
 
@@ -102,39 +87,24 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             try
             {
                 var priKeyCols = this.InnerQueryPrikeyColumns(con, tableName);//主键列名集合
-                string sqlStr = string.Format("SELECT TOP 0 *  FROM {0}", tableName);
-                DataTable dt = this.InnerQueryData(con, sqlStr);
+                DataTable dt = this.InnerQueryData(con, string.Format("SELECT * FROM {0} limit 0,0", tableName));
                 var dicFieldDbClrFieldType = this.GetFieldDbClrFieldType(tableName, dt.Columns);//字段的公共语言运行时类型字典集合
+
+                //查询表C#中列信息,从空表中获得
                 Dictionary<string, Type> colDBType = new Dictionary<string, Type>();
                 foreach (DataColumn col in dt.Columns)
                 {
                     colDBType.Add(col.ColumnName, col.DataType);
                 }
 
-                IDbCommand cmd = con.CreateCommand();
-                cmd.CommandText = string.Format(@"SELECT  C.name as [字段名]
-	                                                    ,T.name as [字段类型]
-                                                        ,convert(bit,C.IsNullable)  as [可否为空]
-                                                        ,convert(bit,case when exists(SELECT 1 FROM sysobjects where xtype='PK' and parent_obj=c.id and name in (
-                                                            SELECT name FROM sysindexes WHERE indid in(
-                                                                SELECT indid FROM sysindexkeys WHERE id = c.id AND colid=c.colid))) then 1 else 0 end) 
-                                                                    as [是否主键]
-                                                        ,convert(bit,COLUMNPROPERTY(c.id,c.name,'IsIdentity')) as [自动增长]
-                                                        ,C.Length as [占用字节] 
-                                                        ,COLUMNPROPERTY(C.id,C.name,'PRECISION') as [长度]
-                                                        ,isnull(COLUMNPROPERTY(c.id,c.name,'Scale'),0) as [小数位数]
-                                                        ,ISNULL(CM.text,'') as [默认值]
-                                                        ,isnull(ETP.value,'') AS [字段描述]
-                                                        --,ROW_NUMBER() OVER (ORDER BY C.name) AS [Row]
-                                                FROM syscolumns C
-                                                INNER JOIN systypes T ON C.xusertype = T.xusertype 
-                                                left JOIN sys.extended_properties ETP   ON  ETP.major_id = c.id AND ETP.minor_id = C.colid AND ETP.name ='MS_Description' 
-                                                left join syscomments CM on C.cdefault=CM.id
-                                                WHERE C.id = object_id('{0}')", tableName);
 
+                IDbCommand cmd = con.CreateCommand();
+                cmd.CommandText = string.Format(@"SHOW FULL FIELDS FROM {0}", tableName);
                 List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
+
                 using (IDataReader reader = cmd.ExecuteReader())
                 {
+                    object value;
                     string fieldName;
                     string dbTypeName;
                     bool allowNull;
@@ -147,11 +117,12 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
 
                     while (reader.Read())
                     {
-                        fieldName = reader.GetString(0);
-                        dbTypeName = reader.GetString(1);
-                        allowNull = reader.GetBoolean(2);
-                        defaultValue = reader.GetValue(8);
-                        comments = reader.GetString(9);
+                        fieldName = reader["Field"].ToString();
+                        dbTypeName = reader["Type"].ToString();
+                        allowNull = reader["Null"].ToString().ToUpper().Equals("NO") ? false : true;
+                        value = reader["Default"];
+                        defaultValue = DBNull.Value.Equals(value) ? null : value;
+                        comments = reader["Comment"].ToString();
                         type = colDBType[fieldName];
                         fieldType = dicFieldDbClrFieldType[fieldName];
                         DBHelper.ParseComments(fieldName, comments, out caption, out description);
@@ -179,10 +150,9 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
         /// <returns>当前用户有权限的所有表集合</returns>
         public override List<DBTableInfo> GetTableInfos(bool isGetFieldInfo = false)
         {
-            //string sqlStr= @"select name from sysobjects where xtype='u'";
-            string sqlStr = @"select c.name,cast(isnull(f.[value], '') as nvarchar(100)) as remark from sys.objects c left join sys.extended_properties f on f.major_id=c.object_id and f.minor_id=0 and f.class=1 where c.type='u'";
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
+                string sqlStr = string.Format(@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{0}'", conInfo.Connection.Database);
                 DataTable dt = this.InnerQueryData(conInfo.Connection, sqlStr);
                 List<DBTableInfo> tables = new List<DBTableInfo>();
                 foreach (DataRow row in dt.Rows)
@@ -207,8 +177,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
                 return null;
             }
 
-            //string sqlStr = @"select column_name as primarykey from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where Table_name='Person' and constraint_name like 'PK_%'";
-            string sqlStr = string.Format(@"select column_name as primarykey from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where Table_name='{0}'", tableName);
+            string sqlStr = string.Format(@"select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where table_name='{0}' AND COLUMN_KEY='PRI'", tableName);
             DataTable dt = this.InnerQueryData(con, sqlStr);
             List<string> priKeyCols = new List<string>();
             foreach (DataRow row in dt.Rows)
@@ -242,8 +211,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
 
             try
             {
-                //      string sqlStr = @"select name from sysobjects where xtype='u'";
-                string sqlStr = string.Format(@"select c.name,cast(isnull(f.[value], '') as nvarchar(100)) as remark from sys.objects c left join sys.extended_properties f on f.major_id=c.object_id and f.minor_id=0 and f.class=1 where c.type='u' and c.name='{0}'", tableName);
+                string sqlStr = string.Format(@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{0}' AND TABLE_NAME = '{1}'", con.Database, tableName);
                 DataTable dt = this.InnerQueryData(con, sqlStr, null);
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -301,7 +269,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
         {
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                string sqlStr = @"select @@version";
+                string sqlStr = @"select version()";
                 object obj = base.InnerExecuteScalar(conInfo.Connection, sqlStr);
                 return obj == null ? string.Empty : obj.ToString();
             }
@@ -313,7 +281,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
         /// <returns>数据库系统时间</returns>
         public override DateTime GetDataBaseSysTime()
         {
-            string sqlStr = @"select GETDATE()";
+            string sqlStr = @"select CURRENT_TIMESTAMP()";
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
                 return Convert.ToDateTime(base.InnerExecuteScalar(conInfo.Connection, sqlStr));

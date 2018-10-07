@@ -4,6 +4,7 @@ using System.Text;
 using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Interfaces;
+using UtilZ.Dotnet.DBFactory;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 
@@ -21,9 +22,9 @@ namespace TestE
 
         public static void Test()
         {
-            TestDBLib();
+            // TestDBLib();
 
-            //TestLoad();
+            TestLoad();
         }
 
         private static void TestDBLib()
@@ -49,6 +50,16 @@ namespace TestE
                 //}
 
                 //System.Data.IDbDataAdapter da = new System.Data.SqlClient.SqlDataAdapter();
+
+                //string conStr = @"database=test;data source=192.168.0.102;Port=3306;user id=yf;password=qweQWE123;SslMode=none";
+                //using (var con = new MySql.Data.MySqlClient.MySqlConnection(conStr))
+                //{
+                //    con.Open();
+                //    Console.WriteLine("Open OK");
+                //}
+
+                var obj = new TestStandardLib.Class1();
+                obj.Test();
             }
             catch (Exception ex)
             {
@@ -58,6 +69,8 @@ namespace TestE
 
         private readonly static int _sqliteDbid = 1;
         private readonly static int _sqlServerDbid = 2;
+        private readonly static int _mySqlDbid = 3;
+        private readonly static int _oracleDbid = 4;
         public static void TestLoad()
         {
             try
@@ -69,15 +82,18 @@ namespace TestE
                 //IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(dbid);
                 //DateTime sysTime = dbAccess.GetDataBaseSysTime();
                 //Console.WriteLine(sysTime.ToString());
-                //TestLoad1(_sqliteDbid);
-                //TestLoad1(_sqliteDbid);
 
+                //Console.WriteLine("any key continue...");
+                //Console.ReadKey();
+
+                TestLoad1(_sqliteDbid);
                 TestLoad1(_sqlServerDbid);
-                //TestLoad1(_sqlServerDbid);
+                TestLoad1(_mySqlDbid);
+                TestLoad1(_oracleDbid);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Loger.Error(ex);
             }
         }
 
@@ -85,13 +101,13 @@ namespace TestE
         {
             try
             {
-                IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(dbid);
+                IDBAccess dbAccess = DBAccessManager.GetDBAccess(dbid);
                 DateTime sysTime = dbAccess.GetDataBaseSysTime();
-                Console.WriteLine(sysTime.ToString());
+                Console.WriteLine(string.Format("{0}    {1}", sysTime.ToString(), dbAccess.DatabaseTypeName));
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Loger.Error(ex);
             }
         }
     }

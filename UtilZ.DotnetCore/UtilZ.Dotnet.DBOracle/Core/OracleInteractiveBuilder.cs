@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
 using System.IO;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Common;
@@ -10,17 +10,17 @@ using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBBase.Model;
 using UtilZ.Dotnet.Ex.Base;
 
-namespace UtilZ.Dotnet.DBSQLite.Core
+namespace UtilZ.Dotnet.DBOracle.Core
 {
     /// <summary>
-    /// SQLite数据库交互类
+    /// SQLServer数据库交互类
     /// </summary>
-    public class SQLiteInteractiveBuilder : IDBInteractiveBuilder
+    public class OracleInteractiveBuilder : IDBInteractiveBuilder
     {
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SQLiteInteractiveBuilder()
+        public OracleInteractiveBuilder()
         {
 
         }
@@ -33,7 +33,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <returns>数据库连接对象</returns>
         public DbCommand CreateCommand()
         {
-            return new SQLiteCommand();
+            return new OracleCommand();
         }
 
         /// <summary>
@@ -50,50 +50,23 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             }
 
             string conStr;
-
-            SQLiteConnectionStringBuilder scsb;
             if (config.ConnectionType == DBConstant.ConnectionTypeStr)
             {
-                scsb = new SQLiteConnectionStringBuilder(config.ConnectionString);
+                conStr = config.ConnectionString;
             }
             else
             {
-                scsb = new SQLiteConnectionStringBuilder();
-                scsb.Pooling = true;
-                scsb.DataSource = config.DatabaseName;
-                if (!string.IsNullOrEmpty(config.Password))
+                if (config.Port == 0)
                 {
-                    scsb.Password = config.Password;
+                    config.Port = 1521;
                 }
+
+                conStr = string.Format(@"User Id={0};Password={1};Data Source={2}:{3}/{4}", config.Account, config.Password, config.Host, config.Port, config.DatabaseName);
+                //conStr = string.Format(@"User Id={0};Password={1};Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={2})(PORT={3})))(CONNECT_DATA=(SERVICE_NAME={4})))",
+                //config.Account, config.Password, config.Host, config.Port, config.DatabaseName);
             }
 
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                scsb.DataSource = scsb.DataSource.Replace('\\', Path.DirectorySeparatorChar);
-            }
-            else
-            {
-                scsb.DataSource = scsb.DataSource.Replace('/', Path.DirectorySeparatorChar);
-            }
-
-            string dbDir = Path.GetDirectoryName(scsb.DataSource);
-            if (!string.IsNullOrWhiteSpace(dbDir) && !Directory.Exists(dbDir))
-            {
-                Directory.CreateDirectory(dbDir);
-            }
-
-            if (visitType == DBVisitType.R)
-            {
-                scsb.ReadOnly = true;
-            }
-            else
-            {
-                scsb.ReadOnly = false;
-            }
-
-            conStr = scsb.ConnectionString;
-
-            return new SQLiteConnection(conStr);
+            return new OracleConnection(conStr);
         }
 
         /// <summary>
@@ -102,7 +75,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <returns>创建好的DbDataAdapter</returns>
         public IDbDataAdapter CreateDbDataAdapter()
         {
-            return new SQLiteDataAdapter();
+            return new OracleDataAdapter();
         }
     }
 }

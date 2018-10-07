@@ -69,9 +69,9 @@ namespace UtilZ.Dotnet.DBBase.Model
         public string Decryption { get; set; } = null;
 
         /// <summary>
-        /// 数据库访问对象创建工厂类型
+        /// 数据库类型
         /// </summary>
-        public string DBFactory { get; set; } = null;
+        public DataBaseType DBType { get; set; }
 
         /// <summary>
         /// sql语句最大长度,DBConstant.SqlMaxLength为数制库默认值
@@ -128,25 +128,31 @@ namespace UtilZ.Dotnet.DBBase.Model
                 this.ConnectionType = int.Parse(tmpStr);
             }
 
-            this.ConnectionString = XmlEx.GetXElementAttributeValue(ele, nameof(this.ConnectionString));
-            this.Host = XmlEx.GetXElementAttributeValue(ele, nameof(this.Host));
-
-            tmpStr = XmlEx.GetXElementAttributeValue(ele, nameof(this.Port));
-            if (!string.IsNullOrWhiteSpace(tmpStr))
+            if (this.ConnectionType == DBConstant.ConnectionTypeStr)
             {
-                this.Port = int.Parse(tmpStr);
+                this.ConnectionString = XmlEx.GetXElementAttributeValue(ele, nameof(this.ConnectionString));
             }
-
-            tmpStr = XmlEx.GetXElementAttributeValue(ele, nameof(this.DatabaseName));
-            if (this.ConnectionType != DBConstant.ConnectionTypeStr && string.IsNullOrWhiteSpace(tmpStr))
+            else
             {
-                throw new ArgumentNullException(nameof(this.DatabaseName));
+                this.Host = XmlEx.GetXElementAttributeValue(ele, nameof(this.Host));
+
+                tmpStr = XmlEx.GetXElementAttributeValue(ele, nameof(this.Port));
+                if (!string.IsNullOrWhiteSpace(tmpStr))
+                {
+                    this.Port = int.Parse(tmpStr);
+                }
+
+                tmpStr = XmlEx.GetXElementAttributeValue(ele, nameof(this.DatabaseName));
+                if (this.ConnectionType != DBConstant.ConnectionTypeStr && string.IsNullOrWhiteSpace(tmpStr))
+                {
+                    throw new ArgumentNullException(nameof(this.DatabaseName));
+                }
+
+                this.DatabaseName = tmpStr;
+
+                this.Account = XmlEx.GetXElementAttributeValue(ele, nameof(this.Account));
+                this.Password = XmlEx.GetXElementAttributeValue(ele, nameof(this.Password));
             }
-
-            this.DatabaseName = tmpStr;
-
-            this.Account = XmlEx.GetXElementAttributeValue(ele, nameof(this.Account));
-            this.Password = XmlEx.GetXElementAttributeValue(ele, nameof(this.Password));
 
             string str = XmlEx.GetXElementAttributeValue(ele, nameof(this.CommandTimeout));
             int commandTimeout;
@@ -157,13 +163,24 @@ namespace UtilZ.Dotnet.DBBase.Model
 
             this.Decryption = XmlEx.GetXElementAttributeValue(ele, nameof(this.Decryption));
 
-            tmpStr = XmlEx.GetXElementAttributeValue(ele, nameof(this.DBFactory));
+            tmpStr = XmlEx.GetXElementAttributeValue(ele, nameof(this.DBType));
             if (string.IsNullOrWhiteSpace(tmpStr))
             {
-                throw new ArgumentNullException(nameof(this.DBFactory));
+                throw new ArgumentNullException(nameof(this.DBType));
+            }
+            else
+            {
+                DataBaseType dbType;
+                if (Enum.TryParse<DataBaseType>(tmpStr, out dbType))
+                {
+                    this.DBType = dbType;
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format("无效的数据库类型:{0}", tmpStr));
+                }
             }
 
-            this.DBFactory = tmpStr;
 
             str = XmlEx.GetXElementAttributeValue(ele, nameof(this.CommandTimeout));
             long sqlMaxLength;
