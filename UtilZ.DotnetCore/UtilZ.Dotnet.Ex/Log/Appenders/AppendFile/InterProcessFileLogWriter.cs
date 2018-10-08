@@ -22,7 +22,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
             Mutex mutex = null;
             try
             {
-                //获得日志文件路径
                 string logFilePath = base.GetLogFilePath();
                 if (string.IsNullOrWhiteSpace(logFilePath))
                 {

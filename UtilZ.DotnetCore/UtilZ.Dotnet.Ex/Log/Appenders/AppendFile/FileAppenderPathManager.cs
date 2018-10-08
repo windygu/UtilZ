@@ -21,6 +21,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         private readonly static HashSet<string> _hsSpecialFolders = new HashSet<string>();
         private readonly static char[] _pathSplitChars = new char[] { '\\', '/' };
         private readonly FileAppenderPathBuilderBase _pathBuilder;
+        public bool IsFixPath { get; private set; }
         public FileAppenderPathManager(FileAppenderConfig config)
         {
             string filePath = config.FilePath;
@@ -29,6 +30,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 throw new ArgumentNullException("文件路径不能为空");
             }
 
+            this.IsFixPath = filePath.Contains(LogConstant.PatternFlagChar);
             var fullPath = this.ConvertToFullPath(filePath);
             string[] paths = fullPath.Split(_pathSplitChars, StringSplitOptions.RemoveEmptyEntries);
             paths[0] = paths[0] + Path.DirectorySeparatorChar;

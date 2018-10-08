@@ -22,6 +22,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         {
             DateTime currentTime = DateTime.Now;
             if (this._sw != null &&
+                !base._pathManager.IsFixPath &&
                 (base._fileAppenderConfig.MaxFileLength > 0 &&
                 this._sw.BaseStream.Length >= base._fileAppenderConfig.MaxFileLength ||
                 currentTime.Year != base._createFilePathTime.Year ||
@@ -34,7 +35,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
 
             if (this._sw == null)
             {
-                //获得日志文件路径
                 string logFilePath = base.GetLogFilePath();
                 if (string.IsNullOrWhiteSpace(logFilePath))
                 {

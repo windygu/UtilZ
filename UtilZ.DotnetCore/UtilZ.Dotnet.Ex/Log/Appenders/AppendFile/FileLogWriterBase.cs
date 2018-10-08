@@ -10,7 +10,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
     internal abstract class FileLogWriterBase
     {
         protected readonly FileAppenderConfig _fileAppenderConfig;
-        private readonly FileAppenderPathManager _pathManager;
+        protected readonly FileAppenderPathManager _pathManager;
 
         /// <summary>
         /// 日志安全策略
@@ -41,9 +41,14 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         /// <summary>
         /// 写日志
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">日志项</param>
         public abstract void WriteLog(LogItem item);
 
+        /// <summary>
+        /// 写日志到文件
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="sw"></param>
         protected void WriteLogToFile(LogItem item, StreamWriter sw)
         {
             string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
@@ -73,11 +78,12 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
 
             DateTime currentTime = DateTime.Now;
             if (!string.IsNullOrWhiteSpace(this._filePath) &&
-                this._fileAppenderConfig.MaxFileLength > 0 &&
+                (this._fileAppenderConfig.MaxFileLength > 0 &&
                 this._fileSize < this._fileAppenderConfig.MaxFileLength &&
                 currentTime.Year == this._createFilePathTime.Year &&
                 currentTime.Month == this._createFilePathTime.Month &&
-                currentTime.Day == this._createFilePathTime.Day)
+                currentTime.Day == this._createFilePathTime.Day ||
+                this._pathManager.IsFixPath))
             {
                 //前一次写入的文件名尚可用
                 return this._filePath;
