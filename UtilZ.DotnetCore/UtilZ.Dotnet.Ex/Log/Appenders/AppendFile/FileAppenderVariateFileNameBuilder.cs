@@ -27,14 +27,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 this._isFirstGetFilePath = false;
                 if (Directory.Exists(dir))
                 {
+                    this.ClearExpireLogFile(dir);
                     logFilePath = base.GetLastLogFilePath(dir);
                     if (string.IsNullOrWhiteSpace(logFilePath))
                     {
                         logFilePath = tmpFilePath;
-                    }
-                    else
-                    {
-                        this.ClearExpireLogFile(dir);
                     }
                 }
                 else
@@ -217,7 +214,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             var time = DateTime.Now;
             var createTime = lastLogFileInfo.CreationTime;
-            if (this._config.MaxFileLength > 0 && 
+            if (this._config.MaxFileLength > 0 &&
                 lastLogFileInfo.Length < this._config.MaxFileLength &&
                 createTime.Year == time.Year &&
                 createTime.Month == time.Month &&

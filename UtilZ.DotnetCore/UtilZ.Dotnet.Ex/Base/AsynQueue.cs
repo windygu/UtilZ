@@ -545,6 +545,24 @@ namespace UtilZ.Dotnet.Ex.Base
         }
 
         /// <summary>
+        /// 确定队列中是否至少有一个元素满足条件[至少有一个满足返回true;否则返回false]
+        /// </summary>
+        /// <param name="predicate">用于比较的函数</param>
+        /// <returns>至少有一个满足返回true;否则返回false</returns>
+        public bool Any(Func<T, bool> predicate)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            lock (this.SyncRoot)
+            {
+                return this._queue.Any(predicate);
+            }
+        }
+
+        /// <summary>
         /// 释放资源
         /// </summary>
         public void Dispose()
