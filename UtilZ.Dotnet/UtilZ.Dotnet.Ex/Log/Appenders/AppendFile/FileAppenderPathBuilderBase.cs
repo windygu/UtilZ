@@ -17,6 +17,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         protected string _searchPattern;
         private DateTime _lastClearExpireDaysTime = DateTime.Now.AddMonths(-1);
         private DirectoryInfo _rootDirectoryInfo = null;
+        private readonly DateTime _defaultTime = new DateTime();
         protected DirectoryInfo RootDirectoryInfo
         {
             get
@@ -79,12 +80,21 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                     return null;
                 }
 
+
+                TimeSpan tsCurrentTime = DateTime.Now - this._defaultTime;
+                DateTime createTime;
+                TimeSpan tsCreateTime;
                 var orderLogFilePath = new SortedList<DateTime, string>();
                 foreach (var filePath in filePaths)
                 {
                     if (this.CheckPath(filePath))
                     {
-                        orderLogFilePath.Add(File.GetCreationTime(filePath), filePath);
+                        createTime = File.GetCreationTime(filePath);
+                        tsCreateTime = createTime - this._defaultTime;
+                        if (tsCreateTime.TotalDays <= tsCurrentTime.TotalDays)
+                        {
+                            orderLogFilePath.Add(createTime, filePath);
+                        }
                     }
                 }
 

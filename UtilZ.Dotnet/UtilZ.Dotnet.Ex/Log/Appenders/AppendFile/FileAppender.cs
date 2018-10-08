@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using UtilZ.Dotnet.Ex.Log.Appenders.AppendFile;
 using UtilZ.Dotnet.Ex.Log.Config;
 
 namespace UtilZ.Dotnet.Ex.Log.Appender
@@ -15,14 +16,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
     public class FileAppender : AppenderBase
     {
         private FileAppenderConfig _fileAppenderConfig;
-
-        /// <summary>
-        /// 日志安全策略
-        /// </summary>
-        private ILogSecurityPolicy _securityPolicy = null;
-        private string _filePath;
-        private long _fileSize = long.MinValue;
-        private FileAppenderPathManager _pathManager;
+        private FileLogWriterBase _fileLogWriter = null;
 
         /// <summary>
         /// 构造函数
@@ -47,8 +41,26 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// </summary>
         private void Init()
         {
-            this._fileAppenderConfig = (FileAppenderConfig)base._config;
-            this._pathManager = new FileAppenderPathManager(this._fileAppenderConfig);
+            this._fileLogWriter = null;
+            var fileAppenderConfig = (FileAppenderConfig)base._config;
+            this._fileAppenderConfig = fileAppenderConfig;
+            var pathManager = new FileAppenderPathManager(this._fileAppenderConfig);
+
+            switch (this._fileAppenderConfig.LockingModel)
+            {
+                case LockingModel.Exclusive:
+                    this._fileLogWriter = new ExclusiveFileLogWriter(fileAppenderConfig, pathManager);
+                    break;
+                case LockingModel.Minimal:
+                    this._fileLogWriter = new MinimalFileLogWriter(fileAppenderConfig, pathManager);
+                    break;
+                case LockingModel.InterProcess:
+                    this._fileLogWriter = new InterProcessFileLogWriter(fileAppenderConfig, pathManager);
+                    break;
+                default:
+                    LogSysInnerLog.OnRaiseLog(this, new NotSupportedException(string.Format("不支持的锁模型:{0}", this._fileAppenderConfig.LockingModel.ToString())));
+                    break;
+            }
         }
 
         /// <summary>
@@ -67,205 +79,22 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// <param name="item">日志项</param>
         protected override void PrimitiveWriteLog(LogItem item)
         {
-            if (this._fileAppenderConfig == null || !base.Validate(this._fileAppenderConfig, item) || !this._status)
-            {
-                return;
-            }
-
-            switch (this._fileAppenderConfig.LockingModel)
-            {
-                case LockingModel.Exclusive:
-                    this.ExclusiveWriteLog(item);
-                    break;
-                case LockingModel.Minimal:
-                    this.MinimalWriteLog(item);
-                    break;
-                case LockingModel.InterProcess:
-                    this.InterProcessWriteLog(item);
-                    break;
-                default:
-                    LogSysInnerLog.OnRaiseLog(this, new Exception(string.Format("不支持的锁模型:{0}", this._fileAppenderConfig.LockingModel.ToString())));
-                    break;
-            }
-        }
-
-        private StreamWriter _sw = null;
-        private void ExclusiveWriteLog(LogItem item)
-        {
             try
             {
-                if (this._sw != null &&
-                    this._fileAppenderConfig.MaxFileLength > 0 &&
-                    this._sw.BaseStream.Length >= this._fileAppenderConfig.MaxFileLength)
-                {
-                    this._sw.Close();
-                    this._sw = null;
-                }
-
-                if (this._sw == null)
-                {
-                    //获得日志文件路径
-                    string logFilePath = this.GetLogFilePath();
-                    if (string.IsNullOrWhiteSpace(logFilePath))
-                    {
-                        return;
-                    }
-
-                    this._sw = File.AppendText(logFilePath);
-                }
-
-                this.WriteLogToFile(item, this._sw);
-            }
-            catch (Exception ex)
-            {
-                LogSysInnerLog.OnRaiseLog(this, ex);
-            }
-        }
-
-        private void MinimalWriteLog(LogItem item)
-        {
-            try
-            {
-                //获得日志文件路径
-                string logFilePath = this.GetLogFilePath();
-                if (string.IsNullOrWhiteSpace(logFilePath))
+                if (this._fileAppenderConfig == null ||
+                this._fileLogWriter == null ||
+                !base.Validate(this._fileAppenderConfig, item) ||
+                !this._status)
                 {
                     return;
                 }
 
-                using (var sw = File.AppendText(logFilePath))
-                {
-                    this.WriteLogToFile(item, sw);
-                }
+                this._fileLogWriter.WriteLog(item);
             }
             catch (Exception ex)
             {
                 LogSysInnerLog.OnRaiseLog(this, ex);
             }
-        }
-
-        private void InterProcessWriteLog(LogItem item)
-        {
-            Mutex mutex = null;
-            try
-            {
-                //获得日志文件路径
-                string logFilePath = this.GetLogFilePath();
-                if (string.IsNullOrWhiteSpace(logFilePath))
-                {
-                    return;
-                }
-
-                mutex = this.GetMutex(logFilePath);
-                using (var sw = File.AppendText(logFilePath))
-                {
-                    //日志处理
-                    this.WriteLogToFile(item, sw);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSysInnerLog.OnRaiseLog(this, ex);
-            }
-            finally
-            {
-                this.ReleaseMutex(mutex);
-            }
-        }
-
-        private void WriteLogToFile(LogItem item, StreamWriter sw)
-        {
-            string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
-            if (this._securityPolicy != null)
-            {
-                logMsg = this._securityPolicy.Encryption(logMsg);
-            }
-
-            sw.WriteLine(logMsg);
-            sw.Flush();
-            this._fileSize = sw.BaseStream.Length;
-        }
-
-        /// <summary>
-        /// 获取进程锁
-        /// </summary>
-        /// <returns>进程锁</returns>
-        private Mutex GetMutex(string logFilePath)
-        {
-            string mutexName = logFilePath.Replace("\\", "_").Replace(":", "_").Replace("/", "_");
-            Mutex mutex = null;
-            while (mutex == null)
-            {
-                try
-                {
-                    //如果此命名互斥对象已存在则请求打开
-                    try
-                    {
-                        //如果此命名互斥对象已存在则请求打开
-                        mutex = Mutex.OpenExisting(mutexName);
-                    }
-                    catch (WaitHandleCannotBeOpenedException)
-                    {
-                        //打开失败则创建一个
-                        mutex = new Mutex(false, mutexName);
-                    }
-
-                    mutex.WaitOne();
-                }
-                catch (Exception ex)
-                {
-                    LogSysInnerLog.OnRaiseLog(this, ex);
-                    Thread.Sleep(10);
-                }
-            }
-
-            return mutex;
-        }
-
-        /// <summary>
-        /// 释放进程锁
-        /// </summary>
-        /// <param name="mutex">进程锁</param>
-        private void ReleaseMutex(Mutex mutex)
-        {
-            try
-            {
-                if (mutex != null)
-                {
-                    mutex.ReleaseMutex();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSysInnerLog.OnRaiseLog(this, ex);
-            }
-        }
-
-        /// <summary>
-        /// 获得日志文件路径
-        /// </summary>
-        /// <returns>日志文件路径</returns>
-        private string GetLogFilePath()
-        {
-            /********************************************************************
-            * Log\*yyyy-MM-dd_HH_mm_ss*_flow.log  =>  Log\2018-08-19_17_05_12_flow.log
-            * *yyyy-MM-dd*\info.log  =>  2018-08-19\info_1.log 或 2018-08-19\info_n.log
-            * *yyyy-MM-dd*\*yyyy-MM-dd_HH_mm_ss*_flow.log  =>  2018-08-19\2018-08-19_17_05_12_flow.log
-            * 或
-            * *yyyy-MM-dd*\*HH_mm_ss*_flow.log  =>  2018-08-19\17_05_12_flow.log
-            ********************************************************************/
-
-            if (!string.IsNullOrWhiteSpace(this._filePath) &&
-                this._fileAppenderConfig.MaxFileLength > 0 &&
-                this._fileSize < this._fileAppenderConfig.MaxFileLength)
-            {
-                //前一次写入的文件名尚可用
-                return this._filePath;
-            }
-
-            this._fileSize = 0;
-            this._filePath = this._pathManager.CreateLogFilePath();
-            return this._filePath;
         }
     }
 }

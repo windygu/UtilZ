@@ -105,12 +105,16 @@
     <Compile Include="Log\Appenders\AppendConsole\ConsoleAppender.cs" />
     <Compile Include="Log\Appenders\AppendDatabase\DatabaseAppender.cs" />
     <Compile Include="Log\Appenders\AppenderBase.cs" />
+    <Compile Include="Log\Appenders\AppendFile\ExclusiveFileLogWriter.cs" />
     <Compile Include="Log\Appenders\AppendFile\FileAppender.cs" />
     <Compile Include="Log\Appenders\AppendFile\FileAppenderFixFileNameBuilder.cs" />
     <Compile Include="Log\Appenders\AppendFile\FileAppenderPathBuilderBase.cs" />
     <Compile Include="Log\Appenders\AppendFile\FileAppenderPathItem.cs" />
     <Compile Include="Log\Appenders\AppendFile\FileAppenderPathManager.cs" />
     <Compile Include="Log\Appenders\AppendFile\FileAppenderVariateFileNameBuilder.cs" />
+    <Compile Include="Log\Appenders\AppendFile\FileLogWriterBase.cs" />
+    <Compile Include="Log\Appenders\AppendFile\InterProcessFileLogWriter.cs" />
+    <Compile Include="Log\Appenders\AppendFile\MinimalFileLogWriter.cs" />
     <Compile Include="Log\Appenders\AppendMail\MailAppender.cs" />
     <Compile Include="Log\Appenders\AppendRedirect\RedirectAppender.cs" />
     <Compile Include="Log\Appenders\AppendSystem\SystemLogAppender.cs" />
