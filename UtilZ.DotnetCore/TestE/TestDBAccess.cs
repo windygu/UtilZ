@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Common;
 using UtilZ.Dotnet.DBBase.Core;
@@ -20,76 +21,34 @@ namespace TestE
             };
         }
 
-        public static void Test()
-        {
-            // TestDBLib();
-
-            TestLoad();
-        }
-
-        private static void TestDBLib()
-        {
-            try
-            {
-                //var scsb = new System.Data.SQLite.SQLiteConnectionStringBuilder();
-                //scsb.Pooling = true;
-                //scsb.DataSource = @"F:\Project\Git\UtilZ\UtilZ.DotnetCore\TestE\SQLiteDB\SQLite.db";
-                //using (var con = new System.Data.SQLite.SQLiteConnection(scsb.ConnectionString))
-                //{
-                //    con.Open();
-
-                //}
-
-                //string xx = AssemblyEx.GetAssemblyName(@"System.Text.Encoding.CodePages.dll");
-
-                //string conStr = @"data source=192.168.0.102;initial catalog=ntestdb;user id=sa;password=qweQWE123";
-                //using (var con = new System.Data.SqlClient.SqlConnection(conStr))
-                //{
-                //    con.Open();
-                //    Console.WriteLine("Open OK");
-                //}
-
-                //System.Data.IDbDataAdapter da = new System.Data.SqlClient.SqlDataAdapter();
-
-                //string conStr = @"database=test;data source=192.168.0.102;Port=3306;user id=yf;password=qweQWE123;SslMode=none";
-                //using (var con = new MySql.Data.MySqlClient.MySqlConnection(conStr))
-                //{
-                //    con.Open();
-                //    Console.WriteLine("Open OK");
-                //}
-
-                var obj = new TestStandardLib.Class1();
-                obj.Test();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Open faile " + ex.Message);
-            }
-        }
-
         private readonly static int _sqliteDbid = 1;
         private readonly static int _sqlServerDbid = 2;
         private readonly static int _mySqlDbid = 3;
         private readonly static int _oracleDbid = 4;
-        public static void TestLoad()
+
+        public static void Test()
+        {
+            //TestLoad();
+            TestQuery();
+        }
+
+        private static void TestQuery()
+        {
+            PrimitiveTestQuery(_sqliteDbid);
+            PrimitiveTestQuery(_sqlServerDbid);
+            PrimitiveTestQuery(_mySqlDbid);
+            PrimitiveTestQuery(_oracleDbid);
+        }
+
+        private static void PrimitiveTestQuery(int dbid)
         {
             try
             {
-                //SqlConnection
-                //int dbid;
-                //dbid = _sqliteDbid;
-                ////dbid = _sqlServerDbid;
-                //IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(dbid);
-                //DateTime sysTime = dbAccess.GetDataBaseSysTime();
-                //Console.WriteLine(sysTime.ToString());
-
-                //Console.WriteLine("any key continue...");
-                //Console.ReadKey();
-
-                TestLoad1(_sqliteDbid);
-                TestLoad1(_sqlServerDbid);
-                TestLoad1(_mySqlDbid);
-                TestLoad1(_oracleDbid);
+                string sqlStr = "SELECT * FROM Stu";
+                IDBAccess dbAccess = DBAccessManager.GetDBAccess(dbid);
+                //DataTable dt = dbAccess.QueryData(sqlStr);
+                DataTable dt = dbAccess.QueryPagingData(sqlStr, "Age", 2, 1, true);
+                Console.WriteLine(string.Format("Count:{0}    {1}", dt.Rows.Count, dbAccess.DatabaseTypeName));
             }
             catch (Exception ex)
             {
@@ -97,7 +56,15 @@ namespace TestE
             }
         }
 
-        private static void TestLoad1(int dbid)
+        private static void TestLoad()
+        {
+            PrimitiveTestLoad(_sqliteDbid);
+            PrimitiveTestLoad(_sqlServerDbid);
+            PrimitiveTestLoad(_mySqlDbid);
+            PrimitiveTestLoad(_oracleDbid);
+        }
+
+        private static void PrimitiveTestLoad(int dbid)
         {
             try
             {

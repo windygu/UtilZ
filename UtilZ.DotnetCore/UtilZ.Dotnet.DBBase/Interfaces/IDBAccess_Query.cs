@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
 
-namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
+namespace UtilZ.Dotnet.DBBase.Interfaces
 {
     //数据库访问接口-查询
     public partial interface IDBAccess
@@ -20,16 +20,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Interface
         /// <param name="collection">命令的参数集合</param>
         /// <returns>分页信息</returns>
         DBPageInfo QueryPageInfo(int pageSize, string sqlStr, NDbParameterCollection collection = null);
-
-        /// <summary>
-        /// 查询分页信息
-        /// </summary>
-        /// <typeparam name="T">数据模型类型</typeparam>
-        /// <param name="pageSize">页大小</param>
-        /// <param name="query">查询对象[为null时无条件查询]</param>
-        /// <param name="conditionProperties">条件属性集合[该集合为空或null时仅用主键字段]</param>
-        /// <returns>分页信息</returns>
-        DBPageInfo QueryPageInfoT<T>(int pageSize, T query = null, IEnumerable<string> conditionProperties = null) where T : class, new();
         #endregion
 
         #region 基础查询

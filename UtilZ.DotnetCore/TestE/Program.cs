@@ -8,7 +8,13 @@ namespace TestE
     {
         static void Main(string[] args)
         {
-            RedirectOuputCenter.Add(new RedirectOutputChannel((e) => { Console.WriteLine(e.Item.Content); }, null));
+            //RedirectOuputCenter.Add(new RedirectOutputChannel((e) => { Console.WriteLine(e.Item.Content); }, null));
+            //Loger.Info("Hello!");
+
+            //Console.WriteLine("continue...");
+            //Console.ReadKey();
+
+            //Loger.Info("Word!");
 
             TestDBAccess.Test();
 
@@ -20,6 +26,9 @@ namespace TestE
             //        break;
             //    }
             //}
+
+
+
             Console.WriteLine("any key exist...");
             Console.ReadKey();
         }

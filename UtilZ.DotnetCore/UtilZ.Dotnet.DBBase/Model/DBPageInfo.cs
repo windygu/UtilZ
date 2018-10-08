@@ -17,7 +17,7 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.Model
         /// <param name="pageCount">页数</param>
         /// <param name="totalCount">总数据记录数</param>
         /// <param name="pageSize">页大小</param>
-        public DBPageInfo(int pageCount, long totalCount, int pageSize)
+        public DBPageInfo(long pageCount, long totalCount, int pageSize)
         {
             this.PageCount = pageCount;
             this.TotalCount = totalCount;
@@ -27,7 +27,7 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.Model
         /// <summary>
         /// 页数
         /// </summary>
-        public int PageCount { get; private set; }
+        public long PageCount { get; private set; }
 
         /// <summary>
         /// 总数据记录数

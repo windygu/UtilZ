@@ -3,7 +3,7 @@
   <!--Trace,Debug,Info,Warn,Error,Fatal,Off-->
   <loger name="" level="Trace" enable="true">
     <!--FileAppender[F],RedirectAppender[R],ConsoleAppender[C],DatabaseAppender[D],MailAppender[M],SystemLogAppender[S]-->
-    <!--<appender name="fileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">-->
+    <!--<appender name="fileAppender" enable="true" type="UtilZ.Dotnet.Ex.Log.Appender.FileAppender,UtilZ.Dotnet.Ex">-->
     <appender name="fileAppender" enable="true" type="F">
       <!--<param name="Layout" value="%d %l %e %c 堆栈:%s" des="日志布局"/>-->
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
@@ -25,7 +25,7 @@
       <!--<param name="FilePath" value="Log\*yyyy-MM-dd*\*HH_mm_ss.fffffff*.log"  des="日志存放目录"/>-->
       <!--<param name="FilePath" value="Log\*yyyy*\*MM*\*dd*\*HH_mm_ss.fffffff*.log"  des="日志存放目录"/>-->
       <param name="IsAppend" value="true"  des="是否追加日志"/>
-      <!--<param name="SecurityPolicy" value="UtilZ.Dotnet.SEx.Log.Security.XSecurityPolicy,UtilZ.Dotnet.SEx"  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>-->
+      <!--<param name="SecurityPolicy" value="UtilZ.Dotnet.Ex.Log.XSecurityPolicy,UtilZ.Dotnet.Ex"  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>-->
       <param name="LockingModel" value="Exclusive"  des="锁类模型[Exclusive,InterProcess,Minimal]"/>
     </appender>
 
@@ -45,12 +45,12 @@
       <param name="MaxFileCount" value="-1" des="MaxSizeRollBackups最多产生的日志文件数，超过则只保留最新的n个,－1为不限文件数"/>
       <param name="MaxFileSize" value="10"  des="日志文件上限大小,当文件超过此值则分隔成多个日志文件,单位/MB"/>
       <param name="IsAppend" value="true"  des="是否追加日志"/>
-      <!--<param name="SecurityPolicy" value="UtilZ.Dotnet.SEx.Log.Security.XSecurityPolicy,UtilZ.Dotnet.SEx"  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>-->
+      <!--<param name="SecurityPolicy" value="UtilZ.Dotnet.Ex.Log.XSecurityPolicy,UtilZ.Dotnet.Ex"  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>-->
       <param name="LockingModel" value="Exclusive"  des="锁类模型[Exclusive,InterProcess,Minimal]"/>
     </appender>
 
     <appender name="absFileAppender" enable="true" type="F">
-      <!--<appender name="absFileAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">    
+      <!--<appender name="absFileAppender" enable="true" type="UtilZ.Dotnet.Ex.Log.Appender.FileAppender,UtilZ.Dotnet.Ex">    
       <param name="Layout" value="%d %l %e %c 堆栈:%s" des="日志布局"/>-->
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
@@ -66,17 +66,17 @@
       <param name="MaxFileCount" value="-1" des="MaxSizeRollBackups最多产生的日志文件数，超过则只保留最新的n个,－1为不限文件数"/>
       <param name="MaxFileSize" value="10"  des="日志文件上限大小,当文件超过此值则分隔成多个日志文件,单位/MB"/>
       <param name="IsAppend" value="true"  des="是否追加日志"/>
-      <!--<param name="SecurityPolicy" value="UtilZ.Dotnet.SEx.Log.Security.XSecurityPolicy,UtilZ.Dotnet.SEx"  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>-->
+      <!--<param name="SecurityPolicy" value="UtilZ.Dotnet.Ex.Log.XSecurityPolicy,UtilZ.Dotnet.Ex"  des="日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法"/>-->
       <param name="LockingModel" value="Minimal"  des="锁类模型[Exclusive,InterProcess,Minimal]"/>
     </appender>
 
 
-    <!--<appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.RedirectAppender,UtilZ.Dotnet.SEx">-->
+    <!--<appender name="redirectAppender" enable="true" type="UtilZ.Dotnet.Ex.Log.Appender.RedirectAppender,UtilZ.Dotnet.Ex">-->
     <appender name="redirectAppender" enable="true" type="R">
       <param name="EnableOutputCache" value="true" des="是否启用日志输出缓存,默认为false[true:启用;false:禁用]"/>
     </appender>
 
-    <!--<appender name="ConsoleAppender" enable="true" type="UtilZ.Dotnet.SEx.Log.Appender.ConsoleAppender,UtilZ.Dotnet.SEx">-->
+    <!--<appender name="ConsoleAppender" enable="true" type="UtilZ.Dotnet.Ex.Log.Appender.ConsoleAppender,UtilZ.Dotnet.Ex">-->
     <appender name="ConsoleAppender" enable="true" type="ConsoleAppender">
       <param name="SeparatorCount" value="0" des="分隔线长度,0表示无分隔线"/>
       <param name="EnableOutputCache" value="true" des="是否启用日志输出缓存,默认为false[true:启用;false:禁用]"/>
@@ -130,13 +130,13 @@
   </loger>
 
   <loger name="loginfo" level="debug"  enable="true">
-    <appender name="fileAppender" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
+    <appender name="fileAppender" type="UtilZ.Dotnet.Ex.Log.Appender.FileAppender,UtilZ.Dotnet.Ex">
       <param name="RollingStyle" value="Date" />
       <param name="FilterFrom" value="info" />
       <param name="FilterTo" value="error" />
     </appender>
 
-    <appender name="mailAppender" type="UtilZ.Dotnet.SEx.Log.Appender.FileAppender,UtilZ.Dotnet.SEx">
+    <appender name="mailAppender" type="UtilZ.Dotnet.Ex.Log.Appender.FileAppender,UtilZ.Dotnet.Ex">
       <param name="RollingStyle" value="Date" />
       <param name="FilterFrom" value="error" />
       <param name="FilterTo" value="faltal" />
