@@ -150,6 +150,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>全路径</returns>
         private string GetFullPath(string relativePath)
         {
+            if (string.IsNullOrWhiteSpace(relativePath))
+            {
+                return this._ftpUrl;
+            }
+
             char ch;
             int index = 0;
 

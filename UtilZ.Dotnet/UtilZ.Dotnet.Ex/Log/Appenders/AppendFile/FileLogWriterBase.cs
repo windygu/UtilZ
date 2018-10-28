@@ -77,13 +77,13 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
             ********************************************************************/
 
             DateTime currentTime = DateTime.Now;
-            if (!string.IsNullOrWhiteSpace(this._filePath) &&
+            if (this._pathManager.IsFixPath ||
+                !string.IsNullOrWhiteSpace(this._filePath) &&
                 (this._fileAppenderConfig.MaxFileLength > 0 &&
                 this._fileSize < this._fileAppenderConfig.MaxFileLength &&
                 currentTime.Year == this._createFilePathTime.Year &&
                 currentTime.Month == this._createFilePathTime.Month &&
-                currentTime.Day == this._createFilePathTime.Day ||
-                this._pathManager.IsFixPath))
+                currentTime.Day == this._createFilePathTime.Day))
             {
                 //前一次写入的文件名尚可用
                 return this._filePath;
