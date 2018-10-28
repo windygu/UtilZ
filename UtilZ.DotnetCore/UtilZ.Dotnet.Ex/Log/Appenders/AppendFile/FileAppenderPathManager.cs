@@ -30,7 +30,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 throw new ArgumentNullException("文件路径不能为空");
             }
 
-            this.IsFixPath = filePath.Contains(LogConstant.PatternFlagChar);
+            this.IsFixPath = !filePath.Contains(LogConstant.PatternFlagChar);
             var fullPath = this.ConvertToFullPath(filePath);
             string[] paths = fullPath.Split(_pathSplitChars, StringSplitOptions.RemoveEmptyEntries);
             paths[0] = paths[0] + Path.DirectorySeparatorChar;
