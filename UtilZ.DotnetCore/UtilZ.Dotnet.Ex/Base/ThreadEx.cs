@@ -553,21 +553,25 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
 
                 this._isDisposed = true;
-                if (this._syncStopAutoResetEvent != null)
+                try
                 {
-                    this._syncStopAutoResetEvent.Set();
-                    this._syncStopAutoResetEvent.Dispose();
-                }
-
-                if (this._cts != null)
-                {
-                    if (!this._cts.IsCancellationRequested)
+                    if (this._syncStopAutoResetEvent != null)
                     {
-                        this._cts.Cancel();
+                        this._syncStopAutoResetEvent.Set();
+                        this._syncStopAutoResetEvent.Dispose();
+                    }
+
+                    var cts = this._cts;
+                    if (cts != null)
+                    {
+                        if (!cts.IsCancellationRequested)
+                        {
+                            cts.Cancel();
+                            cts.Dispose();
+                        }
                     }
                 }
-
-                this._cts.Dispose();
+                catch { }
                 this._cts = null;
             }
         }
