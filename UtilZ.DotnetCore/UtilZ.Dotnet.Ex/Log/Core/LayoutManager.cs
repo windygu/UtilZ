@@ -196,7 +196,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
                 else
                 {
-                    logMsg = item.Format;
+                    logMsg = item.Message;
                 }
             }
             catch (Exception ex)

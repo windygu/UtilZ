@@ -20,21 +20,6 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="time">时间</param>
         /// <param name="thread">线程</param>
         /// <param name="skipFrames">调用堆栈跳过帧数</param>
-        /// <param name="level">日志级别</param>
-        /// <param name="format">日志信息</param>
-        /// <param name="ex"></param>
-        /// <param name="name">日志记录器名称</param>
-        /// <param name="eventId">事件ID</param>
-        /// <param name="getStackTraceMethodParameterNameType">获取堆栈方法参数名称类型</param>
-        /// <param name="args">格式参数</param>
-        //
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="time">时间</param>
-        /// <param name="thread">线程</param>
-        /// <param name="skipFrames">调用堆栈跳过帧数</param>
         /// <param name="getStackTraceMethodParameterNameType">获取堆栈方法参数名称类型</param>
         /// <param name="name">日志记录器名称</param>
         /// <param name="level">日志级别</param>
@@ -127,6 +112,11 @@ namespace UtilZ.Dotnet.Ex.Log
         public object[] Args { get; private set; }
 
         /// <summary>
+        /// 消息
+        /// </summary>
+        public string Message { get; private set; }
+
+        /// <summary>
         /// 异常信息
         /// </summary>
         public Exception Exception { get; private set; }
@@ -193,6 +183,7 @@ namespace UtilZ.Dotnet.Ex.Log
 
                 sbContent.Append(message);
             }
+            this.Message = message;
 
             if (ex != null)
             {
@@ -427,7 +418,7 @@ namespace UtilZ.Dotnet.Ex.Log
             string logMsg;
             try
             {
-                logMsg = this.Format;
+                logMsg = this.Message;
                 if (string.IsNullOrWhiteSpace(logMsg))
                 {
                     if (this.Exception != null)
