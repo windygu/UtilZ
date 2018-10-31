@@ -20,22 +20,25 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="time">时间</param>
         /// <param name="thread">线程</param>
         /// <param name="skipFrames">调用堆栈跳过帧数</param>
-        /// <param name="level">日志级别</param>
-        /// <param name="msg">日志信息</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="name">日志记录器名称</param>
-        /// <param name="eventID">事件ID</param>
         /// <param name="getStackTraceMethodParameterNameType">获取堆栈方法参数名称类型</param>
-        /// <param name="args">格式参数</param>
-        public LogItem(DateTime time, Thread thread, int skipFrames, LogLevel level, string msg, Exception ex, string name, int eventID, bool getStackTraceMethodParameterNameType, params object[] args)
+        /// <param name="name">日志记录器名称</param>
+        /// <param name="level">日志级别</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public LogItem(DateTime time, Thread thread, int skipFrames, bool getStackTraceMethodParameterNameType, string name,
+            LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args)
         {
             this.Time = time;
             this.ThreadID = thread.ManagedThreadId;
             this.ThreadName = thread.Name;
-            this.EventID = eventID;
+            this.EventID = eventId;
+            this.Tag = tag;
             this.Level = level;
             this.StackTrace = new StackTrace(skipFrames, true);
-            this.Message = msg;
+            this.Format = format;
             this.Exception = ex;
             this.Name = name;
             this._getStackTraceMethodParameterNameType = getStackTraceMethodParameterNameType;
@@ -84,6 +87,11 @@ namespace UtilZ.Dotnet.Ex.Log
         public int EventID { get; private set; }
 
         /// <summary>
+        /// 与对象关联的用户定义数据
+        /// </summary>
+        public object Tag { get; private set; }
+
+        /// <summary>
         /// 日志级别
         /// </summary>
         public LogLevel Level { get; private set; }
@@ -94,14 +102,19 @@ namespace UtilZ.Dotnet.Ex.Log
         public StackTrace StackTrace { get; private set; }
 
         /// <summary>
-        /// 日志信息对象
+        /// 复合格式字符串,参数为空或null表示无格式化
         /// </summary>
-        public string Message { get; private set; }
+        public string Format { get; private set; }
 
         /// <summary>
-        /// 格式参数
+        /// 一个对象数组，其中包含零个或多个要设置格式的对象
         /// </summary>
         public object[] Args { get; private set; }
+
+        /// <summary>
+        /// 消息
+        /// </summary>
+        public string Message { get; private set; }
 
         /// <summary>
         /// 异常信息
@@ -153,7 +166,7 @@ namespace UtilZ.Dotnet.Ex.Log
         private void GenerateContent(Exception ex)
         {
             StringBuilder sbContent = new StringBuilder();
-            string message = this.Message;
+            string message = this.Format;
             if (!string.IsNullOrEmpty(message))
             {
                 if (this.Args != null && this.Args.Length > 0)
@@ -170,6 +183,7 @@ namespace UtilZ.Dotnet.Ex.Log
 
                 sbContent.Append(message);
             }
+            this.Message = message;
 
             if (ex != null)
             {

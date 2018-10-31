@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
+namespace UtilZ.Dotnet.Ex.LMQ
 {
     /// <summary>
     /// 本地消息队列中心配置管理类

@@ -4,9 +4,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.DataStruct;
 
-namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
+namespace UtilZ.Dotnet.Ex.LMQ
 {
     /// <summary>
     /// 本地消息队列中心

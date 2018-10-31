@@ -26,7 +26,6 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 时间
         /// </summary>
         private readonly static string _TIME = "%d";
-
         /// <summary>
         /// 时间
         /// </summary>
@@ -36,7 +35,6 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 日志级别
         /// </summary>
         private readonly static string _LEVEL = "%l";
-
         /// <summary>
         /// 日志级别
         /// </summary>
@@ -46,17 +44,21 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 事件ID
         /// </summary>
         private readonly static string _EVENT = "%e";
-
         /// <summary>
         /// 事件ID
         /// </summary>
         public static string EVENT { get { return _EVENT; } }
 
+        private readonly static string _TAG = "%g";
+        /// <summary>
+        /// 与对象关联的用户定义数据
+        /// </summary>
+        public static string TAG { get { return _TAG; } }
+
         /// <summary>
         /// 线程ID
         /// </summary>
         private readonly static string _THREAD = "%t";
-
         /// <summary>
         /// 线程ID
         /// </summary>
@@ -66,7 +68,6 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 内容
         /// </summary>
         private readonly static string _CONTENT = "%c";
-
         /// <summary>
         /// 内容
         /// </summary>
@@ -76,7 +77,6 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 堆栈
         /// </summary>
         private readonly static string _STACKTRACE = "%s";
-
         /// <summary>
         /// 堆栈
         /// </summary>
@@ -151,6 +151,12 @@ namespace UtilZ.Dotnet.Ex.Log
                 {
                     layoutFormat = layoutFormat.Replace(_EVENT, string.Format("{{{0}}}", index++));
                     args.Add(item.EventID);
+                }
+
+                if (layoutFormat.Contains(_TAG))
+                {
+                    layoutFormat = layoutFormat.Replace(_TAG, string.Format("{{{0}}}", index++));
+                    args.Add(item.Tag);
                 }
 
                 //线程

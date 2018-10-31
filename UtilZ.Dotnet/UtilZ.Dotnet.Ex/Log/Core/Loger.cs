@@ -345,25 +345,26 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 静态方法添加日志的方法
         /// </summary>
         /// <param name="level">日志级别</param>
-        /// <param name="msg">消息</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">格式参数</param>
-        internal override void ObjectAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        internal override void ObjectAddLog(LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args)
         {
-            this.PrimitiveAddLog(5, level, msg, ex, eventID, args);
+            this.PrimitiveAddLog(5, level, eventId, tag, ex, format, args);
         }
 
         /// <summary>
         /// 实例添加日志
         /// </summary>
-        /// <param name="skipFrames">跳过堆栈帧数</param>
         /// <param name="level">日志级别</param>
-        /// <param name="msg">消息</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">格式参数</param>
-        protected override void PrimitiveAddLog(int skipFrames, LogLevel level, string msg, Exception ex, int eventID, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        protected override void PrimitiveAddLog(int skipFrames, LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args)
         {
             try
             {
@@ -372,7 +373,7 @@ namespace UtilZ.Dotnet.Ex.Log
                     return;
                 }
 
-                var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, level, msg, ex, this.Name, eventID, true, args);
+                var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, true, this.Name, level, eventId, tag, ex, format, args);
                 this._logDispatcherQueue.Enqueue(item);
             }
             catch (Exception exi)
@@ -407,7 +408,7 @@ namespace UtilZ.Dotnet.Ex.Log
         #endregion
 
         #region 静态记录日志方法,默认日志快捷方法
-        private static void SAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args)
+        private static void SAddLog(LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args)
         {
             try
             {
@@ -417,7 +418,7 @@ namespace UtilZ.Dotnet.Ex.Log
                     return;
                 }
 
-                loger.ObjectAddLog(level, msg, ex, eventID, args);
+                loger.ObjectAddLog(level, eventId, tag, ex, format, args);
             }
             catch (Exception exi)
             {
@@ -429,44 +430,58 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 追踪
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        public static void Trace(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Trace(string format, params object[] args)
         {
-            SAddLog(LogLevel.Trace, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 追踪
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Trace(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Trace(int eventId, object tag, string format, params object[] args)
         {
-            SAddLog(LogLevel.Trace, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Trace, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 追踪
         /// </summary>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        public static void Trace(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        public static void Trace(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            SAddLog(LogLevel.Trace, null, ex, eventID, null);
+            SAddLog(LogLevel.Trace, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 追踪
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Trace(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Trace(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Trace, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 追踪
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Trace(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            SAddLog(LogLevel.Trace, eventId, tag, ex, format, args);
         }
         #endregion
 
@@ -474,89 +489,117 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 调试
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        public static void Debug(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Debug(string format, params object[] args)
         {
-            SAddLog(LogLevel.Debug, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 调试
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Debug(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Debug(int eventId, object tag, string format, params object[] args)
         {
-            SAddLog(LogLevel.Debug, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Debug, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 调试
         /// </summary>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        public static void Debug(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        public static void Debug(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            SAddLog(LogLevel.Debug, null, ex, eventID, null);
+            SAddLog(LogLevel.Debug, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 调试
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Debug(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Debug(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Debug, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 调试
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Debug(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            SAddLog(LogLevel.Debug, eventId, tag, ex, format, args);
         }
         #endregion
 
         #region Info
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        public static void Info(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Info(string format, params object[] args)
         {
-            SAddLog(LogLevel.Info, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Info(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Info(int eventId, object tag, string format, params object[] args)
         {
-            SAddLog(LogLevel.Info, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Info, eventId, tag, null, format, args);
         }
 
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        public static void Info(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        public static void Info(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            SAddLog(LogLevel.Info, null, ex, eventID, null);
+            SAddLog(LogLevel.Info, eventId, tag, ex, null);
         }
 
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Info(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Info(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Info, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 信息
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Info(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            SAddLog(LogLevel.Info, eventId, tag, ex, format, args);
         }
         #endregion
 
@@ -564,44 +607,58 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        public static void Warn(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Warn(string format, params object[] args)
         {
-            SAddLog(LogLevel.Warn, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Warn(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Warn(int eventId, object tag, string format, params object[] args)
         {
-            SAddLog(LogLevel.Warn, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Warn, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        public static void Warn(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="ex">异常警告</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        public static void Warn(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            SAddLog(LogLevel.Warn, null, ex, eventID, null);
+            SAddLog(LogLevel.Warn, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Warn(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="ex">异常警告</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Warn(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Warn, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 警告
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常警告</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Warn(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            SAddLog(LogLevel.Warn, eventId, tag, ex, format, args);
         }
         #endregion
 
@@ -609,89 +666,117 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        public static void Error(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Error(string format, params object[] args)
         {
-            SAddLog(LogLevel.Error, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Error(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Error(int eventId, object tag, string format, params object[] args)
         {
-            SAddLog(LogLevel.Error, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Error, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        public static void Error(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="ex">异常错误</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        public static void Error(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            SAddLog(LogLevel.Error, null, ex, eventID, null);
+            SAddLog(LogLevel.Error, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Error(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="ex">异常错误</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Error(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Error, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 错误
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常错误</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Error(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            SAddLog(LogLevel.Error, eventId, tag, ex, format, args);
         }
         #endregion
 
-        #region Faltal
+        #region Fatal
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        public static void Faltal(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Fatal(string format, params object[] args)
         {
-            SAddLog(LogLevel.Fatal, formatMsg, null, LogConstant.DefaultEventId, args);
+            SAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Faltal(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Fatal(int eventId, object tag, string format, params object[] args)
         {
-            SAddLog(LogLevel.Fatal, formatMsg, null, eventID, args);
+            SAddLog(LogLevel.Fatal, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        public static void Faltal(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="ex">异常致命</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        public static void Fatal(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            SAddLog(LogLevel.Fatal, null, ex, eventID, null);
+            SAddLog(LogLevel.Fatal, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        public static void Faltal(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="ex">异常致命</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Fatal(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Fatal, formatMsg, ex, eventID, args);
+            SAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 致命
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常致命</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        public static void Fatal(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            SAddLog(LogLevel.Fatal, eventId, tag, ex, format, args);
         }
         #endregion
         #endregion
