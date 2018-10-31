@@ -135,8 +135,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
             var matchString = config.MatchString;
             if (!string.IsNullOrEmpty(matchString) &&
-                !string.IsNullOrEmpty(item.Message) &&
-                !Regex.IsMatch(item.Message, matchString))
+                !string.IsNullOrEmpty(item.Content) &&
+                !Regex.IsMatch(item.Content, matchString))
             {
                 return false;
             }
