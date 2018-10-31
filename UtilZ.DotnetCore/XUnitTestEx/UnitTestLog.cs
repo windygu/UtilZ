@@ -34,7 +34,7 @@ namespace XUnitTestEx
         public void TestRedirectOuput()
         {
             Loger.LoadConfig("logconfig.xml");
-            RedirectOuputCenter.Add(new RedirectOutputChannel((e) => { Console.WriteLine(e.Item.Format); }, "redirectAppender"));
+            RedirectOuputCenter.Add(new RedirectOutputChannel((e) => { Console.WriteLine(e.Item.Message); }, "redirectAppender"));
             Loger.Info("TestRedirectOuput!");
 
         }
