@@ -65,79 +65,95 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 实例添加日志
         /// </summary>
         /// <param name="level">日志级别</param>
-        /// <param name="msg">消息</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">格式参数</param>
-        protected void InsAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        protected void InsAddLog(LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args)
         {
-            this.PrimitiveAddLog(4, level, msg, ex, eventID, args);
+            this.PrimitiveAddLog(4, level, eventId, tag, ex, format, args);
         }
 
         /// <summary>
         /// 静态方法添加日志的方法
         /// </summary>
         /// <param name="level">日志级别</param>
-        /// <param name="msg">消息</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">格式参数</param>
-        internal abstract void ObjectAddLog(LogLevel level, string msg, Exception ex, int eventID, params object[] args);
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        internal abstract void ObjectAddLog(LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args);
 
         /// <summary>
         /// 实例添加日志
         /// </summary>
-        /// <param name="skipFrames">跳过堆栈帧数</param>
         /// <param name="level">日志级别</param>
-        /// <param name="msg">消息</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">格式参数</param>
-        protected abstract void PrimitiveAddLog(int skipFrames, LogLevel level, string msg, Exception ex, int eventID, params object[] args);
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        protected abstract void PrimitiveAddLog(int skipFrames, LogLevel level, int eventId, object tag, Exception ex, string msg, params object[] args);
 
         #region 记录日志方法
         #region Trace
         /// <summary>
         /// 追踪
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Trace(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Trace(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Trace, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 追踪
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Trace(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Trace(int eventId, object tag, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Trace, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Trace, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 追踪
         /// </summary>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        void ILoger.Trace(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        void ILoger.Trace(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            this.InsAddLog(LogLevel.Trace, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Trace, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 追踪
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Trace(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Trace(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Trace, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 追踪
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Trace(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            this.InsAddLog(LogLevel.Trace, eventId, tag, ex, format, args);
         }
         #endregion
 
@@ -145,89 +161,117 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 调试
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Debug(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Debug(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Debug, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 调试
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Debug(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Debug(int eventId, object tag, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Debug, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Debug, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 调试
         /// </summary>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        void ILoger.Debug(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        void ILoger.Debug(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            this.InsAddLog(LogLevel.Debug, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Debug, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 调试
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Debug(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Debug(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Debug, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 调试
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Debug(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            this.InsAddLog(LogLevel.Debug, eventId, tag, ex, format, args);
         }
         #endregion
 
         #region Info
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Info(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Info(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Info, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Info(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Info(int eventId, object tag, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Info, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Info, eventId, tag, null, format, args);
         }
 
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        void ILoger.Info(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        void ILoger.Info(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            this.InsAddLog(LogLevel.Info, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Info, eventId, tag, ex, null);
         }
 
         /// <summary>
-        /// 提示
+        /// 信息
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
         /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Info(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Info(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Info, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 信息
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常信息</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Info(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            this.InsAddLog(LogLevel.Info, eventId, tag, ex, format, args);
         }
         #endregion
 
@@ -235,44 +279,58 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Warn(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Warn(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Warn, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Warn(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Warn(int eventId, object tag, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Warn, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Warn, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        void ILoger.Warn(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="ex">异常警告</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        void ILoger.Warn(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            this.InsAddLog(LogLevel.Warn, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Warn, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 警告
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Warn(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="ex">异常警告</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Warn(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Warn, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 警告
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常警告</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Warn(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            this.InsAddLog(LogLevel.Warn, eventId, tag, ex, format, args);
         }
         #endregion
 
@@ -280,89 +338,117 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Error(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Error(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Error, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Error(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Error(int eventId, object tag, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Error, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Error, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        void ILoger.Error(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="ex">异常错误</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        void ILoger.Error(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            this.InsAddLog(LogLevel.Error, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Error, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 错误
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Error(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="ex">异常错误</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Error(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Error, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 错误
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常错误</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Error(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            this.InsAddLog(LogLevel.Error, eventId, tag, ex, format, args);
         }
         #endregion
 
-        #region Faltal
+        #region Fatal
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Faltal(string formatMsg, params object[] args)
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Fatal(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Fatal, formatMsg, null, LogConstant.DefaultEventId, args);
+            this.InsAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, null, format, args);
         }
 
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Faltal(string formatMsg, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Fatal(int eventId, object tag, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Fatal, formatMsg, null, eventID, args);
+            this.InsAddLog(LogLevel.Fatal, eventId, tag, null, format, args);
         }
 
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        void ILoger.Faltal(Exception ex, int eventID = LogConstant.DefaultEventId)
+        /// <param name="ex">异常致命</param>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        void ILoger.Fatal(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
         {
-            this.InsAddLog(LogLevel.Fatal, null, ex, eventID, null);
+            this.InsAddLog(LogLevel.Fatal, eventId, tag, ex, null);
         }
 
         /// <summary>
         /// 致命
         /// </summary>
-        /// <param name="formatMsg">格式化日志信息,参数为空或null表示无格式化</param>
-        /// <param name="ex">异常信息</param>
-        /// <param name="eventID">事件ID</param>
-        /// <param name="args">参数数组</param>
-        void ILoger.Faltal(string formatMsg, Exception ex, int eventID = LogConstant.DefaultEventId, params object[] args)
+        /// <param name="ex">异常致命</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Fatal(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Fatal, formatMsg, ex, eventID, args);
+            this.InsAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, ex, format, args);
+        }
+
+        /// <summary>
+        /// 致命
+        /// </summary>
+        /// <param name="eventId">事件ID</param>
+        /// <param name="tag">与对象关联的用户定义数据</param>
+        /// <param name="ex">异常致命</param>
+        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
+        void ILoger.Fatal(int eventId, object tag, Exception ex, string format, params object[] args)
+        {
+            this.InsAddLog(LogLevel.Fatal, eventId, tag, ex, format, args);
         }
         #endregion
         #endregion

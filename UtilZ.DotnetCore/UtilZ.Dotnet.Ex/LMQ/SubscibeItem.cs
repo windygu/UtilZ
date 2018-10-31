@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.Ex.Log;
 
-namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
+namespace UtilZ.Dotnet.Ex.LMQ
 {
     /// <summary>
     /// 订阅项

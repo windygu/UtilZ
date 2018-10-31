@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UtilZ.Dotnet.Ex.Base;
 
-namespace UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ
+namespace UtilZ.Dotnet.Ex.LMQ
 {
     /// <summary>
     /// 订阅组
