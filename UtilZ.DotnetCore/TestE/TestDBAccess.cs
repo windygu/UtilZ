@@ -17,7 +17,7 @@ namespace TestE
         {
             DBLog.Log = (str, ex) =>
             {
-                Loger.Error(str, ex);
+                 Loger.Error(str, ex);
             };
         }
 
