@@ -67,7 +67,8 @@ namespace UtilZ.ParaService.WebApp
 
             app.UseCors("CorsPolicy");
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();//好像行启用则http请求会被重定向为https请求。windows2008R2上部署会报证书没有错误，为了简单，加上本服务暂时定为内网使用，所以不用重定向
+
             //默认文件
             DefaultFilesOptions defaultFiles = new DefaultFilesOptions();
             defaultFiles.DefaultFileNames.Clear();
