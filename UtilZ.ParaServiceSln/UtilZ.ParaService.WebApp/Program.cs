@@ -14,12 +14,16 @@ namespace UtilZ.ParaService.WebApp
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                .UseContentRoot(Directory.GetCurrentDirectory())//定义contentroot  
+                .UseWebRoot(Directory.GetCurrentDirectory() + "/wwwroot")//定义webroot
+                                                                         //.UseUrls("http://localhost:5001", "https://localhost:5002", "http://*:5003", "https://*:5004")
+                //                                                             .UseSetting("https_port", "5004")
+                //.UseUrls("http://*:5003")
+                .UseStartup<Startup>();
     }
 }

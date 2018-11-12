@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.WebApp", "UtilZ.ParaService.WebApp\UtilZ.ParaService.WebApp.csproj", "{0E6B82FD-FD99-4907-8495-514CAD5012B5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.BLL", "UtilZ.ParaService.BLL\UtilZ.ParaService.BLL.csproj", "{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.Model", "UtilZ.ParaService.Model\UtilZ.ParaService.Model.csproj", "{6DAA52FE-54EF-4E81-B8FF-C0D27DCDC054}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.Model", "UtilZ.ParaService.Model\UtilZ.ParaService.Model.csproj", "{6DAA52FE-54EF-4E81-B8FF-C0D27DCDC054}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.DBModel", "UtilZ.ParaService.DBModel\UtilZ.ParaService.DBModel.csproj", "{CFC486A8-01D1-49BE-8800-2613A3D2C04E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NDatabase", "NDatabase\NDatabase.csproj", "{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.WebApp", "UtilZ.ParaService.WebApp\UtilZ.ParaService.WebApp.csproj", "{4667C0EB-5794-4E13-B9CE-A55895889407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.ClientProx", "UtilZ.ParaService.ClientProx\UtilZ.ParaService.ClientProx.csproj", "{2B71EC07-7BB1-4E51-8DD4-5BEB0DC4D467}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E6B82FD-FD99-4907-8495-514CAD5012B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B30080A0-C4BA-4FEC-84F2-1D1EC96A5590}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +33,18 @@ Global
 		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4667C0EB-5794-4E13-B9CE-A55895889407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4667C0EB-5794-4E13-B9CE-A55895889407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4667C0EB-5794-4E13-B9CE-A55895889407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4667C0EB-5794-4E13-B9CE-A55895889407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B71EC07-7BB1-4E51-8DD4-5BEB0DC4D467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B71EC07-7BB1-4E51-8DD4-5BEB0DC4D467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B71EC07-7BB1-4E51-8DD4-5BEB0DC4D467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B71EC07-7BB1-4E51-8DD4-5BEB0DC4D467}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

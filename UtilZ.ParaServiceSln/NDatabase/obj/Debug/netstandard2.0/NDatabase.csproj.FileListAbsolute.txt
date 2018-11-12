@@ -1,0 +1,8 @@
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\obj\Debug\netstandard2.0\NDatabase.csproj.CoreCompileInputs.cache
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\obj\Debug\netstandard2.0\NDatabase.AssemblyInfoInputs.cache
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\obj\Debug\netstandard2.0\NDatabase.AssemblyInfo.cs
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\bin\Debug\netstandard2.0\NDatabase.deps.json
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\bin\Debug\netstandard2.0\NDatabase.dll
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\bin\Debug\netstandard2.0\NDatabase.pdb
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\obj\Debug\netstandard2.0\NDatabase.dll
+F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\NDatabase\obj\Debug\netstandard2.0\NDatabase.pdb

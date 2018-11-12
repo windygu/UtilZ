@@ -480,10 +480,11 @@
       ]
     },
     "Microsoft.NETCore.DotNetAppHost/2.0.0": {
-      "sha512": "L4GGkcI/Mxl8PKLRpFdGmLb5oI8sGIR05bDTGkzCoamAjdUl1Zhkov2swjEsZvKYT8kkdiz39LtwyGYuCJxm1A==",
+      "sha512": "dYQNVWNBsO9LldqAyJTt/wYUq2BScXq3ENBaNUjELS3sT53mwrgyPpmoLHsE7H10RzYOHEl5G0sg/jpZGlIAzA==",
       "type": "package",
       "path": "microsoft.netcore.dotnetapphost/2.0.0",
       "files": [
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "microsoft.netcore.dotnetapphost.2.0.0.nupkg.sha512",
@@ -674,11 +675,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Project\\Git\\UtilZ\\UtilZ.ParaServiceSln\\UtilZ.ParaService.BLL\\UtilZ.ParaService.BLL.csproj",
+      "projectUniqueName": "F:\\Code\\Git\\UtilZ\\UtilZ.ParaServiceSln\\UtilZ.ParaService.BLL\\UtilZ.ParaService.BLL.csproj",
       "projectName": "UtilZ.ParaService.BLL",
-      "projectPath": "F:\\Project\\Git\\UtilZ\\UtilZ.ParaServiceSln\\UtilZ.ParaService.BLL\\UtilZ.ParaService.BLL.csproj",
+      "projectPath": "F:\\Code\\Git\\UtilZ\\UtilZ.ParaServiceSln\\UtilZ.ParaService.BLL\\UtilZ.ParaService.BLL.csproj",
       "packagesPath": "C:\\Users\\zhang\\.nuget\\packages\\",
-      "outputPath": "F:\\Project\\Git\\UtilZ\\UtilZ.ParaServiceSln\\UtilZ.ParaService.BLL\\obj\\",
+      "outputPath": "F:\\Code\\Git\\UtilZ\\UtilZ.ParaServiceSln\\UtilZ.ParaService.BLL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

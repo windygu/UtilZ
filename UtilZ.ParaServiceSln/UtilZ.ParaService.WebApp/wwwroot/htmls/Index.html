@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>参数</title>
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //alert("OK");
+            $("#btnGet").click(function () {
+
+                var url = "https://localhost:5001/v1/api/Para/" + $("#txtStr").val();
+                //$.get("https://localhost:5001/v1/api/Para/werqwe", function (data, status) {
+                //    alert("数据: " + data + "\n状态: " + status);
+                //});
+
+                $.get(url, function (data, status) {
+                    alert("数据: " + data + "\n状态: " + status);
+                });
+            });
+
+            $("#btnPost").click(function () {
+                var data = "{\"action\": \"login\",\"email\": \"din@gmail.com\",\"password\": \"qwerty\"}";
+                $.ajax({
+                    type: "POST",
+                    url: "https://localhost:5001/v1/api/Para/",
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        alert("数据: " + data + "\n状态: " + status);
+                    }
+                });
+
+
+                //$.ajax({
+                //    type: "POST", // Tipo di richiesta: POST
+                //    url:"https://localhost:5001/v1/api/Para/",
+                //    data: data,
+                //    contentType: "application/json; charset=utf-8",
+                //    //dataType: "text",
+                //    success: function (data, status) {
+                //        alert("数据: " + data + "\n状态: " + status);
+                //    },
+                //    error: function (xhr) {
+                //        alert(xhr);
+                //    }
+                //});
+            });
+        });
+    </script>
+</head>
+<body>
+    <p>hello</p>
+    <input type="text" id="txtStr" value="hello word" />
+    <button id="btnGet">Get</button>
+    <button id="btnPost">Post</button>
+    <img src="images/banner1.svg" />
+</body>
+</html>
