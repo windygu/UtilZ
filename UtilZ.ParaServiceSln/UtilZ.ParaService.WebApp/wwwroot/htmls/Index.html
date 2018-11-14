@@ -9,7 +9,7 @@
             //alert("OK");
             $("#btnGet").click(function () {
 
-                var url = "http://localhost:5003/v1/api/Para/" + $("#txtStr").val();
+                var url = "http://localhost:5000/v1/api/Para/" + $("#txtStr").val();
                 //$.get("https://localhost:5001/v1/api/Para/werqwe", function (data, status) {
                 //    alert("数据: " + data + "\n状态: " + status);
                 //});
@@ -29,6 +29,9 @@
                     //dataType: "json",
                     success: function (data, status) {
                         alert("数据: " + data + "\n状态: " + status);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText);
                     }
                 });
 
