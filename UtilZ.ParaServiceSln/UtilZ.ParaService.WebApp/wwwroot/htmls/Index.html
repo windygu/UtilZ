@@ -3,52 +3,153 @@
 <head>
     <meta charset="utf-8" />
     <title>参数</title>
+    <!--<script src="../lib/jquery/dist/jquery.js"></script>-->
     <script src="lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             //alert("OK");
             $("#btnGet").click(function () {
-
                 var url = "http://localhost:5000/v1/api/Para/" + $("#txtStr").val();
-                //$.get("https://localhost:5001/v1/api/Para/werqwe", function (data, status) {
+                //$.get(url, function (data, status) {
                 //    alert("数据: " + data + "\n状态: " + status);
                 //});
 
-                $.get(url, function (data, status) {
-                    alert("数据: " + data + "\n状态: " + status);
-                });
-            });
-
-            $("#btnPost").click(function () {
-                var data = "{\"action\": \"login\",\"email\": \"din@gmail.com\",\"password\": \"qwerty\"}";
+                var token = sessionStorage.getItem('token');
                 $.ajax({
-                    type: "POST",
-                    url: "https://localhost:5001/v1/api/Para/",
-                    data: data,
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
                         alert("数据: " + data + "\n状态: " + status);
                     },
                     error: function (xhr) {
-                        alert(xhr.responseText);
+                        alert(xhr.statusText);
                     }
                 });
+            });
 
-
+            $("#btnPost").click(function () {
+                var data = "{\"action\": \"login\",\"email\": \"din@gmail.com\",\"password\": \"qwerty\"}";
                 //$.ajax({
-                //    type: "POST", // Tipo di richiesta: POST
-                //    url:"https://localhost:5001/v1/api/Para/",
+                //    type: "POST",
+                //    url: "https://localhost:5001/v1/api/Para/",
                 //    data: data,
                 //    contentType: "application/json; charset=utf-8",
-                //    //dataType: "text",
+                //    //dataType: "json",
                 //    success: function (data, status) {
                 //        alert("数据: " + data + "\n状态: " + status);
                 //    },
                 //    error: function (xhr) {
-                //        alert(xhr);
+                //        alert(xhr.responseText);
                 //    }
                 //});
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "POST",
+                    url: "https://localhost:5001/v1/api/Para/",
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        alert("数据: " + data + "\n状态: " + status);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+            
+            $("#btnLogin").click(function () {
+                //var url = "https://localhost:5001/api/Authentication/userName=admin&password=admin";
+                //$.get(url, function (data, status) {
+                //    $("#txtToken").val(data.access_token);
+                //    sessionStorage.setItem('token', data.access_token);
+                //});
+
+                var url = "https://localhost:5001/api/Authentication";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "userName": "admin",
+                        "password": "admin",
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#txtToken").val(data.access_token);
+                        sessionStorage.setItem('token', data.access_token);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+
+            $("#btnAuthGet").click(function () {
+                //var token = sessionStorage.getItem('token');
+                //var url = "https://localhost:5001/api/Values?zhn&access_token=" + token;
+                //$.get(url, function (data, status) {
+                //    alert("数据: " + data + "\n状态: " + status);
+                //});
+
+                var token = sessionStorage.getItem('token');
+                var url = "https://localhost:5001/api/Values?zhn";
+
+                var data = "{\"action\": \"login\",\"email\": \"din@gmail.com\",\"password\": \"qwerty\"}";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: data,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        alert("数据: " + data + "\n状态: " + status);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+
+
+            $("#btnAuthPost").click(function () {
+                var token = sessionStorage.getItem('token');
+                var url = "https://localhost:5001/api/Values";
+                url = "https://localhost:5001/v1/api/Para/";
+
+                var data = "{\"action\": \"login\",\"email\": \"din@gmail.com\",\"password\": \"qwerty\"}";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        alert("数据: " + data + "\n状态: " + status);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
             });
         });
     </script>
@@ -58,6 +159,11 @@
     <input type="text" id="txtStr" value="hello word" />
     <button id="btnGet">Get</button>
     <button id="btnPost">Post</button>
-    <img src="images/banner1.svg" />
+    <!--<img src="images/banner1.svg" />-->
+    <button id="btnLogin">Login</button>
+    <button id="btnAuthGet" data-token="">AuthGet</button>
+    <button id="btnAuthPost" data-token="">AuthPost</button>
+    <br />
+    <input type="text" id="txtToken" value="" width="500" />
 </body>
 </html>

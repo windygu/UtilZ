@@ -14,6 +14,8 @@ namespace UtilZ.ParaService.WebApp
     {
         public static void Main(string[] args)
         {
+            string str = Newtonsoft.Json.JsonConvert.SerializeObject("hello");
+
             var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("hosting.json", optional: true)
@@ -26,7 +28,7 @@ namespace UtilZ.ParaService.WebApp
             .UseConfiguration(config)
                 .UseContentRoot(Directory.GetCurrentDirectory())//定义contentroot  
                 .UseWebRoot(Directory.GetCurrentDirectory() + "/wwwroot")//定义webroot
-                //.UseUrls("http://*:12018", "https://*:22018")
+                                                                         //.UseUrls("http://*:12018", "https://*:22018")
                 .UseStartup<Startup>();
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +12,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using UtilZ.ParaService.WebApp.Models;
 
 namespace UtilZ.ParaService.WebApp
 {
@@ -40,15 +45,55 @@ namespace UtilZ.ParaService.WebApp
                     .AllowCredentials());
             });
 
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(o =>
+            {
+                o.Authority = "https://oidc.faasx.com/";
+                o.Audience = "api";
 
-            //services.AddMvc(option =>
-            //{
-            //    option.ReturnHttpNotAcceptable = true;
-            //    //option.InputFormatters.Add(new StringInputFormatter());
-            //    //option.OutputFormatters.Add(new StringOutputFormatter());
-            //    //option.InputFormatters.Add(new JsonInputFormatter());
-            //    option.OutputFormatters.Add(new StringOutputFormatter());
-            //}).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                o.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        const string accessToken = "access_token";
+                        context.Token = context.Request.Query[accessToken];
+                        if (string.IsNullOrWhiteSpace(context.Token))
+                        {
+                            context.Token = context.Request.Headers[accessToken];
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = JwtClaimTypes.Name,
+                    RoleClaimType = JwtClaimTypes.Role,
+
+                    // 用于适配本地模拟Token
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(ParaServiceConstant.Secret))
+                    /***********************************TokenValidationParameters的参数默认值***********************************/
+                    // RequireSignedTokens = true,
+                    // SaveSigninToken = false,
+                    // ValidateActor = false,
+                    // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                    // ValidateAudience = true,
+                    // ValidateIssuer = true, 
+                    // ValidateIssuerSigningKey = false,
+                    // 是否要求Token的Claims中必须包含Expires
+                    // RequireExpirationTime = true,
+                    // 允许的服务器时间偏移量
+                    // ClockSkew = TimeSpan.FromSeconds(300),
+                    // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                    // ValidateLifetime = true
+                };
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -77,7 +122,7 @@ namespace UtilZ.ParaService.WebApp
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseAuthentication();
             app.UseMvc();
             //app.UseMvc(routes =>
             //{
