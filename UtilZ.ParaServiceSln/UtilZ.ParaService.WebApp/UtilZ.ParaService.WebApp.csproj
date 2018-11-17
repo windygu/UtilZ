@@ -5,15 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0" />
+    <Content Remove="hosting.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="IdentityModel">
-      <HintPath>C:\Users\zhang\.nuget\packages\identitymodel\3.10.1\lib\netstandard2.0\IdentityModel.dll</HintPath>
-    </Reference>
+    <None Include="hosting.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

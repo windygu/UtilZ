@@ -14,8 +14,6 @@ namespace UtilZ.ParaService.WebApp
     {
         public static void Main(string[] args)
         {
-            string str = Newtonsoft.Json.JsonConvert.SerializeObject("hello");
-
             var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("hosting.json", optional: true)
