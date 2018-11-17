@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>登录参数管理</title>
+    <style type="text/css">
+        body {
+            background-color: cadetblue;
+        }
+
+        .divLogin {
+            background-color: whitesmoke;
+            width: 500px;
+            height: 280px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        table {
+            margin-left: 50px;
+            margin-top: 50px;
+        }
+
+        p {
+            font-size: 20px;
+            text-align: justify;
+            text-justify: distribute-all-lines; /*ie6-8*/
+            text-align-last: justify; /* ie9*/
+            -moz-text-align-last: justify; /*ff*/
+        }
+
+        input {
+            font-size: 20px;
+            width: 310px;
+        }
+
+        button {
+            font-size: 20px;
+            width: 100px;
+            height: 30px;
+        }
+    </style>
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../js/config.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnLogin").click(function () {
+                var userName = $("#txtUserName").val();
+                var password = $("#txtPassword").val();
+                if (userName == "") {
+                    alert("用户名不能为空");
+                    return;
+                }
+
+                if (password == "") {
+                    alert("密码不能为空");
+                    return;
+                }
+
+                var url = config.conf.baseUrl + "/api/Authentication";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "userName": userName,
+                        "password": password,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        sessionStorage.setItem('token', data.access_token);
+                        window.location.href = "/htmls/index.html";
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+
+                //$.ajax({
+                //    type: "POST",
+                //    url: url,
+                //    //data: data,
+                //    contentType: "application/json; charset=utf-8",
+                //    headers:
+                //    {
+                //        "userName": userName,
+                //        "password": password,
+                //    },
+                //    //dataType: "json",
+                //    success: function (data, status) {
+                //        alert("数据: " + data + "\n状态: " + status);
+                //        sessionStorage.setItem('token', data.access_token);
+                //        window.location.href = "/htmls/index.html";
+                //    },
+                //    error: function (xhr) {
+                //        alert(xhr.statusText);
+                //    }
+                //});
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="divLogin">
+        <table>
+            <tr>
+                <td><p>用户名</p></td>
+                <td><input type="text" id="txtUserName" value="admin" /></td>
+            </tr>
+            <tr>
+                <td><p>密码</p></td>
+                <td><input type="password" id="txtPassword" value="admin" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnLogin">登录</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

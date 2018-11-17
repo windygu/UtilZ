@@ -3,17 +3,19 @@
 <head>
     <meta charset="utf-8" />
     <title>参数</title>
+    <!--<script src="../lib/jquery/dist/jquery.js"></script>-->
     <script src="../lib/jquery/dist/jquery.js"></script>
-    <!--<script src="lib/jquery/dist/jquery.js"></script>-->
+    <script src="../js/config.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             //alert("OK");
             $("#btnGet").click(function () {
-                var url = "http://localhost:5000/v1/api/Para/" + $("#txtStr").val();
+                //var url = config.conf.baseUrl + "/api/v1/Para/" + $("#txtStr").val();
                 //$.get(url, function (data, status) {
                 //    alert("数据: " + data + "\n状态: " + status);
                 //});
 
+                var url = config.conf.baseUrl + "/api/v1/Para";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -154,16 +156,16 @@
         });
     </script>
 </head>
-    <body>
-        <p>hello</p>
-        <input type="text" id="txtStr" value="hello word" />
-        <button id="btnGet">Get</button>
-        <button id="btnPost">Post</button>
-        <!--<img src="images/banner1.svg" />-->
+<body>
+    <p>hello</p>
+    <input type="text" id="txtStr" value="hello word" />
+    <button id="btnGet">Get</button>
+    <button id="btnPost">Post</button>
+    <!--<img src="images/banner1.svg" />-->
     <button id="btnLogin">Login</button>
     <button id="btnAuthGet" data-token="">AuthGet</button>
     <button id="btnAuthPost" data-token="">AuthPost</button>
     <br />
     <input type="text" id="txtToken" value="" width="500" />
-    </body>
+</body>
 </html>
