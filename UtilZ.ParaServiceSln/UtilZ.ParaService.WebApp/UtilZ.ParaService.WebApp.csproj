@@ -30,4 +30,8 @@
     <Folder Include="Controllers\2_0\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\UtilZ.DotnetCore\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj" />
+  </ItemGroup>
+
 </Project>

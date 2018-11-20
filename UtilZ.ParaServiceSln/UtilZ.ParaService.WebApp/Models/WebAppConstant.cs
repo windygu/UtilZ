@@ -13,5 +13,7 @@ namespace UtilZ.ParaService.WebApp.Models
         public const string CorsPolicy = "CorsPolicy";
 
         public const string Secret = "JwtBearerSample_11231~#$%#%^2235";
+
+        public const string AccessToken = "access_token";
     }
 }

@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.ParaService.WebApp.Models;
 
 namespace UtilZ.ParaService.WebApp.Controllers._1_0
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors(WebAppConstant.CorsPolicy)]//js跨域
     [Route("api/v1/[controller]")]
     [ApiController]
@@ -18,9 +19,22 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
     {
         // GET: api/Para
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            string token = Request.Headers[WebAppConstant.AccessToken];
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return Unauthorized();
+            }
+
+            var user = MemoryCacheEx.Get(token) as User;
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            MemoryCacheEx.Set(token, user, WebConfig.Instance.TokenExpireTime);
+            return "value1";
         }
 
         // GET: api/Para/5

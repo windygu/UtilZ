@@ -8,6 +8,12 @@
     <script src="../js/config.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            var validToken = sessionStorage.getItem('token');
+            if (validToken == null || validToken == "") {
+                window.location.href = "/htmls/login.html";
+                return;
+            }
+
             //alert("OK");
             $("#btnGet").click(function () {
                 //var url = config.conf.baseUrl + "/api/v1/Para/" + $("#txtStr").val();
