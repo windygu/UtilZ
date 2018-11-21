@@ -32,6 +32,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\UtilZ.DotnetCore\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj" />
+    <ProjectReference Include="..\UtilZ.ParaService.BLL\UtilZ.ParaService.BLL.csproj" />
+    <ProjectReference Include="..\UtilZ.ParaService.DBModel\UtilZ.ParaService.DBModel.csproj" />
+    <ProjectReference Include="..\UtilZ.ParaService.Model\UtilZ.ParaService.Model.csproj" />
   </ItemGroup>
 
 </Project>

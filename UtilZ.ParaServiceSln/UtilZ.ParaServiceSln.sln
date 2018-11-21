@@ -7,15 +7,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.BLL", "Ut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.Model", "UtilZ.ParaService.Model\UtilZ.ParaService.Model.csproj", "{6DAA52FE-54EF-4E81-B8FF-C0D27DCDC054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.DBModel", "UtilZ.ParaService.DBModel\UtilZ.ParaService.DBModel.csproj", "{CFC486A8-01D1-49BE-8800-2613A3D2C04E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NDatabase", "NDatabase\NDatabase.csproj", "{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.ClientProx", "UtilZ.ParaService.ClientProx\UtilZ.ParaService.ClientProx.csproj", "{2B71EC07-7BB1-4E51-8DD4-5BEB0DC4D467}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.Ex", "..\UtilZ.DotnetCore\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj", "{C2BAF21B-960E-463C-9AA4-A34711644AC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.WebApp", "UtilZ.ParaService.WebApp\UtilZ.ParaService.WebApp.csproj", "{A66D5CC9-3B73-4B08-8891-3F843A7C41FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.ParaService.WebApp", "UtilZ.ParaService.WebApp\UtilZ.ParaService.WebApp.csproj", "{A66D5CC9-3B73-4B08-8891-3F843A7C41FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{3569BD18-F760-4B85-AAD0-D6A7F671E19C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.DBBase", "..\UtilZ.DotnetCore\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj", "{5B91AFDB-DFF2-4848-810E-49857E3741E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.DBFactory", "..\UtilZ.DotnetCore\UtilZ.Dotnet.DBFactory\UtilZ.Dotnet.DBFactory.csproj", "{ED3896CD-DAFB-41AD-A2B0-E99FD49366D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.DBSQLite", "..\UtilZ.DotnetCore\UtilZ.Dotnet.DBSQLite\UtilZ.Dotnet.DBSQLite.csproj", "{62CD250B-25A9-4728-B574-06C2FF26E5EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.DBMySql", "..\UtilZ.DotnetCore\UtilZ.Dotnet.DBMySql\UtilZ.Dotnet.DBMySql.csproj", "{EE2E09E2-666E-4891-AC24-D1890723A286}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.DBOracle", "..\UtilZ.DotnetCore\UtilZ.Dotnet.DBOracle\UtilZ.Dotnet.DBOracle.csproj", "{85615823-45F5-436D-87D0-DAFDE0010795}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.Dotnet.DBSQLServer", "..\UtilZ.DotnetCore\UtilZ.Dotnet.DBSQLServer\UtilZ.Dotnet.DBSQLServer.csproj", "{8480A265-F890-4CA5-BA02-E2B6F62E170A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.DAL", "UtilZ.ParaService.DAL\UtilZ.ParaService.DAL.csproj", "{D0631962-3D41-4EC2-B148-45D0E423877A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.ParaService.DBModel", "UtilZ.ParaService.DBModel\UtilZ.ParaService.DBModel.csproj", "{1AC8EFDB-E54A-4C07-9E27-50DBC30660F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +47,6 @@ Global
 		{6DAA52FE-54EF-4E81-B8FF-C0D27DCDC054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DAA52FE-54EF-4E81-B8FF-C0D27DCDC054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DAA52FE-54EF-4E81-B8FF-C0D27DCDC054}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFC486A8-01D1-49BE-8800-2613A3D2C04E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7DF652A-FF09-4117-8B8F-7669D5A19EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,9 +63,49 @@ Global
 		{A66D5CC9-3B73-4B08-8891-3F843A7C41FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A66D5CC9-3B73-4B08-8891-3F843A7C41FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A66D5CC9-3B73-4B08-8891-3F843A7C41FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B91AFDB-DFF2-4848-810E-49857E3741E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B91AFDB-DFF2-4848-810E-49857E3741E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B91AFDB-DFF2-4848-810E-49857E3741E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B91AFDB-DFF2-4848-810E-49857E3741E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED3896CD-DAFB-41AD-A2B0-E99FD49366D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED3896CD-DAFB-41AD-A2B0-E99FD49366D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED3896CD-DAFB-41AD-A2B0-E99FD49366D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED3896CD-DAFB-41AD-A2B0-E99FD49366D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62CD250B-25A9-4728-B574-06C2FF26E5EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62CD250B-25A9-4728-B574-06C2FF26E5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62CD250B-25A9-4728-B574-06C2FF26E5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62CD250B-25A9-4728-B574-06C2FF26E5EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE2E09E2-666E-4891-AC24-D1890723A286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2E09E2-666E-4891-AC24-D1890723A286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE2E09E2-666E-4891-AC24-D1890723A286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE2E09E2-666E-4891-AC24-D1890723A286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85615823-45F5-436D-87D0-DAFDE0010795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85615823-45F5-436D-87D0-DAFDE0010795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85615823-45F5-436D-87D0-DAFDE0010795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85615823-45F5-436D-87D0-DAFDE0010795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8480A265-F890-4CA5-BA02-E2B6F62E170A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8480A265-F890-4CA5-BA02-E2B6F62E170A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8480A265-F890-4CA5-BA02-E2B6F62E170A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8480A265-F890-4CA5-BA02-E2B6F62E170A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0631962-3D41-4EC2-B148-45D0E423877A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0631962-3D41-4EC2-B148-45D0E423877A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0631962-3D41-4EC2-B148-45D0E423877A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0631962-3D41-4EC2-B148-45D0E423877A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC8EFDB-E54A-4C07-9E27-50DBC30660F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC8EFDB-E54A-4C07-9E27-50DBC30660F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC8EFDB-E54A-4C07-9E27-50DBC30660F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC8EFDB-E54A-4C07-9E27-50DBC30660F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5B91AFDB-DFF2-4848-810E-49857E3741E9} = {3569BD18-F760-4B85-AAD0-D6A7F671E19C}
+		{ED3896CD-DAFB-41AD-A2B0-E99FD49366D5} = {3569BD18-F760-4B85-AAD0-D6A7F671E19C}
+		{62CD250B-25A9-4728-B574-06C2FF26E5EB} = {3569BD18-F760-4B85-AAD0-D6A7F671E19C}
+		{EE2E09E2-666E-4891-AC24-D1890723A286} = {3569BD18-F760-4B85-AAD0-D6A7F671E19C}
+		{85615823-45F5-436D-87D0-DAFDE0010795} = {3569BD18-F760-4B85-AAD0-D6A7F671E19C}
+		{8480A265-F890-4CA5-BA02-E2B6F62E170A} = {3569BD18-F760-4B85-AAD0-D6A7F671E19C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {897A58A2-6552-4FA5-A2D7-22F51A1254C2}

@@ -4,7 +4,6 @@ namespace UtilZ.ParaService.DBModel
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Project")]
     public partial class Project
@@ -12,8 +11,8 @@ namespace UtilZ.ParaService.DBModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
-            Group = new HashSet<Group>();
-            Module = new HashSet<Module>();
+            Group = new HashSet<ParaGroup>();
+            Module = new HashSet<ProjectModule>();
             Para = new HashSet<Para>();
             ParaValue = new HashSet<ParaValue>();
         }
@@ -33,10 +32,10 @@ namespace UtilZ.ParaService.DBModel
         public string Des { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Group> Group { get; set; }
+        public virtual ICollection<ParaGroup> Group { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Module> Module { get; set; }
+        public virtual ICollection<ProjectModule> Module { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Para> Para { get; set; }

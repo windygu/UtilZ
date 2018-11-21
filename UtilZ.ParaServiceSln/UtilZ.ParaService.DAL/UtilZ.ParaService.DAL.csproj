@@ -7,8 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\UtilZ.DotnetCore\UtilZ.Dotnet.DBBase\UtilZ.Dotnet.DBBase.csproj" />
     <ProjectReference Include="..\..\UtilZ.DotnetCore\UtilZ.Dotnet.DBFactory\UtilZ.Dotnet.DBFactory.csproj" />
-    <ProjectReference Include="..\..\UtilZ.DotnetCore\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj" />
-    <ProjectReference Include="..\UtilZ.ParaService.DAL\UtilZ.ParaService.DAL.csproj" />
     <ProjectReference Include="..\UtilZ.ParaService.DBModel\UtilZ.ParaService.DBModel.csproj" />
     <ProjectReference Include="..\UtilZ.ParaService.Model\UtilZ.ParaService.Model.csproj" />
   </ItemGroup>

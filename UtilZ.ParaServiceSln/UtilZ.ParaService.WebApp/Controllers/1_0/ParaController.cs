@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.ParaService.Model;
 using UtilZ.ParaService.WebApp.Models;
 
 namespace UtilZ.ParaService.WebApp.Controllers._1_0
@@ -21,19 +22,13 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         [HttpGet]
         public ActionResult<string> Get()
         {
-            string token = Request.Headers[WebAppConstant.AccessToken];
-            if (string.IsNullOrWhiteSpace(token))
+            var userInfo = AuthenticationController.GetUserInfo(Request.Headers[WebAppConstant.AccessToken]);
+            if (userInfo == null)
             {
                 return Unauthorized();
             }
 
-            var user = MemoryCacheEx.Get(token) as User;
-            if (user == null)
-            {
-                return Unauthorized();
-            }
 
-            MemoryCacheEx.Set(token, user, WebConfig.Instance.TokenExpireTime);
             return "value1";
         }
 

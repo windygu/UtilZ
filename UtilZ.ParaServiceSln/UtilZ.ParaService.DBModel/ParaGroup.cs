@@ -4,13 +4,12 @@ namespace UtilZ.ParaService.DBModel
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
-    [Table("Group")]
-    public partial class Group
+    [Table("ParaGroup")]
+    public partial class ParaGroup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Group()
+        public ParaGroup()
         {
             Para = new HashSet<Para>();
         }

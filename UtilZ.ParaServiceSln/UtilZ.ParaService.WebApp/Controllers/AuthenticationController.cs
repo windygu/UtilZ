@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.ParaService.Model;
 using UtilZ.ParaService.WebApp.Models;
 
 namespace UtilZ.ParaService.WebApp.Controllers
@@ -33,61 +34,70 @@ namespace UtilZ.ParaService.WebApp.Controllers
                 return Unauthorized();
             }
 
-            var user = new User();
-            user.Email = "yf@163.com";
-            user.Id = 1;
-            user.Name = userName;
-            user.Password = password;
-            user.PhoneNumber = "13709084809";
+            var userInfo = new UserInfo();
+            userInfo.Email = "yf@163.com";
+            userInfo.Id = 1;
+            userInfo.Name = userName;
+            userInfo.Password = password;
+            userInfo.PhoneNumber = "13709084809";
+            userInfo.RoleID = 1;
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(WebAppConstant.Secret);
-            var authTime = DateTime.UtcNow;
-            var expiresAt = authTime.AddDays(7);
+            var authTime = DateTime.Now;
+            var expiresAt = authTime.AddMilliseconds(WebAppConfig.Instance.TokenExpireTime);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(JwtClaimTypes.Audience,"api"),
                     new Claim(JwtClaimTypes.Issuer,"http://localhost:5200"),
-                    new Claim(JwtClaimTypes.Id, user.Id.ToString()),
-                    new Claim(JwtClaimTypes.Name, user.Name),
-                    new Claim(JwtClaimTypes.Email, user.Email),
-                    new Claim(JwtClaimTypes.PhoneNumber, user.PhoneNumber)
+                    new Claim(JwtClaimTypes.Id, userInfo.Id.ToString()),
+                    new Claim(JwtClaimTypes.Name, userInfo.Name),
+                    new Claim(JwtClaimTypes.Email, userInfo.Email),
+                    new Claim(JwtClaimTypes.PhoneNumber, userInfo.PhoneNumber)
                 }),
                 Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-            MemoryCacheEx.Set(tokenString, user, WebConfig.Instance.TokenExpireTime);
-            //WebAppConstant.AccessToken
+            UpdateToken(tokenString, userInfo);
+            //WebAppConstant.AccessToken="access_token";
             return Ok(new
             {
                 access_token = tokenString,
                 token_type = "Bearer",
                 profile = new
                 {
-                    sid = user.Id,
-                    name = user.Name,
+                    sid = userInfo.Id,
+                    name = userInfo.Name,
                     auth_time = new DateTimeOffset(authTime).ToUnixTimeSeconds(),
                     expires_at = new DateTimeOffset(expiresAt).ToUnixTimeSeconds()
                 }
             });
         }
-    }
 
-    public class User
-    {
-        public int Id { get; set; }
+        private static void UpdateToken(string token, UserInfo userInfo)
+        {
+            MemoryCacheEx.Set(token, userInfo, WebAppConfig.Instance.TokenExpireTime);
+        }
 
-        public string Name { get; set; }
+        public static UserInfo GetUserInfo(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return null;
+            }
 
-        public string Email { get; set; }
+            var userInfo = MemoryCacheEx.Get(token) as UserInfo;
+            if (userInfo == null)
+            {
+                return null;
+            }
 
-        public string PhoneNumber { get; set; }
-
-        public string Password { get; set; }
-
+            MemoryCacheEx.Set(token, userInfo, WebAppConfig.Instance.TokenExpireTime);
+            return userInfo;
+        }
     }
 }

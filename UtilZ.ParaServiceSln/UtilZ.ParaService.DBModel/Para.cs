@@ -4,7 +4,6 @@ namespace UtilZ.ParaService.DBModel
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Para")]
     public partial class Para
@@ -13,7 +12,7 @@ namespace UtilZ.ParaService.DBModel
         public Para()
         {
             ParaValue = new HashSet<ParaValue>();
-            Module = new HashSet<Module>();
+            Module = new HashSet<ProjectModule>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -34,7 +33,7 @@ namespace UtilZ.ParaService.DBModel
         [StringLength(50)]
         public string Des { get; set; }
 
-        public virtual Group Group { get; set; }
+        public virtual ParaGroup Group { get; set; }
 
         public virtual Project Project { get; set; }
 
@@ -42,6 +41,6 @@ namespace UtilZ.ParaService.DBModel
         public virtual ICollection<ParaValue> ParaValue { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Module> Module { get; set; }
+        public virtual ICollection<ProjectModule> Module { get; set; }
     }
 }

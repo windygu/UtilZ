@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UtilZ.ParaService.Model
+namespace UtilZ.ParaService.DAL
 {
     public class Class1
     {
