@@ -36,3 +36,69 @@ body {
         display: none;
     }
 }
+
+
+.contentBackgroundColor {
+    background-color: whitesmoke;
+}
+
+
+.spanLabel_TextAlign_Justify {
+    /*display: block;*/
+    display: -moz-inline-box;
+    display: inline-block;
+    font-size: 20px;
+    text-align: justify;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: justify; /* ie9*/
+    -moz-text-align-last: justify; /*ff*/
+}
+
+.spanLabel_TextAlign_Left {
+    font-size: 20px;
+    display: -moz-inline-box;
+    display: inline-block;
+    text-align: left;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: left; /* ie9*/
+    -moz-text-align-last: left; /*ff*/
+}
+
+.spanLabel_TextAlign_Right {
+    font-size: 20px;
+    display: -moz-inline-box;
+    display: inline-block;
+    text-align: right;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: right; /* ie9*/
+    -moz-text-align-last: right; /*ff*/
+}
+
+.ptitle {
+    font-size: 40px;
+    text-align: center;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: center; /* ie9*/
+    -moz-text-align-last: center; /*ff*/   
+}
+
+.inputText {
+    font-size: 20px;
+}
+
+.buttonOKCancell {
+    font-size: 20px;
+    width: 100px;
+    height: 30px;
+}
+
+.spanLabel_Prompt {
+    color:red;
+    font-size: 20px;
+    display: -moz-inline-box;
+    display: inline-block;
+    text-align: left;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: left; /* ie9*/
+    -moz-text-align-last: left; /*ff*/
+}

@@ -14,6 +14,8 @@ namespace UtilZ.ParaService.WebApp
     {
         public static void Main(string[] args)
         {
+            Models.WebAppConstant.Test();
+
             var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("hosting.json", optional: true)

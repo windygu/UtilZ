@@ -7,7 +7,6 @@
     <link href="../css/site.css" rel="stylesheet" />
     <style type="text/css">
         .divContent {
-            background-color: whitesmoke;
             width: 800px;
             height: 600px;
             /*margin-left: auto;
@@ -60,13 +59,39 @@
             color: #797268;
         }
 
+        .prjEditButton {
+            margin: 2px;
+        }
+
         .AddPrj {
             font-size: 25px;
             color: cadetblue;
             margin-left: 10px;
             margin-top: 10px;
             width: 160px;
-            height:60px;
+            height: 60px;
+        }
+
+        .prjEditShade {
+            background-color: gray;
+            opacity: 0.5;
+            visibility: hidden;
+        }
+
+        .prjEdit {
+            width: 600px;
+            height: 320px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: white;
+            visibility: hidden;
+            /*visibility: visible;*/
         }
     </style>
 
@@ -85,6 +110,75 @@
             alert("Config");
         }
 
+        function LoadQueryPRojects() {
+            try {
+                var url = config.conf.baseUrl + "/api/v1/Project/pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#tbPrjs  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
+                        //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
+
+                        var tbPrjs = $("#tbPrjs");
+                        for (var i = 0; i < data.length; i++) {
+                            var prjItem = data[i];
+                            //var row = "<tr>" + "<td>" + SkuCode + "</td>" + "<td>" + Sn + "</td>" + "</tr>";
+                            var row = $("<tr id=" + prjItem.id + "></tr>");
+
+                            var tdId = $("<td></td>");
+                            tdId.append(i + 1);
+                            row.append(tdId);
+
+                            var tdPrjName = $("<td></td>");
+                            tdPrjName.append(prjItem.name);
+                            row.append(tdPrjName);
+
+                            var tdPrjAlias = $("<td></td>");
+                            tdPrjAlias.append(prjItem.alias);
+                            row.append(tdPrjAlias);
+
+                            var tdPrjDes = $("<td></td>");
+                            tdPrjDes.append(prjItem.des);
+                            row.append(tdPrjDes);
+
+                            var tdEdit = $("<td></td>");
+                            var editHtml = '<input type="button" class="prjEditButton" value="编辑" onclick="prjEdit(' + prjItem.id + ')" />' +
+                                '<input type="button" class="prjEditButton" value="删除" onclick="prjDelete(' + prjItem.id + ')" />' +
+                                '<input type="button" class="prjEditButton" value="配置" onclick="prjConfig(' + prjItem.id + ')" />';
+                            tdEdit.append(editHtml);
+                            row.append(tdEdit);
+
+                            tbPrjs.append(row);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function showPrjEdit() {
+            $("#prjEdit").css("visibility", "visible");
+            $("#prjEditShade").css("visibility", "visible");
+        }
+
+        function hidenPrjEdit() {
+            $("#prjEdit").css("visibility", "hidden");
+            $("#prjEditShade").css("visibility", "hidden");
+        }
+
         $(document).ready(function () {
             var validToken = sessionStorage.getItem('token');
             if (validToken == null || validToken == "") {
@@ -92,7 +186,63 @@
                 return;
             }
 
-            //alert("OK");
+            //页面加载完成后查询项目列表
+            LoadQueryPRojects();
+
+
+            //添加项目
+            $("#btnAddPrj").click(function () {
+                showPrjEdit();
+            });
+
+            $("#btnAddPrjCancell").click(function () {
+                hidenPrjEdit();
+            });
+
+            $("#btnAddPrjOk").click(function () {
+                var prjName = $("#txtPrjName").val();
+                if (prjName == null || prjName == "") {
+                    alert("项目名称不能为空");
+                    return;
+                }
+
+                var prjAlias = $("#txtPrjAlias").val();
+                if (prjAlias == null || prjAlias == "") {
+                    alert("项目别名不能为空");
+                    return;
+                }
+
+                var prjDes = $("#txtPrjDes").val();
+                if (prjDes == null) {
+                    prjDes = "";
+                }
+
+                var url = config.conf.baseUrl + "/api/v1/Project";
+                var data = '{"ID":0,"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        hidenPrjEdit();
+                        LoadQueryPRojects();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+
+
+
+
             $("#btnGet").click(function () {
                 //var url = config.conf.baseUrl + "/api/v1/Para/" + $("#txtStr").val();
                 //$.get(url, function (data, status) {
@@ -241,26 +391,26 @@
     </script>
 </head>
 <body>
-    <div class="divContent">
+    <div class="divContent contentBackgroundColor">
         <p style="text-align:center;font-size:40px;color:cadetblue;background-color:antiquewhite;margin-top:0px">项目列表</p>
 
         <table id="tbPrjs" class="table">
             <tr>
                 <th style="width:80px;">序号</th>
-                <th style="width:200px;">名称</th>
-                <th style="width:120px;">请求名称</th>
-                <th style="width:240px;">描述</th>
+                <th style="width:200px;">项目名称</th>
+                <th style="width:120px;">项目名称</th>
+                <th style="width:240px;">项目描述</th>
                 <th style="width:160px;">编辑</th>
             </tr>
-            <tr>
+            <!--<tr>
                 <td>1</td>
                 <td>RDPS</td>
                 <td>RDPSA</td>
                 <td>Des RDPS</td>
                 <td>
-                    <input type="button" value="编辑" onclick="prjEdit(1)"/>
-                    <input type="button" value="删除" onclick="prjDelete(1)"/>
-                    <input type="button" value="配置" onclick="prjConfig(1)"/>
+                    <input type="button" value="编辑" onclick="prjEdit(1)" />
+                    <input type="button" value="删除" onclick="prjDelete(1)" />
+                    <input type="button" value="配置" onclick="prjConfig(1)" />
                 </td>
             </tr>
             <tr>
@@ -291,14 +441,54 @@
                 <td>RDPSA</td>
                 <td>Des RDPS</td>
                 <td>
-                    <input type="button" value="编辑" />
+                    <input type="button" class="prjEditButton" value="编辑" />
                     <input type="button" value="删除" />
                     <input type="button" value="配置" />
                 </td>
-            </tr>
+            </tr>-->
         </table>
 
         <button id="btnAddPrj" class="AddPrj">添加项目</button>
+
+    </div>
+
+    <div id="prjEditShade" class="divContent prjEditShade">
+
+    </div>
+
+    <div id="prjEdit" class="prjEdit">
+        <style type="text/css">
+            div {
+                margin-left: 20px;
+                margin-top: 20px;
+            }
+
+            .inputPrj {
+                width: 330px;
+            }
+        </style>
+        <p class="ptitle" style="margin-top:30px;">编辑项目信息</p>
+        <div>
+            <span class="spanLabel_TextAlign_Right">项目名称</span>
+            <span><input type="text" class="inputPrj inputText" id="txtPrjName" value="" /></span>
+            <span class="spanLabel_Prompt">*项目名称</span>
+        </div>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right">项目别名</span>
+            <span><input type="text" class="inputPrj inputText" id="txtPrjAlias" value="" /></span>
+            <span class="spanLabel_Prompt">*客户端请求名称</span>
+        </div>
+        <div>
+            <span class="spanLabel_TextAlign_Right">项目描述</span>
+            <span><input type="text" class="inputPrj inputText" id="txtPrjDes" value="" /></span>
+            <span class="spanLabel_Prompt">*描述</span>
+        </div>
+
+        <div style="margin-left:233px">
+            <span><button class="buttonOKCancell" id="btnAddPrjOk">确定</button></span>
+            <span><button class="buttonOKCancell" id="btnAddPrjCancell">取消</button></span>
+        </div>
     </div>
 </body>
 </html>

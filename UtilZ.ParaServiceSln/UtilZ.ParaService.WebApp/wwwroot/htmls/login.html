@@ -6,7 +6,6 @@
     <link href="../css/site.css" rel="stylesheet" />
     <style type="text/css">
         .divLogin {
-            background-color: whitesmoke;
             width: 500px;
             height: 280px;
             /*margin-left: auto;
@@ -19,28 +18,14 @@
             margin: auto;
         }
 
-        table {
+        .spanLabel {
+            width: 80px;
             margin-left: 50px;
-            margin-top: 50px;
+            margin-top: 30px;
         }
 
-        p {
-            font-size: 20px;
-            text-align: justify;
-            text-justify: distribute-all-lines; /*ie6-8*/
-            text-align-last: justify; /* ie9*/
-            -moz-text-align-last: justify; /*ff*/
-        }
-
-        input {
-            font-size: 20px;
+        .inputText_login {
             width: 310px;
-        }
-
-        button {
-            font-size: 20px;
-            width: 100px;
-            height: 30px;
         }
     </style>
     <script src="../lib/jquery/dist/jquery.js"></script>
@@ -79,49 +64,26 @@
                         alert(xhr.statusText);
                     }
                 });
-
-                //$.ajax({
-                //    type: "POST",
-                //    url: url,
-                //    //data: data,
-                //    contentType: "application/json; charset=utf-8",
-                //    headers:
-                //    {
-                //        "userName": userName,
-                //        "password": password,
-                //    },
-                //    //dataType: "json",
-                //    success: function (data, status) {
-                //        alert("数据: " + data + "\n状态: " + status);
-                //        sessionStorage.setItem('token', data.access_token);
-                //        window.location.href = "/htmls/index.html";
-                //    },
-                //    error: function (xhr) {
-                //        alert(xhr.statusText);
-                //    }
-                //});
             });
         });
     </script>
 </head>
 <body>
-    <div class="divLogin">
-        <table>
-            <tr>
-                <td><p>用户名</p></td>
-                <td><input type="text" id="txtUserName" value="admin" /></td>
-            </tr>
-            <tr>
-                <td><p>密码</p></td>
-                <td><input type="password" id="txtPassword" value="admin" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button id="btnLogin">登录</button>
-                </td>
-            </tr>
-        </table>
+    <div class="contentBackgroundColor divLogin">
+        <p class="ptitle" style="margin-top:30px;">登录参数管理系统</p>
+        <div style="margin-top:-40px;">
+            <div>
+                <span class="spanLabel spanLabel_TextAlign_Justify">用户名</span>
+                <span><input type="text" class="inputText_login inputText" id="txtUserName" value="admin" /></span>
+            </div>
+            <div>
+                <span class="spanLabel spanLabel_TextAlign_Justify">密码</span>
+                <span><input type="password" class="inputText_login inputText" id="txtPassword" value="admin" /></span>
+            </div>
+            <div>
+                <button class="buttonOKCancell" style="margin-left:135px;margin-top:30px;" id="btnLogin">登录</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

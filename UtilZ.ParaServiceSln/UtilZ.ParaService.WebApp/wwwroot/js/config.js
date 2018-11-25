@@ -1,6 +1,7 @@
 ﻿var config = config || {};
 config.conf = {
     baseUrl: 'https://localhost:12018',
+    projectPageSize: '20',
     //cnum: lenovo.util.getParam('cnum'),
     //go: '',
     //url: {

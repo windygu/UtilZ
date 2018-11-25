@@ -11,10 +11,10 @@ namespace UtilZ.ParaService.DBModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
-            Group = new HashSet<ParaGroup>();
-            Module = new HashSet<ProjectModule>();
-            Para = new HashSet<Para>();
-            ParaValue = new HashSet<ParaValue>();
+            //Group = new HashSet<ParaGroup>();
+            //Module = new HashSet<ProjectModule>();
+            //Para = new HashSet<Para>();
+            //ParaValue = new HashSet<ParaValue>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -31,18 +31,18 @@ namespace UtilZ.ParaService.DBModel
         [StringLength(50)]
         public string Des { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParaGroup> Group { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ParaGroup> Group { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectModule> Module { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ProjectModule> Module { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Para> Para { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<Para> Para { get; set; }
 
-        public virtual ParaVersion ParaVersion { get; set; }
+        //public virtual ParaVersion ParaVersion { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParaValue> ParaValue { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ParaValue> ParaValue { get; set; }
     }
 }
