@@ -11,17 +11,17 @@ namespace UtilZ.ParaService.DBModel
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ParaID { get; set; }
+        public long ParaID { get; set; }
 
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProjectID { get; set; }
+        public long ProjectID { get; set; }
 
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Version { get; set; }
+        public long Version { get; set; }
 
         [Key]
         [Column(Order = 3)]

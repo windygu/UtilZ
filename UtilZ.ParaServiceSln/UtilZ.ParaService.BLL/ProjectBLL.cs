@@ -27,7 +27,7 @@ namespace UtilZ.ParaService.BLL
             return this._dal.QueryProjects(pageSize, pageIndex);
         }
 
-        public Project QueryProject(int id)
+        public Project QueryProject(long id)
         {
             return this._dal.QueryProject(id);
         }
@@ -42,7 +42,7 @@ namespace UtilZ.ParaService.BLL
             return this._dal.UpdateProject(project);
         }
 
-        public int DeleteProject(int id)
+        public int DeleteProject(long id)
         {
             return this._dal.DeleteProject(id);
         }

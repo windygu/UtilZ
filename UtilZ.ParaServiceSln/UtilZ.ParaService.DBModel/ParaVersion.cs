@@ -10,9 +10,9 @@ namespace UtilZ.ParaService.DBModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProjectID { get; set; }
+        public long ProjectID { get; set; }
 
-        public int Version { get; set; }
+        public long Version { get; set; }
 
         public virtual Project Project { get; set; }
     }

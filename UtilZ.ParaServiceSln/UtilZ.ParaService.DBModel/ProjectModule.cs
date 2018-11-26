@@ -16,9 +16,9 @@ namespace UtilZ.ParaService.DBModel
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ID { get; set; }
+        public long ID { get; set; }
 
-        public int ProjectID { get; set; }
+        public long ProjectID { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -28,7 +28,7 @@ namespace UtilZ.ParaService.DBModel
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int? ParentID { get; set; }
+        public long? ParentID { get; set; }
 
         [StringLength(50)]
         public string Des { get; set; }

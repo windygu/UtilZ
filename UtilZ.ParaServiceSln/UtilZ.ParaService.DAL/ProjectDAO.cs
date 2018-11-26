@@ -31,7 +31,7 @@ namespace UtilZ.ParaService.DAL
                 foreach (DataRow row in dt.Rows)
                 {
                     var project = new Project();
-                    project.ID = Convert.ToInt32(row[0]);
+                    project.ID = (long)(row[0]);
                     project.Alias = row[1].ToString();
                     project.Name = row[2].ToString();
                     project.Des = row[3].ToString();
@@ -42,7 +42,7 @@ namespace UtilZ.ParaService.DAL
             return projects;
         }
 
-        public Project QueryProject(int id)
+        public Project QueryProject(long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
@@ -133,7 +133,7 @@ namespace UtilZ.ParaService.DAL
             return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
         }
 
-        public int DeleteProject(int id)
+        public int DeleteProject(long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string sqlStr = string.Format(@"DELETE FROM Project WHERE ID={0}ID", dbAccess.ParaSign);

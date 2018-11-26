@@ -38,7 +38,7 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         }
 
         [HttpGet("id={id}")]
-        public Project QueryProject(int id)
+        public Project QueryProject(long id)
         {
             return this._bll.QueryProject(id);
         }
@@ -52,14 +52,14 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
 
         // PUT: api/Project/5
         [HttpPut("{id}")]
-        public int Put(int id, [FromBody] Project project)
+        public int Put([FromBody] Project project)
         {
             return this._bll.UpdateProject(project);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public int Delete(int id)
+        public int Delete(long id)
         {
             return this._bll.DeleteProject(id);
         }

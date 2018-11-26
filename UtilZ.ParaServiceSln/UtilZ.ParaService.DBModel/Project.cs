@@ -18,7 +18,7 @@ namespace UtilZ.ParaService.DBModel
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ID { get; set; }
+        public long ID { get; set; }
 
         [Required]
         [StringLength(20)]
