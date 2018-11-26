@@ -137,7 +137,9 @@ namespace UtilZ.ParaService.DAL
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string sqlStr = string.Format(@"DELETE FROM Project WHERE ID={0}ID", dbAccess.ParaSign);
-            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W);
+            var parameters = new NDbParameterCollection();
+            parameters.Add("ID", id);
+            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
         }
     }
 }

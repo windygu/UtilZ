@@ -98,19 +98,7 @@
     <script src="../lib/jquery/dist/jquery.js"></script>
     <script src="../js/config.js"></script>
     <script type="text/javascript">
-        function prjEdit(id) {
-            alert("Edit");
-        }
-
-        function prjDelete(id) {
-            alert("Delete");
-        }
-
-        function prjConfig(id) {
-            alert("Config");
-        }
-
-        function LoadQueryPRojects() {
+        function RefreshProjects() {
             try {
                 var url = config.conf.baseUrl + "/api/v1/Project/pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
                 var token = sessionStorage.getItem('token');
@@ -179,6 +167,64 @@
             $("#prjEditShade").css("visibility", "hidden");
         }
 
+        function prjEdit(id) {
+            try {
+                var url = config.conf.baseUrl + "/api/v1/Project/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#txtPrjName").val(data.name);
+                        $("#txtPrjAlias").val(data.alias);
+                        $("#txtPrjDes").val(data.des);
+                        sessionStorage.setItem(prjIdKey, id);
+                        showPrjEdit();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function prjDelete(id) {
+            try {
+                var url = config.conf.baseUrl + "/api/v1/Project/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        RefreshProjects();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+
+        var prjIdKey = "ID";
         $(document).ready(function () {
             var validToken = sessionStorage.getItem('token');
             if (validToken == null || validToken == "") {
@@ -187,19 +233,22 @@
             }
 
             //页面加载完成后查询项目列表
-            LoadQueryPRojects();
-
+            RefreshProjects();
 
             //添加项目
             $("#btnAddPrj").click(function () {
+                $("#txtPrjName").val("");
+                $("#txtPrjAlias").val("");
+                $("#txtPrjDes").val("");
+                sessionStorage.setItem(prjIdKey, '-1');
                 showPrjEdit();
             });
 
-            $("#btnAddPrjCancell").click(function () {
+            $("#btnEditPrjCancell").click(function () {
                 hidenPrjEdit();
             });
 
-            $("#btnAddPrjOk").click(function () {
+            $("#btnEditPrjOk").click(function () {
                 var prjName = $("#txtPrjName").val();
                 if (prjName == null || prjName == "") {
                     alert("项目名称不能为空");
@@ -217,11 +266,43 @@
                     prjDes = "";
                 }
 
+                var prjId = Number(sessionStorage.getItem(prjIdKey));
+                var type;
+                //prjId<0为添加项目
+                if (prjId < 0) {
+                    type = "POST";
+                }
+                else {
+                    type = "PUT";
+                }
+
+                //var url = config.conf.baseUrl + "/api/v1/Project";
+                //var data = '{"ID":0,"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';
+                //var token = sessionStorage.getItem('token');
+                //$.ajax({
+                //    type: "POST",
+                //    url: url,
+                //    data: data,
+                //    contentType: "application/json; charset=utf-8",
+                //    headers:
+                //    {
+                //        "access_token": token//此处放置请求到的用户token
+                //    },
+                //    //dataType: "json",
+                //    success: function (data, status) {
+                //        hidenPrjEdit();
+                //        RefreshProjects();
+                //    },
+                //    error: function (xhr) {
+                //        alert(xhr.statusText);
+                //    }
+                //});
+
                 var url = config.conf.baseUrl + "/api/v1/Project";
-                var data = '{"ID":0,"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';
+                var data = '{"ID":' + prjId + ',"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';
                 var token = sessionStorage.getItem('token');
                 $.ajax({
-                    type: "POST",
+                    type: type,
                     url: url,
                     data: data,
                     contentType: "application/json; charset=utf-8",
@@ -232,7 +313,7 @@
                     //dataType: "json",
                     success: function (data, status) {
                         hidenPrjEdit();
-                        LoadQueryPRojects();
+                        RefreshProjects();
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);
@@ -486,8 +567,8 @@
         </div>
 
         <div style="margin-left:233px">
-            <span><button class="buttonOKCancell" id="btnAddPrjOk">确定</button></span>
-            <span><button class="buttonOKCancell" id="btnAddPrjCancell">取消</button></span>
+            <span><button class="buttonOKCancell" id="btnEditPrjOk">确定</button></span>
+            <span><button class="buttonOKCancell" id="btnEditPrjCancell">取消</button></span>
         </div>
     </div>
 </body>
