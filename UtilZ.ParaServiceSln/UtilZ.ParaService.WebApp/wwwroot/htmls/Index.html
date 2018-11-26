@@ -236,11 +236,7 @@
         }
 
         $(document).ready(function () {
-            var validToken = sessionStorage.getItem('token');
-            if (validToken == null || validToken == "") {
-                window.location.href = "/htmls/login.html";
-                return;
-            }
+            pageLoginValidate();
 
             //页面加载完成后查询项目列表
             RefreshProjects();

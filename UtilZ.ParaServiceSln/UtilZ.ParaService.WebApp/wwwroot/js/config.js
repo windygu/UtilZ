@@ -27,5 +27,14 @@ config.conf = {
 
 var constDefine =
 {
+    tokenKey: "token",
     prjIdKey: "ID",
 };
+
+function pageLoginValidate() {
+    var validToken = sessionStorage.getItem(constDefine.tokenKey);
+    if (validToken == null || validToken == "") {
+        window.location.href = "/htmls/login.html";
+        return;
+    }
+}
