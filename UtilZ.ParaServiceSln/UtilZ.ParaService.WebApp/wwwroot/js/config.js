@@ -27,6 +27,5 @@ config.conf = {
 
 var constDefine =
 {
-    prjListKey: "prjList",
     prjIdKey: "ID",
 };
