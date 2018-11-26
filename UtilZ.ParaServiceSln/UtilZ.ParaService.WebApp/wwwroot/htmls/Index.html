@@ -138,7 +138,7 @@
                             row.append(tdPrjDes);
 
                             var tdEdit = $("<td></td>");
-                            var editHtml = '<input type="button" class="prjEditButton" value="编辑" onclick="prjEdit(' + prjItem.id + ')" />' +
+                            var editHtml = '<input type="button" class="prjEditButton" value="编辑" onclick="prjModify(' + prjItem.id + ')" />' +
                                 '<input type="button" class="prjEditButton" value="删除" onclick="prjDelete(' + prjItem.id + ')" />' +
                                 '<input type="button" class="prjEditButton" value="配置" onclick="prjConfig(' + prjItem.id + ')" />';
                             tdEdit.append(editHtml);
@@ -167,7 +167,7 @@
             $("#prjEditShade").css("visibility", "hidden");
         }
 
-        function prjEdit(id) {
+        function prjModify(id) {
             try {
                 var url = config.conf.baseUrl + "/api/v1/Project/id=" + id;
                 var token = sessionStorage.getItem('token');
@@ -184,7 +184,7 @@
                         $("#txtPrjName").val(data.name);
                         $("#txtPrjAlias").val(data.alias);
                         $("#txtPrjDes").val(data.des);
-                        sessionStorage.setItem(prjIdKey, id);
+                        sessionStorage.setItem(constDefine.prjIdKey, id);
                         showPrjEdit();
                     },
                     error: function (xhr) {
@@ -223,8 +223,11 @@
             }
         }
 
+        function prjConfig(id) {
+            sessionStorage.setItem(constDefine.prjIdKey, id);
+            window.location.href = "/htmls/paraConfig.html";
+        }
 
-        var prjIdKey = "ID";
         $(document).ready(function () {
             var validToken = sessionStorage.getItem('token');
             if (validToken == null || validToken == "") {
@@ -240,7 +243,7 @@
                 $("#txtPrjName").val("");
                 $("#txtPrjAlias").val("");
                 $("#txtPrjDes").val("");
-                sessionStorage.setItem(prjIdKey, '-1');
+                sessionStorage.setItem(constDefine.prjIdKey, '-1');
                 showPrjEdit();
             });
 
@@ -266,7 +269,7 @@
                     prjDes = "";
                 }
 
-                var prjId = Number(sessionStorage.getItem(prjIdKey));
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
                 var type;
                 //prjId<0为添加项目
                 if (prjId < 0) {
@@ -275,28 +278,6 @@
                 else {
                     type = "PUT";
                 }
-
-                //var url = config.conf.baseUrl + "/api/v1/Project";
-                //var data = '{"ID":0,"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';
-                //var token = sessionStorage.getItem('token');
-                //$.ajax({
-                //    type: "POST",
-                //    url: url,
-                //    data: data,
-                //    contentType: "application/json; charset=utf-8",
-                //    headers:
-                //    {
-                //        "access_token": token//此处放置请求到的用户token
-                //    },
-                //    //dataType: "json",
-                //    success: function (data, status) {
-                //        hidenPrjEdit();
-                //        RefreshProjects();
-                //    },
-                //    error: function (xhr) {
-                //        alert(xhr.statusText);
-                //    }
-                //});
 
                 var url = config.conf.baseUrl + "/api/v1/Project";
                 var data = '{"ID":' + prjId + ',"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';

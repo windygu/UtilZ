@@ -24,3 +24,8 @@ config.conf = {
     //liCount: 20,
     //commentCount: 10
 };
+
+var constDefine =
+{
+    prjIdKey: "ID",
+};
