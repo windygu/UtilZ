@@ -18,23 +18,104 @@
             bottom: 0;
             margin: auto;
         }
+
+        #nav {
+            width: 800px; /* 控制导航总宽度 */
+            height: 30px;
+            background-color: red;
+        }
+
+            /* 取消列表样式，内外补间为零 */
+            #nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* 横排：控制导航高度 ，使用float 指定每个li的宽度和高度 */
+            #nav li {
+                float: left;
+                width: 160px;
+                height: 30px;
+                line-height: 30px; /* 文字垂直居中 指定行高为li高度 自动垂直居中 */
+                display: block;
+                text-decoration: none; /* 取消a标签下划线 */
+                text-align: center; /* 文字水平居中显示 */
+                background-color: darkgrey;
+                color: forestgreen;
+                font-size: 25px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                cursor: pointer;
+            }
+
+                #nav li:hover {
+                    background-color: wheat;
+                    color: #000;
+                }
     </style>
 
     <script src="../lib/jquery/dist/jquery.js"></script>
     <script src="../js/config.js"></script>
     <script type="text/javascript">
+        function selectedFunc(id, currentSelectedNavId) {
+            var lastSelectedId = Number(sessionStorage.getItem("lastSelectedId"));
+            if (lastSelectedId == id) {
+                return;
+            }
+
+            var url;
+            switch (id) {
+                case 1:
+                    url = "/htmls/moduleManagement.html";
+                    break;
+                case 2:
+                    url = "/htmls/paraGroupManagement.html";
+                    break;
+                case 3:
+                    url = "/htmls/paraManagement.html";
+                    break;
+                case 4:
+                    url = "/htmls/paraValueSetting.html";
+                    break;
+                case 5:
+                    url = "/htmls/paraHistoryValueManagement.html";
+                    break;
+                default:
+                    return;
+            }
+
+            var lastSelectedNavId = sessionStorage.getItem("lastSelectedNavId");
+            if (lastSelectedNavId != null && lastSelectedNavId != undefined) {
+                $(lastSelectedNavId).css("background-color", "darkgrey");
+            }
+
+            sessionStorage.setItem("lastSelectedNavId", currentSelectedNavId);
+            $(currentSelectedNavId).css("background-color", "wheat");
+            $("#iframe").attr("src", url);
+        }
+
         $(document).ready(function () {
             pageLoginValidate();
-
-
-
-
+            selectedFunc(1, '#liModuleManagement');
         });
     </script>
 </head>
 <body>
     <div class="divContent contentBackgroundColor">
+        <div id="nav">
+            <ul>
+                <li id="liModuleManagement" onclick="selectedFunc(1,'#liModuleManagement')">模块管理</li>
+                <li id="liParaGroupManagement" onclick="selectedFunc(2,'#liParaGroupManagement')">分组管理</li>
+                <li id="liParaManagement" onclick="selectedFunc(3,'#liParaManagement')">参数管理</li>
+                <li id="liParaValueSetting" onclick="selectedFunc(4,'#liParaValueSetting')">参数设置</li>
+                <li id="liParaHistoryValueManagement" onclick="selectedFunc(5,'#liParaHistoryValueManagement')">历史参数</li>
+            </ul>
+        </div>
 
+        <iframe id="iframe" src="/htmls/moduleManagement.html" width="796" height="566"></iframe>
     </div>
 </body>
 </html>
