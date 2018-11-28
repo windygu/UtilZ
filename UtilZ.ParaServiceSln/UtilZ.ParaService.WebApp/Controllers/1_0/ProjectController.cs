@@ -38,7 +38,7 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         }
 
         [HttpGet("id={id}")]
-        public Project QueryProject(long id)
+        public Project Query(long id)
         {
             return this._bll.QueryProject(id);
         }

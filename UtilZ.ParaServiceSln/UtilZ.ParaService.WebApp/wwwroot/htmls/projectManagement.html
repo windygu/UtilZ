@@ -19,59 +19,6 @@
             margin: auto;
         }
 
-        .table {
-            margin-top: -40px;
-        }
-
-        th {
-            font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-            color: #4f6b72;
-            border-right: 1px solid #C1DAD7;
-            border-bottom: 1px solid #C1DAD7;
-            border-top: 1px solid #C1DAD7;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-align: center;
-            padding: 6px 6px 6px 12px;
-            background: #CAE8EA no-repeat;
-        }
-
-        td {
-            border-right: 1px solid #C1DAD7;
-            border-bottom: 1px solid #C1DAD7;
-            background: #fff;
-            font-size: 14px;
-            padding: 6px 6px 6px 12px;
-            color: #4f6b72;
-        }
-
-            td.alt {
-                background: #F5FAFA;
-                color: #797268;
-            }
-
-            th.spec, td.spec {
-                border-left: 1px solid #C1DAD7;
-            }
-
-        tr.select th, tr.select td {
-            background-color: #CAE8EA;
-            color: #797268;
-        }
-
-        .prjEditButton {
-            margin: 2px;
-        }
-
-        .AddPrj {
-            font-size: 25px;
-            color: cadetblue;
-            margin-left: 10px;
-            margin-top: 10px;
-            width: 160px;
-            height: 60px;
-        }
-
         .prjEditShade {
             background-color: gray;
             opacity: 0.5;
@@ -138,9 +85,9 @@
                             row.append(tdPrjDes);
 
                             var tdEdit = $("<td></td>");
-                            var editHtml = '<input type="button" class="prjEditButton" value="编辑" onclick="prjModify(' + prjItem.id + ')" />' +
-                                '<input type="button" class="prjEditButton" value="删除" onclick="prjDelete(' + prjItem.id + ')" />' +
-                                '<input type="button" class="prjEditButton" value="配置" onclick="prjConfig(' + prjItem.id + ')" />';
+                            var editHtml = '<input type="button" class="editButton" value="编辑" onclick="prjModify(' + prjItem.id + ')" />' +
+                                '<input type="button" class="editButton" value="删除" onclick="prjDelete(' + prjItem.id + ')" />' +
+                                '<input type="button" class="editButton" value="配置" onclick="prjConfig(' + prjItem.id + ')" />';
                             tdEdit.append(editHtml);
                             row.append(tdEdit);
 
@@ -320,52 +267,52 @@
                 <th style="width:160px;">编辑</th>
             </tr>
             <!--<tr>
-                <td>1</td>
-                <td>RDPS</td>
-                <td>RDPSA</td>
-                <td>Des RDPS</td>
-                <td>
-                    <input type="button" value="编辑" onclick="prjEdit(1)" />
-                    <input type="button" value="删除" onclick="prjDelete(1)" />
-                    <input type="button" value="配置" onclick="prjConfig(1)" />
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>RDPS</td>
-                <td>RDPSA</td>
-                <td>Des RDPS</td>
-                <td>
-                    <input type="button" value="编辑" />
-                    <input type="button" value="删除" />
-                    <input type="button" value="配置" />
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>RDPS</td>
-                <td>RDPSA</td>
-                <td>Des RDPS</td>
-                <td>
-                    <input type="button" value="编辑" />
-                    <input type="button" value="删除" />
-                    <input type="button" value="配置" />
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>RDPS</td>
-                <td>RDPSA</td>
-                <td>Des RDPS</td>
-                <td>
-                    <input type="button" class="prjEditButton" value="编辑" />
-                    <input type="button" value="删除" />
-                    <input type="button" value="配置" />
-                </td>
-            </tr>-->
+        <td>1</td>
+        <td>RDPS</td>
+        <td>RDPSA</td>
+        <td>Des RDPS</td>
+        <td>
+            <input type="button" value="编辑" onclick="prjEdit(1)" />
+            <input type="button" value="删除" onclick="prjDelete(1)" />
+            <input type="button" value="配置" onclick="prjConfig(1)" />
+        </td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>RDPS</td>
+        <td>RDPSA</td>
+        <td>Des RDPS</td>
+        <td>
+            <input type="button" value="编辑" />
+            <input type="button" value="删除" />
+            <input type="button" value="配置" />
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>RDPS</td>
+        <td>RDPSA</td>
+        <td>Des RDPS</td>
+        <td>
+            <input type="button" value="编辑" />
+            <input type="button" value="删除" />
+            <input type="button" value="配置" />
+        </td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>RDPS</td>
+        <td>RDPSA</td>
+        <td>Des RDPS</td>
+        <td>
+            <input type="button" class="editButton" value="编辑" />
+            <input type="button" value="删除" />
+            <input type="button" value="配置" />
+        </td>
+    </tr>-->
         </table>
 
-        <button id="btnAddPrj" class="AddPrj">添加项目</button>
+        <button id="btnAddPrj" class="AddButton">添加项目</button>
 
     </div>
 

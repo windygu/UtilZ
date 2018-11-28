@@ -4,159 +4,322 @@
     <meta charset="utf-8" />
     <title>模块管理</title>
 
-    <link href="../css/zTreeStyle.css" rel="stylesheet" />
     <link href="../css/site.css" rel="stylesheet" />
     <style type="text/css">
+        .divContent {
+            width: 100%;
+            height: 100%;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            /*background-color:red;*/
+        }
+
+        .moduleEditButton {
+            margin: 2px;
+        }
+
+        .moduleEdit {
+            width: 600px;
+            height: 320px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: white;
+            visibility: hidden;
+            /*visibility: visible;*/
+        }
+
+        .moduleEditShade {
+            background-color: gray;
+            opacity: 0.5;
+            visibility: hidden;
+        }
     </style>
 
     <script src="../lib/jquery/dist/jquery.js"></script>
-    <script src="../js/jquery.ztree.core.js"></script>
-    <script src="../js/jquery.ztree.excheck.js"></script>
-    <script src="../js/jquery.ztree.exedit.js"></script>
     <script src="../js/config.js"></script>
     <script type="text/javascript">
-        var setting = {
-            view: {
-                addHoverDom: addHoverDom,
-                removeHoverDom: removeHoverDom,
-                selectedMulti: false
-            },
-            edit: {
-                enable: true,
-                editNameSelectAll: true,
-                showRemoveBtn: showRemoveBtn,
-                showRenameBtn: showRenameBtn
-            },
-            data: {
-                simpleData: {
-                    enable: true
+        function RefreshModules() {
+            try {
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "/api/v1/ProjectModule/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#tbModules  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
+                        //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
+
+                        var tbModules = $("#tbModules");
+                        for (var i = 0; i < data.length; i++) {
+                            var prjModuleItem = data[i];
+                            //var row = "<tr>" + "<td>" + SkuCode + "</td>" + "<td>" + Sn + "</td>" + "</tr>";
+                            var row = $('<tr id="tr_' + prjModuleItem.id + '"></tr>');
+
+                            var tdId = $("<td></td>");
+                            tdId.append(i + 1);
+                            row.append(tdId);
+
+                            var tdPrjModuleName = $('<td id="td_' + prjModuleItem.id + '_name"></td>');
+                            tdPrjModuleName.append(prjModuleItem.name);
+                            row.append(tdPrjModuleName);
+
+                            var tdPrjModuleAlias = $("<td></td>");
+                            tdPrjModuleAlias.append(prjModuleItem.alias);
+                            row.append(tdPrjModuleAlias);
+
+                            var tdPrjModuleDes = $("<td></td>");
+                            tdPrjModuleDes.append(prjModuleItem.des);
+                            row.append(tdPrjModuleDes);
+
+                            var tdEdit = $("<td></td>");
+                            var editHtml = '<input type="button" class="editButton" value="编辑" onclick="moduleModify(' + prjModuleItem.id + ')" />' +
+                                '<input type="button" class="editButton" value="删除" onclick="moduleDelete(' + prjModuleItem.id + ')" />';
+                            tdEdit.append(editHtml);
+                            row.append(tdEdit);
+
+                            tbModules.append(row);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function showModuleEdit() {
+            $("#moduleEdit").css("visibility", "visible");
+            $("#moduleEditShade").css("visibility", "visible");
+        }
+
+        function hidenModuleEdit() {
+            $("#moduleEdit").css("visibility", "hidden");
+            $("#moduleEditShade").css("visibility", "hidden");
+        }
+
+        function moduleModify(id) {
+            try {
+                var url = config.conf.baseUrl + "/api/v1/ProjectModule/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#txtmoduleName").val(data.name);
+                        $("#txtmoduleAlias").val(data.alias);
+                        $("#txtmoduleDes").val(data.des);
+                        sessionStorage.setItem(constDefine.prjModuleIdKey, id);
+                        showModuleEdit();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function moduleDelete(id) {
+            try {
+                var tdPrjModuleNameId = 'td_' + id + '_name';
+                var prjModuleName = $("#" + tdPrjModuleNameId)[0].innerText;
+
+                if (!window.confirm('你确定要删除模块[' + prjModuleName + ']吗？')) {
+                    return;
                 }
-            },
-            callback: {
-                beforeDrag: beforeDrag,
-                beforeEditName: beforeEditName,
-                beforeRemove: beforeRemove,
-                beforeRename: beforeRename,
-                onRemove: onRemove,
-                onRename: onRename
-            }
-        };
 
-        var zNodes = [
-            { id: 1, pId: 0, name: "父节点 1", open: true },
-            { id: 11, pId: 1, name: "叶子节点 1-1" },
-            { id: 12, pId: 1, name: "叶子节点 1-2" },
-            { id: 13, pId: 1, name: "叶子节点 1-3" },
-            { id: 2, pId: 0, name: "父节点 2", open: true },
-            { id: 21, pId: 2, name: "叶子节点 2-1" },
-            { id: 22, pId: 2, name: "叶子节点 2-2" },
-            { id: 23, pId: 2, name: "叶子节点 2-3" },
-            { id: 3, pId: 0, name: "父节点 3", open: true },
-            { id: 31, pId: 3, name: "叶子节点 3-1" },
-            { id: 32, pId: 3, name: "叶子节点 3-2" },
-            { id: 33, pId: 3, name: "叶子节点 3-3" }
-        ];
-        var log, className = "dark";
-        function beforeDrag(treeId, treeNodes) {
-            return false;
-        }
-        function beforeEditName(treeId, treeNode) {
-            className = (className === "dark" ? "" : "dark");
-            showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            zTree.selectNode(treeNode);
-            setTimeout(function () {
-                if (confirm("进入节点 -- " + treeNode.name + " 的编辑状态吗？")) {
-                    setTimeout(function () {
-                        zTree.editName(treeNode);
-                    }, 0);
-                }
-            }, 0);
-            return false;
-        }
-        function beforeRemove(treeId, treeNode) {
-            className = (className === "dark" ? "" : "dark");
-            showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            zTree.selectNode(treeNode);
-            return confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
-        }
-        function onRemove(e, treeId, treeNode) {
-            showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        }
-        function beforeRename(treeId, treeNode, newName, isCancel) {
-            className = (className === "dark" ? "" : "dark");
-            showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-            if (newName.length == 0) {
-                setTimeout(function () {
-                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                    zTree.cancelEditName();
-                    alert("节点名称不能为空.");
-                }, 0);
-                return false;
+                var url = config.conf.baseUrl + "/api/v1/ProjectModule/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        RefreshModules();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
             }
-            return true;
-        }
-        function onRename(e, treeId, treeNode, isCancel) {
-            showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-        }
-        function showRemoveBtn(treeId, treeNode) {
-            return !treeNode.isFirstNode;
-        }
-        function showRenameBtn(treeId, treeNode) {
-            return !treeNode.isLastNode;
-        }
-        function showLog(str) {
-            if (!log) log = $("#log");
-            log.append("<li class='" + className + "'>" + str + "</li>");
-            if (log.children("li").length > 8) {
-                log.get(0).removeChild(log.children("li")[0]);
+            catch (ex) {
+                alert(ex.error);
             }
         }
-        function getTime() {
-            var now = new Date(),
-                h = now.getHours(),
-                m = now.getMinutes(),
-                s = now.getSeconds(),
-                ms = now.getMilliseconds();
-            return (h + ":" + m + ":" + s + " " + ms);
-        }
-
-        var newCount = 1;
-        function addHoverDom(treeId, treeNode) {
-            var sObj = $("#" + treeNode.tId + "_span");
-            if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
-            var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-                + "' title='add node' onfocus='this.blur();'></span>";
-            sObj.after(addStr);
-            var btn = $("#addBtn_" + treeNode.tId);
-            if (btn) btn.bind("click", function () {
-                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                zTree.addNodes(treeNode, { id: (100 + newCount), pId: treeNode.id, name: "new node" + (newCount++) });
-                return false;
-            });
-        };
-        function removeHoverDom(treeId, treeNode) {
-            $("#addBtn_" + treeNode.tId).unbind().remove();
-        };
-        function selectAll() {
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            zTree.setting.edit.editNameSelectAll = $("#selectAll").attr("checked");
-        }
-
 
         $(document).ready(function () {
             pageLoginValidate();
 
-            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-            $("#selectAll").bind("click", selectAll);
+            RefreshModules();
+
+            //添加模块
+            $("#btnAddModule").click(function () {
+                $("#txtmoduleName").val("");
+                $("#txtmoduleAlias").val("");
+                $("#txtmoduleDes").val("");
+                sessionStorage.setItem(constDefine.prjModuleIdKey, '-1');
+                showModuleEdit();
+            });
+
+            $("#btnEditModuleCancell").click(function () {
+                hidenModuleEdit();
+            });
+
+            $("#btnEditModuleOk").click(function () {
+                var moduleName = $("#txtmoduleName").val();
+                if (moduleName == null || moduleName == "") {
+                    alert("模块名称不能为空");
+                    return;
+                }
+
+                var moduleAlias = $("#txtmoduleAlias").val();
+                if (moduleAlias == null || moduleAlias == "") {
+                    alert("模块别名不能为空");
+                    return;
+                }
+
+                var moduleDes = $("#txtmoduleDes").val();
+                if (moduleDes == null) {
+                    moduleDes = "";
+                }
+
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var prjModuleId = Number(sessionStorage.getItem(constDefine.prjModuleIdKey));
+                var type;
+                //moduleId<0为添加模块
+                if (prjModuleId < 0) {
+                    type = "POST";
+                }
+                else {
+                    type = "PUT";
+                }
+
+                var url = config.conf.baseUrl + "/api/v1/ProjectModule";
+                var data = '{"ID":' + prjModuleId + ',"ProjectID":' + prjId + ',"Alias":"' + moduleAlias + '","Name":"' + moduleName + '","Des":"' + moduleDes + '"}';
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: type,
+                    url: url,
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        hidenModuleEdit();
+                        RefreshModules();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
         });
     </script>
 </head>
 <body class="contentBackgroundColor">
-    <div>
-        <!--<p style="font-size:50px;"> 模块管理</p>-->
-        <ul id="treeDemo" class="ztree"></ul>
+    <div class="divContent">
+        <p style="text-align:center;font-size:40px;color:cadetblue;background-color:antiquewhite;margin-top:-55px">模块列表</p>
+
+        <table id="tbModules" class="table">
+            <tr>
+                <th style="width:80px;">序号</th>
+                <th style="width:200px;">模块名称</th>
+                <th style="width:120px;">模块别名</th>
+                <th style="width:240px;">模块描述</th>
+                <th style="width:160px;">编辑</th>
+            </tr>
+
+            <!--<tr>
+                <td>1</td>
+                <td>RDPS</td>
+                <td>RDPSA</td>
+                <td>Des RDPS</td>
+                <td>
+                    <input type="button" value="编辑" onclick="moduleEdit(1)" />
+                    <input type="button" value="删除" onclick="moduleDelete(1)" />
+                    <input type="button" value="配置" onclick="moduleConfig(1)" />
+                </td>
+            </tr>-->
+        </table>
+
+        <button id="btnAddModule" class="AddButton">添加模块</button>
+    </div>
+
+    <div id="moduleEditShade" class="divContent moduleEditShade">
+
+    </div>
+
+    <div id="moduleEdit" class="moduleEdit">
+        <style type="text/css">
+            div {
+                margin-left: 20px;
+                margin-top: 20px;
+            }
+
+            .inputmodule {
+                width: 330px;
+            }
+        </style>
+        <p class="ptitle" style="margin-top:30px;">编辑模块信息</p>
+        <div>
+            <span class="spanLabel_TextAlign_Right">模块名称</span>
+            <span><input type="text" class="inputmodule inputText" id="txtmoduleName" value="" /></span>
+            <span class="spanLabel_Prompt">*模块名称</span>
+        </div>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right">模块别名</span>
+            <span><input type="text" class="inputmodule inputText" id="txtmoduleAlias" value="" /></span>
+            <span class="spanLabel_Prompt">*客户端请求名称</span>
+        </div>
+        <div>
+            <span class="spanLabel_TextAlign_Right">模块描述</span>
+            <span><input type="text" class="inputmodule inputText" id="txtmoduleDes" value="" /></span>
+            <span class="spanLabel_Prompt">*描述</span>
+        </div>
+
+        <div style="margin-left:233px">
+            <span><button class="buttonOKCancell" id="btnEditModuleOk">确定</button></span>
+            <span><button class="buttonOKCancell" id="btnEditModuleCancell">取消</button></span>
+        </div>
     </div>
 </body>
 </html>

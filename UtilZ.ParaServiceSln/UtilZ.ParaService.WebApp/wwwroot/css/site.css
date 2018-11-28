@@ -102,3 +102,56 @@ body {
     text-align-last: left; /* ie9*/
     -moz-text-align-last: left; /*ff*/
 }
+
+.table {
+    margin-top: -40px;
+}
+
+th {
+    font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    color: #4f6b72;
+    border-right: 1px solid #C1DAD7;
+    border-bottom: 1px solid #C1DAD7;
+    border-top: 1px solid #C1DAD7;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 6px 6px 6px 12px;
+    background: #CAE8EA no-repeat;
+}
+
+td {
+    border-right: 1px solid #C1DAD7;
+    border-bottom: 1px solid #C1DAD7;
+    background: #fff;
+    font-size: 14px;
+    padding: 6px 6px 6px 12px;
+    color: #4f6b72;
+}
+
+    td.alt {
+        background: #F5FAFA;
+        color: #797268;
+    }
+
+    th.spec, td.spec {
+        border-left: 1px solid #C1DAD7;
+    }
+
+tr.select th, tr.select td {
+    background-color: #CAE8EA;
+    color: #797268;
+}
+
+.editButton {
+    margin: 2px;
+}
+
+.AddButton {
+    font-size: 25px;
+    color: cadetblue;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 160px;
+    height: 60px;
+}

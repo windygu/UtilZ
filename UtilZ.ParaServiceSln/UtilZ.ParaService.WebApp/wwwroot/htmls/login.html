@@ -58,7 +58,7 @@
                     //dataType: "json",
                     success: function (data, status) {
                         sessionStorage.setItem('token', data.access_token);
-                        window.location.href = "/htmls/index.html";
+                        window.location.href = "/htmls/projectManagement.html";
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);

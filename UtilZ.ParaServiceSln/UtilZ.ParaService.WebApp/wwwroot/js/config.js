@@ -28,7 +28,8 @@ config.conf = {
 var constDefine =
 {
     tokenKey: "token",
-    prjIdKey: "ID",
+    prjIdKey: "prjID",
+    prjModuleIdKey: "prjModuleId",
 };
 
 function pageLoginValidate() {

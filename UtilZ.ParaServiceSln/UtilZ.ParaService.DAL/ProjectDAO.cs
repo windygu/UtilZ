@@ -11,6 +11,11 @@ namespace UtilZ.ParaService.DAL
 {
     public class ProjectDAO : BaseDAO
     {
+        public ProjectDAO() : base()
+        {
+
+        }
+
         public List<Project> QueryProjects(int pageSize, int pageIndex)
         {
             IDBAccess dbAccess = base.GetDBAccess();

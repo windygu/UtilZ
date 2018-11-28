@@ -7,11 +7,21 @@ namespace UtilZ.ParaService.BLL
 {
     public class ProjectBLL
     {
-        private ProjectDAO _dal;
-
         public ProjectBLL()
         {
-            this._dal = new ProjectDAO();
+
+        }
+
+        #region Project
+        private ProjectDAO _projectDAO = null;
+        private ProjectDAO GetProjectDAO()
+        {
+            if (this._projectDAO == null)
+            {
+                this._projectDAO = new ProjectDAO();
+            }
+
+            return this._projectDAO;
         }
 
         public List<Project> QueryProjects(int pageSize, int pageIndex)
@@ -24,27 +34,74 @@ namespace UtilZ.ParaService.BLL
                 }
             }
 
-            return this._dal.QueryProjects(pageSize, pageIndex);
+            return this.GetProjectDAO().QueryProjects(pageSize, pageIndex);
         }
 
         public Project QueryProject(long id)
         {
-            return this._dal.QueryProject(id);
+            return this.GetProjectDAO().QueryProject(id);
         }
 
         public long AddProject(Project project)
         {
-            return this._dal.AddProject(project);
+            return this.GetProjectDAO().AddProject(project);
         }
 
         public int UpdateProject(Project project)
         {
-            return this._dal.UpdateProject(project);
+            return this.GetProjectDAO().UpdateProject(project);
         }
 
         public int DeleteProject(long id)
         {
-            return this._dal.DeleteProject(id);
+            return this._projectDAO.DeleteProject(id);
         }
+        #endregion
+
+        #region ProjectModule
+        private ProjectModuleDAO _projectModuleDAO = null;
+        private ProjectModuleDAO GetProjectModuleDAO()
+        {
+            if (this._projectModuleDAO == null)
+            {
+                this._projectModuleDAO = new ProjectModuleDAO();
+            }
+
+            return this._projectModuleDAO;
+        }
+
+        public List<ProjectModule> QueryProjectModules(long projectID, int pageSize, int pageIndex)
+        {
+            if (pageIndex > 0)
+            {
+                if (pageSize < 1)
+                {
+                    pageSize = 100;
+                }
+            }
+
+            return GetProjectModuleDAO().QueryProjectModules(projectID, pageSize, pageIndex);
+        }
+
+        public ProjectModule QueryProjectModule(long id)
+        {
+            return GetProjectModuleDAO().QueryProjectModule(id);
+        }
+
+        public long AddProjectModule(ProjectModule project)
+        {
+            return GetProjectModuleDAO().AddProjectModule(project);
+        }
+
+        public int UpdateProjectModule(ProjectModule project)
+        {
+            return GetProjectModuleDAO().UpdateProjectModule(project);
+        }
+
+        public int DeleteProjectModule(long id)
+        {
+            return GetProjectModuleDAO().DeleteProjectModule(id);
+        }
+        #endregion
     }
 }
