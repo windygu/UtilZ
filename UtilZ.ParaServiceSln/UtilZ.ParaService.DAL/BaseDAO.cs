@@ -17,15 +17,6 @@ namespace UtilZ.ParaService.DAL
             return dbAccess;
         }
 
-        protected void AddParameter(IDbCommand cmd, string parameterName, object value)
-        {
-            var parameter = cmd.CreateParameter();
-            parameter.ParameterName = parameterName;
-            parameter.Value = value;
-            //parameter.DbType = DbType.String;
-            cmd.Parameters.Add(parameter);
-        }
-
         protected int GeneratePRiKey()
         {
             return 1;

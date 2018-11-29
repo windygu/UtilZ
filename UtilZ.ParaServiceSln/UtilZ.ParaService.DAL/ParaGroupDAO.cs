@@ -1,70 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using UtilZ.Dotnet.DBBase.Interfaces;
-using UtilZ.Dotnet.DBFactory;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.ParaService.DBModel;
-using UtilZ.ParaService.Model;
 
 namespace UtilZ.ParaService.DAL
 {
-    public class ProjectDAO : BaseDAO
+    public class ParaGroupDAO : BaseDAO
     {
-        public ProjectDAO() : base()
+        public ParaGroupDAO() : base()
         {
 
         }
 
-        public List<Project> QueryProjects(int pageSize, int pageIndex)
+        public List<ParaGroup> QueryParaGroups(long projectID, int pageSize, int pageIndex)
         {
             IDBAccess dbAccess = base.GetDBAccess();
-            string sqlStr = @"SELECT ID,Alias,Name,Des FROM Project";
+            string sqlStr = string.Format(@"SELECT ID,ProjectID,Name,Des FROM ParaGroup WHERE ProjectID={0}ProjectID", dbAccess.ParaSign);
+            var parameters = new NDbParameterCollection();
+            parameters.Add("ProjectID", projectID);
+
             DataTable dt;
             if (pageIndex > 0)
             {
-                dt = dbAccess.QueryPagingData(sqlStr, "ID", pageSize, pageIndex, false);
+                dt = dbAccess.QueryPagingData(sqlStr, "ID", pageSize, pageIndex, false, parameters);
             }
             else
             {
-                dt = dbAccess.QueryData(sqlStr);
+                dt = dbAccess.QueryData(sqlStr, parameters);
             }
 
-            var projects = new List<Project>();
+            var paraGroups = new List<ParaGroup>();
             if (dt != null && dt.Rows.Count > 0)
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    var project = new Project();
-                    project.ID = (long)(row[0]);
-                    project.Alias = row[1].ToString();
-                    project.Name = row[2].ToString();
-                    project.Des = row[3].ToString();
-                    projects.Add(project);
+                    var paraGroup = new ParaGroup();
+                    paraGroup.ID = (long)(row[0]);
+                    paraGroup.ProjectID = (long)(row[1]);
+                    paraGroup.Name = row[2].ToString();
+                    paraGroup.Des = row[3].ToString();
+                    paraGroups.Add(paraGroup);
                 }
             }
 
-            return projects;
+            return paraGroups;
         }
 
-        public Project QueryProject(long id)
+        public ParaGroup QueryParaGroup(long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
             using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
             {
                 var queryCmd = conInfo.Connection.CreateCommand();
-                queryCmd.CommandText = string.Format(@"SELECT Alias,Name,Des FROM Project WHERE ID={0}ID", paraSign);
+                queryCmd.CommandText = string.Format(@"SELECT ProjectID,Name,Des FROM ParaGroup WHERE ID={0}ID", paraSign);
                 dbAccess.AddCommandParameter(queryCmd, "ID", id);
                 var reader = queryCmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    var project = new Project();
-                    project.ID = id;
-                    project.Alias = reader.GetString(0);
-                    project.Name = reader.GetString(1);
-                    project.Des = reader.GetString(2);
-                    return project;
+                    var paraGroup = new ParaGroup();
+                    paraGroup.ID = id;
+                    paraGroup.ProjectID = reader.GetInt64(0);
+                    paraGroup.Name = reader.GetString(1);
+                    paraGroup.Des = reader.GetString(2);
+                    return paraGroup;
                 }
                 else
                 {
@@ -74,11 +76,11 @@ namespace UtilZ.ParaService.DAL
         }
 
         /// <summary>
-        /// 添加项目返回主键
+        /// 添加参数组返回主键
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="paraGroup"></param>
         /// <returns></returns>
-        public long AddProject(Project project)
+        public long AddParaGroup(ParaGroup paraGroup)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
@@ -89,8 +91,8 @@ namespace UtilZ.ParaService.DAL
                 {
                     var existCmd = conInfo.Connection.CreateCommand();
                     existCmd.Transaction = transaction;
-                    existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM Project WHERE Alias={0}Alias", paraSign);
-                    dbAccess.AddCommandParameter(existCmd, "Alias", project.Alias);
+                    existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ParaGroup WHERE Name={0}Name", paraSign);
+                    dbAccess.AddCommandParameter(existCmd, "Name", paraGroup.Name);
                     long count = (long)existCmd.ExecuteScalar();
                     if (count > 0)
                     {
@@ -99,10 +101,10 @@ namespace UtilZ.ParaService.DAL
 
                     var insertCmd = conInfo.Connection.CreateCommand();
                     insertCmd.Transaction = transaction;
-                    insertCmd.CommandText = string.Format(@"INSERT INTO Project (Alias,Name,Des) VALUES ({0}Alias,{0}Name,{0}Des)", paraSign);
-                    dbAccess.AddCommandParameter(insertCmd, "Alias", project.Alias);
-                    dbAccess.AddCommandParameter(insertCmd, "Name", project.Name);
-                    dbAccess.AddCommandParameter(insertCmd, "Des", project.Des);
+                    insertCmd.CommandText = string.Format(@"INSERT INTO ParaGroup (ProjectID,Name,Des) VALUES ({0}ProjectID,{0}Name,{0}Des)", paraSign);
+                    dbAccess.AddCommandParameter(insertCmd, "ProjectID", paraGroup.ProjectID);
+                    dbAccess.AddCommandParameter(insertCmd, "Name", paraGroup.Name);
+                    dbAccess.AddCommandParameter(insertCmd, "Des", paraGroup.Des);
                     int ret = insertCmd.ExecuteNonQuery();
                     if (ret != 1)
                     {
@@ -111,8 +113,8 @@ namespace UtilZ.ParaService.DAL
 
                     var queryCmd = conInfo.Connection.CreateCommand();
                     queryCmd.Transaction = transaction;
-                    queryCmd.CommandText = string.Format(@"SELECT ID FROM Project WHERE Alias={0}Alias", paraSign);
-                    dbAccess.AddCommandParameter(queryCmd, "Alias", project.Alias);
+                    queryCmd.CommandText = string.Format(@"SELECT ID FROM ParaGroup WHERE Name={0}Name", paraSign);
+                    dbAccess.AddCommandParameter(queryCmd, "Name", paraGroup.Name);
                     object obj = queryCmd.ExecuteScalar();
                     if (obj == null)
                     {
@@ -125,23 +127,22 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
-        public int UpdateProject(Project project)
+        public int UpdateParaGroup(ParaGroup paraGroup)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            string sqlStr = string.Format(@"UPDATE Project SET Alias={0}Alias,Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
+            string sqlStr = string.Format(@"UPDATE ParaGroup SET Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
             var parameters = new NDbParameterCollection();
-            parameters.Add("Alias", project.Alias);
-            parameters.Add("Name", project.Name);
-            parameters.Add("Des", project.Des);
-            parameters.Add("ID", project.ID);
+            parameters.Add("Name", paraGroup.Name);
+            parameters.Add("Des", paraGroup.Des);
+            parameters.Add("ID", paraGroup.ID);
             return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
         }
 
-        public int DeleteProject(long id)
+        public int DeleteParaGroup(long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
-            string sqlStr = string.Format(@"DELETE FROM Project WHERE ID={0}ID", dbAccess.ParaSign);
+            string sqlStr = string.Format(@"DELETE FROM ParaGroup WHERE ID={0}ID", dbAccess.ParaSign);
             var parameters = new NDbParameterCollection();
             parameters.Add("ID", id);
             return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);

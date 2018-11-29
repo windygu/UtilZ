@@ -103,5 +103,56 @@ namespace UtilZ.ParaService.BLL
             return GetProjectModuleDAO().DeleteProjectModule(id);
         }
         #endregion
+
+        #region ParaGroup
+        private ParaGroupDAO _paraGroupDAO = null;
+        private ParaGroupDAO GetParaGroupDAO()
+        {
+            if (this._paraGroupDAO == null)
+            {
+                this._paraGroupDAO = new ParaGroupDAO();
+            }
+
+            return this._paraGroupDAO;
+        }
+
+        public List<ParaGroup> QueryParaGroups(long projectID, int pageSize, int pageIndex)
+        {
+            if (pageIndex > 0)
+            {
+                if (pageSize < 1)
+                {
+                    pageSize = 100;
+                }
+            }
+
+            return this.GetParaGroupDAO().QueryParaGroups(projectID, pageSize, pageIndex);
+        }
+
+        public ParaGroup QueryParaGroup(long id)
+        {
+            return this.GetParaGroupDAO().QueryParaGroup(id);
+        }
+
+        /// <summary>
+        /// 添加参数组返回主键
+        /// </summary>
+        /// <param name="paraGroup"></param>
+        /// <returns></returns>
+        public long AddParaGroup(ParaGroup paraGroup)
+        {
+            return this.GetParaGroupDAO().AddParaGroup(paraGroup);
+        }
+
+        public int UpdateParaGroup(ParaGroup paraGroup)
+        {
+            return this.GetParaGroupDAO().UpdateParaGroup(paraGroup);
+        }
+
+        public int DeleteParaGroup(long id)
+        {
+            return this.GetParaGroupDAO().DeleteParaGroup(id);
+        }
+        #endregion
     }
 }

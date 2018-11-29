@@ -30,6 +30,8 @@ var constDefine =
     tokenKey: "token",
     prjIdKey: "prjID",
     prjModuleIdKey: "prjModuleId",
+    paraConfigSelectedIdKey: "paraConfigSelectedId",
+    paraGroupIdKey: "paraGroupId",
 };
 
 function pageLoginValidate() {

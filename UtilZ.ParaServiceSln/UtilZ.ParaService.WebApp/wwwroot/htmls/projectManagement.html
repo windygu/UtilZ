@@ -179,6 +179,7 @@
 
         function prjConfig(id) {
             sessionStorage.setItem(constDefine.prjIdKey, id);
+            sessionStorage.setItem(constDefine.paraConfigSelectedIdKey, -1);
             window.location.href = "/htmls/paraConfig.html";
         }
 
@@ -267,49 +268,49 @@
                 <th style="width:160px;">编辑</th>
             </tr>
             <!--<tr>
-        <td>1</td>
-        <td>RDPS</td>
-        <td>RDPSA</td>
-        <td>Des RDPS</td>
-        <td>
-            <input type="button" value="编辑" onclick="prjEdit(1)" />
-            <input type="button" value="删除" onclick="prjDelete(1)" />
-            <input type="button" value="配置" onclick="prjConfig(1)" />
-        </td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>RDPS</td>
-        <td>RDPSA</td>
-        <td>Des RDPS</td>
-        <td>
-            <input type="button" value="编辑" />
-            <input type="button" value="删除" />
-            <input type="button" value="配置" />
-        </td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>RDPS</td>
-        <td>RDPSA</td>
-        <td>Des RDPS</td>
-        <td>
-            <input type="button" value="编辑" />
-            <input type="button" value="删除" />
-            <input type="button" value="配置" />
-        </td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>RDPS</td>
-        <td>RDPSA</td>
-        <td>Des RDPS</td>
-        <td>
-            <input type="button" class="editButton" value="编辑" />
-            <input type="button" value="删除" />
-            <input type="button" value="配置" />
-        </td>
-    </tr>-->
+                <td>1</td>
+                <td>RDPS</td>
+                <td>RDPSA</td>
+                <td>Des RDPS</td>
+                <td>
+                    <input type="button" value="编辑" onclick="prjEdit(1)" />
+                    <input type="button" value="删除" onclick="prjDelete(1)" />
+                    <input type="button" value="配置" onclick="prjConfig(1)" />
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>RDPS</td>
+                <td>RDPSA</td>
+                <td>Des RDPS</td>
+                <td>
+                    <input type="button" value="编辑" />
+                    <input type="button" value="删除" />
+                    <input type="button" value="配置" />
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>RDPS</td>
+                <td>RDPSA</td>
+                <td>Des RDPS</td>
+                <td>
+                    <input type="button" value="编辑" />
+                    <input type="button" value="删除" />
+                    <input type="button" value="配置" />
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>RDPS</td>
+                <td>RDPSA</td>
+                <td>Des RDPS</td>
+                <td>
+                    <input type="button" class="editButton" value="编辑" />
+                    <input type="button" value="删除" />
+                    <input type="button" value="配置" />
+                </td>
+            </tr>-->
         </table>
 
         <button id="btnAddPrj" class="AddButton">添加项目</button>

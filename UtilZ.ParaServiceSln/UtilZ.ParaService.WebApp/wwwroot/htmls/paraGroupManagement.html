@@ -3,8 +3,303 @@
 <head>
     <meta charset="utf-8" />
     <title>分组管理</title>
+    <link href="../css/site.css" rel="stylesheet" />
+    <style type="text/css">
+        .divContent {
+            width: 100%;
+            height: 100%;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            /*background-color:red;*/
+        }
+
+        .paraGroupEditButton {
+            margin: 2px;
+        }
+
+        .paraGroupEdit {
+            width: 600px;
+            height: 270px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: white;
+            visibility: hidden;
+            /*visibility: visible;*/
+        }
+
+        .paraGroupEditShade {
+            background-color: gray;
+            opacity: 0.5;
+            visibility: hidden;
+        }
+    </style>
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../js/config.js"></script>
+    <script type="text/javascript">
+        function RefreshParaGroup() {
+            try {
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#tbParaGroups  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
+                        //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
+
+                        var tbModules = $("#tbParaGroups");
+                        for (var i = 0; i < data.length; i++) {
+                            var paraGroupItem = data[i];
+                            var row = $('<tr id="tr_' + paraGroupItem.id + '"></tr>');
+
+                            var tdId = $("<td></td>");
+                            tdId.append(i + 1);
+                            row.append(tdId);
+
+                            var tdparaGroupName = $('<td id="td_' + paraGroupItem.id + '_name"></td>');
+                            tdparaGroupName.append(paraGroupItem.name);
+                            row.append(tdparaGroupName);
+
+                            var tdparaGroupDes = $("<td></td>");
+                            tdparaGroupDes.append(paraGroupItem.des);
+                            row.append(tdparaGroupDes);
+
+                            var tdEdit = $("<td></td>");
+                            var editHtml = '<input type="button" class="editButton" value="编辑" onclick="paraGroupModify(' + paraGroupItem.id + ')" />' +
+                                '<input type="button" class="editButton" value="删除" onclick="paraGroupDelete(' + paraGroupItem.id + ')" />';
+                            tdEdit.append(editHtml);
+                            row.append(tdEdit);
+
+                            tbModules.append(row);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function showParaGroupEdit() {
+            $("#paraGroupEdit").css("visibility", "visible");
+            $("#paraGroupEditShade").css("visibility", "visible");
+        }
+
+        function hidenParaGroupEdit() {
+            $("#paraGroupEdit").css("visibility", "hidden");
+            $("#paraGroupEditShade").css("visibility", "hidden");
+        }
+
+        function paraGroupModify(id) {
+            try {
+                var url = config.conf.baseUrl + "/api/v1/ParaGroup/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#txtParaGroupName").val(data.name);
+                        $("#txtParaGroupDes").val(data.des);
+                        sessionStorage.setItem(constDefine.paraGroupIdKey, id);
+                        showParaGroupEdit();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function paraGroupDelete(id) {
+            try {
+                var tdParaGroupNameId = 'td_' + id + '_name';
+                var paraGroupNameName = $("#" + tdParaGroupNameId)[0].innerText;
+
+                if (!window.confirm('你确定要删除分组[' + paraGroupNameName + ']吗？')) {
+                    return;
+                }
+
+                var url = config.conf.baseUrl + "/api/v1/ParaGroup/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        RefreshParaGroup();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        $(document).ready(function () {
+            pageLoginValidate();
+
+            //页面加载完成后查询项目列表
+            RefreshParaGroup();
+
+            //添加项目
+            $("#btnAddParaGroup").click(function () {
+                $("#txtParaGroupName").val("");
+                $("#txtParaGroupDes").val("");
+                sessionStorage.setItem(constDefine.paraGroupIdKey, '-1');
+                showParaGroupEdit();
+            });
+
+            $("#btnEditParaGroupCancell").click(function () {
+                hidenParaGroupEdit();
+            });
+
+            $("#btnEditParaGroupOk").click(function () {
+                var paraGroupName = $("#txtParaGroupName").val();
+                if (paraGroupName == null || paraGroupName == "") {
+                    alert("分组名称不能为空");
+                    return;
+                }
+
+                var paraGroupDes = $("#txtParaGroupDes").val();
+                if (paraGroupDes == null) {
+                    paraGroupDes = "";
+                }
+
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var paraGroupId = Number(sessionStorage.getItem(constDefine.paraGroupIdKey));
+
+                var type;
+                //prjId<0为添加项目
+                if (paraGroupId < 0) {
+                    type = "POST";
+                }
+                else {
+                    type = "PUT";
+                }
+
+                var url = config.conf.baseUrl + "/api/v1/ParaGroup";
+                var data = '{"ID":' + paraGroupId + ',"ProjectID":' + prjId + ',"Name":"' + paraGroupName + '","Des":"' + paraGroupDes + '"}';
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: type,
+                    url: url,
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        hidenParaGroupEdit();
+                        RefreshParaGroup();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
-<body>
-    <p style="font-size:50px;">分组管理</p>
+<body class="contentBackgroundColor">
+    <div class="divContent">
+        <p style="text-align:center;font-size:40px;color:cadetblue;background-color:antiquewhite;margin-top:-55px">分组列表</p>
+
+        <table id="tbParaGroups" class="table">
+            <tr>
+                <th style="width:80px;">序号</th>
+                <th style="width:200px;">组名称</th>
+                <th style="width:320px;">分组描述</th>
+                <th style="width:110px;">编辑</th>
+            </tr>
+
+            <!--<tr>
+                <td>1</td>
+                <td>RDPS</td>
+                <td>Des RDPS</td>
+                <td>
+                    <input type="button" value="编辑" onclick="paraGroupEdit(1)" />
+                    <input type="button" value="删除" onclick="paraGroupDelete(1)" />
+                </td>
+            </tr>-->
+        </table>
+
+        <button id="btnAddParaGroup" class="AddButton">添加分组</button>
+    </div>
+
+    <div id="paraGroupEditShade" class="divContent paraGroupEditShade">
+
+    </div>
+
+    <div id="paraGroupEdit" class="paraGroupEdit">
+        <style type="text/css">
+            div {
+                margin-left: 20px;
+                margin-top: 20px;
+            }
+
+            .inputParaGroup {
+                width: 330px;
+            }
+        </style>
+        <p class="ptitle" style="margin-top:30px;">编辑分组信息</p>
+        <div>
+            <span class="spanLabel_TextAlign_Right">分组名称</span>
+            <span><input type="text" class="inputParaGroup inputText" id="txtParaGroupName" value="" /></span>
+            <span class="spanLabel_Prompt">*分组名称</span>
+        </div>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right">分组描述</span>
+            <span><input type="text" class="inputParaGroup inputText" id="txtParaGroupDes" value="" /></span>
+            <span class="spanLabel_Prompt">*描述</span>
+        </div>
+
+        <div style="margin-left:233px">
+            <span><button class="buttonOKCancell" id="btnEditParaGroupOk">确定</button></span>
+            <span><button class="buttonOKCancell" id="btnEditParaGroupCancell">取消</button></span>
+        </div>
+    </div>
 </body>
 </html>

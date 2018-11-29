@@ -64,7 +64,7 @@ namespace UtilZ.ParaService.DAL
             {
                 var queryCmd = conInfo.Connection.CreateCommand();
                 queryCmd.CommandText = string.Format(@"SELECT ProjectID,Alias,Name,ParentID,Des FROM ProjectModule WHERE ID={0}ID", paraSign);
-                base.AddParameter(queryCmd, "ID", id);
+                dbAccess.AddCommandParameter(queryCmd, "ID", id);
                 var reader = queryCmd.ExecuteReader();
                 if (reader.Read())
                 {
@@ -105,7 +105,7 @@ namespace UtilZ.ParaService.DAL
                     var existCmd = conInfo.Connection.CreateCommand();
                     existCmd.Transaction = transaction;
                     existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ProjectModule WHERE Alias={0}Alias", paraSign);
-                    base.AddParameter(existCmd, "Alias", projectModule.Alias);
+                    dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
                     long count = (long)existCmd.ExecuteScalar();
                     if (count > 0)
                     {
@@ -117,17 +117,17 @@ namespace UtilZ.ParaService.DAL
                     if (projectModule.ParentID > 0)
                     {
                         insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,ParentID,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}ParentID,{0}Des)", paraSign);
-                        base.AddParameter(insertCmd, "ParentID", projectModule.ParentID);
+                        dbAccess.AddCommandParameter(insertCmd, "ParentID", projectModule.ParentID);
                     }
                     else
                     {
                         insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}Des)", paraSign);
                     }
 
-                    base.AddParameter(insertCmd, "ProjectID", projectModule.ProjectID);
-                    base.AddParameter(insertCmd, "Alias", projectModule.Alias);
-                    base.AddParameter(insertCmd, "Name", projectModule.Name);
-                    base.AddParameter(insertCmd, "Des", projectModule.Des);
+                    dbAccess.AddCommandParameter(insertCmd, "ProjectID", projectModule.ProjectID);
+                    dbAccess.AddCommandParameter(insertCmd, "Alias", projectModule.Alias);
+                    dbAccess.AddCommandParameter(insertCmd, "Name", projectModule.Name);
+                    dbAccess.AddCommandParameter(insertCmd, "Des", projectModule.Des);
                     int ret = insertCmd.ExecuteNonQuery();
                     if (ret != 1)
                     {
@@ -137,7 +137,7 @@ namespace UtilZ.ParaService.DAL
                     var queryCmd = conInfo.Connection.CreateCommand();
                     queryCmd.Transaction = transaction;
                     queryCmd.CommandText = string.Format(@"SELECT ID FROM ProjectModule WHERE Alias={0}Alias", paraSign);
-                    base.AddParameter(queryCmd, "Alias", projectModule.Alias);
+                    dbAccess.AddCommandParameter(queryCmd, "Alias", projectModule.Alias);
                     object obj = queryCmd.ExecuteScalar();
                     if (obj == null)
                     {

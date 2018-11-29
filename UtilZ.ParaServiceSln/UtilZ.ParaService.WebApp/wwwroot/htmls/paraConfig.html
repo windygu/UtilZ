@@ -60,7 +60,35 @@
     <script src="../lib/jquery/dist/jquery.js"></script>
     <script src="../js/config.js"></script>
     <script type="text/javascript">
-        function selectedFunc(id, currentSelectedNavId) {
+        function getNavEleIdById(id) {
+            var navEleId;
+            switch (id) {
+                case 1:
+                    navEleId = '#liProjectManagement';
+                    break;
+                case 2:
+                    navEleId = '#liModuleManagement';
+                    break;
+                case 3:
+                    navEleId = '#liParaGroupManagement';
+                    break;
+                case 4:
+                    navEleId = '#liParaManagement';
+                    break;
+                case 5:
+                    navEleId = '#liParaValueSetting';
+                    break;
+                case 6:
+                    navEleId = '#liParaHistoryValueManagement';
+                    break;
+                default:
+                    throw "未知id:" + id;
+            }
+
+            return navEleId;
+        }
+
+        function selectedFunc(id) {
             if (id == 1) {
                 window.location.href = "/htmls/projectManagement.html";
                 return;
@@ -97,14 +125,26 @@
                 $(lastSelectedNavId).css("background-color", "darkgrey");
             }
 
+            var currentSelectedNavId = getNavEleIdById(id);
             sessionStorage.setItem("lastSelectedNavId", currentSelectedNavId);
+            sessionStorage.setItem(constDefine.paraConfigSelectedIdKey, id);
             $(currentSelectedNavId).css("background-color", "wheat");
             $("#iframe").attr("src", url);
         }
 
+        function SetDefaultSelected() {
+            var id = Number(sessionStorage.getItem(constDefine.paraConfigSelectedIdKey));
+            if (id < 0) {
+                id = 2;
+            }
+
+            selectedFunc(id);
+        }
+
         $(document).ready(function () {
             pageLoginValidate();
-            selectedFunc(2, '#liModuleManagement');
+
+            SetDefaultSelected();
         });
     </script>
 </head>
@@ -112,12 +152,12 @@
     <div class="divContent contentBackgroundColor">
         <div id="nav">
             <ul>
-                <li id="liProjectManagement" onclick="selectedFunc(1,'#liProjectManagement')">返回上级</li>
-                <li id="liModuleManagement" onclick="selectedFunc(2,'#liModuleManagement')">模块管理</li>
-                <li id="liParaGroupManagement" onclick="selectedFunc(3,'#liParaGroupManagement')">分组管理</li>
-                <li id="liParaManagement" onclick="selectedFunc(4,'#liParaManagement')">参数管理</li>
-                <li id="liParaValueSetting" onclick="selectedFunc(5,'#liParaValueSetting')">参数设置</li>
-                <li id="liParaHistoryValueManagement" onclick="selectedFunc(6,'#liParaHistoryValueManagement')">历史参数</li>
+                <li id="liProjectManagement" onclick="selectedFunc(1)">返回上级</li>
+                <li id="liModuleManagement" onclick="selectedFunc(2)">模块管理</li>
+                <li id="liParaGroupManagement" onclick="selectedFunc(3)">分组管理</li>
+                <li id="liParaManagement" onclick="selectedFunc(4)">参数管理</li>
+                <li id="liParaValueSetting" onclick="selectedFunc(5)">参数设置</li>
+                <li id="liParaHistoryValueManagement" onclick="selectedFunc(6)">历史参数</li>
             </ul>
         </div>
 
