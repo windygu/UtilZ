@@ -26,9 +26,9 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         //[HttpGet]
         //[HttpGet("{pageSize}/{pageIndex}")]
         [HttpGet("projectID={projectID}&pageSize={pageSize}&pageIndex={pageIndex}")]
-        public IEnumerable<ProjectModule> Get(long projectID, int pageSize, int pageIndex)
+        public IEnumerable<ProjectModule> Get(long projectId, int pageSize, int pageIndex)
         {
-            return this._bll.QueryProjectModules(projectID, pageSize, pageIndex);
+            return this._bll.QueryProjectModules(projectId, pageSize, pageIndex);
         }
 
         [HttpGet("id={id}")]

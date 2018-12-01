@@ -151,7 +151,8 @@
                     return;
                 }
 
-                var url = config.conf.baseUrl + "/api/v1/ParaGroup/id=" + id;
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectId=" + prjId + "&id=" + id;
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "DELETE",
@@ -163,7 +164,12 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
-                        RefreshParaGroup();
+                        if (data.val == constDefine.defaultGroupNotModifyErrorCode) {
+                            alert("默认组不允许删除");
+                        }
+                        else {
+                            RefreshParaGroup();
+                        }
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);

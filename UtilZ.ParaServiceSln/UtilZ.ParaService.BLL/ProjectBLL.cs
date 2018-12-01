@@ -44,7 +44,23 @@ namespace UtilZ.ParaService.BLL
 
         public long AddProject(Project project)
         {
-            return this.GetProjectDAO().AddProject(project);
+            long prjId = this.GetProjectDAO().AddProject(project);
+            if (prjId == 1)
+            {
+                var defaultParaGroup = new ParaGroup();
+                defaultParaGroup.ProjectID = prjId;
+                defaultParaGroup.Name = "默认分组";
+                defaultParaGroup.Des = "默认分组由系统自动创建，不可删除及修改";
+
+                long paraGroupId = this.GetParaGroupDAO().AddParaGroup(defaultParaGroup);
+                if (paraGroupId != 1)
+                {
+                    this.GetProjectDAO().DeleteProject(prjId);
+                    return -1;
+                }
+            }
+
+            return prjId;
         }
 
         public int UpdateProject(Project project)
@@ -70,7 +86,7 @@ namespace UtilZ.ParaService.BLL
             return this._projectModuleDAO;
         }
 
-        public List<ProjectModule> QueryProjectModules(long projectID, int pageSize, int pageIndex)
+        public List<ProjectModule> QueryProjectModules(long projectId, int pageSize, int pageIndex)
         {
             if (pageIndex > 0)
             {
@@ -80,7 +96,7 @@ namespace UtilZ.ParaService.BLL
                 }
             }
 
-            return GetProjectModuleDAO().QueryProjectModules(projectID, pageSize, pageIndex);
+            return GetProjectModuleDAO().QueryProjectModules(projectId, pageSize, pageIndex);
         }
 
         public ProjectModule QueryProjectModule(long id)
@@ -149,9 +165,9 @@ namespace UtilZ.ParaService.BLL
             return this.GetParaGroupDAO().UpdateParaGroup(paraGroup);
         }
 
-        public int DeleteParaGroup(long id)
+        public int DeleteParaGroup(long projectId, long id)
         {
-            return this.GetParaGroupDAO().DeleteParaGroup(id);
+            return this.GetParaGroupDAO().DeleteParaGroup(projectId, id);
         }
         #endregion
     }

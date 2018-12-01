@@ -51,7 +51,7 @@ namespace UtilZ.ParaService.DAL
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
             {
                 var queryCmd = conInfo.Connection.CreateCommand();
                 queryCmd.CommandText = string.Format(@"SELECT Alias,Name,Des FROM Project WHERE ID={0}ID", paraSign);
@@ -141,10 +141,65 @@ namespace UtilZ.ParaService.DAL
         public int DeleteProject(long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
-            string sqlStr = string.Format(@"DELETE FROM Project WHERE ID={0}ID", dbAccess.ParaSign);
-            var parameters = new NDbParameterCollection();
-            parameters.Add("ID", id);
-            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
+            string paraSign = dbAccess.ParaSign;
+
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    //删除参数
+                    var delParaCmd = conInfo.Connection.CreateCommand();
+                    delParaCmd.Transaction = transaction;
+                    delParaCmd.CommandText = string.Format(@"DELETE FROM Para WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(delParaCmd, "ProjectID", id);
+                    delParaCmd.ExecuteNonQuery();
+
+                    //删除参数分组
+                    var delParaGroupCmd = conInfo.Connection.CreateCommand();
+                    delParaGroupCmd.Transaction = transaction;
+                    delParaGroupCmd.CommandText = string.Format(@"DELETE FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(delParaGroupCmd, "ProjectID", id);
+                    delParaGroupCmd.ExecuteNonQuery();
+
+                    //删除参数版本号
+                    var delParaVerionCmd = conInfo.Connection.CreateCommand();
+                    delParaVerionCmd.Transaction = transaction;
+                    delParaVerionCmd.CommandText = string.Format(@"DELETE FROM ParaVersion WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(delParaVerionCmd, "ProjectID", id);
+                    delParaVerionCmd.ExecuteNonQuery();
+
+                    //删除参数值
+                    var delParaValueCmd = conInfo.Connection.CreateCommand();
+                    delParaValueCmd.Transaction = transaction;
+                    delParaValueCmd.CommandText = string.Format(@"DELETE FROM ParaValue WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(delParaValueCmd, "ProjectID", id);
+                    delParaValueCmd.ExecuteNonQuery();
+
+                    //删除项目模块参数
+                    var delModuleParaCmd = conInfo.Connection.CreateCommand();
+                    delModuleParaCmd.Transaction = transaction;
+                    delModuleParaCmd.CommandText = string.Format(@"DELETE FROM ModulePara WHERE ModuleID in (SELECT ID FROM ProjectModule WHERE ProjectID={0}ProjectID)", paraSign);
+                    dbAccess.AddCommandParameter(delModuleParaCmd, "ProjectID", id);
+                    delModuleParaCmd.ExecuteNonQuery();
+
+                    //删除项目模块
+                    var delProjectModuleCmd = conInfo.Connection.CreateCommand();
+                    delProjectModuleCmd.Transaction = transaction;
+                    delProjectModuleCmd.CommandText = string.Format(@"DELETE FROM ProjectModule WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(delProjectModuleCmd, "ProjectID", id);
+                    delProjectModuleCmd.ExecuteNonQuery();
+
+                    //删除项目
+                    var delProjectCmd = conInfo.Connection.CreateCommand();
+                    delProjectCmd.Transaction = transaction;
+                    delProjectCmd.CommandText = string.Format(@"DELETE FROM Project WHERE ID={0}ID", paraSign);
+                    dbAccess.AddCommandParameter(delProjectCmd, "ID", id);
+                    int delProjectRet = delProjectCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    return delProjectRet;
+                }
+            }
         }
     }
 }

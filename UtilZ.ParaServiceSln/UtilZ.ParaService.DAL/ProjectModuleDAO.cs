@@ -15,12 +15,12 @@ namespace UtilZ.ParaService.DAL
 
         }
 
-        public List<ProjectModule> QueryProjectModules(long projectID, int pageSize, int pageIndex)
+        public List<ProjectModule> QueryProjectModules(long projectId, int pageSize, int pageIndex)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string sqlStr = string.Format(@"SELECT ID,Alias,Name,ParentID,Des FROM ProjectModule WHERE ProjectID={0}ProjectID", dbAccess.ParaSign);
             var parameters = new NDbParameterCollection();
-            parameters.Add("ProjectID", projectID);
+            parameters.Add("ProjectID", projectId);
 
             DataTable dt;
             if (pageIndex > 0)
@@ -38,7 +38,7 @@ namespace UtilZ.ParaService.DAL
                 foreach (DataRow row in dt.Rows)
                 {
                     var projectModule = new ProjectModule();
-                    projectModule.ProjectID = projectID;
+                    projectModule.ProjectID = projectId;
                     projectModule.ID = (long)(row[0]);
                     projectModule.Alias = row[1].ToString();
                     projectModule.Name = row[2].ToString();
@@ -60,7 +60,7 @@ namespace UtilZ.ParaService.DAL
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
             {
                 var queryCmd = conInfo.Connection.CreateCommand();
                 queryCmd.CommandText = string.Format(@"SELECT ProjectID,Alias,Name,ParentID,Des FROM ProjectModule WHERE ID={0}ID", paraSign);
@@ -175,10 +175,30 @@ namespace UtilZ.ParaService.DAL
         public int DeleteProjectModule(long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
-            string sqlStr = string.Format(@"DELETE FROM ProjectModule WHERE ID={0}ID", dbAccess.ParaSign);
-            var parameters = new NDbParameterCollection();
-            parameters.Add("ID", id);
-            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
+            string paraSign = dbAccess.ParaSign;
+
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    //删除项目模块参数
+                    var delModuleParaCmd = conInfo.Connection.CreateCommand();
+                    delModuleParaCmd.Transaction = transaction;
+                    delModuleParaCmd.CommandText = string.Format(@"DELETE FROM ModulePara WHERE ModuleID={0}ModuleID", paraSign);
+                    dbAccess.AddCommandParameter(delModuleParaCmd, "ModuleID", id);
+                    delModuleParaCmd.ExecuteNonQuery();
+
+                    //删除项目模块
+                    var delProjectModuleCmd = conInfo.Connection.CreateCommand();
+                    delProjectModuleCmd.Transaction = transaction;
+                    delProjectModuleCmd.CommandText = string.Format(@"DELETE FROM ProjectModule WHERE ID={0}ID", paraSign);
+                    dbAccess.AddCommandParameter(delProjectModuleCmd, "ID", id);
+                    int delProjectModuleRet = delProjectModuleCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    return delProjectModuleRet;
+                }
+            }
         }
     }
 }

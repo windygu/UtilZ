@@ -15,12 +15,12 @@ namespace UtilZ.ParaService.DAL
 
         }
 
-        public List<ParaGroup> QueryParaGroups(long projectID, int pageSize, int pageIndex)
+        public List<ParaGroup> QueryParaGroups(long projectId, int pageSize, int pageIndex)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string sqlStr = string.Format(@"SELECT ID,ProjectID,Name,Des FROM ParaGroup WHERE ProjectID={0}ProjectID", dbAccess.ParaSign);
             var parameters = new NDbParameterCollection();
-            parameters.Add("ProjectID", projectID);
+            parameters.Add("ProjectID", projectId);
 
             DataTable dt;
             if (pageIndex > 0)
@@ -53,7 +53,7 @@ namespace UtilZ.ParaService.DAL
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
             {
                 var queryCmd = conInfo.Connection.CreateCommand();
                 queryCmd.CommandText = string.Format(@"SELECT ProjectID,Name,Des FROM ParaGroup WHERE ID={0}ID", paraSign);
@@ -127,25 +127,81 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
+        private const int _defaultGroupNotModifyErrorCode = -2;
+
         public int UpdateParaGroup(ParaGroup paraGroup)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            string sqlStr = string.Format(@"UPDATE ParaGroup SET Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
-            var parameters = new NDbParameterCollection();
-            parameters.Add("Name", paraGroup.Name);
-            parameters.Add("Des", paraGroup.Des);
-            parameters.Add("ID", paraGroup.ID);
-            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    //查找默认组ID
+                    var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
+                    findMinParaGroupIdCmd.Transaction = transaction;
+                    findMinParaGroupIdCmd.CommandText = string.Format(@"SELECT min(ID) FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ProjectID", paraGroup.ProjectID);
+                    long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
+                    if (paraGroup.ID == defaultParaGroupId)
+                    {
+                        return _defaultGroupNotModifyErrorCode;
+                    }
+
+                    //修改组
+                    var updateCmd = conInfo.Connection.CreateCommand();
+                    updateCmd.Transaction = transaction;
+                    updateCmd.CommandText = string.Format(@"UPDATE ParaGroup SET Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
+                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Name", paraGroup.Name);
+                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Des", paraGroup.Des);
+                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ID", paraGroup.ID);
+                    int updateRet = updateCmd.ExecuteNonQuery();
+                    transaction.Commit();
+
+                    return updateRet;
+                }
+            }
         }
 
-        public int DeleteParaGroup(long id)
+        public int DeleteParaGroup(long projectId, long id)
         {
             IDBAccess dbAccess = base.GetDBAccess();
-            string sqlStr = string.Format(@"DELETE FROM ParaGroup WHERE ID={0}ID", dbAccess.ParaSign);
-            var parameters = new NDbParameterCollection();
-            parameters.Add("ID", id);
-            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
+            string paraSign = dbAccess.ParaSign;
+
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    //查找默认组ID
+                    var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
+                    findMinParaGroupIdCmd.Transaction = transaction;
+                    findMinParaGroupIdCmd.CommandText = string.Format(@"SELECT min(ID) FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
+                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ProjectID", projectId);
+                    long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
+                    if (id == defaultParaGroupId)
+                    {
+                        return _defaultGroupNotModifyErrorCode;
+                    }
+
+                    //修改属于被删除组的参数到默认组
+                    var updateParaOwnerGroupCmd = conInfo.Connection.CreateCommand();
+                    updateParaOwnerGroupCmd.Transaction = transaction;
+                    updateParaOwnerGroupCmd.CommandText = string.Format(@"UPDATE Para SET GroupID={0}DefaultParaGroupId WHERE GroupID={0}GroupID", dbAccess.ParaSign);
+                    dbAccess.AddCommandParameter(updateParaOwnerGroupCmd, "DefaultParaGroupId", defaultParaGroupId);
+                    dbAccess.AddCommandParameter(updateParaOwnerGroupCmd, "GroupID", id);
+                    updateParaOwnerGroupCmd.ExecuteNonQuery();
+
+                    //删除组
+                    var deleteCmd = conInfo.Connection.CreateCommand();
+                    deleteCmd.Transaction = transaction;
+                    deleteCmd.CommandText = string.Format(@"DELETE FROM ParaGroup WHERE ID={0}ID", dbAccess.ParaSign);
+                    dbAccess.AddCommandParameter(deleteCmd, "ID", id);
+                    int deleteRet = deleteCmd.ExecuteNonQuery();
+                    transaction.Commit();
+
+                    return deleteRet;
+                }
+            }
         }
     }
 }

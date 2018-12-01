@@ -52,10 +52,10 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("id={id}")]
-        public int Delete(long id)
+        [HttpDelete("projectId={projectId}&id={id}")]
+        public int Delete(long projectId, long id)
         {
-            return this._bll.DeleteParaGroup(id);
+            return this._bll.DeleteParaGroup(projectId, id);
         }
     }
 }
