@@ -120,6 +120,21 @@ namespace UtilZ.Dotnet.DBBase.Core
         }
 
         /// <summary>
+        /// 添加命令参数
+        /// </summary>
+        /// <param name="cmd">要添加参数的命令对象</param>
+        /// <param name="parameterName">参数免</param>
+        /// <param name="value">参数值</param>
+        public void AddCommandParameter(IDbCommand cmd, string parameterName, object value)
+        {
+            var parameter = cmd.CreateParameter();
+            parameter.ParameterName = parameterName;
+            parameter.Value = value;
+            //parameter.DbType = DbType.String;
+            cmd.Parameters.Add(parameter);
+        }
+
+        /// <summary>
         /// 创建DbDataAdapter
         /// </summary>
         /// <returns>DbDataAdapter</returns>

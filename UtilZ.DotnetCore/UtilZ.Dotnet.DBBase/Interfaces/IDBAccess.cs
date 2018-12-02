@@ -58,6 +58,14 @@ namespace UtilZ.Dotnet.DBBase.Interfaces
         IDbCommand CreateCommand();
 
         /// <summary>
+        /// 添加命令参数
+        /// </summary>
+        /// <param name="cmd">要添加参数的命令对象</param>
+        /// <param name="parameterName">参数免</param>
+        /// <param name="value">参数值</param>
+        void AddCommandParameter(IDbCommand cmd, string parameterName, object value);
+
+        /// <summary>
         /// 创建DbDataAdapter
         /// </summary>
         /// <returns>DbDataAdapter</returns>

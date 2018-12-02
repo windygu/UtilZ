@@ -72,21 +72,14 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <returns>数据库访问连接对象</returns>
         public static DbConnection GetDbConnection(int dbid, DBVisitType visitType)
         {
-            if (_dbConnectionPoolDic.ContainsKey(dbid))
+            DbConnectionPool dbConnectionPool;
+            if (_dbConnectionPoolDic.TryGetValue(dbid, out dbConnectionPool))
             {
-                DbConnectionPool dbConnectionPool;
-                if (_dbConnectionPoolDic.TryGetValue(dbid, out dbConnectionPool))
-                {
-                    return dbConnectionPool.GetDbConnection(visitType);
-                }
-                else
-                {
-                    throw new ApplicationException(string.Format("连接池中获取数据库编号ID为:{0}的连接池对象失败,原因未知", dbid));
-                }
+                return dbConnectionPool.GetDbConnection(visitType);
             }
             else
             {
-                throw new ApplicationException(string.Format("连接池中不包含数据库编号ID为:{0}的连接信息", dbid));
+                throw new ApplicationException(string.Format("连接池中获取数据库编号ID为:{0}的连接池对象失败,原因未知", dbid));
             }
         }
 
