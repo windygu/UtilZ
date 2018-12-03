@@ -33,7 +33,7 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <param name="collection">命令的参数集合</param>
         /// <param name="transaction">事务参数</param>
         /// <returns>返回执行结果</returns>
-        protected object InnerExecuteScalar(IDbConnection con, string sqlStr, NDbParameterCollection collection = null, IDbTransaction transaction = null)
+        protected object PrimitveExecuteScalar(IDbConnection con, string sqlStr, NDbParameterCollection collection = null, IDbTransaction transaction = null)
         {
             IDbCommand cmd = con.CreateCommand();
             cmd.Transaction = transaction;
@@ -50,7 +50,7 @@ namespace UtilZ.Dotnet.DBBase.Core
         /// <param name="collection">命令的参数集合</param>
         /// <param name="transaction">事务参数</param>
         /// <returns>返回执行结果</returns>
-        protected int InnerExecuteNonQuery(IDbConnection con, string sqlStr, NDbParameterCollection collection = null, IDbTransaction transaction = null)
+        protected int PrimitveExecuteNonQuery(IDbConnection con, string sqlStr, NDbParameterCollection collection = null, IDbTransaction transaction = null)
         {
             IDbCommand cmd = con.CreateCommand();
             cmd.Transaction = transaction;

@@ -31,7 +31,7 @@ namespace UtilZ.Dotnet.DBBase.Core
             object obj;
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                obj = this.InnerExecuteScalar(conInfo.Connection, sqlStr, collection);
+                obj = this.PrimitveExecuteScalar(conInfo.Connection, sqlStr, collection);
             }
 
             long totalCount = 0;

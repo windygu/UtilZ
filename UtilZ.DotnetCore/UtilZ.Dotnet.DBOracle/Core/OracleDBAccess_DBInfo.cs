@@ -291,7 +291,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
             {
                 //string sqlStr = @"select * from product_component_version";
                 string sqlStr = @"select * from v$version";
-                object obj = base.InnerExecuteScalar(conInfo.Connection, sqlStr);
+                object obj = base.PrimitveExecuteScalar(conInfo.Connection, sqlStr);
                 return obj == null ? string.Empty : obj.ToString();
             }
         }
@@ -305,7 +305,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
                 string sqlStr = @"select current_date from dual";
-                return Convert.ToDateTime(base.InnerExecuteScalar(conInfo.Connection, sqlStr));
+                return Convert.ToDateTime(base.PrimitveExecuteScalar(conInfo.Connection, sqlStr));
             }
         }
     }

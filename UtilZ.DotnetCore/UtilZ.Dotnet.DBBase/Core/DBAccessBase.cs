@@ -159,7 +159,7 @@ namespace UtilZ.Dotnet.DBBase.Core
 
             using (var conInfo = new DbConnectionInfo(this._dbid, visitType))
             {
-                return this.InnerExecuteScalar(conInfo.Connection, sqlStr, collection);
+                return this.PrimitveExecuteScalar(conInfo.Connection, sqlStr, collection);
             }
         }
 
@@ -179,7 +179,7 @@ namespace UtilZ.Dotnet.DBBase.Core
 
             using (var conInfo = new DbConnectionInfo(this._dbid, visitType))
             {
-                return this.InnerExecuteNonQuery(conInfo.Connection, sqlStr, collection);
+                return this.PrimitveExecuteNonQuery(conInfo.Connection, sqlStr, collection);
             }
         }
         #endregion

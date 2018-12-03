@@ -302,7 +302,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
                 string sqlStr = @"select @@version";
-                object obj = base.InnerExecuteScalar(conInfo.Connection, sqlStr);
+                object obj = base.PrimitveExecuteScalar(conInfo.Connection, sqlStr);
                 return obj == null ? string.Empty : obj.ToString();
             }
         }
@@ -316,7 +316,7 @@ namespace UtilZ.Dotnet.DBSQLServer.Core
             string sqlStr = @"select GETDATE()";
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return Convert.ToDateTime(base.InnerExecuteScalar(conInfo.Connection, sqlStr));
+                return Convert.ToDateTime(base.PrimitveExecuteScalar(conInfo.Connection, sqlStr));
             }
         }
     }

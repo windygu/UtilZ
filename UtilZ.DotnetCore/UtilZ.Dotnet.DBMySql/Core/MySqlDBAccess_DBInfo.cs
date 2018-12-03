@@ -34,7 +34,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
                 string sqlStr = string.Format(@"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME=?TABLENAME AND TABLE_SCHEMA='{0}'", conInfo.Connection.Database);
                 var paras = new NDbParameterCollection();
                 paras.Add("TABLENAME", tableName);
-                object value = base.InnerExecuteScalar(conInfo.Connection, sqlStr, paras);
+                object value = base.PrimitveExecuteScalar(conInfo.Connection, sqlStr, paras);
                 return Convert.ToInt32(value) > 0;
             }
         }
@@ -59,7 +59,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
             paras.Add("TABLENAME", tableName);
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return Convert.ToInt64(base.InnerExecuteScalar(conInfo.Connection, sqlStr, paras)) > 0;
+                return Convert.ToInt64(base.PrimitveExecuteScalar(conInfo.Connection, sqlStr, paras)) > 0;
             }
         }
 
@@ -270,7 +270,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
                 string sqlStr = @"select version()";
-                object obj = base.InnerExecuteScalar(conInfo.Connection, sqlStr);
+                object obj = base.PrimitveExecuteScalar(conInfo.Connection, sqlStr);
                 return obj == null ? string.Empty : obj.ToString();
             }
         }
@@ -284,7 +284,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
             string sqlStr = @"select CURRENT_TIMESTAMP()";
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return Convert.ToDateTime(base.InnerExecuteScalar(conInfo.Connection, sqlStr));
+                return Convert.ToDateTime(base.PrimitveExecuteScalar(conInfo.Connection, sqlStr));
             }
         }
     }
