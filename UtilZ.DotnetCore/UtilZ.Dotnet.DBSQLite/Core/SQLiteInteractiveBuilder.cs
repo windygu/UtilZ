@@ -82,14 +82,15 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                 Directory.CreateDirectory(dbDir);
             }
 
-            if (visitType == DBVisitType.R)
-            {
-                scsb.ReadOnly = true;
-            }
-            else
-            {
-                scsb.ReadOnly = false;
-            }
+            //启用只读或写模式特么会死锁，没搞懂原因，很诡异
+            //if (visitType == DBVisitType.R)
+            //{
+            //    scsb.ReadOnly = true;
+            //}
+            //else
+            //{
+            //    scsb.ReadOnly = false;
+            //}
 
             conStr = scsb.ConnectionString;
 
