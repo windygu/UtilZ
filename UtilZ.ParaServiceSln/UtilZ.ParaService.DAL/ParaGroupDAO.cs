@@ -89,40 +89,48 @@ namespace UtilZ.ParaService.DAL
             {
                 using (var transaction = conInfo.Connection.BeginTransaction())
                 {
-                    var existCmd = conInfo.Connection.CreateCommand();
-                    existCmd.Transaction = transaction;
-                    existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ParaGroup WHERE Name={0}Name", paraSign);
-                    dbAccess.AddCommandParameter(existCmd, "Name", paraGroup.Name);
-                    long count = (long)existCmd.ExecuteScalar();
-                    if (count > 0)
+                    try
                     {
-                        return -1;
-                    }
+                        var existCmd = conInfo.Connection.CreateCommand();
+                        existCmd.Transaction = transaction;
+                        existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ParaGroup WHERE Name={0}Name", paraSign);
+                        dbAccess.AddCommandParameter(existCmd, "Name", paraGroup.Name);
+                        long count = (long)existCmd.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            return -1;
+                        }
 
-                    var insertCmd = conInfo.Connection.CreateCommand();
-                    insertCmd.Transaction = transaction;
-                    insertCmd.CommandText = string.Format(@"INSERT INTO ParaGroup (ProjectID,Name,Des) VALUES ({0}ProjectID,{0}Name,{0}Des)", paraSign);
-                    dbAccess.AddCommandParameter(insertCmd, "ProjectID", paraGroup.ProjectID);
-                    dbAccess.AddCommandParameter(insertCmd, "Name", paraGroup.Name);
-                    dbAccess.AddCommandParameter(insertCmd, "Des", paraGroup.Des);
-                    int ret = insertCmd.ExecuteNonQuery();
-                    if (ret != 1)
+                        var insertCmd = conInfo.Connection.CreateCommand();
+                        insertCmd.Transaction = transaction;
+                        insertCmd.CommandText = string.Format(@"INSERT INTO ParaGroup (ProjectID,Name,Des) VALUES ({0}ProjectID,{0}Name,{0}Des)", paraSign);
+                        dbAccess.AddCommandParameter(insertCmd, "ProjectID", paraGroup.ProjectID);
+                        dbAccess.AddCommandParameter(insertCmd, "Name", paraGroup.Name);
+                        dbAccess.AddCommandParameter(insertCmd, "Des", paraGroup.Des);
+                        int ret = insertCmd.ExecuteNonQuery();
+                        if (ret != 1)
+                        {
+                            return -2;
+                        }
+
+                        var queryCmd = conInfo.Connection.CreateCommand();
+                        queryCmd.Transaction = transaction;
+                        queryCmd.CommandText = string.Format(@"SELECT ID FROM ParaGroup WHERE Name={0}Name", paraSign);
+                        dbAccess.AddCommandParameter(queryCmd, "Name", paraGroup.Name);
+                        object obj = queryCmd.ExecuteScalar();
+                        if (obj == null)
+                        {
+                            return -3;
+                        }
+
+                        transaction.Commit();
+                        return (long)obj;
+                    }
+                    catch (Exception)
                     {
-                        return -2;
+                        transaction.Rollback();
+                        throw;
                     }
-
-                    var queryCmd = conInfo.Connection.CreateCommand();
-                    queryCmd.Transaction = transaction;
-                    queryCmd.CommandText = string.Format(@"SELECT ID FROM ParaGroup WHERE Name={0}Name", paraSign);
-                    dbAccess.AddCommandParameter(queryCmd, "Name", paraGroup.Name);
-                    object obj = queryCmd.ExecuteScalar();
-                    if (obj == null)
-                    {
-                        return -3;
-                    }
-
-                    transaction.Commit();
-                    return (long)obj;
                 }
             }
         }
@@ -137,28 +145,36 @@ namespace UtilZ.ParaService.DAL
             {
                 using (var transaction = conInfo.Connection.BeginTransaction())
                 {
-                    //查找默认组ID
-                    var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
-                    findMinParaGroupIdCmd.Transaction = transaction;
-                    findMinParaGroupIdCmd.CommandText = string.Format(@"SELECT min(ID) FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
-                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ProjectID", paraGroup.ProjectID);
-                    long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
-                    if (paraGroup.ID == defaultParaGroupId)
+                    try
                     {
-                        return _defaultGroupNotModifyErrorCode;
+                        //查找默认组ID
+                        var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
+                        findMinParaGroupIdCmd.Transaction = transaction;
+                        findMinParaGroupIdCmd.CommandText = string.Format(@"SELECT min(ID) FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
+                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ProjectID", paraGroup.ProjectID);
+                        long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
+                        if (paraGroup.ID == defaultParaGroupId)
+                        {
+                            return _defaultGroupNotModifyErrorCode;
+                        }
+
+                        //修改组
+                        var updateCmd = conInfo.Connection.CreateCommand();
+                        updateCmd.Transaction = transaction;
+                        updateCmd.CommandText = string.Format(@"UPDATE ParaGroup SET Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
+                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Name", paraGroup.Name);
+                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Des", paraGroup.Des);
+                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ID", paraGroup.ID);
+                        int updateRet = updateCmd.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        return updateRet;
                     }
-
-                    //修改组
-                    var updateCmd = conInfo.Connection.CreateCommand();
-                    updateCmd.Transaction = transaction;
-                    updateCmd.CommandText = string.Format(@"UPDATE ParaGroup SET Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
-                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Name", paraGroup.Name);
-                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Des", paraGroup.Des);
-                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ID", paraGroup.ID);
-                    int updateRet = updateCmd.ExecuteNonQuery();
-                    transaction.Commit();
-
-                    return updateRet;
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
@@ -172,34 +188,42 @@ namespace UtilZ.ParaService.DAL
             {
                 using (var transaction = conInfo.Connection.BeginTransaction())
                 {
-                    //查找默认组ID
-                    var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
-                    findMinParaGroupIdCmd.Transaction = transaction;
-                    findMinParaGroupIdCmd.CommandText = string.Format(@"SELECT min(ID) FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
-                    dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ProjectID", projectId);
-                    long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
-                    if (id == defaultParaGroupId)
+                    try
                     {
-                        return _defaultGroupNotModifyErrorCode;
+                        //查找默认组ID
+                        var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
+                        findMinParaGroupIdCmd.Transaction = transaction;
+                        findMinParaGroupIdCmd.CommandText = string.Format(@"SELECT min(ID) FROM ParaGroup WHERE ProjectID={0}ProjectID", paraSign);
+                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ProjectID", projectId);
+                        long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
+                        if (id == defaultParaGroupId)
+                        {
+                            return _defaultGroupNotModifyErrorCode;
+                        }
+
+                        //修改属于被删除组的参数到默认组
+                        var updateParaOwnerGroupCmd = conInfo.Connection.CreateCommand();
+                        updateParaOwnerGroupCmd.Transaction = transaction;
+                        updateParaOwnerGroupCmd.CommandText = string.Format(@"UPDATE Para SET GroupID={0}DefaultParaGroupId WHERE GroupID={0}GroupID", dbAccess.ParaSign);
+                        dbAccess.AddCommandParameter(updateParaOwnerGroupCmd, "DefaultParaGroupId", defaultParaGroupId);
+                        dbAccess.AddCommandParameter(updateParaOwnerGroupCmd, "GroupID", id);
+                        updateParaOwnerGroupCmd.ExecuteNonQuery();
+
+                        //删除组
+                        var deleteCmd = conInfo.Connection.CreateCommand();
+                        deleteCmd.Transaction = transaction;
+                        deleteCmd.CommandText = string.Format(@"DELETE FROM ParaGroup WHERE ID={0}ID", dbAccess.ParaSign);
+                        dbAccess.AddCommandParameter(deleteCmd, "ID", id);
+                        int deleteRet = deleteCmd.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        return deleteRet;
                     }
-
-                    //修改属于被删除组的参数到默认组
-                    var updateParaOwnerGroupCmd = conInfo.Connection.CreateCommand();
-                    updateParaOwnerGroupCmd.Transaction = transaction;
-                    updateParaOwnerGroupCmd.CommandText = string.Format(@"UPDATE Para SET GroupID={0}DefaultParaGroupId WHERE GroupID={0}GroupID", dbAccess.ParaSign);
-                    dbAccess.AddCommandParameter(updateParaOwnerGroupCmd, "DefaultParaGroupId", defaultParaGroupId);
-                    dbAccess.AddCommandParameter(updateParaOwnerGroupCmd, "GroupID", id);
-                    updateParaOwnerGroupCmd.ExecuteNonQuery();
-
-                    //删除组
-                    var deleteCmd = conInfo.Connection.CreateCommand();
-                    deleteCmd.Transaction = transaction;
-                    deleteCmd.CommandText = string.Format(@"DELETE FROM ParaGroup WHERE ID={0}ID", dbAccess.ParaSign);
-                    dbAccess.AddCommandParameter(deleteCmd, "ID", id);
-                    int deleteRet = deleteCmd.ExecuteNonQuery();
-                    transaction.Commit();
-
-                    return deleteRet;
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

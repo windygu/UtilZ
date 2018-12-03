@@ -35,7 +35,16 @@
     <Item DBID="5"
         Name="SQLiteDB"
         ConnectionType="1"
+        ReadConnectionCount="0"
         DatabaseName="F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\DB\ParaDB.db"
         DBType="SQLite"/>
+
+    <!--<Item DBID="5"
+        Name="SQLiteDB"
+        ConnectionType="1"
+        ReadConnectionCount="0"
+        WriteConnectionCount="0"
+        DatabaseName="F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\DB\ParaDB.db"
+        DBType="SQLite"/>-->
   </DBItems>
 </DBConfig>

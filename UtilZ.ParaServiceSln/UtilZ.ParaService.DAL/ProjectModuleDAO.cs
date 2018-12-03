@@ -102,50 +102,58 @@ namespace UtilZ.ParaService.DAL
             {
                 using (var transaction = conInfo.Connection.BeginTransaction())
                 {
-                    var existCmd = conInfo.Connection.CreateCommand();
-                    existCmd.Transaction = transaction;
-                    existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ProjectModule WHERE Alias={0}Alias", paraSign);
-                    dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
-                    long count = (long)existCmd.ExecuteScalar();
-                    if (count > 0)
+                    try
                     {
-                        return -1;
-                    }
+                        var existCmd = conInfo.Connection.CreateCommand();
+                        existCmd.Transaction = transaction;
+                        existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ProjectModule WHERE Alias={0}Alias", paraSign);
+                        dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
+                        long count = (long)existCmd.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            return -1;
+                        }
 
-                    var insertCmd = conInfo.Connection.CreateCommand();
-                    insertCmd.Transaction = transaction;
-                    if (projectModule.ParentID > 0)
-                    {
-                        insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,ParentID,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}ParentID,{0}Des)", paraSign);
-                        dbAccess.AddCommandParameter(insertCmd, "ParentID", projectModule.ParentID);
-                    }
-                    else
-                    {
-                        insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}Des)", paraSign);
-                    }
+                        var insertCmd = conInfo.Connection.CreateCommand();
+                        insertCmd.Transaction = transaction;
+                        if (projectModule.ParentID > 0)
+                        {
+                            insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,ParentID,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}ParentID,{0}Des)", paraSign);
+                            dbAccess.AddCommandParameter(insertCmd, "ParentID", projectModule.ParentID);
+                        }
+                        else
+                        {
+                            insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}Des)", paraSign);
+                        }
 
-                    dbAccess.AddCommandParameter(insertCmd, "ProjectID", projectModule.ProjectID);
-                    dbAccess.AddCommandParameter(insertCmd, "Alias", projectModule.Alias);
-                    dbAccess.AddCommandParameter(insertCmd, "Name", projectModule.Name);
-                    dbAccess.AddCommandParameter(insertCmd, "Des", projectModule.Des);
-                    int ret = insertCmd.ExecuteNonQuery();
-                    if (ret != 1)
-                    {
-                        return -2;
-                    }
+                        dbAccess.AddCommandParameter(insertCmd, "ProjectID", projectModule.ProjectID);
+                        dbAccess.AddCommandParameter(insertCmd, "Alias", projectModule.Alias);
+                        dbAccess.AddCommandParameter(insertCmd, "Name", projectModule.Name);
+                        dbAccess.AddCommandParameter(insertCmd, "Des", projectModule.Des);
+                        int ret = insertCmd.ExecuteNonQuery();
+                        if (ret != 1)
+                        {
+                            return -2;
+                        }
 
-                    var queryCmd = conInfo.Connection.CreateCommand();
-                    queryCmd.Transaction = transaction;
-                    queryCmd.CommandText = string.Format(@"SELECT ID FROM ProjectModule WHERE Alias={0}Alias", paraSign);
-                    dbAccess.AddCommandParameter(queryCmd, "Alias", projectModule.Alias);
-                    object obj = queryCmd.ExecuteScalar();
-                    if (obj == null)
-                    {
-                        return -3;
-                    }
+                        var queryCmd = conInfo.Connection.CreateCommand();
+                        queryCmd.Transaction = transaction;
+                        queryCmd.CommandText = string.Format(@"SELECT ID FROM ProjectModule WHERE Alias={0}Alias", paraSign);
+                        dbAccess.AddCommandParameter(queryCmd, "Alias", projectModule.Alias);
+                        object obj = queryCmd.ExecuteScalar();
+                        if (obj == null)
+                        {
+                            return -3;
+                        }
 
-                    transaction.Commit();
-                    return (long)obj;
+                        transaction.Commit();
+                        return (long)obj;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
@@ -181,22 +189,30 @@ namespace UtilZ.ParaService.DAL
             {
                 using (var transaction = conInfo.Connection.BeginTransaction())
                 {
-                    //删除项目模块参数
-                    var delModuleParaCmd = conInfo.Connection.CreateCommand();
-                    delModuleParaCmd.Transaction = transaction;
-                    delModuleParaCmd.CommandText = string.Format(@"DELETE FROM ModulePara WHERE ModuleID={0}ModuleID", paraSign);
-                    dbAccess.AddCommandParameter(delModuleParaCmd, "ModuleID", id);
-                    delModuleParaCmd.ExecuteNonQuery();
+                    try
+                    {
+                        //删除项目模块参数
+                        var delModuleParaCmd = conInfo.Connection.CreateCommand();
+                        delModuleParaCmd.Transaction = transaction;
+                        delModuleParaCmd.CommandText = string.Format(@"DELETE FROM ModulePara WHERE ModuleID={0}ModuleID", paraSign);
+                        dbAccess.AddCommandParameter(delModuleParaCmd, "ModuleID", id);
+                        delModuleParaCmd.ExecuteNonQuery();
 
-                    //删除项目模块
-                    var delProjectModuleCmd = conInfo.Connection.CreateCommand();
-                    delProjectModuleCmd.Transaction = transaction;
-                    delProjectModuleCmd.CommandText = string.Format(@"DELETE FROM ProjectModule WHERE ID={0}ID", paraSign);
-                    dbAccess.AddCommandParameter(delProjectModuleCmd, "ID", id);
-                    int delProjectModuleRet = delProjectModuleCmd.ExecuteNonQuery();
+                        //删除项目模块
+                        var delProjectModuleCmd = conInfo.Connection.CreateCommand();
+                        delProjectModuleCmd.Transaction = transaction;
+                        delProjectModuleCmd.CommandText = string.Format(@"DELETE FROM ProjectModule WHERE ID={0}ID", paraSign);
+                        dbAccess.AddCommandParameter(delProjectModuleCmd, "ID", id);
+                        int delProjectModuleRet = delProjectModuleCmd.ExecuteNonQuery();
 
-                    transaction.Commit();
-                    return delProjectModuleRet;
+                        transaction.Commit();
+                        return delProjectModuleRet;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

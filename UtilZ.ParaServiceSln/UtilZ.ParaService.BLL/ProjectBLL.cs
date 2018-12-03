@@ -44,23 +44,7 @@ namespace UtilZ.ParaService.BLL
 
         public long AddProject(Project project)
         {
-            long prjId = this.GetProjectDAO().AddProject(project);
-            if (prjId == 1)
-            {
-                var defaultParaGroup = new ParaGroup();
-                defaultParaGroup.ProjectID = prjId;
-                defaultParaGroup.Name = "默认分组";
-                defaultParaGroup.Des = "默认分组由系统自动创建，不可删除及修改";
-
-                long paraGroupId = this.GetParaGroupDAO().AddParaGroup(defaultParaGroup);
-                if (paraGroupId != 1)
-                {
-                    this.GetProjectDAO().DeleteProject(prjId);
-                    return -1;
-                }
-            }
-
-            return prjId;
+            return this.GetProjectDAO().AddProject(project);
         }
 
         public int UpdateProject(Project project)
@@ -70,7 +54,7 @@ namespace UtilZ.ParaService.BLL
 
         public int DeleteProject(long id)
         {
-            return this._projectDAO.DeleteProject(id);
+            return this.GetProjectDAO().DeleteProject(id);
         }
         #endregion
 
