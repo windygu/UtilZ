@@ -11,8 +11,8 @@ namespace UtilZ.ParaService.DBModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Para()
         {
-            ParaValue = new HashSet<ParaValue>();
-            Module = new HashSet<ProjectModule>();
+            //ParaValue = new HashSet<ParaValue>();
+            //Module = new HashSet<ProjectModule>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -33,14 +33,14 @@ namespace UtilZ.ParaService.DBModel
         [StringLength(50)]
         public string Des { get; set; }
 
-        public virtual ParaGroup Group { get; set; }
+        //public virtual ParaGroup Group { get; set; }
 
-        public virtual Project Project { get; set; }
+        //public virtual Project Project { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParaValue> ParaValue { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ParaValue> ParaValue { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectModule> Module { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ProjectModule> Module { get; set; }
     }
 }

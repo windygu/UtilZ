@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.ParaService.BLL;
 using UtilZ.ParaService.Model;
 using UtilZ.ParaService.WebApp.Models;
 
@@ -18,25 +19,31 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
     [ApiController]
     public class ParaController : ControllerBase
     {
-        // GET: api/Para
-        [HttpGet]
-        public ActionResult<string> Get()
+        private readonly ProjectBLL _bll;
+        public ParaController() : base()
         {
-            var userInfo = AuthenticationController.GetUserInfo(Request.Headers[WebAppConstant.AccessToken]);
-            if (userInfo == null)
-            {
-                return Unauthorized();
-            }
-
-
-            return "value1";
+            this._bll = new ProjectBLL();
         }
 
+        //// GET: api/Para
+        //[HttpGet]
+        //public ActionResult<string> Get()
+        //{
+        //    var userInfo = AuthenticationController.GetUserInfo(Request.Headers[WebAppConstant.AccessToken]);
+        //    if (userInfo == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+
+
+        //    return "value1";
+        //}
+
         // GET: api/Para/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(string id)
+        [HttpGet("projectId ={projectId}&paraGroupId={paraGroupId}")]
+        public ApiData Get(long projectId, long paraGroupId, int pageSize, int pageIndex)
         {
-            return "value";
+            return this._bll.QueryParas(projectId, paraGroupId, pageSize, pageIndex);
         }
 
         // POST: api/Para

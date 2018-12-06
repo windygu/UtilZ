@@ -26,10 +26,10 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         // GET: api/ParaGroup
         //[HttpGet]
         //[HttpGet("{pageSize}/{pageIndex}")]
-        [HttpGet("projectID={projectID}&pageSize={pageSize}&pageIndex={pageIndex}")]
-        public ApiData Get(long projectID, int pageSize, int pageIndex)
+        [HttpGet("projectID={projectId}&pageSize={pageSize}&pageIndex={pageIndex}")]
+        public ApiData Get(long projectId, int pageSize, int pageIndex)
         {
-            return this._bll.QueryParaGroups(projectID, pageSize, pageIndex);
+            return this._bll.QueryParaGroups(projectId, pageSize, pageIndex);
         }
 
         [HttpGet("id={id}")]

@@ -323,5 +323,41 @@ namespace UtilZ.ParaService.BLL
             }
         }
         #endregion
+
+        #region Para
+        private ParaDAO _paraDAO = null;
+        private ParaDAO GetParaDAO()
+        {
+            if (this._paraDAO == null)
+            {
+                this._paraDAO = new ParaDAO();
+            }
+
+            return this._paraDAO;
+        }
+        public ApiData QueryParas(long projectId, long paraGroupId, int pageSize, int pageIndex)
+        {
+            try
+            {
+                if (pageIndex > 0)
+                {
+                    if (pageSize < 1)
+                    {
+                        pageSize = 100;
+                    }
+                }
+
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaDAO().QueryParas(projectId, paraGroupId, pageSize, pageIndex));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+        #endregion
     }
 }
