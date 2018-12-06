@@ -283,6 +283,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             }
 
             this._cts.Cancel();
+            this._autoResetEvent.Set();
             if (isAbort)
             {
                 this._thread.Abort();

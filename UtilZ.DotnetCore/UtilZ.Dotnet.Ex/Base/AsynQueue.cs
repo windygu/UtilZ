@@ -282,6 +282,7 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             this._cts.Cancel();
+            this._autoResetEvent.Set();
             if (isAbort)
             {
                 this._thread.Abort();
