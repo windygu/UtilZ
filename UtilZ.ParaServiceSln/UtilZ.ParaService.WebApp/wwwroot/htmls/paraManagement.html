@@ -3,8 +3,117 @@
 <head>
     <meta charset="utf-8" />
     <title>参数管理</title>
+
+    <link href="../css/site.css" rel="stylesheet" />
+    <style type="text/css">
+        .divContent {
+            width: 100%;
+            height: 100%;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            /*background-color:red;*/
+        }
+    </style>
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../js/config.js"></script>
+    <script type="text/javascript">
+        var allParaGroup = -1;
+
+        function refreshParas(paraGroupId) {
+            if (allParaGroup == paraGroupId) {
+                //查询全部
+                alert("查询全部");
+            }
+            else {
+                //查询指定分组
+                alert("查询指定分组");
+            }
+        }
+
+        function refreshParaGroup() {
+            try {
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        var comboxParaGroup = $("#comboxParaGroup");
+                        comboxParaGroup.empty();//清空
+
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("刷新参数分组列表失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        //comboxParaGroup.append('<option value="' + allParaGroup + '" selected = "selected">全部</option>'); //为Select追加一个Option(下拉项)
+                        comboxParaGroup.append('<option value="' + allParaGroup + '">全部</option>'); //为Select追加一个Option(下拉项)
+                        for (var i = 0; i < data.value.length; i++) {
+                            var paraGroupItem = data.value[i];
+                            comboxParaGroup.append('<option value="' + paraGroupItem.id + '">' + paraGroupItem.name + '</option>'); //为Select追加一个Option(下拉项)
+                        }
+
+                        //comboxParaGroup.val(allParaGroup);   // 设置Select的Value值为全部的项选中
+                        //comboxParaGroup.find("option[value='" + allParaGroup + "']").attr("selected", true);
+                        //comboxParaGroup.find("option").eq(3).prop("selected", true)
+
+                        //这儿设置select第一项为选中项，但是打死都不触发选中项改变事件,就算是选中其它项也一样
+                        //所以只好在分组加载完成后手动查询第个分组对应的参数
+                        refreshParas(allParaGroup);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+
+
+        $(document).ready(function () {
+            //为Select添加事件，当选择其中一项时触发
+            $("#comboxParaGroup").change(function () {
+                var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
+                refreshParas(paraGroupId);
+            });
+
+            refreshParaGroup();
+
+            //$("#comboxParaGroup").find("option[value='" + allParaGroup + "']").attr("selected", true);
+        });
+
+    </script>
 </head>
-<body>
-    <p style="font-size:50px;">参数管理</p>
+<body class="contentBackgroundColor">
+    <div class="divContent">
+        <div>
+            <span>参数分组</span>
+            <span>
+                <select id="comboxParaGroup">
+                    <!--<option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="opel">Opel</option>
+                    <option value="audi">Audi</option>-->
+                </select>
+            </span>
+        </div>
+    </div>
 </body>
 </html>
