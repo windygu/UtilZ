@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UtilZ.ParaService.BLL;
 using UtilZ.ParaService.DBModel;
+using UtilZ.ParaService.Model;
 using UtilZ.ParaService.WebApp.Models;
 
 namespace UtilZ.ParaService.WebApp.Controllers._1_0
@@ -26,34 +27,34 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         //[HttpGet]
         //[HttpGet("{pageSize}/{pageIndex}")]
         [HttpGet("projectID={projectID}&pageSize={pageSize}&pageIndex={pageIndex}")]
-        public IEnumerable<ParaGroup> Get(long projectID, int pageSize, int pageIndex)
+        public ApiData Get(long projectID, int pageSize, int pageIndex)
         {
             return this._bll.QueryParaGroups(projectID, pageSize, pageIndex);
         }
 
         [HttpGet("id={id}")]
-        public ParaGroup Query(long id)
+        public ApiData Query(long id)
         {
             return this._bll.QueryParaGroup(id);
         }
 
         // POST: api/ParaGroup
         [HttpPost]
-        public long Post([FromBody] ParaGroup paraGroup)
+        public ApiData Post([FromBody] ParaGroup paraGroup)
         {
             return this._bll.AddParaGroup(paraGroup);
         }
 
         // PUT: api/ParaGroup/5
         [HttpPut]
-        public int Put([FromBody] ParaGroup paraGroup)
+        public ApiData Put([FromBody] ParaGroup paraGroup)
         {
             return this._bll.UpdateParaGroup(paraGroup);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("projectId={projectId}&id={id}")]
-        public int Delete(long projectId, long id)
+        public ApiData Delete(long projectId, long id)
         {
             return this._bll.DeleteParaGroup(projectId, id);
         }

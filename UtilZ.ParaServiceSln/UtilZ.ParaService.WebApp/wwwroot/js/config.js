@@ -32,7 +32,12 @@ var constDefine =
     prjModuleIdKey: "prjModuleId",
     paraConfigSelectedIdKey: "paraConfigSelectedId",
     paraGroupIdKey: "paraGroupId",
-    defaultGroupNotModifyErrorCode: -2,
+
+    DB_SUCESS: 1,
+    DB_FAIL_NONE: -1,
+    DB_FAIL: -2,
+    DB_EIXST: -3,
+    DB_NOT_EIXST: -4,
 };
 
 function pageLoginValidate() {

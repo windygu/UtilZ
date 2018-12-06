@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UtilZ.ParaService.BLL;
 using UtilZ.ParaService.DBModel;
+using UtilZ.ParaService.Model;
 using UtilZ.ParaService.WebApp.Models;
 
 namespace UtilZ.ParaService.WebApp.Controllers._1_0
@@ -26,34 +27,34 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         //[HttpGet]
         //[HttpGet("{pageSize}/{pageIndex}")]
         [HttpGet("projectID={projectID}&pageSize={pageSize}&pageIndex={pageIndex}")]
-        public IEnumerable<ProjectModule> Get(long projectId, int pageSize, int pageIndex)
+        public ApiData Get(long projectId, int pageSize, int pageIndex)
         {
             return this._bll.QueryProjectModules(projectId, pageSize, pageIndex);
         }
 
         [HttpGet("id={id}")]
-        public ProjectModule Query(long id)
+        public ApiData Query(long id)
         {
             return this._bll.QueryProjectModule(id);
         }
 
         // POST: api/ProjectModule
         [HttpPost]
-        public long Post([FromBody] ProjectModule projectModule)
+        public ApiData Post([FromBody] ProjectModule projectModule)
         {
             return this._bll.AddProjectModule(projectModule);
         }
 
         // PUT: api/ProjectModule/5
         [HttpPut]
-        public int Put([FromBody] ProjectModule projectModule)
+        public ApiData Put([FromBody] ProjectModule projectModule)
         {
             return this._bll.UpdateProjectModule(projectModule);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("id={id}")]
-        public int Delete(long id)
+        public ApiData Delete(long id)
         {
             return this._bll.DeleteProjectModule(id);
         }

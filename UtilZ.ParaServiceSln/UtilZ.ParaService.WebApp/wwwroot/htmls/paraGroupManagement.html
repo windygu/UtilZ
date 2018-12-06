@@ -67,9 +67,19 @@
                         $("#tbParaGroups  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
                         //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
 
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("刷新参数分组列表失败,原因:" + data.reason);
+                            return;
+                        }
+
                         var tbModules = $("#tbParaGroups");
-                        for (var i = 0; i < data.length; i++) {
-                            var paraGroupItem = data[i];
+                        var defaultParaGroupId = 9223372036854775807;//long.MaxValue
+                        for (var i = 0; i < data.value.length; i++) {
+                            var paraGroupItem = data.value[i];
+                            if (paraGroupItem.id < defaultParaGroupId) {
+                                defaultParaGroupId = paraGroupItem.id;
+                            }
+
                             var row = $('<tr id="tr_' + paraGroupItem.id + '"></tr>');
 
                             var tdId = $("<td></td>");
@@ -85,13 +95,17 @@
                             row.append(tdparaGroupDes);
 
                             var tdEdit = $("<td></td>");
-                            var editHtml = '<input type="button" class="editButton" value="编辑" onclick="paraGroupModify(' + paraGroupItem.id + ')" />' +
-                                '<input type="button" class="editButton" value="删除" onclick="paraGroupDelete(' + paraGroupItem.id + ')" />';
+                            var editHtml = '<input id="btnParaGroupEdit' + paraGroupItem.id + '" type="button" class="editButton" value="编辑" onclick="paraGroupModify(' + paraGroupItem.id + ')" />' +
+                                '<input id="btnParaGroupDelete' + paraGroupItem.id + '" type="button" class="editButton" value="删除" onclick="paraGroupDelete(' + paraGroupItem.id + ')" />';
                             tdEdit.append(editHtml);
                             row.append(tdEdit);
 
                             tbModules.append(row);
                         }
+
+                        $("#btnParaGroupEdit" + defaultParaGroupId).attr("disabled", "disabled");
+                        $("#btnParaGroupDelete" + defaultParaGroupId).attr("disabled", "disabled");
+                        sessionStorage.setItem("defaultParaGroupId", defaultParaGroupId.toString());
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);
@@ -115,6 +129,12 @@
 
         function paraGroupModify(id) {
             try {
+                var defaultParaGroupId = Number(sessionStorage.getItem("defaultParaGroupId"));
+                if (defaultParaGroupId == id) {
+                    alert("默认组不允修改");
+                    return;
+                }
+
                 var url = config.conf.baseUrl + "/api/v1/ParaGroup/id=" + id;
                 var token = sessionStorage.getItem('token');
                 $.ajax({
@@ -127,8 +147,13 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
-                        $("#txtParaGroupName").val(data.name);
-                        $("#txtParaGroupDes").val(data.des);
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("查询参数分组信息失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        $("#txtParaGroupName").val(data.value.name);
+                        $("#txtParaGroupDes").val(data.value.des);
                         sessionStorage.setItem(constDefine.paraGroupIdKey, id);
                         showParaGroupEdit();
                     },
@@ -144,6 +169,12 @@
 
         function paraGroupDelete(id) {
             try {
+                var defaultParaGroupId = Number(sessionStorage.getItem("defaultParaGroupId"));
+                if (defaultParaGroupId == id) {
+                    alert("默认组不允删除");
+                    return;
+                }
+
                 var tdParaGroupNameId = 'td_' + id + '_name';
                 var paraGroupNameName = $("#" + tdParaGroupNameId)[0].innerText;
 
@@ -164,12 +195,12 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
-                        if (data.val == constDefine.defaultGroupNotModifyErrorCode) {
-                            alert("默认组不允许删除");
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("删除参数分组信息失败,原因:" + data.reason);
+                            return;
                         }
-                        else {
-                            RefreshParaGroup();
-                        }
+
+                        RefreshParaGroup();
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);
@@ -237,6 +268,11 @@
                     },
                     //dataType: "json",
                     success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("提交参数分组信息失败,原因:" + data.reason);
+                            return;
+                        }
+
                         hidenParaGroupEdit();
                         RefreshParaGroup();
                     },

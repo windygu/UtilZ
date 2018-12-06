@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UtilZ.ParaService.DAL;
 using UtilZ.ParaService.DBModel;
+using UtilZ.ParaService.Model;
 
 namespace UtilZ.ParaService.BLL
 {
@@ -24,37 +25,93 @@ namespace UtilZ.ParaService.BLL
             return this._projectDAO;
         }
 
-        public List<Project> QueryProjects(int pageSize, int pageIndex)
+        public ApiData QueryProjects(int pageSize, int pageIndex)
         {
-            if (pageIndex > 0)
+            try
             {
-                if (pageSize < 1)
+                if (pageIndex > 0)
                 {
-                    pageSize = 100;
+                    if (pageSize < 1)
+                    {
+                        pageSize = 100;
+                    }
                 }
+
+                List<Project> prjs = this.GetProjectDAO().QueryProjects(pageSize, pageIndex);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, prjs);
             }
-
-            return this.GetProjectDAO().QueryProjects(pageSize, pageIndex);
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public Project QueryProject(long id)
+        public ApiData QueryProject(long id)
         {
-            return this.GetProjectDAO().QueryProject(id);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectDAO().QueryProject(id));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public long AddProject(Project project)
+        public ApiData AddProject(Project project)
         {
-            return this.GetProjectDAO().AddProject(project);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectDAO().AddProject(project));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public int UpdateProject(Project project)
+        public ApiData UpdateProject(Project project)
         {
-            return this.GetProjectDAO().UpdateProject(project);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectDAO().UpdateProject(project));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public int DeleteProject(long id)
+        public ApiData DeleteProject(long id)
         {
-            return this.GetProjectDAO().DeleteProject(id);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectDAO().DeleteProject(id));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
         #endregion
 
@@ -70,7 +127,7 @@ namespace UtilZ.ParaService.BLL
             return this._projectModuleDAO;
         }
 
-        public List<ProjectModule> QueryProjectModules(long projectId, int pageSize, int pageIndex)
+        public ApiData QueryProjectModules(long projectId, int pageSize, int pageIndex)
         {
             if (pageIndex > 0)
             {
@@ -80,27 +137,84 @@ namespace UtilZ.ParaService.BLL
                 }
             }
 
-            return GetProjectModuleDAO().QueryProjectModules(projectId, pageSize, pageIndex);
+            try
+            {
+                var projectModules = this.GetProjectModuleDAO().QueryProjectModules(projectId, pageSize, pageIndex);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, projectModules);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public ProjectModule QueryProjectModule(long id)
+        public ApiData QueryProjectModule(long id)
         {
-            return GetProjectModuleDAO().QueryProjectModule(id);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectModuleDAO().QueryProjectModule(id));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public long AddProjectModule(ProjectModule project)
+        public ApiData AddProjectModule(ProjectModule project)
         {
-            return GetProjectModuleDAO().AddProjectModule(project);
+            try
+            {
+                long id = this.GetProjectModuleDAO().AddProjectModule(project);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, id);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public int UpdateProjectModule(ProjectModule project)
+        public ApiData UpdateProjectModule(ProjectModule project)
         {
-            return GetProjectModuleDAO().UpdateProjectModule(project);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectModuleDAO().UpdateProjectModule(project));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public int DeleteProjectModule(long id)
+        public ApiData DeleteProjectModule(long id)
         {
-            return GetProjectModuleDAO().DeleteProjectModule(id);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetProjectModuleDAO().DeleteProjectModule(id));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
         #endregion
 
@@ -116,7 +230,7 @@ namespace UtilZ.ParaService.BLL
             return this._paraGroupDAO;
         }
 
-        public List<ParaGroup> QueryParaGroups(long projectID, int pageSize, int pageIndex)
+        public ApiData QueryParaGroups(long projectID, int pageSize, int pageIndex)
         {
             if (pageIndex > 0)
             {
@@ -126,12 +240,34 @@ namespace UtilZ.ParaService.BLL
                 }
             }
 
-            return this.GetParaGroupDAO().QueryParaGroups(projectID, pageSize, pageIndex);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaGroupDAO().QueryParaGroups(projectID, pageSize, pageIndex));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public ParaGroup QueryParaGroup(long id)
+        public ApiData QueryParaGroup(long id)
         {
-            return this.GetParaGroupDAO().QueryParaGroup(id);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaGroupDAO().QueryParaGroup(id));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
         /// <summary>
@@ -139,19 +275,52 @@ namespace UtilZ.ParaService.BLL
         /// </summary>
         /// <param name="paraGroup"></param>
         /// <returns></returns>
-        public long AddParaGroup(ParaGroup paraGroup)
+        public ApiData AddParaGroup(ParaGroup paraGroup)
         {
-            return this.GetParaGroupDAO().AddParaGroup(paraGroup);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaGroupDAO().AddParaGroup(paraGroup));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public int UpdateParaGroup(ParaGroup paraGroup)
+        public ApiData UpdateParaGroup(ParaGroup paraGroup)
         {
-            return this.GetParaGroupDAO().UpdateParaGroup(paraGroup);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaGroupDAO().UpdateParaGroup(paraGroup));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        public int DeleteParaGroup(long projectId, long id)
+        public ApiData DeleteParaGroup(long projectId, long id)
         {
-            return this.GetParaGroupDAO().DeleteParaGroup(projectId, id);
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaGroupDAO().DeleteParaGroup(projectId, id));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
         #endregion
     }

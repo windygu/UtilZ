@@ -5,6 +5,7 @@ using System.Text;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.ParaService.DBModel;
+using UtilZ.ParaService.Model;
 
 namespace UtilZ.ParaService.DAL
 {
@@ -135,8 +136,6 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
-        private const int _defaultGroupNotModifyErrorCode = -2;
-
         public int UpdateParaGroup(ParaGroup paraGroup)
         {
             IDBAccess dbAccess = base.GetDBAccess();
@@ -155,16 +154,16 @@ namespace UtilZ.ParaService.DAL
                         long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
                         if (paraGroup.ID == defaultParaGroupId)
                         {
-                            return _defaultGroupNotModifyErrorCode;
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "默认组不允修改");
                         }
 
                         //修改组
                         var updateCmd = conInfo.Connection.CreateCommand();
                         updateCmd.Transaction = transaction;
                         updateCmd.CommandText = string.Format(@"UPDATE ParaGroup SET Name={0}Name,Des={0}Des WHERE ID={0}ID", paraSign);
-                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Name", paraGroup.Name);
-                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "Des", paraGroup.Des);
-                        dbAccess.AddCommandParameter(findMinParaGroupIdCmd, "ID", paraGroup.ID);
+                        dbAccess.AddCommandParameter(updateCmd, "Name", paraGroup.Name);
+                        dbAccess.AddCommandParameter(updateCmd, "Des", paraGroup.Des);
+                        dbAccess.AddCommandParameter(updateCmd, "ID", paraGroup.ID);
                         int updateRet = updateCmd.ExecuteNonQuery();
                         transaction.Commit();
 
@@ -198,7 +197,7 @@ namespace UtilZ.ParaService.DAL
                         long defaultParaGroupId = (long)findMinParaGroupIdCmd.ExecuteScalar();
                         if (id == defaultParaGroupId)
                         {
-                            return _defaultGroupNotModifyErrorCode;
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "默认组不允许删除");
                         }
 
                         //修改属于被删除组的参数到默认组

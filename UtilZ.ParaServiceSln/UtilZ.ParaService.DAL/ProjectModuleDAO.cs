@@ -5,6 +5,7 @@ using System.Text;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.ParaService.DBModel;
+using UtilZ.ParaService.Model;
 
 namespace UtilZ.ParaService.DAL
 {
@@ -83,7 +84,7 @@ namespace UtilZ.ParaService.DAL
                 }
                 else
                 {
-                    return null;
+                    throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"不存在id为{id}的记录");
                 }
             }
         }
@@ -106,24 +107,24 @@ namespace UtilZ.ParaService.DAL
                     {
                         var existCmd = conInfo.Connection.CreateCommand();
                         existCmd.Transaction = transaction;
-                        existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ProjectModule WHERE Alias={0}Alias", paraSign);
+                        existCmd.CommandText = $"SELECT COUNT(0) FROM ProjectModule WHERE Alias={paraSign}Alias";
                         dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
                         long count = (long)existCmd.ExecuteScalar();
                         if (count > 0)
                         {
-                            return -1;
+                            throw new DBException(ParaServiceConstant.DB_EIXST, $"存在别名为{projectModule.Alias}的模块别名");
                         }
 
                         var insertCmd = conInfo.Connection.CreateCommand();
                         insertCmd.Transaction = transaction;
                         if (projectModule.ParentID > 0)
                         {
-                            insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,ParentID,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}ParentID,{0}Des)", paraSign);
+                            insertCmd.CommandText = $"INSERT INTO ProjectModule (ProjectID,Alias,Name,ParentID,Des) VALUES ({paraSign}ProjectID,{paraSign}Alias,{paraSign}Name,{paraSign}ParentID,{paraSign}Des)";
                             dbAccess.AddCommandParameter(insertCmd, "ParentID", projectModule.ParentID);
                         }
                         else
                         {
-                            insertCmd.CommandText = string.Format(@"INSERT INTO ProjectModule (ProjectID,Alias,Name,Des) VALUES ({0}ProjectID,{0}Alias,{0}Name,{0}Des)", paraSign);
+                            insertCmd.CommandText = $"INSERT INTO ProjectModule (ProjectID,Alias,Name,Des) VALUES ({paraSign}ProjectID,{paraSign}Alias,{paraSign}Name,{paraSign}Des)";
                         }
 
                         dbAccess.AddCommandParameter(insertCmd, "ProjectID", projectModule.ProjectID);
@@ -133,17 +134,17 @@ namespace UtilZ.ParaService.DAL
                         int ret = insertCmd.ExecuteNonQuery();
                         if (ret != 1)
                         {
-                            return -2;
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "写入数据库失败，原因未知");
                         }
 
                         var queryCmd = conInfo.Connection.CreateCommand();
                         queryCmd.Transaction = transaction;
-                        queryCmd.CommandText = string.Format(@"SELECT ID FROM ProjectModule WHERE Alias={0}Alias", paraSign);
+                        queryCmd.CommandText = $"SELECT ID FROM ProjectModule WHERE Alias={paraSign}Alias";
                         dbAccess.AddCommandParameter(queryCmd, "Alias", projectModule.Alias);
                         object obj = queryCmd.ExecuteScalar();
                         if (obj == null)
                         {
-                            return -3;
+                            throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"写入数据库成功，但未查询到别名称为{projectModule.Alias}的模块记录");
                         }
 
                         transaction.Commit();

@@ -62,9 +62,14 @@
                         $("#tbPrjs  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
                         //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
 
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("刷新项目列表失败,原因:" + data.reason);
+                            return;
+                        }
+
                         var tbPrjs = $("#tbPrjs");
-                        for (var i = 0; i < data.length; i++) {
-                            var prjItem = data[i];
+                        for (var i = 0; i < data.value.length; i++) {
+                            var prjItem = data.value[i];
                             //var row = "<tr>" + "<td>" + SkuCode + "</td>" + "<td>" + Sn + "</td>" + "</tr>";
                             var row = $('<tr id="tr_' + prjItem.id + '"></tr>');
 
@@ -128,9 +133,14 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
-                        $("#txtPrjName").val(data.name);
-                        $("#txtPrjAlias").val(data.alias);
-                        $("#txtPrjDes").val(data.des);
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("查询项目信息失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        $("#txtPrjName").val(data.value.name);
+                        $("#txtPrjAlias").val(data.value.alias);
+                        $("#txtPrjDes").val(data.value.des);
                         sessionStorage.setItem(constDefine.prjIdKey, id);
                         showPrjEdit();
                     },
@@ -165,6 +175,11 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("删除项目失败,原因:" + data.reason);
+                            return;
+                        }
+
                         RefreshProjects();
                     },
                     error: function (xhr) {
@@ -244,6 +259,11 @@
                     },
                     //dataType: "json",
                     success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("提交项目信息失败,原因:" + data.reason);
+                            return;
+                        }
+
                         hidenPrjEdit();
                         RefreshProjects();
                     },
