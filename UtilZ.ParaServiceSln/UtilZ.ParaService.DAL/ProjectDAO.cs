@@ -68,7 +68,7 @@ namespace UtilZ.ParaService.DAL
                 }
                 else
                 {
-                    return null;
+                    throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"不存在{id}为的记录");
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace UtilZ.ParaService.DAL
                         long count = (long)existCmd.ExecuteScalar();
                         if (count > 0)
                         {
-                            return -1;
+                            throw new DBException(ParaServiceConstant.DB_EIXST, $"存在别名为{project.Alias}的项目别名");
                         }
 
                         //插入
@@ -110,7 +110,7 @@ namespace UtilZ.ParaService.DAL
                         int ret = insertCmd.ExecuteNonQuery();
                         if (ret != 1)
                         {
-                            return -2;
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "写入数据库失败，原因未知");
                         }
 
                         //查询刚添加记录的主键ID
@@ -121,7 +121,7 @@ namespace UtilZ.ParaService.DAL
                         object obj = queryCmd.ExecuteScalar();
                         if (obj == null)
                         {
-                            return -3;
+                            throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"写入数据库成功，但未查询到别名称为{project.Alias}的项目记录");
                         }
 
                         long prjId = (long)obj;
@@ -136,7 +136,7 @@ namespace UtilZ.ParaService.DAL
                         ret = insertDefaultParaGroupCmd.ExecuteNonQuery();
                         if (ret != 1)
                         {
-                            return -2;
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "插入默认分组失败，原因不明");
                         }
 
                         transaction.Commit();

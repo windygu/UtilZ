@@ -107,7 +107,8 @@ namespace UtilZ.ParaService.DAL
                     {
                         var existCmd = conInfo.Connection.CreateCommand();
                         existCmd.Transaction = transaction;
-                        existCmd.CommandText = $"SELECT COUNT(0) FROM ProjectModule WHERE Alias={paraSign}Alias";
+                        existCmd.CommandText = $"SELECT COUNT(0) FROM ProjectModule WHERE ProjectID={0}ProjectID AND Alias={paraSign}Alias";
+                        dbAccess.AddCommandParameter(existCmd, "ProjectID", projectModule.ProjectID);
                         dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
                         long count = (long)existCmd.ExecuteScalar();
                         if (count > 0)
@@ -163,22 +164,49 @@ namespace UtilZ.ParaService.DAL
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            var parameters = new NDbParameterCollection();
-            string sqlStr = string.Format(@"UPDATE ProjectModule SET Alias={0}Alias,Name={0}Name,ParentID={0}ParentID,Des={0}Des WHERE ID={0}ID", paraSign);
-            parameters.Add("Alias", projectModule.Alias);
-            parameters.Add("Name", projectModule.Name);
-            if (projectModule.ParentID > 0)
-            {
-                parameters.Add("ParentID", projectModule.ParentID);
-            }
-            else
-            {
-                parameters.Add("ParentID", DBNull.Value);
-            }
 
-            parameters.Add("Des", projectModule.Des);
-            parameters.Add("ID", projectModule.ID);
-            return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var existCmd = conInfo.Connection.CreateCommand();
+                        existCmd.Transaction = transaction;
+                        existCmd.CommandText = $"SELECT COUNT(0) FROM ProjectModule WHERE ProjectID={0}ProjectID AND Alias={paraSign}Alias";
+                        dbAccess.AddCommandParameter(existCmd, "ProjectID", projectModule.ProjectID);
+                        dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
+                        long count = (long)existCmd.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            throw new DBException(ParaServiceConstant.DB_EIXST, $"已存在别名为{projectModule.Alias}的模块别名");
+                        }
+
+                        var updateCmd = conInfo.Connection.CreateCommand();
+                        updateCmd.Transaction = transaction;
+                        updateCmd.CommandText = string.Format(@"UPDATE ProjectModule SET Alias={0}Alias,Name={0}Name,ParentID={0}ParentID,Des={0}Des WHERE ID={0}ID", paraSign);
+                        dbAccess.AddCommandParameter(updateCmd, "Alias", projectModule.Alias);
+                        dbAccess.AddCommandParameter(updateCmd, "Name", projectModule.Name);
+                        if (projectModule.ParentID > 0)
+                        {
+                            dbAccess.AddCommandParameter(updateCmd, "ParentID", projectModule.ParentID);
+                        }
+                        else
+                        {
+                            dbAccess.AddCommandParameter(updateCmd, "ParentID", DBNull.Value);
+                        }
+
+                        dbAccess.AddCommandParameter(updateCmd, "Des", projectModule.Des);
+                        dbAccess.AddCommandParameter(updateCmd, "ID", projectModule.ID);
+                        return updateCmd.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
         public int DeleteProjectModule(long id)

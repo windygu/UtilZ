@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.ParaService.BLL;
+using UtilZ.ParaService.DBModel;
 using UtilZ.ParaService.Model;
 using UtilZ.ParaService.WebApp.Models;
 
@@ -25,20 +26,6 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             this._bll = new ProjectBLL();
         }
 
-        //// GET: api/Para
-        //[HttpGet]
-        //public ActionResult<string> Get()
-        //{
-        //    var userInfo = AuthenticationController.GetUserInfo(Request.Headers[WebAppConstant.AccessToken]);
-        //    if (userInfo == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-
-        //    return "value1";
-        //}
-
         // GET: api/Para/5
         [HttpGet("projectId ={projectId}&paraGroupId={paraGroupId}")]
         public ApiData Get(long projectId, long paraGroupId, int pageSize, int pageIndex)
@@ -46,22 +33,31 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             return this._bll.QueryParas(projectId, paraGroupId, pageSize, pageIndex);
         }
 
+        [HttpGet("id={id}")]
+        public ApiData Query(long id)
+        {
+            return this._bll.QueryPara(id);
+        }
+
         // POST: api/Para
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ApiData Post([FromBody] Para para)
         {
+            return this._bll.AddPara(para);
         }
 
         // PUT: api/Para/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public ApiData Put([FromBody] Para para)
         {
+            return this._bll.UpdatePara(para);
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("id={id}")]
+        public ApiData Delete(int id)
         {
+            return this._bll.DeletePara(id);
         }
     }
 }

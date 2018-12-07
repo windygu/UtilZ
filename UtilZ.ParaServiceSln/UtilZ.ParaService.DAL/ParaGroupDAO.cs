@@ -71,7 +71,7 @@ namespace UtilZ.ParaService.DAL
                 }
                 else
                 {
-                    return null;
+                    throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"不存在{id}为的记录");
                 }
             }
         }
@@ -94,12 +94,13 @@ namespace UtilZ.ParaService.DAL
                     {
                         var existCmd = conInfo.Connection.CreateCommand();
                         existCmd.Transaction = transaction;
-                        existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ParaGroup WHERE Name={0}Name", paraSign);
+                        existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ParaGroup WHERE ProjectID={0}ProjectID AND Name={0}Name", paraSign);
+                        dbAccess.AddCommandParameter(existCmd, "ProjectID", paraGroup.ProjectID);
                         dbAccess.AddCommandParameter(existCmd, "Name", paraGroup.Name);
                         long count = (long)existCmd.ExecuteScalar();
                         if (count > 0)
                         {
-                            return -1;
+                            throw new DBException(ParaServiceConstant.DB_EIXST, $"项目中已存在名称为{paraGroup.Name}的参数分组");
                         }
 
                         var insertCmd = conInfo.Connection.CreateCommand();
@@ -111,7 +112,7 @@ namespace UtilZ.ParaService.DAL
                         int ret = insertCmd.ExecuteNonQuery();
                         if (ret != 1)
                         {
-                            return -2;
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "写入数据库失败，原因未知");
                         }
 
                         var queryCmd = conInfo.Connection.CreateCommand();
@@ -146,6 +147,17 @@ namespace UtilZ.ParaService.DAL
                 {
                     try
                     {
+                        var existCmd = conInfo.Connection.CreateCommand();
+                        existCmd.Transaction = transaction;
+                        existCmd.CommandText = string.Format(@"SELECT COUNT(0) FROM ParaGroup WHERE ProjectID={0}ProjectID AND Name={0}Name", paraSign);
+                        dbAccess.AddCommandParameter(existCmd, "ProjectID", paraGroup.ProjectID);
+                        dbAccess.AddCommandParameter(existCmd, "Name", paraGroup.Name);
+                        long count = (long)existCmd.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            throw new DBException(ParaServiceConstant.DB_EIXST, $"项目中已存在名称为{paraGroup.Name}的参数分组");
+                        }
+
                         //查找默认组ID
                         var findMinParaGroupIdCmd = conInfo.Connection.CreateCommand();
                         findMinParaGroupIdCmd.Transaction = transaction;
@@ -166,7 +178,6 @@ namespace UtilZ.ParaService.DAL
                         dbAccess.AddCommandParameter(updateCmd, "ID", paraGroup.ID);
                         int updateRet = updateCmd.ExecuteNonQuery();
                         transaction.Commit();
-
                         return updateRet;
                     }
                     catch (Exception)
