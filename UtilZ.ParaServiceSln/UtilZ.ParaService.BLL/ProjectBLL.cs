@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UtilZ.ParaService.DAL;
 using UtilZ.ParaService.DBModel;
 using UtilZ.ParaService.Model;
@@ -347,7 +348,18 @@ namespace UtilZ.ParaService.BLL
                     }
                 }
 
-                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaDAO().QueryParas(projectId, paraGroupId, pageSize, pageIndex));
+                var paras = this.GetParaDAO().QueryParas(projectId, paraGroupId, pageSize, pageIndex);
+                var groups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
+                var groupDic = groups.ToDictionary(t => { return t.ID; });
+                foreach (var para in paras)
+                {
+                    if (groupDic.ContainsKey(para.GroupID))
+                    {
+                        para.Group = groupDic[para.GroupID];
+                    }
+                }
+
+                return new ApiData(ParaServiceConstant.DB_SUCESS, paras);
             }
             catch (DBException dbex)
             {
@@ -363,7 +375,9 @@ namespace UtilZ.ParaService.BLL
         {
             try
             {
-                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaDAO().QueryPara(id));
+                var para = this.GetParaDAO().QueryPara(id);
+                para.Group = this.GetParaGroupDAO().QueryParaGroup(para.GroupID);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, para);
             }
             catch (DBException dbex)
             {

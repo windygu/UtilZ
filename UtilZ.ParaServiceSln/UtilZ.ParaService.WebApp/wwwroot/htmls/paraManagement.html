@@ -81,7 +81,7 @@
                             row.append(tdId);
 
                             var tdparaGropuName = $('<td</td>');
-                            tdparaGropuName.append(paraItem.GroupID);
+                            tdparaGropuName.append(paraItem.group.name);
                             row.append(tdparaGropuName);
 
                             var tdparaKey = $('<td></td>');
@@ -115,7 +115,7 @@
             }
         }
 
-        function refreshParaGroup() {
+        function refreshParaGroup(groupEleId, flag) {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
                 var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
@@ -130,7 +130,7 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
-                        var comboxParaGroup = $("#comboxParaGroup");
+                        var comboxParaGroup = $("#" + groupEleId);
                         comboxParaGroup.empty();//清空
 
                         if (data.status != constDefine.DB_SUCESS) {
@@ -138,20 +138,20 @@
                             return;
                         }
 
-                        //comboxParaGroup.append('<option value="' + allParaGroup + '" selected = "selected">全部</option>'); //为Select追加一个Option(下拉项)
-                        comboxParaGroup.append('<option value="' + allParaGroup + '">全部</option>'); //为Select追加一个Option(下拉项)
+                        if (flag) {
+                            //comboxParaGroup.append('<option value="' + allParaGroup + '" selected = "selected">全部</option>'); //为Select追加一个Option(下拉项)
+                            comboxParaGroup.append('<option value="' + allParaGroup + '">全部</option>'); //为Select追加一个Option(下拉项)
+                        }
+
                         for (var i = 0; i < data.value.length; i++) {
                             var paraGroupItem = data.value[i];
                             comboxParaGroup.append('<option value="' + paraGroupItem.id + '">' + paraGroupItem.name + '</option>'); //为Select追加一个Option(下拉项)
                         }
 
+                        //comboxParaGroup.get(0).selectedIndex = selectedIndex;
                         //comboxParaGroup.val(allParaGroup);   // 设置Select的Value值为全部的项选中
                         //comboxParaGroup.find("option[value='" + allParaGroup + "']").attr("selected", true);
                         //comboxParaGroup.find("option").eq(3).prop("selected", true)
-
-                        //这儿设置select第一项为选中项，但是打死都不触发选中项改变事件,就算是选中其它项也一样
-                        //所以只好在分组加载完成后手动查询第个分组对应的参数
-                        refreshParas(allParaGroup);
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);
@@ -188,11 +188,17 @@
                 refreshParas(paraGroupId);
             });
 
-            refreshParaGroup();
+            refreshParaGroup("comboxParaGroup", true);
+
+            //这儿设置select第一项为选中项，但是打死都不触发选中项改变事件,就算是选中其它项也一样
+            //所以只好在分组加载完成后手动查询第个分组对应的参数
+            refreshParas(allParaGroup);
 
             $("#btnAddPara").click(function () {
-                //$("#txtParaGroupName").val("");
-                //$("#txtParaGroupDes").val("");
+                $("#txtParaKey").val("");
+                $("#txtParaName").val("");
+                $("#txtParaDes").val("");
+                refreshParaGroup("comboxParaGroupChoice", false);
                 sessionStorage.setItem(constDefine.paraIdKey, '-1');
                 showParaEdit();
             });
@@ -211,9 +217,9 @@
 <body class="contentBackgroundColor">
     <div class="divContent">
         <div>
-            <span>参数分组</span>
+            <span class="spanLabel_TextAlign_Right">参数分组</span>
             <span>
-                <select id="comboxParaGroup">
+                <select id="comboxParaGroup" class="select">
                     <!--<option value="volvo">Volvo</option>
                     <option value="saab">Saab</option>
                     <option value="opel">Opel</option>
@@ -256,25 +262,25 @@
         <div>
             <span class="spanLabel_TextAlign_Right">参数分组</span>
             <span>
-                <select id="comboxParaGroupChoice"></select>
+                <select id="comboxParaGroupChoice" class="select"></select>
             </span>
         </div>
 
         <div>
-            <span class="spanLabel_TextAlign_Right" style="margin-left:5px;">参数Key</span>
-            <span><input type="text" class="inputPara inputText" id="txtParaGroupName" value="" /></span>
-            <span class="spanLabel_Prompt">*服务参数名</span>
+            <span class="spanLabel_TextAlign_Right" style="margin-left:45px;">Key</span>
+            <span><input type="text" class="inputPara inputText" id="txtParaKey" value="" /></span>
+            <span class="spanLabel_Prompt">*参数Key</span>
         </div>
 
         <div>
             <span class="spanLabel_TextAlign_Right">参数名称</span>
-            <span><input type="text" class="inputPara inputText" id="txtParaGroupName" value="" /></span>
+            <span><input type="text" class="inputPara inputText" id="txtParaName" value="" /></span>
             <span class="spanLabel_Prompt">*参数名称</span>
         </div>
 
         <div>
             <span class="spanLabel_TextAlign_Right">参数描述</span>
-            <span><input type="text" class="inputPara inputText" id="txtParaGroupDes" value="" /></span>
+            <span><input type="text" class="inputPara inputText" id="txtParaDes" value="" /></span>
             <span class="spanLabel_Prompt">*描述</span>
         </div>
 

@@ -16,6 +16,82 @@ namespace UtilZ.ParaService.DAL
 
         }
 
+        public List<Para> QueryParas_bk(long projectId, long paraGroupId, int pageSize, int pageIndex)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var queryGroupCmd = conInfo.Connection.CreateCommand();
+                        queryGroupCmd.Transaction = transaction;
+                        queryGroupCmd.CommandText = string.Format(@"SELECT ID,Name FROM ParaGroup WHERE ProjectID={0}ProjectID", dbAccess.ParaSign);
+                        dbAccess.AddCommandParameter(queryGroupCmd, "ProjectID", projectId);
+                        var groupReader = queryGroupCmd.ExecuteReader();
+                        var groupDic = new Dictionary<long, ParaGroup>();
+                        while (groupReader.Read())
+                        {
+                            var group = new ParaGroup();
+                            group.ID = groupReader.GetInt64(0);
+                            group.Name = groupReader.GetString(1);
+                            groupDic.Add(group.ID, group);
+                        }
+
+                        var queryParaCmd = conInfo.Connection.CreateCommand();
+                        queryParaCmd.Transaction = transaction;
+                        string queryParaSql;
+                        if (paraGroupId > 0)
+                        {
+                            queryParaSql = string.Format(@"SELECT ID,GroupID,Key,Name,Des FROM Para WHERE ProjectID={0}ProjectID AND GroupID={0}GroupID", paraSign);
+                            dbAccess.AddCommandParameter(queryParaCmd, "GroupID", paraGroupId);
+                        }
+                        else
+                        {
+                            queryParaSql = string.Format(@"SELECT ID,GroupID,Key,Name,Des FROM Para WHERE ProjectID={0}ProjectID", paraSign);
+                        }
+
+                        if (pageIndex > 0)
+                        {
+                            queryParaSql = dbAccess.CreatePagingQuerySql(queryParaSql, "ID", pageSize, pageIndex, true, new string[] { "ID" });
+                        }
+
+                        queryParaCmd.CommandText = queryParaSql;
+                        dbAccess.AddCommandParameter(queryParaCmd, "ProjectID", projectId);
+                        var paraReader = queryParaCmd.ExecuteReader();
+                        var paras = new List<Para>();
+                        while (paraReader.Read())
+                        {
+                            var para = new Para();
+                            para.ProjectID = projectId;
+                            para.ID = paraReader.GetInt64(0);
+                            para.GroupID = paraReader.GetInt64(1);
+                            if (groupDic.ContainsKey(para.GroupID))
+                            {
+                                para.Group = groupDic[para.GroupID];
+                            }
+
+                            para.Key = paraReader.GetString(2);
+                            para.Name = paraReader.GetString(3);
+                            para.Des = paraReader.GetString(4);
+                            paras.Add(para);
+                        }
+
+                        transaction.Commit();
+                        return paras;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
         public List<Para> QueryParas(long projectId, long paraGroupId, int pageSize, int pageIndex)
         {
             IDBAccess dbAccess = base.GetDBAccess();

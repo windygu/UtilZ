@@ -74,12 +74,16 @@ body {
     -moz-text-align-last: right; /*ff*/
 }
 
+.select {
+    font-size: 18px;
+}
+
 .ptitle {
     font-size: 40px;
     text-align: center;
     text-justify: distribute-all-lines; /*ie6-8*/
     text-align-last: center; /* ie9*/
-    -moz-text-align-last: center; /*ff*/   
+    -moz-text-align-last: center; /*ff*/
 }
 
 .inputText {

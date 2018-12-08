@@ -20,7 +20,7 @@ namespace UtilZ.ParaService.DBModel
 
         public long ProjectID { get; set; }
 
-        public long? GroupID { get; set; }
+        public long GroupID { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -33,7 +33,7 @@ namespace UtilZ.ParaService.DBModel
         [StringLength(50)]
         public string Des { get; set; }
 
-        //public virtual ParaGroup Group { get; set; }
+        public virtual ParaGroup Group { get; set; }
 
         //public virtual Project Project { get; set; }
 
