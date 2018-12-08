@@ -27,7 +27,7 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         }
 
         // GET: api/Para/5
-        [HttpGet("projectId ={projectId}&paraGroupId={paraGroupId}")]
+        [HttpGet("projectId={projectId}&paraGroupId={paraGroupId}&pageSize={pageSize}&pageIndex={pageIndex}")]
         public ApiData Get(long projectId, long paraGroupId, int pageSize, int pageIndex)
         {
             return this._bll.QueryParas(projectId, paraGroupId, pageSize, pageIndex);

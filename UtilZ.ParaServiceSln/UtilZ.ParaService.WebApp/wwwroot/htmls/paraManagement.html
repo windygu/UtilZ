@@ -19,6 +19,28 @@
             margin: auto;
             /*background-color:red;*/
         }
+
+        .paraEditShade {
+            background-color: gray;
+            opacity: 0.5;
+            visibility: hidden;
+        }
+
+        .paraEdit {
+            width: 600px;
+            height: 360px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: white;
+            visibility: hidden;
+            /*visibility: visible;*/
+        }
     </style>
 
     <script src="../lib/jquery/dist/jquery.js"></script>
@@ -27,13 +49,69 @@
         var allParaGroup = -1;
 
         function refreshParas(paraGroupId) {
-            if (allParaGroup == paraGroupId) {
-                //查询全部
-                alert("查询全部");
+            try {
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "/api/v1/Para/projectID=" + prjId + "&paraGroupId=" + paraGroupId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        $("#tbParas  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
+                        //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
+
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("查询参数列表失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        var tbModules = $("#tbParas");
+                        for (var i = 0; i < data.value.length; i++) {
+                            var paraItem = data.value[i];
+                            var row = $('<tr id="tr_' + paraItem.id + '"></tr>');
+
+                            var tdId = $("<td></td>");
+                            tdId.append(i + 1);
+                            row.append(tdId);
+
+                            var tdparaGropuName = $('<td</td>');
+                            tdparaGropuName.append(paraItem.GroupID);
+                            row.append(tdparaGropuName);
+
+                            var tdparaKey = $('<td></td>');
+                            tdparaKey.append(paraItem.key);
+                            row.append(tdparaKey);
+
+                            var tdparaName = $('<td id="td_' + paraItem.id + '_name"></td>');
+                            tdparaName.append(paraItem.name);
+                            row.append(tdparaName);
+
+                            var tdparaGroupDes = $("<td></td>");
+                            tdparaGroupDes.append(paraItem.des);
+                            row.append(tdparaGroupDes);
+
+                            var tdEdit = $("<td></td>");
+                            var editHtml = '<input id="btnParaEdit' + paraItem.id + '" type="button" class="editButton" value="编辑" onclick="paraModify(' + paraItem.id + ')" />' +
+                                '<input id="btnParaDelete' + paraItem.id + '" type="button" class="editButton" value="删除" onclick="paraDelete(' + paraItem.id + ')" />';
+                            tdEdit.append(editHtml);
+                            row.append(tdEdit);
+
+                            tbModules.append(row);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
             }
-            else {
-                //查询指定分组
-                alert("查询指定分组");
+            catch (ex) {
+                alert(ex.error);
             }
         }
 
@@ -56,7 +134,7 @@
                         comboxParaGroup.empty();//清空
 
                         if (data.status != constDefine.DB_SUCESS) {
-                            alert("刷新参数分组列表失败,原因:" + data.reason);
+                            alert("查询参数分组列表失败,原因:" + data.reason);
                             return;
                         }
 
@@ -85,7 +163,23 @@
             }
         }
 
+        function paraModify(id) {
+            alert("paraModify:" + id);
+        }
 
+        function paraDelete(id) {
+            alert("paraDelete:" + id);
+        }
+
+        function showParaEdit() {
+            $("#paraEdit").css("visibility", "visible");
+            $("#paraEditShade").css("visibility", "visible");
+        }
+
+        function hidenParaEdit() {
+            $("#paraEdit").css("visibility", "hidden");
+            $("#paraEditShade").css("visibility", "hidden");
+        }
 
         $(document).ready(function () {
             //为Select添加事件，当选择其中一项时触发
@@ -96,7 +190,20 @@
 
             refreshParaGroup();
 
-            //$("#comboxParaGroup").find("option[value='" + allParaGroup + "']").attr("selected", true);
+            $("#btnAddPara").click(function () {
+                //$("#txtParaGroupName").val("");
+                //$("#txtParaGroupDes").val("");
+                sessionStorage.setItem(constDefine.paraIdKey, '-1');
+                showParaEdit();
+            });
+
+            $("#btnEditParaCancell").click(function () {
+                hidenParaEdit();
+            });
+
+            $("#btnEditParaOk").click(function () {
+
+            });
         });
 
     </script>
@@ -113,6 +220,67 @@
                     <option value="audi">Audi</option>-->
                 </select>
             </span>
+        </div>
+        <!--<p style="text-align:center;font-size:40px;color:cadetblue;background-color:antiquewhite;margin-top:0px">分组列表</p>-->
+
+        <table id="tbParas" class="table" style="margin-top:0px;">
+            <tr>
+                <th style="width:80px;">序号</th>
+                <th style="width:200px;">组名称</th>
+                <th style="width:320px;">Key</th>
+                <th style="width:320px;">参数名称</th>
+                <th style="width:320px;">分组描述</th>
+                <th style="width:110px;">编辑</th>
+            </tr>
+        </table>
+
+        <button id="btnAddPara" class="AddButton">添加参数</button>
+    </div>
+
+    <div id="paraEditShade" class="divContent paraEditShade">
+
+    </div>
+
+    <div id="paraEdit" class="paraEdit">
+        <style type="text/css">
+            div {
+                margin-left: 20px;
+                margin-top: 20px;
+            }
+
+            .inputPara {
+                width: 330px;
+            }
+        </style>
+        <p class="ptitle" style="margin-top:30px;">编辑分组信息</p>
+        <div>
+            <span class="spanLabel_TextAlign_Right">参数分组</span>
+            <span>
+                <select id="comboxParaGroupChoice"></select>
+            </span>
+        </div>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right" style="margin-left:5px;">参数Key</span>
+            <span><input type="text" class="inputPara inputText" id="txtParaGroupName" value="" /></span>
+            <span class="spanLabel_Prompt">*服务参数名</span>
+        </div>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right">参数名称</span>
+            <span><input type="text" class="inputPara inputText" id="txtParaGroupName" value="" /></span>
+            <span class="spanLabel_Prompt">*参数名称</span>
+        </div>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right">参数描述</span>
+            <span><input type="text" class="inputPara inputText" id="txtParaGroupDes" value="" /></span>
+            <span class="spanLabel_Prompt">*描述</span>
+        </div>
+
+        <div style="margin-left:233px">
+            <span><button class="buttonOKCancell" id="btnEditParaOk">确定</button></span>
+            <span><button class="buttonOKCancell" id="btnEditParaCancell">取消</button></span>
         </div>
     </div>
 </body>

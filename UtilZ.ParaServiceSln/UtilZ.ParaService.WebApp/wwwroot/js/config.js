@@ -32,7 +32,7 @@ var constDefine =
     prjModuleIdKey: "prjModuleId",
     paraConfigSelectedIdKey: "paraConfigSelectedId",
     paraGroupIdKey: "paraGroupId",
-
+    paraIdKey: "paraId",
     DB_SUCESS: 1,
     DB_FAIL_NONE: -1,
     DB_FAIL: -2,
