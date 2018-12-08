@@ -193,6 +193,17 @@ namespace UtilZ.Dotnet.DBBase.Core
 
         #region sql语句分页查询数据
         /// <summary>
+        /// 创建分页查询语句
+        /// </summary>
+        /// <param name="sqlStr">查询SQL语句</param>
+        /// <param name="orderByColName">排序列名</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="pageIndex">查询页索引</param>
+        /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
+        /// <returns>分页查询语句</returns>
+        public abstract string CreatePagingQuerySql(string sqlStr, string orderByColName, int pageSize, int pageIndex, bool orderFlag, IEnumerable<string> priKeyCols);
+
+        /// <summary>
         /// 查询分页数据
         /// </summary>
         /// <param name="sqlStr">查询SQL语句</param>
