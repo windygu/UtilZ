@@ -207,7 +207,7 @@ namespace UtilZ.ParaService.DAL
                         //查询刚添加记录的主键ID
                         var queryCmd = conInfo.Connection.CreateCommand();
                         queryCmd.Transaction = transaction;
-                        queryCmd.CommandText = string.Format(@"SELECT ID FROM Para WHERE WHERE ProjectID={0}ProjectID AND Key={0}Key", paraSign);
+                        queryCmd.CommandText = string.Format(@"SELECT ID FROM Para WHERE ProjectID={0}ProjectID AND Key={0}Key", paraSign);
                         dbAccess.AddCommandParameter(queryCmd, "ProjectID", para.ProjectID);
                         dbAccess.AddCommandParameter(queryCmd, "Key", para.Key);
                         object obj = queryCmd.ExecuteScalar();

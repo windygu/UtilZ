@@ -80,7 +80,7 @@
                             tdId.append(i + 1);
                             row.append(tdId);
 
-                            var tdparaGropuName = $('<td</td>');
+                            var tdparaGropuName = $('<td></td>');
                             tdparaGropuName.append(paraItem.group.name);
                             row.append(tdparaGropuName);
 
@@ -208,7 +208,61 @@
             });
 
             $("#btnEditParaOk").click(function () {
+                var paraKey = $("#txtParaKey").val();
+                if (paraKey == null || paraKey == "") {
+                    alert("Key不能为空");
+                    return;
+                }
 
+                var paraName = $("#txtParaName").val();
+                if (paraName == null || paraName == "") {
+                    alert("参数名称不能为空");
+                    return;
+                }
+
+                var paraDes = $("#txtParaDes").val();
+                if (paraDes == null) {
+                    paraDes = "";
+                }
+
+                var paraId = Number(sessionStorage.getItem(constDefine.paraIdKey));
+                var type;
+                //prjId<0为添加项目
+                if (paraId < 0) {
+                    type = "POST";
+                }
+                else {
+                    type = "PUT";
+                }
+
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var groupId = $('#comboxParaGroupChoice').val()
+                var url = config.conf.baseUrl + "/api/v1/Para";
+                var data = '{"ID":' + paraId + ',"ProjectID":' + prjId + ',"GroupID":' + groupId + ',"Key":"' + paraKey + '","Name":"' + paraName + '","Des":"' + paraDes + '"}';
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: type,
+                    url: url,
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("提交参数信息失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        hidenParaEdit();
+                        refreshParas(allParaGroup);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
             });
         });
 
@@ -233,10 +287,10 @@
             <tr>
                 <th style="width:80px;">序号</th>
                 <th style="width:200px;">组名称</th>
-                <th style="width:320px;">Key</th>
+                <th style="width:280px;">Key</th>
                 <th style="width:320px;">参数名称</th>
-                <th style="width:320px;">分组描述</th>
-                <th style="width:110px;">编辑</th>
+                <th style="width:300px;">分组描述</th>
+                <th style="width:170px;">编辑</th>
             </tr>
         </table>
 
