@@ -52,7 +52,7 @@
         function RefreshParaGroup() {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var url = config.conf.baseUrl + "ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -135,7 +135,7 @@
                     return;
                 }
 
-                var url = config.conf.baseUrl + "/api/v1/ParaGroup/id=" + id;
+                var url = config.conf.baseUrl + "ParaGroup/id=" + id;
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -183,7 +183,7 @@
                 }
 
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectId=" + prjId + "&id=" + id;
+                var url = config.conf.baseUrl + "ParaGroup/projectId=" + prjId + "&id=" + id;
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "DELETE",
@@ -254,7 +254,7 @@
                     type = "PUT";
                 }
 
-                var url = config.conf.baseUrl + "/api/v1/ParaGroup";
+                var url = config.conf.baseUrl + "ParaGroup";
                 var data = '{"ID":' + paraGroupId + ',"ProjectID":' + prjId + ',"Name":"' + paraGroupName + '","Des":"' + paraGroupDes + '"}';
                 var token = sessionStorage.getItem('token');
                 $.ajax({

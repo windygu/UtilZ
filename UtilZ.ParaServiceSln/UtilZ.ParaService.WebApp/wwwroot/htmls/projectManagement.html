@@ -47,7 +47,7 @@
     <script type="text/javascript">
         function RefreshProjects() {
             try {
-                var url = config.conf.baseUrl + "/api/v1/Project/pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var url = config.conf.baseUrl + "Project/pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -121,7 +121,7 @@
 
         function prjModify(id) {
             try {
-                var url = config.conf.baseUrl + "/api/v1/Project/id=" + id;
+                var url = config.conf.baseUrl + "Project/id=" + id;
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -163,7 +163,7 @@
                     return;
                 }
 
-                var url = config.conf.baseUrl + "/api/v1/Project/id=" + id;
+                var url = config.conf.baseUrl + "Project/id=" + id;
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "DELETE",
@@ -245,7 +245,7 @@
                     type = "PUT";
                 }
 
-                var url = config.conf.baseUrl + "/api/v1/Project";
+                var url = config.conf.baseUrl + "Project";
                 var data = '{"ID":' + prjId + ',"Alias":"' + prjAlias + '","Name":"' + prjName + '","Des":"' + prjDes + '"}';
                 var token = sessionStorage.getItem('token');
                 $.ajax({

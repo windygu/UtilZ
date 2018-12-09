@@ -51,7 +51,7 @@
         function refreshParas(paraGroupId) {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var url = config.conf.baseUrl + "/api/v1/Para/projectID=" + prjId + "&paraGroupId=" + paraGroupId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var url = config.conf.baseUrl + "Para/projectID=" + prjId + "&paraGroupId=" + paraGroupId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -115,10 +115,10 @@
             }
         }
 
-        function refreshParaGroup(groupEleId, flag) {
+        function refreshParaGroup(groupEleId, flag, selectedValue) {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var url = config.conf.baseUrl + "/api/v1/ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var url = config.conf.baseUrl + "ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -149,7 +149,9 @@
                         }
 
                         //comboxParaGroup.get(0).selectedIndex = selectedIndex;
-                        //comboxParaGroup.val(allParaGroup);   // 设置Select的Value值为全部的项选中
+                        if (selectedValue >= 0) {
+                            comboxParaGroup.val(selectedValue);   // 设置Select的Value值为全部的项选中
+                        }
                         //comboxParaGroup.find("option[value='" + allParaGroup + "']").attr("selected", true);
                         //comboxParaGroup.find("option").eq(3).prop("selected", true)
                     },
@@ -164,11 +166,78 @@
         }
 
         function paraModify(id) {
-            alert("paraModify:" + id);
+            try {
+                var url = config.conf.baseUrl + "Para/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("查询项目信息失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        $("#txtParaKey").val(data.value.key);
+                        $("#txtParaName").val(data.value.name);
+                        $("#txtParaDes").val(data.value.des);
+                        refreshParaGroup("comboxParaGroupChoice", false, data.value.groupID);
+                        sessionStorage.setItem(constDefine.paraIdKey, data.value.id);
+                        showParaEdit();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
         }
 
         function paraDelete(id) {
-            alert("paraDelete:" + id);
+            try {
+                var tdParaNameId = 'td_' + id + '_name';
+                var paraName = $("#" + tdParaNameId)[0].innerText;
+
+                if (!window.confirm('你确定要删除项目[' + paraName + ']吗？')) {
+                    return;
+                }
+
+                var url = config.conf.baseUrl + "Para/id=" + id;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("删除参数失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        var paraGroupId = Number(sessionStorage.getItem(constDefine.paraManagerSelectedGroupIdKey));
+                        refreshParas(paraGroupId);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
         }
 
         function showParaEdit() {
@@ -185,10 +254,11 @@
             //为Select添加事件，当选择其中一项时触发
             $("#comboxParaGroup").change(function () {
                 var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
+                sessionStorage.setItem(constDefine.paraManagerSelectedGroupIdKey, paraGroupId);
                 refreshParas(paraGroupId);
             });
 
-            refreshParaGroup("comboxParaGroup", true);
+            refreshParaGroup("comboxParaGroup", true, -1);
 
             //这儿设置select第一项为选中项，但是打死都不触发选中项改变事件,就算是选中其它项也一样
             //所以只好在分组加载完成后手动查询第个分组对应的参数
@@ -198,7 +268,7 @@
                 $("#txtParaKey").val("");
                 $("#txtParaName").val("");
                 $("#txtParaDes").val("");
-                refreshParaGroup("comboxParaGroupChoice", false);
+                refreshParaGroup("comboxParaGroupChoice", false, -1);
                 sessionStorage.setItem(constDefine.paraIdKey, '-1');
                 showParaEdit();
             });
@@ -227,7 +297,7 @@
 
                 var paraId = Number(sessionStorage.getItem(constDefine.paraIdKey));
                 var type;
-                //prjId<0为添加项目
+                //paraId<0为添加项目
                 if (paraId < 0) {
                     type = "POST";
                 }
@@ -237,7 +307,7 @@
 
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
                 var groupId = $('#comboxParaGroupChoice').val()
-                var url = config.conf.baseUrl + "/api/v1/Para";
+                var url = config.conf.baseUrl + "Para";
                 var data = '{"ID":' + paraId + ',"ProjectID":' + prjId + ',"GroupID":' + groupId + ',"Key":"' + paraKey + '","Name":"' + paraName + '","Des":"' + paraDes + '"}';
                 var token = sessionStorage.getItem('token');
                 $.ajax({
@@ -257,7 +327,8 @@
                         }
 
                         hidenParaEdit();
-                        refreshParas(allParaGroup);
+                        var paraGroupId = Number(sessionStorage.getItem(constDefine.paraManagerSelectedGroupIdKey));
+                        refreshParas(paraGroupId);
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);
@@ -287,10 +358,10 @@
             <tr>
                 <th style="width:80px;">序号</th>
                 <th style="width:200px;">组名称</th>
-                <th style="width:280px;">Key</th>
+                <th style="width:270px;">Key</th>
                 <th style="width:320px;">参数名称</th>
-                <th style="width:300px;">分组描述</th>
-                <th style="width:170px;">编辑</th>
+                <th style="width:300px;">参数描述</th>
+                <th style="width:180px;">编辑</th>
             </tr>
         </table>
 

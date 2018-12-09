@@ -1,6 +1,6 @@
 ﻿var config = config || {};
 config.conf = {
-    baseUrl: 'https://localhost:12018',
+    baseUrl: 'https://localhost:12018/api/v1/',
     projectPageSize: '20',
     //cnum: lenovo.util.getParam('cnum'),
     //go: '',
@@ -33,6 +33,8 @@ var constDefine =
     paraConfigSelectedIdKey: "paraConfigSelectedId",
     paraGroupIdKey: "paraGroupId",
     paraIdKey: "paraId",
+    paraManagerSelectedGroupIdKey: "paraManagerSelectedGroupId",
+
     DB_SUCESS: 1,
     DB_FAIL_NONE: -1,
     DB_FAIL: -2,

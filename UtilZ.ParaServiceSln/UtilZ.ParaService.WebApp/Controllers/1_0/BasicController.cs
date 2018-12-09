@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using UtilZ.ParaService.DBModel;
 using UtilZ.ParaService.WebApp.Models;
 
-namespace UtilZ.ParaService.WebApp.Controllers
+namespace UtilZ.ParaService.WebApp.Controllers._1_0
 {
     //[EnableCors(WebAppConstant.CorsPolicy)]//js跨域
     //[Route("api/v1/[controller]")]
