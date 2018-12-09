@@ -107,7 +107,7 @@ namespace UtilZ.ParaService.DAL
                     {
                         var existCmd = conInfo.Connection.CreateCommand();
                         existCmd.Transaction = transaction;
-                        existCmd.CommandText = $"SELECT COUNT(0) FROM ProjectModule WHERE ProjectID={0}ProjectID AND Alias={paraSign}Alias";
+                        existCmd.CommandText = $"SELECT COUNT(0) FROM ProjectModule WHERE ProjectID={paraSign}ProjectID AND Alias={paraSign}Alias";
                         dbAccess.AddCommandParameter(existCmd, "ProjectID", projectModule.ProjectID);
                         dbAccess.AddCommandParameter(existCmd, "Alias", projectModule.Alias);
                         long count = (long)existCmd.ExecuteScalar();

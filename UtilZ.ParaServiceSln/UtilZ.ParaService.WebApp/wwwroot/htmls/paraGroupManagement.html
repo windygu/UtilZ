@@ -48,6 +48,7 @@
 
     <script src="../lib/jquery/dist/jquery.js"></script>
     <script src="../js/config.js"></script>
+    <script src="../js/site.js"></script>
     <script type="text/javascript">
         function RefreshParaGroup() {
             try {
@@ -64,8 +65,7 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
-                        $("#tbParaGroups  tr:not(:first)").html("");//清空table表格除首行外的所有数据方法一
-                        //$("#tbPrjs  tr:not(:first)").empty("");//清空table表格除首行外的所有数据方法二
+                        clearTable("tbParaGroups", true);
 
                         if (data.status != constDefine.DB_SUCESS) {
                             alert("刷新参数分组列表失败,原因:" + data.reason);
@@ -291,8 +291,8 @@
         <table id="tbParaGroups" class="table">
             <tr>
                 <th style="width:80px;">序号</th>
-                <th style="width:200px;">组名称</th>
-                <th style="width:320px;">分组描述</th>
+                <th style="width:250px;">组名称</th>
+                <th style="width:470px;">分组描述</th>
                 <th style="width:110px;">编辑</th>
             </tr>
 
