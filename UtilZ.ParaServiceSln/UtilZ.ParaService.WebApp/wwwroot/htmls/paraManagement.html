@@ -46,9 +46,7 @@
     <script src="../lib/jquery/dist/jquery.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/site.js"></script>
-    <script type="text/javascript">
-        var allParaGroup = -1;
-
+    <script type="text/javascript">        
         function refreshParas(paraGroupId) {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
@@ -137,9 +135,8 @@
                             return;
                         }
 
-                        if (flag) {
-                            //comboxParaGroup.append('<option value="' + allParaGroup + '" selected = "selected">全部</option>'); //为Select追加一个Option(下拉项)
-                            comboxParaGroup.append('<option value="' + allParaGroup + '">全部</option>'); //为Select追加一个Option(下拉项)
+                        if (flag) {                            
+                            comboxParaGroup.append('<option value="' + constDefine.paraGroupAll + '">全部</option>'); //为Select追加一个Option(下拉项)
                         }
 
                         for (var i = 0; i < data.value.length; i++) {
@@ -151,7 +148,7 @@
                         if (selectedValue >= 0) {
                             comboxParaGroup.val(selectedValue);   // 设置Select的Value值为全部的项选中
                         }
-                        //comboxParaGroup.find("option[value='" + allParaGroup + "']").attr("selected", true);
+                        //comboxParaGroup.find("option[value='" + constDefine.paraGroupAll + "']").attr("selected", true);
                         //comboxParaGroup.find("option").eq(3).prop("selected", true)
                     },
                     error: function (xhr) {
@@ -261,7 +258,7 @@
 
             //这儿设置select第一项为选中项，但是打死都不触发选中项改变事件,就算是选中其它项也一样
             //所以只好在分组加载完成后手动查询第个分组对应的参数
-            refreshParas(allParaGroup);
+            refreshParas(constDefine.paraGroupAll);
 
             $("#btnAddPara").click(function () {
                 $("#txtParaKey").val("");

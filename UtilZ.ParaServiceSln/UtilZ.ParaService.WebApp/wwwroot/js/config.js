@@ -35,6 +35,8 @@ var constDefine =
     paraIdKey: "paraId",
     paraManagerSelectedGroupIdKey: "paraManagerSelectedGroupId",
 
+    paraGroupAll: -1,
+
     DB_SUCESS: 1,
     DB_FAIL_NONE: -1,
     DB_FAIL: -2,
