@@ -53,6 +53,7 @@ namespace TestE.DB
                 //dataGridView1.DataSource = dbAccess.QueryPagingData(@"select * from Stu", "ID", 10, 1, true);
 
                 string sql = @"select * from Stu";
+                sql = @"SELECT ID,ImgSrc FROM ImgInfo";
                 var dbCon = dbAccess.CreateConnection(DBVisitType.R);
                 var cmd = dbCon.Con.CreateCommand();
                 cmd.CommandText = sql;

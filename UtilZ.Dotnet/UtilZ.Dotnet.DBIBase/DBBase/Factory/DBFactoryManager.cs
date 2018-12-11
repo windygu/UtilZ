@@ -38,10 +38,12 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
             Dictionary<string, Assembly> assembliyDic = AppDomain.CurrentDomain.GetAssemblies().ToDictionary(p => { return p.GetName().Name; });
             Type dbFactoryBaseType = typeof(DBFactoryBase);
 
+            AppDomain.CurrentDomain.AssemblyResolve += LoadDBAccesAssembly;
             foreach (var pluginDir in pluginDirs)
             {
                 LoadDBPlugin(pluginDir, ignorAssemblyNames, assembliyDic, dbFactoryBaseType);
             }
+            AppDomain.CurrentDomain.AssemblyResolve -= LoadDBAccesAssembly;
         }
 
         private static void LoadDBPlugin(string pluginDir, List<string> ignorAssemblyNames, Dictionary<string, Assembly> assembliyDic, Type dbFactoryBaseType)
@@ -49,7 +51,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
             string[] dllFilePaths = Directory.GetFiles(pluginDir, "UtilZ.Dotnet.*.dll", SearchOption.TopDirectoryOnly);
             Assembly assembly;
             DBFactoryBase dbFactory;
-            AppDomain.CurrentDomain.AssemblyResolve += LoadDBAccesAssembly;
+
             foreach (var dllFilePath in dllFilePaths)
             {
                 try
@@ -103,8 +105,6 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
 
                 }
             }
-
-            AppDomain.CurrentDomain.AssemblyResolve -= LoadDBAccesAssembly;
         }
 
         private static Assembly LoadDBAccesAssembly(object sender, ResolveEventArgs args)
