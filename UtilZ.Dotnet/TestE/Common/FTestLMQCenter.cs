@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
+using UtilZ.Dotnet.Ex.LMQ;
 
 namespace TestE.Common
 {

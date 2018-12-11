@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
-using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
+using UtilZ.Dotnet.Ex.LMQ;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base;
 
@@ -52,9 +52,9 @@ namespace TestE.Winform
             //logControl1.MaxItemCount = 8;
             cbIsLock.Checked = logControl1.IsLock;
 
-            var sub = new UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.SubscibeItem("123");
+            var sub = new SubscibeItem("123");
             sub.MessageNotify = CompletedNotify;
-            UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Subscibe(sub);
+            LMQCenter.Subscibe(sub);
         }
 
         private void CompletedNotify(SubscibeItem sub, object obj)

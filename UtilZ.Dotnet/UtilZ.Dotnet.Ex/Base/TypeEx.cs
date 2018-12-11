@@ -29,7 +29,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 return null;
             }
 
-            Type type = TypeEx._htTypes[typeFullName] as Type;
+            Type type = _htTypes[typeFullName] as Type;
             if (type == null)
             {
                 string[] segs = typeFullName.Split(',');

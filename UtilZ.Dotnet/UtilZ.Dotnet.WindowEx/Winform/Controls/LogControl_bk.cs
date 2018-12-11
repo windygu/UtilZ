@@ -11,6 +11,7 @@ using System.IO;
 using UtilZ.Dotnet.Ex.DataStruct;
 using System.Collections;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.LMQ;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 {
@@ -218,7 +219,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
 
                     if (item.Color == Color.Green)
                     {
-                        UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Publish("123", null);
+                        LMQCenter.Publish("123", null);
                     }
                 }
 

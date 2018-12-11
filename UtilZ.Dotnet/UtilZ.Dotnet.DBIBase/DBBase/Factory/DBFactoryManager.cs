@@ -4,10 +4,10 @@ using System.IO;
 using System.Reflection;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
 using UtilZ.Dotnet.DBIBase.DBModel.Constant;
-using UtilZ.Dotnet.Ex.Base;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
 {
@@ -33,8 +33,8 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
             ignorAssemblyNames.Add(typeof(UtilZ.Dotnet.Ex.Base.ObjectEx).Assembly.GetName().Name);
             ignorAssemblyNames.Add(dbiAssembly.GetName().Name);
 
-            string dir = Path.GetDirectoryName(dbiAssembly.Location);
-            string[] pluginDirs = Directory.GetDirectories(Path.GetFullPath("DBPlugins"));
+            string dbPluginRootFullDir = Path.Combine(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "DBPlugins");
+            string[] pluginDirs = Directory.GetDirectories(dbPluginRootFullDir);
             Dictionary<string, Assembly> assembliyDic = AppDomain.CurrentDomain.GetAssemblies().ToDictionary(p => { return p.GetName().Name; });
             Type dbFactoryBaseType = typeof(DBFactoryBase);
 
@@ -49,6 +49,7 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
             string[] dllFilePaths = Directory.GetFiles(pluginDir, "UtilZ.Dotnet.*.dll", SearchOption.TopDirectoryOnly);
             Assembly assembly;
             DBFactoryBase dbFactory;
+            AppDomain.CurrentDomain.AssemblyResolve += LoadDBAccesAssembly;
             foreach (var dllFilePath in dllFilePaths)
             {
                 try
@@ -97,10 +98,27 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Factory
                         return;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
 
                 }
+            }
+
+            AppDomain.CurrentDomain.AssemblyResolve -= LoadDBAccesAssembly;
+        }
+
+        private static Assembly LoadDBAccesAssembly(object sender, ResolveEventArgs args)
+        {
+            try
+            {
+                string dbDllDir = Path.GetDirectoryName(args.RequestingAssembly.Location);
+                string assemblyName = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
+                string assemblyFilePath = Path.Combine(dbDllDir, assemblyName);
+                return Assembly.LoadFile(assemblyFilePath);
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 

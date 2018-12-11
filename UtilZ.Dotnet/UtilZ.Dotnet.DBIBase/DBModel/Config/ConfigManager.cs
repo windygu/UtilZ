@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.DBIBase.DBModel.Config
@@ -31,7 +33,7 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.Config
             try
             {
                 //加载默认配置
-                System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                System.Configuration.Configuration config = EnvironmentEx.OpenWebConfiguration();
                 if (config == null)
                 {
                     return;

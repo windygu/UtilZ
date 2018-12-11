@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
+using UtilZ.Dotnet.Ex.LMQ;
 
 namespace TestE.Winform
 {
@@ -25,9 +25,9 @@ namespace TestE.Winform
             logControl1.MaxItemCount = 10;
             checkBox1.Checked = logControl1.IsLock;
 
-            var sub = new UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.SubscibeItem("123");
+            var sub = new SubscibeItem("123");
             sub.MessageNotify = this.CompletedNotify;
-            UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ.LMQCenter.Subscibe(sub);
+            LMQCenter.Subscibe(sub);
             logControl1.StartRefreshLogThread(5, 15000);
         }
 

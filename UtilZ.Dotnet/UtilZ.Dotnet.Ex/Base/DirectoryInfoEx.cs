@@ -26,7 +26,9 @@ namespace UtilZ.Dotnet.Ex.Base
 
         static DirectoryInfoEx()
         {
-            _currentAssemblyDirectory = Path.GetDirectoryName(typeof(DirectoryInfoEx).Assembly.Location);
+            //if (EnvironmentEx.AppType == AppType.WebApp)
+            //_currentAssemblyDirectory = Path.GetDirectoryName(typeof(DirectoryInfoEx).Assembly.Location);
+            _currentAssemblyDirectory = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
         }
 
         /// <summary>

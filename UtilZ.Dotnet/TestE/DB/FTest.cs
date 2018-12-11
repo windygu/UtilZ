@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using TestE.DB.Units;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
-using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
+using UtilZ.Dotnet.Ex.LMQ;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;
 

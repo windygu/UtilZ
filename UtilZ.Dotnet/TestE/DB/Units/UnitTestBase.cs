@@ -7,7 +7,7 @@ using UtilZ.Dotnet.DBIBase.DBBase.Core;
 using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
-using UtilZ.Dotnet.Ex.LocalMessageCenter.LMQ;
+using UtilZ.Dotnet.Ex.LMQ;
 
 namespace TestE.DB.Units
 {
