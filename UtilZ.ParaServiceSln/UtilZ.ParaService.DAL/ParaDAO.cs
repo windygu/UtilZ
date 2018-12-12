@@ -255,5 +255,15 @@ namespace UtilZ.ParaService.DAL
             parameters.Add("ID", id);
             return dbAccess.ExecuteNonQuery(sqlStr, Dotnet.DBBase.Model.DBVisitType.W, parameters);
         }
+
+        /// <summary>
+        /// 设置参数值，成功返回参数值版本号
+        /// </summary>
+        /// <param name="paraValues"></param>
+        /// <returns></returns>
+        public long SetParaValue(List<ParaValue> paraValues)
+        {
+            return 0;
+        }
     }
 }

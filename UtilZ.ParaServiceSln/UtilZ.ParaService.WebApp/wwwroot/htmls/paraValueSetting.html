@@ -70,7 +70,26 @@
         }
 
         function setGruopShow(groupId) {
+            var index = 1;
+            var tb = document.getElementById("tbParas");
+            for (var i = 1; i < tb.rows.length; i++) {
+                var trId = "#" + tb.rows[i].getAttribute("id");
 
+                if (groupId == constDefine.paraGroupAll) {
+                    tb.rows[i].cells[0].innerText = index++;
+                    $(trId).show();
+                }
+                else {
+                    var trGroupId = Number(tb.rows[i].getAttribute("data-groupid"));
+                    if (groupId == trGroupId) {
+                        tb.rows[i].cells[0].innerText = index++;
+                        $(trId).show();
+                    }
+                    else {
+                        $(trId).hide();
+                    }
+                }
+            }
         }
 
         function refreshParas() {
@@ -97,7 +116,7 @@
                         var tbParas = $("#tbParas");
                         for (var i = 0; i < data.value.length; i++) {
                             var paraItem = data.value[i];
-                            var row = $('<tr id="tr_' + paraItem.id + '" data-groupid="' + paraItem.groupdid + '"></tr>');
+                            var row = $('<tr id="tr_' + paraItem.id + '" data-groupid="' + paraItem.groupID + '" data-paraId="' + paraItem.id + '"></tr>');
 
                             var tdId = $("<td></td>");
                             tdId.append(i + 1);
@@ -146,6 +165,54 @@
             $("#comboxParaGroup").change(function () {
                 var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
                 setGruopShow(paraGroupId);
+            });
+
+            $("#btnParaValueOk").click(function () {
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var tb = document.getElementById("tbParas");
+                var data = '[{"ParaID": 1, "ProjectID": 2, "Version": 0, "Value": "123" }, { "ParaID": 2, "ProjectID": 2, "Version": 0, "Value": "192.168.10.96" }]';
+                var data = '[';
+                var lastRowIndex = tb.rows.length - 1;
+                for (var i = 1; i < tb.rows.length; i++) {
+                    var trId = "#" + tb.rows[i].getAttribute("id");
+                    var paraId = Number(tb.rows[i].getAttribute("data-paraId"));
+                    var value = tb.rows[i].cells[4].innerText;
+
+                    //组装参数值
+                    var itemData = '{"ParaID":' + paraId + ', "ProjectID": ' + prjId + ', "Version": 0, "Value": "' + value + '" }';
+                    if (i < lastRowIndex) {
+                        itemData = itemData + ',';
+                    }
+
+                    data = data + itemData;
+                }
+
+                data = ']';
+
+                var url = config.conf.baseUrl + "Para";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("设置参数值失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        alert("设置参数值成功，参数版本号:" + data.value);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
             });
         });
     </script>

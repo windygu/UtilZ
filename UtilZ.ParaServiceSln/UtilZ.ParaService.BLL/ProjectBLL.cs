@@ -436,6 +436,22 @@ namespace UtilZ.ParaService.BLL
                 return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
             }
         }
+
+        public ApiData SetParaValue(List<ParaValue> paraValues)
+        {
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaDAO().SetParaValue(paraValues));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
         #endregion
     }
 }

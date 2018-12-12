@@ -27,8 +27,8 @@ namespace UtilZ.ParaService.DBModel
         [Column(Order = 3)]
         public string Value { get; set; }
 
-        public virtual Para Para { get; set; }
+        //public virtual Para Para { get; set; }
 
-        public virtual Project Project { get; set; }
+        //public virtual Project Project { get; set; }
     }
 }
