@@ -68,35 +68,42 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         private void LogThreadMethod()
         {
-            T item;
-            var token = this._cts.Token;
-            while (!token.IsCancellationRequested)
+            try
             {
-                try
+                T item;
+                var token = this._cts.Token;
+                while (!token.IsCancellationRequested)
                 {
-                    if (this._queue.Count == 0)
+                    try
                     {
-                        this._thread.IsBackground = true;
-                        try
+                        if (this._queue.Count == 0)
                         {
-                            this._autoResetEvent.WaitOne();
-                            continue;
+                            this._thread.IsBackground = true;
+                            try
+                            {
+                                this._autoResetEvent.WaitOne();
+                                continue;
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                break;
+                            }
                         }
-                        catch (ObjectDisposedException)
-                        {
-                            break;
-                        }
-                    }
 
-                    if (this._queue.TryDequeue(out item))
+                        if (this._queue.TryDequeue(out item))
+                        {
+                            this._processAction(item);
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        this._processAction(item);
+                        LogSysInnerLog.OnRaiseLog(this, ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    LogSysInnerLog.OnRaiseLog(this, ex);
-                }
+            }
+            catch (ObjectDisposedException)
+            {
+
             }
         }
 

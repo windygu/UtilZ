@@ -80,7 +80,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                     }
                     else
                     {
-                        filePath = Path.Combine(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
+                        //filePath = Path.Combine(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
+                        filePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, filePath);
                         //if (EnvironmentEx.AppType == AppType.WebApp)
                         //{
                         //    filePath = Path.Combine(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
@@ -98,7 +99,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 }
                 else
                 {
-                    filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
+                    //filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
+                    filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.BaseDirectory, filePath);
                     //if (EnvironmentEx.AppType == AppType.WebApp)
                     //{
                     //    filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
