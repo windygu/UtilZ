@@ -436,12 +436,41 @@ namespace UtilZ.ParaService.BLL
                 return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
             }
         }
+        #endregion
+
+        #region Para
+        private ParaValueDAO _paraValueDAO = null;
+        private ParaValueDAO GetParaValueDAO()
+        {
+            if (this._paraValueDAO == null)
+            {
+                this._paraValueDAO = new ParaValueDAO();
+            }
+
+            return this._paraValueDAO;
+        }
 
         public ApiData SetParaValue(List<ParaValue> paraValues)
         {
             try
             {
-                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaDAO().SetParaValue(paraValues));
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().AddParaValue(paraValues));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+
+        public ApiData QueryParaValues(long projectId, long moduleId, long version)
+        {
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().QueryParaValues(projectId, moduleId, version));
             }
             catch (DBException dbex)
             {

@@ -23,18 +23,24 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             this._bll = new ProjectBLL();
         }
 
-        // GET: api/ParaValue
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //// GET: api/ParaValue
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
-        // GET: api/ParaValue/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        //// GET: api/ParaValue/5
+        //[HttpGet("{id}", Name = "Get")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        [HttpGet("projectID={projectId}&moduleId={moduleId}&version={version}")]
+        public ApiData Get(long projectId, long moduleId, long version)
         {
-            return "value";
+            return this._bll.QueryParaValues(projectId, moduleId, version);
         }
 
         // POST: api/Project
