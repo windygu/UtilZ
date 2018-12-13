@@ -45,6 +45,22 @@
             opacity: 0.5;
             visibility: hidden;
         }
+
+        .moduleParaManagerEdit {
+            width: 900px;
+            height: 700px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: white;
+            visibility: hidden;
+            /*visibility: visible;*/
+        }
     </style>
 
     <script src="../lib/jquery/dist/jquery.js"></script>
@@ -196,9 +212,22 @@
                 alert(ex.error);
             }
         }
+        
+
+        function showmoduleParaManager() {
+            $("#moduleParaManager").css("visibility", "visible");
+            $("#moduleEditShade").css("visibility", "visible");
+        }
+
+        function hidenmoduleParaManager() {
+            $("#moduleParaManager").css("visibility", "hidden");
+            $("#moduleEditShade").css("visibility", "hidden");
+        }
 
         function moduleConfig(id) {
-            alert("moduleConfig:" + id);
+            //..
+
+            showmoduleParaManager();
         }
 
         $(document).ready(function () {
@@ -275,6 +304,10 @@
                     }
                 });
             });
+
+            $("#btnModuleParaManagerComplete").click(function () {
+                hidenmoduleParaManager();
+            });
         });
     </script>
 </head>
@@ -343,6 +376,12 @@
         <div style="margin-left:233px">
             <span><button class="buttonOKCancell" id="btnEditModuleOk">确定</button></span>
             <span><button class="buttonOKCancell" id="btnEditModuleCancell">取消</button></span>
+        </div>
+    </div>
+
+    <div id="moduleParaManager" class="moduleParaManagerEdit">
+        <div style="margin-left:233px">
+            <span><button class="buttonOKCancell" id="btnModuleParaManagerComplete">完成</button></span>
         </div>
     </div>
 </body>
