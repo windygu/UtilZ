@@ -59,11 +59,5 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         {
             return this._bll.DeletePara(id);
         }
-
-        [HttpPost]
-        public ApiData SetParaValue([FromBody] List<ParaValue> paraValues)
-        {
-            return this._bll.SetParaValue(paraValues);
-        }
     }
 }

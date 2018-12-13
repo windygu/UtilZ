@@ -156,6 +156,30 @@
             }
         }
 
+        function getParaValues() {
+            //{"PID":123,"ParaValueSettings":[{"Id":1,"Value":"sadf"},{"Id":2,"Value":"132"}]}
+            var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+            var tb = document.getElementById("tbParas");
+            var data = '{"PID":' + prjId + ',"ParaValueSettings":[';
+
+            var lastRowIndex = tb.rows.length - 1;
+            for (var i = 1; i < tb.rows.length; i++) {
+                var trId = "#" + tb.rows[i].getAttribute("id");
+                var paraId = Number(tb.rows[i].getAttribute("data-paraId"));
+                var value = tb.rows[i].cells[4].children[0].value
+
+                //组装参数值
+                var itemData = '{"Id":' + paraId + ',"Value":"' + value + '"}';
+                if (i < lastRowIndex) {
+                    itemData = itemData + ',';
+                }
+
+                data = data + itemData;
+            }
+
+            data = data + ']}';
+            return data;
+        }
 
         $(document).ready(function () {
             refreshParaGroup();
@@ -168,28 +192,8 @@
             });
 
             $("#btnParaValueOk").click(function () {
-                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var tb = document.getElementById("tbParas");
-                var data = '[{"ParaID": 1, "ProjectID": 2, "Version": 0, "Value": "123" }, { "ParaID": 2, "ProjectID": 2, "Version": 0, "Value": "192.168.10.96" }]';
-                var data = '[';
-                var lastRowIndex = tb.rows.length - 1;
-                for (var i = 1; i < tb.rows.length; i++) {
-                    var trId = "#" + tb.rows[i].getAttribute("id");
-                    var paraId = Number(tb.rows[i].getAttribute("data-paraId"));
-                    var value = tb.rows[i].cells[4].children[0].value
-
-                    //组装参数值
-                    var itemData = '{"ParaID":' + paraId + ', "ProjectID": ' + prjId + ', "Version": 0, "Value": "' + value + '" }';
-                    if (i < lastRowIndex) {
-                        itemData = itemData + ',';
-                    }
-
-                    data = data + itemData;
-                }
-
-                data = data + ']';
-
-                var url = config.conf.baseUrl + "Para";
+                var data = getParaValues();
+                var url = config.conf.baseUrl + "ParaValue";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "POST",
