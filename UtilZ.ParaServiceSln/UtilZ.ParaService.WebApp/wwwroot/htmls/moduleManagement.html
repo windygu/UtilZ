@@ -65,7 +65,7 @@
                     },
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
-                    success: function (data, status) {                      
+                    success: function (data, status) {
                         clearTable("tbModules", true);
                         if (data.status != constDefine.DB_SUCESS) {
                             alert("刷新项目模块列表失败,原因:" + data.reason);
@@ -96,7 +96,8 @@
 
                             var tdEdit = $("<td></td>");
                             var editHtml = '<input type="button" class="editButton" value="编辑" onclick="moduleModify(' + prjModuleItem.id + ')" />' +
-                                '<input type="button" class="editButton" value="删除" onclick="moduleDelete(' + prjModuleItem.id + ')" />';
+                                '<input type="button" class="editButton" value="删除" onclick="moduleDelete(' + prjModuleItem.id + ')" />' +
+                                '<input type="button" class="editButton" value="配置" onclick="moduleConfig(' + prjModuleItem.id + ')" />';
                             tdEdit.append(editHtml);
                             row.append(tdEdit);
 
@@ -196,6 +197,10 @@
             }
         }
 
+        function moduleConfig(id) {
+            alert("moduleConfig:" + id);
+        }
+
         $(document).ready(function () {
             pageLoginValidate();
 
@@ -282,8 +287,8 @@
                 <th style="width:80px;">序号</th>
                 <th style="width:200px;">模块名称</th>
                 <th style="width:220px;">模块别名</th>
-                <th style="width:390px;">模块描述</th>
-                <th style="width:110px;">编辑</th>
+                <th style="width:330px;">模块描述</th>
+                <th style="width:170px;">编辑</th>
             </tr>
 
             <!--<tr>
