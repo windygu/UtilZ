@@ -12,19 +12,11 @@ namespace UtilZ.ParaService.DBModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ModulePara()
         {
-          
+
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public long ID { get; set; }
+        public long ModuleID { get; set; }
 
-        public long ProjectID { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
-
-        [StringLength(50)]
-        public string Des { get; set; }
+        public long ParaID { get; set; }
     }
 }

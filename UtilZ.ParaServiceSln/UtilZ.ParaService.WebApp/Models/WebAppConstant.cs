@@ -35,11 +35,11 @@ namespace UtilZ.ParaService.WebApp.Models
             //string str = "[{\"ParaID\":1, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"1\" },{\"ParaID\":3, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"2\" },{\"ParaID\":4, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"3\" },{\"ParaID\":5, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"4\" },{\"ParaID\":6, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"5\" },{\"ParaID\":7, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"6\" },{\"ParaID\":8, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"7\" },{\"ParaID\":11, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"8\" },{\"ParaID\":12, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"9\" },{\"ParaID\":14, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"0\" },{\"ParaID\":15, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"hj\" },{\"ParaID\":16, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"hfgj\" },{\"ParaID\":17, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"nm\" },{\"ParaID\":18, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"zcxv\" },{\"ParaID\":19, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"feg\" },{\"ParaID\":20, \"ProjectID\": 8, \"Version\": 0, \"Value\": \"vbfnmbvc\" }]";
             //var paraValues2 = JsonConvert.DeserializeObject<List<ParaValue>>(str);
 
-            var pvsp = new ParaValueSettingPara();
-            pvsp.PID = 123;
-            pvsp.ParaValueSettings.Add(new ParaValueSetting() { Id = 1, Value = "sadf" });
-            pvsp.ParaValueSettings.Add(new ParaValueSetting() { Id = 2, Value = "132" });
-            string json = JsonConvert.SerializeObject(pvsp);
+            //var pvsp = new ParaValueSettingPost();
+            //pvsp.PID = 123;
+            //pvsp.ParaValueSettings.Add(new ParaValueSetting() { Id = 1, Value = "sadf" });
+            //pvsp.ParaValueSettings.Add(new ParaValueSetting() { Id = 2, Value = "132" });
+            //string json = JsonConvert.SerializeObject(pvsp);
         }
     }
 }

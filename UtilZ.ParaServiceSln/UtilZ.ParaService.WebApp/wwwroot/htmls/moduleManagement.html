@@ -212,7 +212,7 @@
                 alert(ex.error);
             }
         }
-        
+
 
         function showmoduleParaManager() {
             $("#moduleParaManager").css("visibility", "visible");
@@ -224,10 +224,123 @@
             $("#moduleEditShade").css("visibility", "hidden");
         }
 
-        function moduleConfig(id) {
-            //..
+        function setGruopShow(groupId) {
+            var index = 1;
+            var tb = document.getElementById("tbParas");
+            for (var i = 1; i < tb.rows.length; i++) {
+                var trId = "#" + tb.rows[i].getAttribute("id");
 
-            showmoduleParaManager();
+                if (groupId == constDefine.paraGroupAll) {
+                    tb.rows[i].cells[0].innerText = index++;
+                    $(trId).show();
+                }
+                else {
+                    var trGroupId = Number(tb.rows[i].getAttribute("data-groupid"));
+                    if (groupId == trGroupId) {
+                        tb.rows[i].cells[0].innerText = index++;
+                        $(trId).show();
+                    }
+                    else {
+                        $(trId).hide();
+                    }
+                }
+            }
+        }
+
+        function moduleConfig(id) {
+            var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+            var url = config.conf.baseUrl + "ModulePara/projectId=" + prjId + "&moduleId=" + id;
+            var token = sessionStorage.getItem('token');
+            $.ajax({
+                type: "GET",
+                url: url,
+                headers:
+                {
+                    "access_token": token//此处放置请求到的用户token
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data, status) {
+                    var comboxParaGroup = $("#comboxParaGroup");
+                    comboxParaGroup.empty();//清空
+                    clearTable("tbParas", true);
+
+                    if (data.status != constDefine.DB_SUCESS) {
+                        alert("查询模块参数信息失败,原因:" + data.reason);
+                        return;
+                    }
+
+                    //组
+                    var paraGroupDic = new Array();
+
+                    //添加参数组
+                    comboxParaGroup.append('<option value="' + constDefine.paraGroupAll + '">全部</option>'); //为Select追加一个Option(下拉项)
+                    for (var i = 0; i < data.value.groups.length; i++) {
+                        var paraGroupItem = data.value.groups[i];
+                        paraGroupDic[paraGroupItem.id] = paraGroupItem.name;
+                        comboxParaGroup.append('<option value="' + paraGroupItem.id + '">' + paraGroupItem.name + '</option>'); //为Select追加一个Option(下拉项)
+                    }
+
+                    //模块参数字典
+                    var moduleParaDic = new Array();
+                    for (var i = 0; i < data.value.moduleParas.length; i++) {
+                        var modulePara = data.value.moduleParas[i];
+                        moduleParaDic[modulePara.ParaID] = modulePara.ModuleID;
+                    }
+
+                    //添加参数
+                    var tbParas = $("#tbParas");
+                    for (var i = 0; i < data.value.allParas.length; i++) {
+                        var paraItem = data.value.allParas[i];
+                        var row = $('<tr id="tr_' + paraItem.id + '" data-groupid="' + paraItem.groupID + '" data-paraId="' + paraItem.id + '"></tr>');
+
+                        //序号
+                        var tdId = $("<td></td>");
+                        tdId.append(i + 1);
+                        row.append(tdId);
+
+                        var tdparaGropuName = $('<td></td>');
+                        tdparaGropuName.append(paraGroupDic[paraItem.groupID]);
+                        row.append(tdparaGropuName);
+
+                        //参数key
+                        var tdparaKey = $('<td></td>');
+                        tdparaKey.append(paraItem.key);
+                        row.append(tdparaKey);
+
+                        //参数名称
+                        var tdparaName = $('<td id="td_' + paraItem.id + '_name"></td>');
+                        tdparaName.append(paraItem.name);
+                        row.append(tdparaName);
+
+                        //参数描述
+                        var tdparaGroupDes = $("<td></td>");
+                        tdparaGroupDes.append(paraItem.des);
+                        row.append(tdparaGroupDes);
+
+                        //编辑
+                        var tdvalue = $("<td></td>");
+                        var editHtml = '';
+                        var moduleId = moduleParaDic[paraItem.id];
+                        if (moduleId == null || moduleId == undefined) {
+                            editHtml = '<input type="checkbox" id="checkboxModuleParaEnable' + paraItem.id + '" value="' + paraItem.id + '"/>';
+                        }
+                        else {
+                            editHtml = '<input type="checkbox" id="checkboxModuleParaEnable' + paraItem.id + '" checked="checked" value="' + paraItem.id + '"/>';
+                        }
+
+                        tdvalue.append(editHtml);
+                        row.append(tdvalue);
+
+                        tbParas.append(row);
+                    }
+
+                    showmoduleParaManager();
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
         }
 
         $(document).ready(function () {
@@ -308,6 +421,12 @@
             $("#btnModuleParaManagerComplete").click(function () {
                 hidenmoduleParaManager();
             });
+
+            //为Select添加事件，当选择其中一项时触发
+            $("#comboxParaGroup").change(function () {
+                var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
+                setGruopShow(paraGroupId);
+            });
         });
     </script>
 </head>
@@ -380,9 +499,48 @@
     </div>
 
     <div id="moduleParaManager" class="moduleParaManagerEdit">
-        <div style="margin-left:233px">
-            <span><button class="buttonOKCancell" id="btnModuleParaManagerComplete">完成</button></span>
+
+        <div>
+            <span class="spanLabel_TextAlign_Right">参数分组</span>
+            <span>
+                <select id="comboxParaGroup" class="select">
+                    <!--<option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="opel">Opel</option>
+                    <option value="audi">Audi</option>-->
+                </select>
+            </span>
         </div>
+        <!--<p style="text-align:center;font-size:40px;color:cadetblue;background-color:antiquewhite;margin-top:0px">分组列表</p>-->
+
+        <table id="tbParas" class="table" style="margin-top:0px;">
+            <tr>
+                <th style="width:80px;">序号</th>
+                <th style="width:200px;">组名称</th>
+                <th style="width:270px;">Key</th>
+                <th style="width:320px;">参数名称</th>
+                <th style="width:400px;">参数描述</th>
+                <th style="width:80px;">启用</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>酱油</td>
+                <td>URL</td>
+                <td>URL</td>
+                <td>URL_DES</td>
+                <td><input type="checkbox" id="sadf" checked="checked" value="1" /></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>酱油</td>
+                <td>URL</td>
+                <td>URL</td>
+                <td>URL_DES</td>
+                <td><input type="checkbox" id="sadf" checked="checked" value="1" /></td>
+            </tr>
+        </table>
+
+        <button class="buttonOKCancell" id="btnModuleParaManagerComplete">完成</button>
     </div>
 </body>
 </html>

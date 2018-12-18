@@ -4,20 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using UtilZ.ParaService.DBModel;
 
-namespace UtilZ.ParaService.WebApp.Models
+namespace UtilZ.ParaService.Model
 {
-    public class ParaValueSettingPara
+    public class ParaValueSettingPost
     {
         public long PID { get; set; }
 
         public List<ParaValueSetting> ParaValueSettings { get; set; } = new List<ParaValueSetting>();
 
-        public ParaValueSettingPara()
+        public ParaValueSettingPost()
         {
 
         }
 
-        internal List<ParaValue> ToParaValues()
+        public List<ParaValue> ToParaValues()
         {
             var paraValues = new List<ParaValue>();
             //var paraValues = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ParaValue>>(value);

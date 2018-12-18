@@ -45,9 +45,9 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
 
         // POST: api/Project
         [HttpPost]
-        public ApiData Post([FromBody] ParaValueSettingPara para)
+        public ApiData Post([FromBody] ParaValueSettingPost para)
         {
-            return this._bll.SetParaValue(para.ToParaValues());
+            return this._bll.SetParaValue(para);
         }
 
         //// POST: api/ParaValue

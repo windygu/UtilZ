@@ -67,13 +67,13 @@
                     navEleId = '#liProjectManagement';
                     break;
                 case 2:
-                    navEleId = '#liModuleManagement';
-                    break;
-                case 3:
                     navEleId = '#liParaGroupManagement';
                     break;
-                case 4:
+                case 3:
                     navEleId = '#liParaManagement';
+                    break;
+                case 4:
+                    navEleId = '#liModuleManagement';
                     break;
                 case 5:
                     navEleId = '#liParaValueSetting';
@@ -102,13 +102,13 @@
             var url;
             switch (id) {
                 case 2:
-                    url = "/htmls/moduleManagement.html";
-                    break;
-                case 3:
                     url = "/htmls/paraGroupManagement.html";
                     break;
-                case 4:
+                case 3:
                     url = "/htmls/paraManagement.html";
+                    break;
+                case 4:
+                    url = "/htmls/moduleManagement.html";
                     break;
                 case 5:
                     url = "/htmls/paraValueSetting.html";
@@ -153,9 +153,9 @@
         <div id="nav">
             <ul>
                 <li id="liProjectManagement" onclick="selectedFunc(1)">返回上级</li>
-                <li id="liParaGroupManagement" onclick="selectedFunc(3)">参数分组</li>
-                <li id="liParaManagement" onclick="selectedFunc(4)">参数管理</li>
-                <li id="liModuleManagement" onclick="selectedFunc(2)">模块参数</li>
+                <li id="liParaGroupManagement" onclick="selectedFunc(2)">参数分组</li>
+                <li id="liParaManagement" onclick="selectedFunc(3)">参数管理</li>
+                <li id="liModuleManagement" onclick="selectedFunc(4)">模块参数</li>
                 <li id="liParaValueSetting" onclick="selectedFunc(5)">参数设置</li>
                 <li id="liParaHistoryValueManagement" onclick="selectedFunc(6)">历史参数</li>
             </ul>

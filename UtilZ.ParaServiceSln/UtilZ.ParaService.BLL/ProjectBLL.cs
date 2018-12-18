@@ -450,10 +450,11 @@ namespace UtilZ.ParaService.BLL
             return this._paraValueDAO;
         }
 
-        public ApiData SetParaValue(List<ParaValue> paraValues)
+        public ApiData SetParaValue(ParaValueSettingPost para)
         {
             try
             {
+                var paraValues = para.ToParaValues();
                 return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().AddParaValue(paraValues));
             }
             catch (DBException dbex)
@@ -471,6 +472,39 @@ namespace UtilZ.ParaService.BLL
             try
             {
                 return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().QueryParaValues(projectId, moduleId, version));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+        #endregion
+
+        #region ModulePara
+        private ModuleParaDAO _moduleParaDAO = null;
+        private ModuleParaDAO GetModuleParaDAO()
+        {
+            if (this._moduleParaDAO == null)
+            {
+                this._moduleParaDAO = new ModuleParaDAO();
+            }
+
+            return this._moduleParaDAO;
+        }
+
+        public ApiData QueryModuleParas(long projectId, long moduleId)
+        {
+            try
+            {
+                var mpg = new ModuleParaGet();
+                mpg.AllParas = this.GetParaDAO().QueryParas(projectId, -1, -1, -1);
+                mpg.Groups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
+                mpg.ModuleParas = this.GetModuleParaDAO().QueryModuleParas(moduleId);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, mpg);
             }
             catch (DBException dbex)
             {
