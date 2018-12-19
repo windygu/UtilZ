@@ -213,7 +213,6 @@
             }
         }
 
-
         function showmoduleParaManager() {
             $("#moduleParaManager").css("visibility", "visible");
             $("#moduleEditShade").css("visibility", "visible");
@@ -285,7 +284,7 @@
                     var moduleParaDic = new Array();
                     for (var i = 0; i < data.value.moduleParas.length; i++) {
                         var modulePara = data.value.moduleParas[i];
-                        moduleParaDic[modulePara.ParaID] = modulePara.ModuleID;
+                        moduleParaDic[modulePara.paraID] = modulePara.moduleID;
                     }
 
                     //添加参数
@@ -335,12 +334,41 @@
                         tbParas.append(row);
                     }
 
+                    sessionStorage.setItem(constDefine.prjModuleIdKey, id);
                     showmoduleParaManager();
                 },
                 error: function (xhr) {
                     alert(xhr.statusText);
                 }
             });
+        }
+
+        function getModuleParas() {
+            //{"ModuleId":123,"ParaIds":[1,2]}
+            var prjModuleId = Number(sessionStorage.getItem(constDefine.prjModuleIdKey));
+            var data = '{"ModuleId":' + prjModuleId + ',"ParaIds":[';
+
+            var tb = document.getElementById("tbParas");
+            var isFirstParaId = true;
+
+            for (var i = 1; i < tb.rows.length; i++) {
+                var trId = "#" + tb.rows[i].getAttribute("id");
+                var paraId = Number(tb.rows[i].getAttribute("data-paraId"));
+                var ck = tb.rows[i].cells[5].children[0];
+                if (ck.checked) {
+                    if (isFirstParaId) {
+                        isFirstParaId = false;
+                    }
+                    else {
+                        paraId = ',' + paraId;
+                    }
+
+                    data = data + paraId;
+                }
+            }
+
+            data = data + ']}';
+            return data;
         }
 
         $(document).ready(function () {
@@ -418,8 +446,33 @@
                 });
             });
 
+
             $("#btnModuleParaManagerCommit").click(function () {
-                hidenmoduleParaManager();
+                var data = getModuleParas();
+                var url = config.conf.baseUrl + "ModulePara";
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("提交项目模块参数信息失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        hidenmoduleParaManager();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
             });
 
             //为Select添加事件，当选择其中一项时触发

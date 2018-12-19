@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UtilZ.ParaService.DBModel;
+using UtilZ.ParaService.Model;
 
 namespace UtilZ.ParaService.WebApp.Models
 {
@@ -40,6 +41,12 @@ namespace UtilZ.ParaService.WebApp.Models
             //pvsp.ParaValueSettings.Add(new ParaValueSetting() { Id = 1, Value = "sadf" });
             //pvsp.ParaValueSettings.Add(new ParaValueSetting() { Id = 2, Value = "132" });
             //string json = JsonConvert.SerializeObject(pvsp);
+
+            var moduleParaPost = new ModuleParaPost();
+            moduleParaPost.ModuleId = 123;
+            moduleParaPost.ParaIds.Add(1);
+            moduleParaPost.ParaIds.Add(2);
+            string json = JsonConvert.SerializeObject(moduleParaPost);
         }
     }
 }

@@ -27,5 +27,11 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         {
             return this._bll.QueryModuleParas(projectId, moduleId);
         }
+
+        [HttpPost]
+        public ApiData Post([FromBody] ModuleParaPost moduleParaPost)
+        {
+            return this._bll.UpdateModuleParas(moduleParaPost);
+        }
     }
 }

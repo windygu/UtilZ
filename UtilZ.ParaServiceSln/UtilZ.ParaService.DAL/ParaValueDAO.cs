@@ -19,8 +19,9 @@ namespace UtilZ.ParaService.DAL
         /// </summary>
         /// <param name="paraValues"></param>
         /// <returns></returns>
-        public long AddParaValue(List<ParaValue> paraValues)
+        public long AddParaValue(ParaValueSettingPost para)
         {
+            var paraValues = para.ToParaValues();
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
 
@@ -30,7 +31,7 @@ namespace UtilZ.ParaService.DAL
                 {
                     try
                     {
-                        var projectId = paraValues[0].ProjectID;
+                        var projectId = para.PID;
 
                         //查询最大版本号
                         var queryParaVersionCmd = conInfo.Connection.CreateCommand();

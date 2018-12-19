@@ -166,7 +166,7 @@
             for (var i = 1; i < tb.rows.length; i++) {
                 var trId = "#" + tb.rows[i].getAttribute("id");
                 var paraId = Number(tb.rows[i].getAttribute("data-paraId"));
-                var value = tb.rows[i].cells[4].children[0].value
+                var value = tb.rows[i].cells[4].children[0].value;
 
                 //组装参数值
                 var itemData = '{"Id":' + paraId + ',"Value":"' + value + '"}';
