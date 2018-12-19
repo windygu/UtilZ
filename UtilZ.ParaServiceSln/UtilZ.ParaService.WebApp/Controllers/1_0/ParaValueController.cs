@@ -23,20 +23,6 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             this._bll = new ProjectBLL();
         }
 
-        //// GET: api/ParaValue
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET: api/ParaValue/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
         [HttpGet("projectID={projectId}&moduleId={moduleId}&version={version}")]
         public ApiData Get(long projectId, long moduleId, long version)
         {
@@ -50,31 +36,11 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             return this._bll.SetParaValue(para);
         }
 
-        //// POST: api/ParaValue
-        //[HttpPost]
-        //public ApiData Post([FromBody] string value)
-        //{
-
-        //    var paraValues = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ParaValue>>(value);
-        //    return this._bll.SetParaValue(paraValues);
-        //}
-
-        //[HttpPost]
-        //public ApiData SetParaValue([FromBody] List<ParaValue> paraValues)
-        //{
-        //    return this._bll.SetParaValue(paraValues);
-        //}
-
-        // PUT: api/ParaValue/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("projectId={projectId}&beginVer={beginVer}&endVer={endVer}")]
+        public ApiData Delete(long projectId, long beginVer, long endVer)
         {
+            return this._bll.DeleteParaValue(projectId, beginVer, endVer);
         }
     }
 }

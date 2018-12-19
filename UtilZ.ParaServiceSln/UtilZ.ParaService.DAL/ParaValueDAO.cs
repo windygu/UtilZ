@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UtilZ.Dotnet.DBBase.Interfaces;
+using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.ParaService.DBModel;
 using UtilZ.ParaService.Model;
 
@@ -21,6 +22,7 @@ namespace UtilZ.ParaService.DAL
         /// <returns></returns>
         public long AddParaValue(ParaValueSettingPost para)
         {
+            var projectId = para.PID;
             var paraValues = para.ToParaValues();
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
@@ -31,8 +33,6 @@ namespace UtilZ.ParaService.DAL
                 {
                     try
                     {
-                        var projectId = para.PID;
-
                         //查询最大版本号
                         var queryParaVersionCmd = conInfo.Connection.CreateCommand();
                         queryParaVersionCmd.Transaction = transaction;
@@ -150,6 +150,18 @@ namespace UtilZ.ParaService.DAL
             }
 
             return serviceParas;
+        }
+
+        public int DeleteParaValue(long projectId, long beginVer, long endVer)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            string deleteSqlStr = string.Format(@"DELETE FROM ParaValue WHERE ProjectID={0}ProjectID AND Version>={0}BeginVer AND Version<={0}EndVer", paraSign);
+            var paras = new NDbParameterCollection();
+            paras.Add("ProjectID", projectId);
+            paras.Add("BeginVer", beginVer);
+            paras.Add("EndVer", endVer);
+            return dbAccess.ExecuteNonQuery(deleteSqlStr, Dotnet.DBBase.Model.DBVisitType.W, paras);
         }
     }
 }

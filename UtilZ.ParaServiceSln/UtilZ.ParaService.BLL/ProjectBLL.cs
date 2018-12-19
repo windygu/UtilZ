@@ -481,6 +481,29 @@ namespace UtilZ.ParaService.BLL
                 return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
             }
         }
+
+        /// <summary>
+        /// 删除旧的参数值
+        /// </summary>
+        /// <param name="projectId">项目ID</param>
+        /// <param name="beginVer">起始版本号</param>
+        /// <param name="endVer">结束版本号</param>
+        /// <returns></returns>
+        public ApiData DeleteParaValue(long projectId, long beginVer, long endVer)
+        {
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().DeleteParaValue(projectId, beginVer, endVer));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
         #endregion
 
         #region ModulePara
