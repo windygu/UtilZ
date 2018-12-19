@@ -475,6 +475,10 @@
                 });
             });
 
+            $("#btnModuleParaManagerCancell").click(function () {
+                hidenmoduleParaManager();
+            });
+
             //为Select添加事件，当选择其中一项时触发
             $("#comboxParaGroup").change(function () {
                 var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
@@ -594,7 +598,12 @@
         </table>
 
         <div style="margin-left:20px">
-            <button class="buttonOKCancell" id="btnModuleParaManagerCommit">提交</button>
+            <span>
+                <button class="buttonOKCancell" id="btnModuleParaManagerCommit">提交</button>
+            </span>
+            <span>
+                <button class="buttonOKCancell" id="btnModuleParaManagerCancell">取消</button>
+            </span>
         </div>
     </div>
 </body>
