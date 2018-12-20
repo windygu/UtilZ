@@ -35,6 +35,9 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
         [HttpGet("pageSize={pageSize}&pageIndex={pageIndex}")]
         public ApiData Get(int pageSize, int pageIndex)
         {
+            //var token = this.Request.Headers[WebAppConstant.AccessToken];
+            //var userInfo = AuthenticationController.GetUserInfo(token);
+
             return this._bll.QueryProjects(pageSize, pageIndex);
         }
 

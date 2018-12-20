@@ -109,6 +109,27 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
+        public long QueryVestNewVersion(long projectId)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryParaVersionCmd = conInfo.Connection.CreateCommand();
+                queryParaVersionCmd.CommandText = string.Format(@"SELECT MAX(Version) FROM ParaVersion WHERE ProjectID={0}ProjectID", paraSign);
+                dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
+                object obj = queryParaVersionCmd.ExecuteScalar();
+                if (obj == null || obj == DBNull.Value)
+                {
+                    throw new DBException(ParaServiceConstant.DB_FAIL, "参数值未设置");
+                }
+                else
+                {
+                    return (long)obj;
+                }
+            }
+        }
+
         public ServicePara QueryParaValues(long projectId, long moduleId, long version)
         {
             IDBAccess dbAccess = base.GetDBAccess();

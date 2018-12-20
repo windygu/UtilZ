@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.ParaService.DAL;
 using UtilZ.ParaService.DBModel;
 using UtilZ.ParaService.Model;
@@ -470,7 +471,21 @@ namespace UtilZ.ParaService.BLL
         {
             try
             {
-                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().QueryParaValues(projectId, moduleId, version));
+                ParaValueDAO paraValueDAO = this.GetParaValueDAO();
+                if (version <= 0)
+                {
+                    version = paraValueDAO.QueryVestNewVersion(projectId);
+                }
+
+                string cacheKey = $"{projectId}_{moduleId}_{version}";
+                var servicePara = MemoryCacheEx.Get(cacheKey) as ServicePara;
+                if (servicePara == null)
+                {
+                    servicePara = this.GetParaValueDAO().QueryParaValues(projectId, moduleId, version);
+                }
+
+                MemoryCacheEx.Set(cacheKey, servicePara, 3600000);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, servicePara);
             }
             catch (DBException dbex)
             {
