@@ -109,11 +109,11 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
-        public List<ServicePara> QueryParaValues(long projectId, long moduleId, long version)
+        public ServicePara QueryParaValues(long projectId, long moduleId, long version)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            var serviceParas = new List<ServicePara>();
+            var servicePara = new ServicePara();
             using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
             {
                 if (version <= 0)
@@ -134,22 +134,29 @@ namespace UtilZ.ParaService.DAL
                     }
                 }
 
+                servicePara.Version = version;
                 //查找是否存在同别名的项
                 var queryParaValueCmd = conInfo.Connection.CreateCommand();
-                queryParaValueCmd.CommandText = string.Format(@"SELECT ParaID,Value FROM ParaValue WHERE ProjectID={0}ProjectID AND Version={0}Version", paraSign);
+                //queryParaValueCmd.CommandText = string.Format(@"SELECT ParaID,Value FROM ParaValue WHERE ProjectID={0}ProjectID AND Version={0}Version", paraSign);
+                //SELECT Key,Value FROM (SELECT ParaValue.ProjectID,ParaValue.Version,Key,Value FROM ParaValue INNER JOIN Para ON ParaValue.ParaID=Para.ID) WHERE ProjectID=8 AND Version=1
+                //queryParaValueCmd.CommandText = string.Format(@"SELECT Key,Value FROM (SELECT ParaValue.ProjectID,ParaValue.Version,Key,Value FROM ParaValue INNER JOIN Para ON ParaValue.ParaID=Para.ID) WHERE ProjectID={0}ProjectID AND Version={0}Version", paraSign);
+                queryParaValueCmd.CommandText = string.Format(@"SELECT Key,Value FROM 
+(SELECT ParaID,Key,Value FROM (SELECT ParaValue.ParaID,ParaValue.ProjectID,ParaValue.Version,Key,Value FROM ParaValue INNER JOIN Para ON ParaValue.ParaID=Para.ID) WHERE ProjectID={0}ProjectID AND Version={0}Version) t 
+INNER JOIN ModulePara ON ModulePara.ParaID=t.ParaID WHERE ModuleID={0}ModuleID", paraSign);
                 dbAccess.AddCommandParameter(queryParaValueCmd, "ProjectID", projectId);
                 dbAccess.AddCommandParameter(queryParaValueCmd, "Version", version);
+                dbAccess.AddCommandParameter(queryParaValueCmd, "ModuleID", moduleId);
                 var paraValueReader = queryParaValueCmd.ExecuteReader();
                 while (paraValueReader.Read())
                 {
-                    var servicePara = new ServicePara();
-                    servicePara.Key = paraValueReader.GetInt64(0).ToString();
-                    servicePara.Value = paraValueReader.GetString(1);
-                    serviceParas.Add(servicePara);
+                    var serviceParaItem = new ServiceParaItem();
+                    serviceParaItem.Key = paraValueReader.GetString(0);
+                    serviceParaItem.Value = paraValueReader.GetString(1);
+                    servicePara.Items.Add(serviceParaItem);
                 }
             }
 
-            return serviceParas;
+            return servicePara;
         }
 
         public int DeleteParaValue(long projectId, long beginVer, long endVer)
