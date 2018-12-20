@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.Log;
 using UtilZ.ParaService.DAL;
 using UtilZ.ParaService.DBModel;
 using UtilZ.ParaService.Model;
@@ -444,6 +446,13 @@ namespace UtilZ.ParaService.BLL
             return $"prj_{projectId}_cache_key";
         }
 
+        private string GetProjectModuleParaValueCacheKey(long projectId, long moduleId, long version)
+        {
+            return $"{projectId}_{moduleId}_{version}";
+        }
+
+        private const int _CACHE_EXPIRE_TIME = 3600000;
+
         #region ParaValue
         private ParaValueDAO _paraValueDAO = null;
         private ParaValueDAO GetParaValueDAO()
@@ -460,8 +469,12 @@ namespace UtilZ.ParaService.BLL
         {
             try
             {
+                //添加参数值
                 long version = this.GetParaValueDAO().AddParaValue(para);
-                this.AddProjectParaVerToCache(this.GetVerCacheKey(para.PID), version);
+
+                //更新缓存
+                this.UpdateCacheParaValue(para, version);
+
                 return new ApiData(ParaServiceConstant.DB_SUCESS, version);
             }
             catch (DBException dbex)
@@ -472,6 +485,42 @@ namespace UtilZ.ParaService.BLL
             {
                 return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
             }
+        }
+
+        private void UpdateCacheParaValue(ParaValueSettingPost para, long version)
+        {
+            this.AddProjectParaVerToCache(this.GetVerCacheKey(para.PID), version);
+
+            try
+            {
+                var moduleParas = this.GetModuleParaDAO().QueryProjectAllModuleParas(para.PID);
+                IEnumerable<IGrouping<long, ModulePara>> moduleParaGroups = moduleParas.GroupBy(t => { return t.ModuleID; });
+                var paraValueDic = para.ParaValueSettings.ToDictionary(k => { return k.Id; }, v => { return v.Value; });
+                List<Para> paras = this.GetParaDAO().QueryParas(para.PID, -1, -1, -1);
+                var paraDic = paras.ToDictionary(k => { return k.ID; }, v => { return v.Key; });
+
+                foreach (var moduleParaGroup in moduleParaGroups)
+                {
+                    var servicePara = new ServicePara();
+                    servicePara.Version = version;
+                    foreach (var modulePara in moduleParaGroup)
+                    {
+                        servicePara.Items.Add(new ServiceParaItem() { Key = paraDic[modulePara.ParaID], Value = paraValueDic[modulePara.ParaID] });
+                    }
+
+                    string cacheKey = this.GetProjectModuleParaValueCacheKey(para.PID, moduleParaGroup.Key, version);
+                    this.AddProjectParaToCache(cacheKey, servicePara);
+                }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex, "更新参数缓存异常");
+            }
+        }
+
+        private void AddProjectParaToCache(string cacheKey, ServicePara servicePara)
+        {
+            MemoryCacheEx.Set(cacheKey, servicePara, _CACHE_EXPIRE_TIME);
         }
 
         private void AddProjectParaVerToCache(string verCacheKey, long version)
@@ -490,7 +539,7 @@ namespace UtilZ.ParaService.BLL
                     object obj = MemoryCacheEx.Get(verCacheKey);
                     if (obj == null)
                     {
-                        version = paraValueDAO.QueryVestNewVersion(projectId);
+                        version = paraValueDAO.QueryBestNewVersion(projectId);
                         this.AddProjectParaVerToCache(verCacheKey, version);
                     }
                     else
@@ -499,14 +548,14 @@ namespace UtilZ.ParaService.BLL
                     }
                 }
 
-                string cacheKey = $"{projectId}_{moduleId}_{version}";
+                string cacheKey = this.GetProjectModuleParaValueCacheKey(projectId, moduleId, version);
                 var servicePara = MemoryCacheEx.Get(cacheKey) as ServicePara;
                 if (servicePara == null)
                 {
                     servicePara = this.GetParaValueDAO().QueryParaValues(projectId, moduleId, version);
                 }
 
-                MemoryCacheEx.Set(cacheKey, servicePara, 3600000);
+                this.AddProjectParaToCache(cacheKey, servicePara);
                 return new ApiData(ParaServiceConstant.DB_SUCESS, servicePara);
             }
             catch (DBException dbex)

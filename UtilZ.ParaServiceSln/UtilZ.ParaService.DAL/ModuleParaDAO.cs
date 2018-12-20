@@ -83,5 +83,29 @@ namespace UtilZ.ParaService.DAL
                 }
             }
         }
+
+        public List<ModulePara> QueryProjectAllModuleParas(long projectId)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryParaVersionCmd = conInfo.Connection.CreateCommand();
+                queryParaVersionCmd.CommandText = string.Format(@"SELECT ModuleID,ParaID from ModulePara LEFT JOIN ProjectModule ON ModulePara.ModuleID=ProjectModule.ID WHERE ProjectModule.ProjectID={0}ProjectID", paraSign);
+                dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
+
+                var moduleParas = new List<ModulePara>();
+                var reader = queryParaVersionCmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var modulePara = new ModulePara();
+                    modulePara.ModuleID = reader.GetInt64(0);
+                    modulePara.ParaID = reader.GetInt64(1);
+                    moduleParas.Add(modulePara);
+                }
+
+                return moduleParas;
+            }
+        }
     }
 }

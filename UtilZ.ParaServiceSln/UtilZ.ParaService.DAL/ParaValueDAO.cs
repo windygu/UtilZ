@@ -107,9 +107,9 @@ namespace UtilZ.ParaService.DAL
                     }
                 }
             }
-        }
+        }        
 
-        public long QueryVestNewVersion(long projectId)
+        public long QueryBestNewVersion(long projectId)
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
