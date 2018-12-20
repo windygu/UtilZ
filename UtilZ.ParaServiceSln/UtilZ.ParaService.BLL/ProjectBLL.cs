@@ -439,7 +439,12 @@ namespace UtilZ.ParaService.BLL
         }
         #endregion
 
-        #region Para
+        private string GetVerCacheKey(long projectId)
+        {
+            return $"prj_{projectId}_cache_key";
+        }
+
+        #region ParaValue
         private ParaValueDAO _paraValueDAO = null;
         private ParaValueDAO GetParaValueDAO()
         {
@@ -455,7 +460,9 @@ namespace UtilZ.ParaService.BLL
         {
             try
             {
-                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().AddParaValue(para));
+                long version = this.GetParaValueDAO().AddParaValue(para);
+                this.AddProjectParaVerToCache(this.GetVerCacheKey(para.PID), version);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, version);
             }
             catch (DBException dbex)
             {
@@ -467,6 +474,11 @@ namespace UtilZ.ParaService.BLL
             }
         }
 
+        private void AddProjectParaVerToCache(string verCacheKey, long version)
+        {
+            MemoryCacheEx.Set(verCacheKey, version);
+        }
+
         public ApiData QueryParaValues(long projectId, long moduleId, long version)
         {
             try
@@ -474,7 +486,17 @@ namespace UtilZ.ParaService.BLL
                 ParaValueDAO paraValueDAO = this.GetParaValueDAO();
                 if (version <= 0)
                 {
-                    version = paraValueDAO.QueryVestNewVersion(projectId);
+                    string verCacheKey = this.GetVerCacheKey(projectId);
+                    object obj = MemoryCacheEx.Get(verCacheKey);
+                    if (obj == null)
+                    {
+                        version = paraValueDAO.QueryVestNewVersion(projectId);
+                        this.AddProjectParaVerToCache(verCacheKey, version);
+                    }
+                    else
+                    {
+                        version = (long)obj;
+                    }
                 }
 
                 string cacheKey = $"{projectId}_{moduleId}_{version}";
