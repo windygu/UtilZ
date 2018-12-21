@@ -107,7 +107,7 @@ namespace UtilZ.ParaService.DAL
                     }
                 }
             }
-        }        
+        }
 
         public long QueryBestNewVersion(long projectId)
         {
@@ -137,26 +137,8 @@ namespace UtilZ.ParaService.DAL
             var servicePara = new ServicePara();
             using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
             {
-                if (version <= 0)
-                {
-                    //查找是否存在同别名的项
-                    var queryParaVersionCmd = conInfo.Connection.CreateCommand();
-                    queryParaVersionCmd.CommandText = string.Format(@"SELECT MAX(Version) FROM ParaVersion WHERE ProjectID={0}ProjectID", paraSign);
-                    dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
-                    object obj = queryParaVersionCmd.ExecuteScalar();
-
-                    if (obj == null || obj == DBNull.Value)
-                    {
-                        throw new DBException(ParaServiceConstant.DB_FAIL, "参数值未设置");
-                    }
-                    else
-                    {
-                        version = (long)obj;
-                    }
-                }
-
                 servicePara.Version = version;
-                //查找是否存在同别名的项
+
                 var queryParaValueCmd = conInfo.Connection.CreateCommand();
                 //queryParaValueCmd.CommandText = string.Format(@"SELECT ParaID,Value FROM ParaValue WHERE ProjectID={0}ProjectID AND Version={0}Version", paraSign);
                 //SELECT Key,Value FROM (SELECT ParaValue.ProjectID,ParaValue.Version,Key,Value FROM ParaValue INNER JOIN Para ON ParaValue.ParaID=Para.ID) WHERE ProjectID=8 AND Version=1
@@ -178,6 +160,31 @@ INNER JOIN ModulePara ON ModulePara.ParaID=t.ParaID WHERE ModuleID={0}ModuleID",
             }
 
             return servicePara;
+        }
+
+        public List<ParaValue> QueryParaValues(long projectId, long version)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryParaValueCmd = conInfo.Connection.CreateCommand();
+                queryParaValueCmd.CommandText = string.Format(@"SELECT ParaID,Value FROM ParaValue WHERE ProjectID={0}ProjectID AND Version={0}Version", paraSign);
+                dbAccess.AddCommandParameter(queryParaValueCmd, "ProjectID", projectId);
+                dbAccess.AddCommandParameter(queryParaValueCmd, "Version", version);
+                var paraValueReader = queryParaValueCmd.ExecuteReader();
+
+                var serviceParas = new List<ParaValue>();
+                while (paraValueReader.Read())
+                {
+                    var serviceParaItem = new ParaValue();
+                    serviceParaItem.ParaID = paraValueReader.GetInt64(0);
+                    serviceParaItem.Value = paraValueReader.GetString(1);
+                    serviceParas.Add(serviceParaItem);
+                }
+
+                return serviceParas;
+            }
         }
 
         public int DeleteParaValue(long projectId, long beginVer, long endVer)

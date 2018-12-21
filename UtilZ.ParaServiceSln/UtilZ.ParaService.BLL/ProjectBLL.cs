@@ -465,6 +465,54 @@ namespace UtilZ.ParaService.BLL
             return this._paraValueDAO;
         }
 
+        public ApiData QueryParaValues(long projectId, long paraGroupId, int pageSize, int pageIndex)
+        {
+            try
+            {
+                if (pageIndex > 0)
+                {
+                    if (pageSize < 1)
+                    {
+                        pageSize = 100;
+                    }
+                }
+
+                var paras = this.GetParaDAO().QueryParas(projectId, paraGroupId, pageSize, pageIndex);
+                var groups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
+                var groupDic = groups.ToDictionary(t => { return t.ID; });
+
+                ParaValueDAO paraValueDAO = this.GetParaValueDAO();
+                long version = this.GetBestNewVersion(projectId, paraValueDAO);
+
+                var paraValues = paraValueDAO.QueryParaValues(projectId, version);
+                var paraValueDic = paraValues.ToDictionary(k => { return k.ParaID; }, v => { return v.Value; });
+
+
+                foreach (var para in paras)
+                {
+                    if (groupDic.ContainsKey(para.GroupID))
+                    {
+                        para.Group = groupDic[para.GroupID];
+                    }
+
+                    if (paraValueDic.ContainsKey(para.GroupID))
+                    {
+                        para.Key = paraValueDic[para.ID];
+                    }
+                }
+
+                return new ApiData(ParaServiceConstant.DB_SUCESS, paras);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+
         public ApiData SetParaValue(ParaValueSettingPost para)
         {
             try
@@ -553,20 +601,7 @@ namespace UtilZ.ParaService.BLL
                 ParaValueDAO paraValueDAO = this.GetParaValueDAO();
                 if (version <= 0)
                 {
-                    string verCacheKey = this.GetVerCacheKey(projectId);
-                    object obj = MemoryCacheEx.Get(verCacheKey);
-                    if (obj == null)
-                    {
-                        version = paraValueDAO.QueryBestNewVersion(projectId);
-                        if (!this.AddProjectParaVerToCache(verCacheKey, version))
-                        {
-                            version = (long)MemoryCacheEx.Get(verCacheKey);
-                        }
-                    }
-                    else
-                    {
-                        version = (long)obj;
-                    }
+                    version = this.GetBestNewVersion(projectId, paraValueDAO);
                 }
 
                 string cacheKey = this.GetProjectModuleParaValueCacheKey(projectId, moduleId, version);
@@ -587,6 +622,27 @@ namespace UtilZ.ParaService.BLL
             {
                 return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
             }
+        }
+
+        private long GetBestNewVersion(long projectId, ParaValueDAO paraValueDAO)
+        {
+            long version;
+            string verCacheKey = this.GetVerCacheKey(projectId);
+            object obj = MemoryCacheEx.Get(verCacheKey);
+            if (obj == null)
+            {
+                version = paraValueDAO.QueryBestNewVersion(projectId);
+                if (!this.AddProjectParaVerToCache(verCacheKey, version))
+                {
+                    version = (long)MemoryCacheEx.Get(verCacheKey);
+                }
+            }
+            else
+            {
+                version = (long)obj;
+            }
+
+            return version;
         }
 
         /// <summary>

@@ -139,7 +139,7 @@
                             row.append(tdparaGroupDes);
 
                             var tdvalue = $("<td></td>");
-                            var editHtml = '<input type="text" class="inputPara inputPara" id="txtValue' + paraItem.id + '" value=""/>';
+                            var editHtml = '<input type="text" class="inputPara inputPara" id="txtValue' + paraItem.id + '" value="' + paraItem.key + '"/>';
                             tdvalue.append(editHtml);
                             row.append(tdvalue);
 
