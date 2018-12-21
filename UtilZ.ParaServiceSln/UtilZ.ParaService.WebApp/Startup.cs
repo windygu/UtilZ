@@ -46,6 +46,10 @@ namespace UtilZ.ParaService.WebApp
                     .AllowCredentials());
             });
 
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<Controllers._1_0.ActionAuthenticationFilter>();
+            });
             // services.AddAuthentication(x =>
             // {
             //     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
