@@ -121,7 +121,7 @@
                         }
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -166,7 +166,7 @@
                         showModuleEdit();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -204,7 +204,7 @@
                         RefreshModules();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -338,7 +338,7 @@
                     showmoduleParaManager();
                 },
                 error: function (xhr) {
-                    alert(xhr.statusText);
+                    ajaxErr(xhr);
                 }
             });
         }
@@ -441,7 +441,7 @@
                         RefreshModules();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             });
@@ -470,7 +470,7 @@
                         hidenmoduleParaManager();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             });

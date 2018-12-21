@@ -108,7 +108,7 @@
                         sessionStorage.setItem("defaultParaGroupId", defaultParaGroupId.toString());
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -158,7 +158,7 @@
                         showParaGroupEdit();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -203,7 +203,7 @@
                         RefreshParaGroup();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -277,7 +277,7 @@
                         RefreshParaGroup();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             });

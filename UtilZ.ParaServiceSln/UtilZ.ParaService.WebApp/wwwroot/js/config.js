@@ -51,3 +51,12 @@ function pageLoginValidate() {
         return;
     }
 }
+
+function ajaxErr(xhr) {
+    if (xhr.statusText = 'Unauthorized') {
+        window.parent.window.location.href = "/htmls/login.html";
+    }
+    else {
+        alert(xhr.statusText);
+    }
+}

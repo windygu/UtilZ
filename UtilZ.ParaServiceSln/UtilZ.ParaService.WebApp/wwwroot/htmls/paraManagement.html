@@ -103,7 +103,7 @@
                         }
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -152,7 +152,7 @@
                         //comboxParaGroup.find("option").eq(3).prop("selected", true)
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -188,7 +188,7 @@
                         showParaEdit();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -227,7 +227,7 @@
                         refreshParas(paraGroupId);
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -327,7 +327,7 @@
                         refreshParas(paraGroupId);
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             });

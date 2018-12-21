@@ -60,7 +60,7 @@
                         }
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -147,7 +147,7 @@
                         }
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -214,7 +214,7 @@
                         alert("设置参数值成功，参数版本号:" + data.value);
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             });

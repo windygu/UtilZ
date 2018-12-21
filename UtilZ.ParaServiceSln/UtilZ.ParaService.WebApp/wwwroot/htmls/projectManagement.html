@@ -100,7 +100,7 @@
                         }
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -145,7 +145,7 @@
                         showPrjEdit();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -183,7 +183,7 @@
                         RefreshProjects();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             }
@@ -268,7 +268,7 @@
                         RefreshProjects();
                     },
                     error: function (xhr) {
-                        alert(xhr.statusText);
+                        ajaxErr(xhr);
                     }
                 });
             });
