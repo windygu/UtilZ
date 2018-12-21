@@ -487,34 +487,42 @@ namespace UtilZ.ParaService.BLL
             }
         }
 
+        private static readonly object _updateCacheParaValueLock = new object();
+
         private void UpdateCacheParaValue(ParaValueSettingPost para, long version)
         {
-            this.AddProjectParaVerToCache(this.GetVerCacheKey(para.PID), version);
-
-            try
+            lock (_updateCacheParaValueLock)
             {
-                var moduleParas = this.GetModuleParaDAO().QueryProjectAllModuleParas(para.PID);
-                IEnumerable<IGrouping<long, ModulePara>> moduleParaGroups = moduleParas.GroupBy(t => { return t.ModuleID; });
-                var paraValueDic = para.ParaValueSettings.ToDictionary(k => { return k.Id; }, v => { return v.Value; });
-                List<Para> paras = this.GetParaDAO().QueryParas(para.PID, -1, -1, -1);
-                var paraDic = paras.ToDictionary(k => { return k.ID; }, v => { return v.Key; });
-
-                foreach (var moduleParaGroup in moduleParaGroups)
+                if (!this.AddProjectParaVerToCache(this.GetVerCacheKey(para.PID), version))
                 {
-                    var servicePara = new ServicePara();
-                    servicePara.Version = version;
-                    foreach (var modulePara in moduleParaGroup)
-                    {
-                        servicePara.Items.Add(new ServiceParaItem() { Key = paraDic[modulePara.ParaID], Value = paraValueDic[modulePara.ParaID] });
-                    }
-
-                    string cacheKey = this.GetProjectModuleParaValueCacheKey(para.PID, moduleParaGroup.Key, version);
-                    this.AddProjectParaToCache(cacheKey, servicePara);
+                    return;
                 }
-            }
-            catch (Exception ex)
-            {
-                Loger.Error(ex, "更新参数缓存异常");
+
+                try
+                {
+                    var moduleParas = this.GetModuleParaDAO().QueryProjectAllModuleParas(para.PID);
+                    IEnumerable<IGrouping<long, ModulePara>> moduleParaGroups = moduleParas.GroupBy(t => { return t.ModuleID; });
+                    var paraValueDic = para.ParaValueSettings.ToDictionary(k => { return k.Id; }, v => { return v.Value; });
+                    List<Para> paras = this.GetParaDAO().QueryParas(para.PID, -1, -1, -1);
+                    var paraDic = paras.ToDictionary(k => { return k.ID; }, v => { return v.Key; });
+
+                    foreach (var moduleParaGroup in moduleParaGroups)
+                    {
+                        var servicePara = new ServicePara();
+                        servicePara.Version = version;
+                        foreach (var modulePara in moduleParaGroup)
+                        {
+                            servicePara.Items.Add(new ServiceParaItem() { Key = paraDic[modulePara.ParaID], Value = paraValueDic[modulePara.ParaID] });
+                        }
+
+                        string cacheKey = this.GetProjectModuleParaValueCacheKey(para.PID, moduleParaGroup.Key, version);
+                        this.AddProjectParaToCache(cacheKey, servicePara);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Loger.Error(ex, "更新参数缓存异常");
+                }
             }
         }
 
@@ -523,9 +531,19 @@ namespace UtilZ.ParaService.BLL
             MemoryCacheEx.Set(cacheKey, servicePara, _CACHE_EXPIRE_TIME);
         }
 
-        private void AddProjectParaVerToCache(string verCacheKey, long version)
+        private bool AddProjectParaVerToCache(string verCacheKey, long version)
         {
+            object obj = MemoryCacheEx.Get(verCacheKey);
+            if (obj != null)
+            {
+                if (version <= (long)obj)
+                {
+                    return false;
+                }
+            }
+
             MemoryCacheEx.Set(verCacheKey, version);
+            return true;
         }
 
         public ApiData QueryParaValues(long projectId, long moduleId, long version)
@@ -540,7 +558,10 @@ namespace UtilZ.ParaService.BLL
                     if (obj == null)
                     {
                         version = paraValueDAO.QueryBestNewVersion(projectId);
-                        this.AddProjectParaVerToCache(verCacheKey, version);
+                        if (!this.AddProjectParaVerToCache(verCacheKey, version))
+                        {
+                            version = (long)MemoryCacheEx.Get(verCacheKey);
+                        }
                     }
                     else
                     {
