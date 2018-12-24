@@ -78,9 +78,18 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             });
         }
 
+        private static readonly object _lock = new object();
+        private static string _token = null;
+        private static UserInfo _userInfo = null;
+
         private static void UpdateToken(string token, UserInfo userInfo)
         {
-            MemoryCacheEx.Set(token, userInfo, WebAppConfig.Instance.TokenExpireTime);
+            lock (_lock)
+            {
+                //MemoryCacheEx.Set(token, userInfo, WebAppConfig.Instance.TokenExpireTime);
+                _token = token;
+                _userInfo = userInfo;
+            }
         }
 
         public static UserInfo GetUserInfo(string token)
@@ -90,14 +99,23 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
                 return null;
             }
 
-            var userInfo = MemoryCacheEx.Get(token) as UserInfo;
-            if (userInfo == null)
+            lock (_lock)
             {
-                return null;
-            }
+                if (string.Equals(_token, token, StringComparison.OrdinalIgnoreCase))
+                {
+                    return _userInfo;
+                }
 
-            MemoryCacheEx.Set(token, userInfo, WebAppConfig.Instance.TokenExpireTime);
-            return userInfo;
+                return null;
+                //var userInfo = MemoryCacheEx.Get(token) as UserInfo;
+                //if (userInfo == null)
+                //{
+                //    return null;
+                //}
+
+                //MemoryCacheEx.Set(token, userInfo, WebAppConfig.Instance.TokenExpireTime);
+                //return userInfo;
+            }
         }
     }
 }
