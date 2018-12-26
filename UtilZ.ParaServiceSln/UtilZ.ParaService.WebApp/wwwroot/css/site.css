@@ -76,6 +76,7 @@ body {
 
 .select {
     font-size: 18px;
+    width: 200px;
 }
 
 .ptitle {
@@ -97,7 +98,7 @@ body {
 }
 
 .spanLabel_Prompt {
-    color:red;
+    color: red;
     font-size: 20px;
     display: -moz-inline-box;
     display: inline-block;

@@ -29,6 +29,12 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             return this._bll.QueryParaValues(projectId, moduleId, version);
         }
 
+        [HttpGet("projectID={projectId}&version={version}")]
+        public ApiData Get(long projectId, long version)
+        {
+            return this._bll.QueryVersionParaValue(projectId, version);
+        }
+
         // POST: api/Project
         [HttpPost]
         public ApiData Post([FromBody] ParaValueSettingPost para)

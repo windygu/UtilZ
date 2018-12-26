@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text;
+using System.Transactions;
+using UtilZ.Dotnet.DBBase.Core;
 using UtilZ.Dotnet.DBBase.Interfaces;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.ParaService.DBModel;
@@ -34,50 +37,27 @@ namespace UtilZ.ParaService.DAL
                     try
                     {
                         //查询最大版本号
-                        var queryParaVersionCmd = conInfo.Connection.CreateCommand();
-                        queryParaVersionCmd.Transaction = transaction;
-                        queryParaVersionCmd.CommandText = string.Format(@"SELECT MAX(Version) FROM ParaVersion WHERE ProjectID={0}ProjectID", paraSign);
-                        dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
-                        object obj = queryParaVersionCmd.ExecuteScalar();
-
-                        bool hasParaValue;
+                        object obj = this.QueryBestNewVersion(dbAccess, conInfo, transaction, projectId);
                         long paraVersion;
                         if (obj == null || obj == DBNull.Value)
                         {
                             paraVersion = 1;
-                            hasParaValue = false;
                         }
                         else
                         {
                             paraVersion = (long)obj + 1;
-                            hasParaValue = true;
                         }
 
-                        if (hasParaValue)
+
+                        //没有设置过值则插入版本号
+                        var insertParaVersionCmd = conInfo.Connection.CreateCommand();
+                        insertParaVersionCmd.Transaction = transaction;
+                        insertParaVersionCmd.CommandText = string.Format(@"INSERT INTO ParaVersion(ProjectID,Version) VALUES ({0}ProjectID,{0}Version)", paraSign);
+                        dbAccess.AddCommandParameter(insertParaVersionCmd, "ProjectID", projectId);
+                        dbAccess.AddCommandParameter(insertParaVersionCmd, "Version", paraVersion);
+                        if (insertParaVersionCmd.ExecuteNonQuery() != 1)
                         {
-                            //有设置过值则更新版本号
-                            var updateParaVersionCmd = conInfo.Connection.CreateCommand();
-                            updateParaVersionCmd.Transaction = transaction;
-                            updateParaVersionCmd.CommandText = string.Format(@"UPDATE ParaVersion SET Version={0}Version WHERE ProjectID={0}ProjectID", paraSign);
-                            dbAccess.AddCommandParameter(updateParaVersionCmd, "Version", paraVersion);
-                            dbAccess.AddCommandParameter(updateParaVersionCmd, "ProjectID", projectId);
-                            if (updateParaVersionCmd.ExecuteNonQuery() != 1)
-                            {
-                                throw new DBException(ParaServiceConstant.DB_FAIL, "修改参数值版本号失败，原因未知");
-                            }
-                        }
-                        else
-                        {
-                            //没有设置过值则插入版本号
-                            var insertParaVersionCmd = conInfo.Connection.CreateCommand();
-                            insertParaVersionCmd.Transaction = transaction;
-                            insertParaVersionCmd.CommandText = string.Format(@"INSERT INTO ParaVersion(ProjectID,Version) VALUES ({0}ProjectID,{0}Version)", paraSign);
-                            dbAccess.AddCommandParameter(insertParaVersionCmd, "ProjectID", projectId);
-                            dbAccess.AddCommandParameter(insertParaVersionCmd, "Version", paraVersion);
-                            if (insertParaVersionCmd.ExecuteNonQuery() != 1)
-                            {
-                                throw new DBException(ParaServiceConstant.DB_FAIL, "插入参数值版本号失败，原因未知");
-                            }
+                            throw new DBException(ParaServiceConstant.DB_FAIL, "插入参数值版本号失败，原因未知");
                         }
 
                         //插入参数值
@@ -112,13 +92,9 @@ namespace UtilZ.ParaService.DAL
         public long QueryBestNewVersion(long projectId)
         {
             IDBAccess dbAccess = base.GetDBAccess();
-            string paraSign = dbAccess.ParaSign;
             using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
             {
-                var queryParaVersionCmd = conInfo.Connection.CreateCommand();
-                queryParaVersionCmd.CommandText = string.Format(@"SELECT MAX(Version) FROM ParaVersion WHERE ProjectID={0}ProjectID", paraSign);
-                dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
-                object obj = queryParaVersionCmd.ExecuteScalar();
+                object obj = this.QueryBestNewVersion(dbAccess, conInfo, null, projectId);
                 if (obj == null || obj == DBNull.Value)
                 {
                     throw new DBException(ParaServiceConstant.DB_FAIL, "参数值未设置");
@@ -127,6 +103,34 @@ namespace UtilZ.ParaService.DAL
                 {
                     return (long)obj;
                 }
+            }
+        }
+
+        private object QueryBestNewVersion(IDBAccess dbAccess, DbConnectionInfo conInfo, DbTransaction transaction, long projectId)
+        {
+            var queryParaVersionCmd = conInfo.Connection.CreateCommand();
+            queryParaVersionCmd.Transaction = transaction;
+            queryParaVersionCmd.CommandText = string.Format(@"SELECT MAX(Version) FROM ParaVersion WHERE ProjectID={0}ProjectID", dbAccess.ParaSign);
+            dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
+            return queryParaVersionCmd.ExecuteScalar();
+        }
+
+        public List<long> QueryVersions(long projectId)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryParaVersionCmd = conInfo.Connection.CreateCommand();
+                queryParaVersionCmd.CommandText = string.Format(@"SELECT Version FROM ParaVersion WHERE ProjectID={0}ProjectID", dbAccess.ParaSign);
+                dbAccess.AddCommandParameter(queryParaVersionCmd, "ProjectID", projectId);
+                var reader = queryParaVersionCmd.ExecuteReader();
+                var versions = new List<long>();
+                while (reader.Read())
+                {
+                    versions.Add(reader.GetInt64(0));
+                }
+
+                return versions;
             }
         }
 
@@ -191,12 +195,68 @@ INNER JOIN ModulePara ON ModulePara.ParaID=t.ParaID WHERE ModuleID={0}ModuleID",
         {
             IDBAccess dbAccess = base.GetDBAccess();
             string paraSign = dbAccess.ParaSign;
-            string deleteSqlStr = string.Format(@"DELETE FROM ParaValue WHERE ProjectID={0}ProjectID AND Version>={0}BeginVer AND Version<={0}EndVer", paraSign);
-            var paras = new NDbParameterCollection();
-            paras.Add("ProjectID", projectId);
-            paras.Add("BeginVer", beginVer);
-            paras.Add("EndVer", endVer);
-            return dbAccess.ExecuteNonQuery(deleteSqlStr, Dotnet.DBBase.Model.DBVisitType.W, paras);
+
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.W))
+            {
+                using (var transaction = conInfo.Connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var deleteParaValueCmd = conInfo.Connection.CreateCommand();
+                        deleteParaValueCmd.Transaction = transaction;
+                        deleteParaValueCmd.CommandText = string.Format(@"DELETE FROM ParaValue WHERE ProjectID={0}ProjectID AND Version>={0}BeginVer AND Version<={0}EndVer", paraSign);
+                        dbAccess.AddCommandParameter(deleteParaValueCmd, "ProjectID", projectId);
+                        dbAccess.AddCommandParameter(deleteParaValueCmd, "BeginVer", beginVer);
+                        dbAccess.AddCommandParameter(deleteParaValueCmd, "EndVer", endVer);
+                        int ret = deleteParaValueCmd.ExecuteNonQuery();
+
+                        var deleteParaValueVersionCmd = conInfo.Connection.CreateCommand();
+                        deleteParaValueVersionCmd.Transaction = transaction;
+                        deleteParaValueVersionCmd.CommandText = string.Format(@"DELETE FROM ParaVersion WHERE ProjectID={0}ProjectID AND Version>={0}BeginVer AND Version<={0}EndVer", paraSign);
+                        dbAccess.AddCommandParameter(deleteParaValueVersionCmd, "ProjectID", projectId);
+                        dbAccess.AddCommandParameter(deleteParaValueVersionCmd, "BeginVer", beginVer);
+                        dbAccess.AddCommandParameter(deleteParaValueVersionCmd, "EndVer", endVer);
+                        ret += deleteParaValueVersionCmd.ExecuteNonQuery();
+
+                        transaction.Commit();
+                        return ret;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public List<VerionParaValueItem> QueryVersionParas(long projectId, long version)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryParaValueCmd = conInfo.Connection.CreateCommand();
+                //queryParaValueCmd.CommandText = string.Format(@"SELECT ID,GroupID,Key,Name,Des,Value FROM Para INNER JOIN ParaValue ON Para.ID=ParaValue.ParaID WHERE ParaValue.ProjectID={0}ProjectID AND ParaValue.Version={0}Version;", paraSign);
+                queryParaValueCmd.CommandText = string.Format(@"SELECT ID,GroupID,Key,Name,Value FROM Para INNER JOIN ParaValue ON Para.ID=ParaValue.ParaID WHERE ParaValue.ProjectID={0}ProjectID AND ParaValue.Version={0}Version;", paraSign);
+                dbAccess.AddCommandParameter(queryParaValueCmd, "ProjectID", projectId);
+                dbAccess.AddCommandParameter(queryParaValueCmd, "Version", version);
+                var reader = queryParaValueCmd.ExecuteReader();
+
+                var verionParaValueItems = new List<VerionParaValueItem>();
+                while (reader.Read())
+                {
+                    var verionParaValueItem = new VerionParaValueItem();
+                    verionParaValueItem.ID = reader.GetInt64(0);
+                    verionParaValueItem.GroupID = reader.GetInt64(1);
+                    verionParaValueItem.Key = reader.GetString(2);
+                    verionParaValueItem.Name = reader.GetString(3);
+                    verionParaValueItem.Value = reader.GetString(4);
+                    verionParaValueItems.Add(verionParaValueItem);
+                }
+
+                return verionParaValueItems;
+            }
         }
     }
 }

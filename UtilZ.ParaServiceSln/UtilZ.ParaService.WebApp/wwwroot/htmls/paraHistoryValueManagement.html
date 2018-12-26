@@ -24,12 +24,222 @@
     <script src="../js/config.js"></script>
     <script src="../js/site.js"></script>
     <script type="text/javascript">
+        function refreshParaVersion() {
+            try {
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "ParaVersion/projectId=" + prjId;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        var comboxParaVersion = $("#comboxParaVersion");
+                        comboxParaVersion.empty();//清空
 
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("查询参数分组列表失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        for (var i = 0; i < data.value.length; i++) {
+                            var paraVersion = data.value[i];
+                            comboxParaVersion.append('<option value="' + paraVersion + '">' + paraVersion + '</option>'); //为Select追加一个Option(下拉项)
+                        }
+
+                        //刷新第一个版本号的参数
+                        if (data.value.length > 0) {
+                            refreshParas(data.value[0]);
+                        }
+                    },
+                    error: function (xhr) {
+                        ajaxErr(xhr);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function refreshParas(paraVersion) {
+            try {
+                if (paraVersion == undefined || paraVersion == null) {
+                    return;
+                }
+
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + "ParaValue/projectID=" + prjId + "&version=" + paraVersion;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        var comboxParaGroup = $("#comboxParaGroup");
+                        comboxParaGroup.empty();//清空
+                        clearTable("tbParaValues", true);
+
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("查询参数分组列表失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        //组
+                        var paraGroupDic = new Array();
+                        comboxParaGroup.append('<option value="' + constDefine.paraGroupAll + '">全部</option>'); //为Select追加一个Option(下拉项)
+                        for (var i = 0; i < data.value.paraGroups.length; i++) {
+                            var paraGroupItem = data.value.paraGroups[i];
+                            paraGroupDic[paraGroupItem.id] = paraGroupItem.name;
+                            comboxParaGroup.append('<option value="' + paraGroupItem.id + '">' + paraGroupItem.name + '</option>'); //为Select追加一个Option(下拉项)
+                        }
+
+                        //添加参数值
+                        var tbParas = $("#tbParaValues");
+                        for (var i = 0; i < data.value.items.length; i++) {
+                            var paraItem = data.value.items[i];
+                            var row = $('<tr id="tr_' + paraItem.id + '" data-groupid="' + paraItem.groupID + '" data-paraId="' + paraItem.id + '"></tr>');
+
+                            //序号
+                            var tdId = $("<td></td>");
+                            tdId.append(i + 1);
+                            row.append(tdId);
+
+                            var tdparaGropuName = $('<td></td>');
+                            tdparaGropuName.append(paraGroupDic[paraItem.groupID]);
+                            row.append(tdparaGropuName);
+
+                            //参数key
+                            var tdparaKey = $('<td></td>');
+                            tdparaKey.append(paraItem.key);
+                            row.append(tdparaKey);
+
+                            //参数名称
+                            var tdparaName = $('<td></td>');
+                            tdparaName.append(paraItem.name);
+                            row.append(tdparaName);
+
+                            //参数值
+                            var tdparaValue = $("<td></td>");
+                            tdparaValue.append(paraItem.value);
+                            row.append(tdparaValue);
+
+                            tbParas.append(row);
+                        }
+                    },
+                    error: function (xhr) {
+                        ajaxErr(xhr);
+                    }
+                });
+            }
+            catch (ex) {
+                alert(ex.error);
+            }
+        }
+
+        function setGroupShow(groupId) {
+            var index = 1;
+            var tb = document.getElementById("tbParaValues");
+            for (var i = 1; i < tb.rows.length; i++) {
+                var trId = "#" + tb.rows[i].getAttribute("id");
+
+                if (groupId == constDefine.paraGroupAll) {
+                    tb.rows[i].cells[0].innerText = index++;
+                    $(trId).show();
+                }
+                else {
+                    var trGroupId = Number(tb.rows[i].getAttribute("data-groupid"));
+                    if (groupId == trGroupId) {
+                        tb.rows[i].cells[0].innerText = index++;
+                        $(trId).show();
+                    }
+                    else {
+                        $(trId).hide();
+                    }
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $("#comboxParaVersion").change(function () {
+                var paraVersion = $("#comboxParaVersion").val(); //获取Select选择的Value
+                refreshParas(paraVersion);
+            });
+
+            //为Select添加事件，当选择其中一项时触发
+            $("#comboxParaGroup").change(function () {
+                var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
+                setGroupShow(paraGroupId);
+            });
+
+            $("#btnVersionManagement").click(function () {
+                //var data = getParaValues();
+                //var url = config.conf.baseUrl + "ParaValue";
+                //var token = sessionStorage.getItem('token');
+                //$.ajax({
+                //    type: "POST",
+                //    url: url,
+                //    data: data,
+                //    contentType: "application/json; charset=utf-8",
+                //    headers:
+                //    {
+                //        "access_token": token//此处放置请求到的用户token
+                //    },
+                //    //dataType: "json",
+                //    success: function (data, status) {
+                //        if (data.status != constDefine.DB_SUCESS) {
+                //            alert("设置参数值失败,原因:" + data.reason);
+                //            return;
+                //        }
+
+                //        alert("设置参数值成功，参数版本号:" + data.value);
+                //    },
+                //    error: function (xhr) {
+                //        ajaxErr(xhr);
+                //    }
+                //});
+            });
+
+            refreshParaVersion();
+        });
     </script>
 </head>
 <body class="contentBackgroundColor">
     <div class="divContent">
-        <p style="font-size:50px;">历史参数222</p>
+        <div style="margin-top:5px;margin-bottom:5px;">
+            <span class="spanLabel_TextAlign_Right">参数版本号</span>
+            <span>
+                <select id="comboxParaVersion" class="select"></select>
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="spanLabel_TextAlign_Right">参数分组</span>
+            <span>
+                <select id="comboxParaGroup" class="select"></select>
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span><input type="button" id="btnVersionManagement" value="版本管理" style="font-size: 20px"/></span>
+        </div>
+
+        <table id="tbParaValues" class="table" style="margin-top:0px;">
+            <tr>
+                <th style="width:80px;">序号</th>
+                <th style="width:200px;">组名称</th>
+                <th style="width:300px;">Key</th>
+                <th style="width:320px;">参数名称</th>
+                <!--<th style="width:300px;">参数描述</th>-->
+                <th style="width:450px;">值</th>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

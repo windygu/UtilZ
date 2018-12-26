@@ -717,5 +717,45 @@ namespace UtilZ.ParaService.BLL
             }
         }
         #endregion
+
+        #region 历史参数管理
+
+        //public List<long> QueryVersions(long projectId)
+        public ApiData QueryVersions(long projectId)
+        {
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetParaValueDAO().QueryVersions(projectId));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+
+        public ApiData QueryVersionParaValue(long projectId, long version)
+        {
+            try
+            {
+                var verionParaValue = new VerionParaValue();
+                verionParaValue.Version = version;
+                verionParaValue.ParaGroups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
+                verionParaValue.Items = this.GetParaValueDAO().QueryVersionParas(projectId, version);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, verionParaValue);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+        #endregion
     }
 }

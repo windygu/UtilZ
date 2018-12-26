@@ -67,7 +67,7 @@
     <script src="../js/config.js"></script>
     <script src="../js/site.js"></script>
     <script type="text/javascript">
-        function RefreshModules() {
+        function refreshModules() {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
                 var url = config.conf.baseUrl + "ProjectModule/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
@@ -223,7 +223,7 @@
             $("#moduleEditShade").css("visibility", "hidden");
         }
 
-        function setGruopShow(groupId) {
+        function setGroupShow(groupId) {
             var index = 1;
             var tb = document.getElementById("tbParas");
             for (var i = 1; i < tb.rows.length; i++) {
@@ -374,7 +374,7 @@
         $(document).ready(function () {
             pageLoginValidate();
 
-            RefreshModules();
+            refreshModules();
 
             //添加模块
             $("#btnAddModule").click(function () {
@@ -446,7 +446,6 @@
                 });
             });
 
-
             $("#btnModuleParaManagerCommit").click(function () {
                 var data = getModuleParas();
                 var url = config.conf.baseUrl + "ModulePara";
@@ -482,7 +481,7 @@
             //为Select添加事件，当选择其中一项时触发
             $("#comboxParaGroup").change(function () {
                 var paraGroupId = $("#comboxParaGroup").val(); //获取Select选择的Value
-                setGruopShow(paraGroupId);
+                setGroupShow(paraGroupId);
             });
         });
     </script>
@@ -579,7 +578,7 @@
                 <th style="width:400px;">参数描述</th>
                 <th style="width:80px;">启用</th>
             </tr>
-            <tr>
+            <!--<tr>
                 <td>1</td>
                 <td>酱油</td>
                 <td>URL</td>
@@ -594,7 +593,7 @@
                 <td>URL</td>
                 <td>URL_DES</td>
                 <td><input type="checkbox" id="sadf" checked="checked" value="1" /></td>
-            </tr>
+            </tr>-->
         </table>
 
         <div style="margin-left:20px">
