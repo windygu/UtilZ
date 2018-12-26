@@ -238,7 +238,7 @@ INNER JOIN ModulePara ON ModulePara.ParaID=t.ParaID WHERE ModuleID={0}ModuleID",
             {
                 var queryParaValueCmd = conInfo.Connection.CreateCommand();
                 //queryParaValueCmd.CommandText = string.Format(@"SELECT ID,GroupID,Key,Name,Des,Value FROM Para INNER JOIN ParaValue ON Para.ID=ParaValue.ParaID WHERE ParaValue.ProjectID={0}ProjectID AND ParaValue.Version={0}Version;", paraSign);
-                queryParaValueCmd.CommandText = string.Format(@"SELECT ID,GroupID,Key,Name,Value FROM Para INNER JOIN ParaValue ON Para.ID=ParaValue.ParaID WHERE ParaValue.ProjectID={0}ProjectID AND ParaValue.Version={0}Version;", paraSign);
+                queryParaValueCmd.CommandText = string.Format(@"SELECT ID,GroupID,Key,Name,Des,Value FROM Para INNER JOIN ParaValue ON Para.ID=ParaValue.ParaID WHERE ParaValue.ProjectID={0}ProjectID AND ParaValue.Version={0}Version;", paraSign);
                 dbAccess.AddCommandParameter(queryParaValueCmd, "ProjectID", projectId);
                 dbAccess.AddCommandParameter(queryParaValueCmd, "Version", version);
                 var reader = queryParaValueCmd.ExecuteReader();
@@ -251,7 +251,8 @@ INNER JOIN ModulePara ON ModulePara.ParaID=t.ParaID WHERE ModuleID={0}ModuleID",
                     verionParaValueItem.GroupID = reader.GetInt64(1);
                     verionParaValueItem.Key = reader.GetString(2);
                     verionParaValueItem.Name = reader.GetString(3);
-                    verionParaValueItem.Value = reader.GetString(4);
+                    verionParaValueItem.Des = reader.GetString(4);
+                    verionParaValueItem.Value = reader.GetString(5);
                     verionParaValueItems.Add(verionParaValueItem);
                 }
 

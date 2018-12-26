@@ -30,45 +30,6 @@
     <script src="../js/config.js"></script>
     <script src="../js/site.js"></script>
     <script type="text/javascript">
-        function refreshParaGroup() {
-            try {
-                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var url = config.conf.baseUrl + "ParaGroup/projectID=" + prjId + "&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
-                var token = sessionStorage.getItem('token');
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    headers:
-                    {
-                        "access_token": token//此处放置请求到的用户token
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    //dataType: "json",
-                    success: function (data, status) {
-                        var comboxParaGroup = $("#comboxParaGroup");
-                        comboxParaGroup.empty();//清空
-
-                        if (data.status != constDefine.DB_SUCESS) {
-                            alert("查询参数分组列表失败,原因:" + data.reason);
-                            return;
-                        }
-
-                        comboxParaGroup.append('<option value="' + constDefine.paraGroupAll + '">全部</option>'); //为Select追加一个Option(下拉项)
-                        for (var i = 0; i < data.value.length; i++) {
-                            var paraGroupItem = data.value[i];
-                            comboxParaGroup.append('<option value="' + paraGroupItem.id + '">' + paraGroupItem.name + '</option>'); //为Select追加一个Option(下拉项)
-                        }
-                    },
-                    error: function (xhr) {
-                        ajaxErr(xhr);
-                    }
-                });
-            }
-            catch (ex) {
-                alert(ex.error);
-            }
-        }
-
         function setGroupShow(groupId) {
             var index = 1;
             var tb = document.getElementById("tbParas");
@@ -95,7 +56,7 @@
         function refreshParas() {
             try {
                 var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
-                var url = config.conf.baseUrl + "Para/projectID=" + prjId + "&paraGroupId=-1&pageSize=" + config.conf.projectPageSize + "&pageIndex=-1";
+                var url = config.conf.baseUrl + "ParaValue/projectID=" + prjId + "&version=-1";
                 var token = sessionStorage.getItem('token');
                 $.ajax({
                     type: "GET",
@@ -107,15 +68,27 @@
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function (data, status) {
+                        var comboxParaGroup = $("#comboxParaGroup");
+                        comboxParaGroup.empty();//清空
                         clearTable("tbParas", true);
+
                         if (data.status != constDefine.DB_SUCESS) {
                             alert("查询参数列表失败,原因:" + data.reason);
                             return;
                         }
 
+                        //组
+                        var paraGroupDic = new Array();
+                        comboxParaGroup.append('<option value="' + constDefine.paraGroupAll + '">全部</option>'); //为Select追加一个Option(下拉项)
+                        for (var i = 0; i < data.value.paraGroups.length; i++) {
+                            var paraGroupItem = data.value.paraGroups[i];
+                            paraGroupDic[paraGroupItem.id] = paraGroupItem.name;
+                            comboxParaGroup.append('<option value="' + paraGroupItem.id + '">' + paraGroupItem.name + '</option>'); //为Select追加一个Option(下拉项)
+                        }
+
                         var tbParas = $("#tbParas");
-                        for (var i = 0; i < data.value.length; i++) {
-                            var paraItem = data.value[i];
+                        for (var i = 0; i < data.value.items.length; i++) {
+                            var paraItem = data.value.items[i];
                             var row = $('<tr id="tr_' + paraItem.id + '" data-groupid="' + paraItem.groupID + '" data-paraId="' + paraItem.id + '"></tr>');
 
                             var tdId = $("<td></td>");
@@ -123,12 +96,12 @@
                             row.append(tdId);
 
                             var tdparaGropuName = $('<td></td>');
-                            tdparaGropuName.append(paraItem.group.name);
+                            tdparaGropuName.append(paraGroupDic[paraItem.groupID]);
                             row.append(tdparaGropuName);
 
-                            //var tdparaKey = $('<td></td>');
-                            //tdparaKey.append(paraItem.key);
-                            //row.append(tdparaKey);
+                            var tdparaKey = $('<td></td>');
+                            tdparaKey.append(paraItem.key);
+                            row.append(tdparaKey);
 
                             var tdparaName = $('<td id="td_' + paraItem.id + '_name"></td>');
                             tdparaName.append(paraItem.name);
@@ -139,7 +112,7 @@
                             row.append(tdparaGroupDes);
 
                             var tdvalue = $("<td></td>");
-                            var editHtml = '<input type="text" class="inputPara inputPara" id="txtValue' + paraItem.id + '" value="' + paraItem.key + '"/>';
+                            var editHtml = '<input type="text" class="inputPara inputPara" id="txtValue' + paraItem.id + '" value="' + paraItem.value + '"/>';
                             tdvalue.append(editHtml);
                             row.append(tdvalue);
 
@@ -166,7 +139,7 @@
             for (var i = 1; i < tb.rows.length; i++) {
                 var trId = "#" + tb.rows[i].getAttribute("id");
                 var paraId = Number(tb.rows[i].getAttribute("data-paraId"));
-                var value = tb.rows[i].cells[4].children[0].value;
+                var value = tb.rows[i].cells[5].children[0].value;
 
                 //组装参数值
                 var itemData = '{"Id":' + paraId + ',"Value":"' + value + '"}';
@@ -182,7 +155,6 @@
         }
 
         $(document).ready(function () {
-            refreshParaGroup();
             refreshParas();
 
             //为Select添加事件，当选择其中一项时触发
@@ -240,10 +212,10 @@
             <tr>
                 <th style="width:80px;">序号</th>
                 <th style="width:200px;">组名称</th>
-                <!--<th style="width:270px;">Key</th>-->
-                <th style="width:320px;">参数名称</th>
+                <th style="width:170px;">Key</th>
+                <th style="width:200px;">参数名称</th>
                 <th style="width:300px;">参数描述</th>
-                <th style="width:450px;">值</th>
+                <th style="width:400px;">值</th>
             </tr>
         </table>
 

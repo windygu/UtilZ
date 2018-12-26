@@ -129,6 +129,10 @@
                             tdparaName.append(paraItem.name);
                             row.append(tdparaName);
 
+                            var tdparaGroupDes = $("<td></td>");
+                            tdparaGroupDes.append(paraItem.des);
+                            row.append(tdparaGroupDes);
+
                             //参数值
                             var tdparaValue = $("<td></td>");
                             tdparaValue.append(paraItem.value);
@@ -234,10 +238,10 @@
             <tr>
                 <th style="width:80px;">序号</th>
                 <th style="width:200px;">组名称</th>
-                <th style="width:300px;">Key</th>
-                <th style="width:320px;">参数名称</th>
-                <!--<th style="width:300px;">参数描述</th>-->
-                <th style="width:450px;">值</th>
+                <th style="width:170px;">Key</th>
+                <th style="width:200px;">参数名称</th>
+                <th style="width:300px;">参数描述</th>
+                <th style="width:400px;">值</th>
             </tr>
         </table>
     </div>

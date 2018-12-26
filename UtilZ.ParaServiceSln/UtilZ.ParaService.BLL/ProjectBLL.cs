@@ -741,10 +741,16 @@ namespace UtilZ.ParaService.BLL
         {
             try
             {
+                var paraValueDAO = this.GetParaValueDAO();
+                if (version < 0)
+                {
+                    version = this.GetBestNewVersion(projectId, paraValueDAO);
+                }
+
                 var verionParaValue = new VerionParaValue();
                 verionParaValue.Version = version;
                 verionParaValue.ParaGroups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
-                verionParaValue.Items = this.GetParaValueDAO().QueryVersionParas(projectId, version);
+                verionParaValue.Items = paraValueDAO.QueryVersionParas(projectId, version);
                 return new ApiData(ParaServiceConstant.DB_SUCESS, verionParaValue);
             }
             catch (DBException dbex)

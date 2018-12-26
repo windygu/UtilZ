@@ -14,7 +14,7 @@ namespace UtilZ.ParaService.Model
 
         public string Name { get; set; }
 
-        //public string Des { get; set; }
+        public string Des { get; set; }
 
         public string Value { get; set; }
     }
