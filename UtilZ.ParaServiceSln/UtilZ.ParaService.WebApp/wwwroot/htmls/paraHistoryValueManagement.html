@@ -18,6 +18,10 @@
             margin: auto;
             /*background-color:red;*/
         }
+
+        .delVerInput {
+            width: 100px;
+        }
     </style>
 
     <script src="../lib/jquery/dist/jquery.js"></script>
@@ -187,31 +191,37 @@
             });
 
             $("#btnVersionManagement").click(function () {
-                //var data = getParaValues();
-                //var url = config.conf.baseUrl + "ParaValue";
-                //var token = sessionStorage.getItem('token');
-                //$.ajax({
-                //    type: "POST",
-                //    url: url,
-                //    data: data,
-                //    contentType: "application/json; charset=utf-8",
-                //    headers:
-                //    {
-                //        "access_token": token//此处放置请求到的用户token
-                //    },
-                //    //dataType: "json",
-                //    success: function (data, status) {
-                //        if (data.status != constDefine.DB_SUCESS) {
-                //            alert("设置参数值失败,原因:" + data.reason);
-                //            return;
-                //        }
+                var beginVersion = $("#numBeginVersion").val();
+                var endVersion = $("#numEndVersion").val();
+                if (beginVersion > endVersion) {
+                    alert("起始版本号不能大于结束版本号");
+                    return;
+                }
 
-                //        alert("设置参数值成功，参数版本号:" + data.value);
-                //    },
-                //    error: function (xhr) {
-                //        ajaxErr(xhr);
-                //    }
-                //});
+                var prjId = Number(sessionStorage.getItem(constDefine.prjIdKey));
+                var url = config.conf.baseUrl + 'ParaValue/projectId=' + prjId + '&beginVer=' + beginVersion + '&endVer=' + endVersion;
+                var token = sessionStorage.getItem('token');
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    contentType: "application/json; charset=utf-8",
+                    headers:
+                    {
+                        "access_token": token//此处放置请求到的用户token
+                    },
+                    //dataType: "json",
+                    success: function (data, status) {
+                        if (data.status != constDefine.DB_SUCESS) {
+                            alert("删除参数版本失败,原因:" + data.reason);
+                            return;
+                        }
+
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        ajaxErr(xhr);
+                    }
+                });
             });
 
             refreshParaVersion();
@@ -225,13 +235,17 @@
             <span>
                 <select id="comboxParaVersion" class="select"></select>
             </span>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>&nbsp;&nbsp;</span>
             <span class="spanLabel_TextAlign_Right">参数分组</span>
             <span>
                 <select id="comboxParaGroup" class="select"></select>
             </span>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span><input type="button" id="btnVersionManagement" value="版本管理" style="font-size: 20px"/></span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="spanLabel_TextAlign_Right">版本号(包含)</span>
+            <span><input type="number" id="numBeginVersion" class="inputText delVerInput" value="0" min="0" max="2147483647" /></span>
+            <span>-</span>
+            <span><input type="number" id="numEndVersion" class="inputText delVerInput" value="0" min="0" max="2147483647" /></span>
+            <span><input type="button" id="btnVersionManagement" value="删除" style="font-size: 20px" /></span>
         </div>
 
         <table id="tbParaValues" class="table" style="margin-top:0px;">
