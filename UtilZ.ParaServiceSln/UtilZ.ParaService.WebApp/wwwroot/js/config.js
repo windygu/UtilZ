@@ -1,6 +1,7 @@
 ﻿var config = config || {};
 config.conf = {
-    baseUrl: 'https://localhost:12018/api/v1/',
+    //baseUrl: 'https://localhost:12018/api/v1/',
+    baseUrl: '/api/v1/',
     projectPageSize: '20',
     //cnum: lenovo.util.getParam('cnum'),
     //go: '',
