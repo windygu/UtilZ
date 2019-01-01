@@ -73,6 +73,25 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
+        public long QueryProjectIdByProjectAlias(string projectAlias)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryCmd = conInfo.Connection.CreateCommand();
+                queryCmd.CommandText = string.Format(@"SELECT ID FROM Project WHERE Alias={0}Alias", paraSign);
+                dbAccess.AddCommandParameter(queryCmd, "Alias", projectAlias);
+                object obj = queryCmd.ExecuteScalar();
+                if (obj == DBNull.Value || obj == null)
+                {
+                    throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"不存在别名为[{projectAlias}]项目");
+                }
+
+                return (long)obj;
+            }
+        }
+
         /// <summary>
         /// 添加项目返回主键
         /// </summary>

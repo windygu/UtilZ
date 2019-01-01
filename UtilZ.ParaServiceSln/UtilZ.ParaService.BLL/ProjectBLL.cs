@@ -12,6 +12,8 @@ namespace UtilZ.ParaService.BLL
 {
     public class ProjectBLL
     {
+        private const int _CACHE_EXPIRE_TIME = 3600000;
+
         public ProjectBLL()
         {
 
@@ -441,17 +443,54 @@ namespace UtilZ.ParaService.BLL
         }
         #endregion
 
-        private string GetVerCacheKey(long projectId)
+        #region ModulePara
+        private ModuleParaDAO _moduleParaDAO = null;
+        private ModuleParaDAO GetModuleParaDAO()
         {
-            return $"prj_{projectId}_cache_key";
+            if (this._moduleParaDAO == null)
+            {
+                this._moduleParaDAO = new ModuleParaDAO();
+            }
+
+            return this._moduleParaDAO;
         }
 
-        private string GetProjectModuleParaValueCacheKey(long projectId, long moduleId, long version)
+        public ApiData QueryModuleParas(long projectId, long moduleId)
         {
-            return $"{projectId}_{moduleId}_{version}";
+            try
+            {
+                var mpg = new ModuleParaGet();
+                mpg.AllParas = this.GetParaDAO().QueryParas(projectId, -1, -1, -1);
+                mpg.Groups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
+                mpg.ModuleParas = this.GetModuleParaDAO().QueryModuleParas(moduleId);
+                return new ApiData(ParaServiceConstant.DB_SUCESS, mpg);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
         }
 
-        private const int _CACHE_EXPIRE_TIME = 3600000;
+        public ApiData UpdateModuleParas(ModuleParaPost moduleParaPost)
+        {
+            try
+            {
+                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetModuleParaDAO().UpdateModuleParas(moduleParaPost));
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+        #endregion
 
         #region ParaValue
         private ParaValueDAO _paraValueDAO = null;
@@ -541,7 +580,7 @@ namespace UtilZ.ParaService.BLL
         {
             lock (_updateCacheParaValueLock)
             {
-                if (!this.AddProjectParaVerToCache(this.GetVerCacheKey(para.PID), version))
+                if (!this.AddProjectParaVerToCache(CacheKeyGenerateHelper.GetVerCacheKey(para.PID), version))
                 {
                     return;
                 }
@@ -563,7 +602,7 @@ namespace UtilZ.ParaService.BLL
                             servicePara.Items.Add(new ServiceParaItem() { Key = paraDic[modulePara.ParaID], Value = paraValueDic[modulePara.ParaID] });
                         }
 
-                        string cacheKey = this.GetProjectModuleParaValueCacheKey(para.PID, moduleParaGroup.Key, version);
+                        string cacheKey = CacheKeyGenerateHelper.GetProjectModuleParaValueCacheKey(para.PID, moduleParaGroup.Key, version);
                         this.AddProjectParaToCache(cacheKey, servicePara);
                     }
                 }
@@ -604,7 +643,7 @@ namespace UtilZ.ParaService.BLL
                     version = this.GetBestNewVersion(projectId, paraValueDAO);
                 }
 
-                string cacheKey = this.GetProjectModuleParaValueCacheKey(projectId, moduleId, version);
+                string cacheKey = CacheKeyGenerateHelper.GetProjectModuleParaValueCacheKey(projectId, moduleId, version);
                 var servicePara = MemoryCacheEx.Get(cacheKey) as ServicePara;
                 if (servicePara == null)
                 {
@@ -624,10 +663,64 @@ namespace UtilZ.ParaService.BLL
             }
         }
 
+        private long GetProjectIdByProjectAlias(string projectAlias)
+        {
+            long projectId;
+            var projectAliasCacheKey = CacheKeyGenerateHelper.GetProjectAliasCacheKey(projectAlias);
+            object obj = MemoryCacheEx.Get(projectAliasCacheKey);
+            if (obj != null)
+            {
+                projectId = (long)obj;
+            }
+            else
+            {
+                projectId = this.GetProjectDAO().QueryProjectIdByProjectAlias(projectAlias);
+            }
+
+            MemoryCacheEx.Set(projectAliasCacheKey, projectId, _CACHE_EXPIRE_TIME);
+            return projectId;
+        }
+
+        private long QueryProjectModuleIdByModuleAlias(long projectId, string moduleAlias)
+        {
+            long moduleId;
+            var moduleAliasCacheKey = CacheKeyGenerateHelper.GetModuleAliasCacheKey(moduleAlias);
+            object obj = MemoryCacheEx.Get(moduleAliasCacheKey);
+            if (obj != null)
+            {
+                moduleId = (long)obj;
+            }
+            else
+            {
+                moduleId = this.GetProjectModuleDAO().QueryProjectModuleByModuleAlias(projectId, moduleAlias);
+            }
+
+            MemoryCacheEx.Set(moduleAliasCacheKey, moduleId, _CACHE_EXPIRE_TIME);
+            return moduleId;
+        }
+
+        public ApiData QueryParaValues(string projectAlias, string moduleAlias, long version)
+        {
+            try
+            {
+                long projectId = this.GetProjectIdByProjectAlias(projectAlias);
+                long moduleId = this.QueryProjectModuleIdByModuleAlias(projectId, moduleAlias);
+                return this.QueryParaValues(projectId, moduleId, version);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+
         private long GetBestNewVersion(long projectId, ParaValueDAO paraValueDAO)
         {
             long version;
-            string verCacheKey = this.GetVerCacheKey(projectId);
+            string verCacheKey = CacheKeyGenerateHelper.GetVerCacheKey(projectId);
             object obj = MemoryCacheEx.Get(verCacheKey);
             if (obj == null)
             {
@@ -667,60 +760,7 @@ namespace UtilZ.ParaService.BLL
                 return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
             }
         }
-        #endregion
 
-        #region ModulePara
-        private ModuleParaDAO _moduleParaDAO = null;
-        private ModuleParaDAO GetModuleParaDAO()
-        {
-            if (this._moduleParaDAO == null)
-            {
-                this._moduleParaDAO = new ModuleParaDAO();
-            }
-
-            return this._moduleParaDAO;
-        }
-
-        public ApiData QueryModuleParas(long projectId, long moduleId)
-        {
-            try
-            {
-                var mpg = new ModuleParaGet();
-                mpg.AllParas = this.GetParaDAO().QueryParas(projectId, -1, -1, -1);
-                mpg.Groups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
-                mpg.ModuleParas = this.GetModuleParaDAO().QueryModuleParas(moduleId);
-                return new ApiData(ParaServiceConstant.DB_SUCESS, mpg);
-            }
-            catch (DBException dbex)
-            {
-                return new ApiData(dbex.Status, dbex.Message);
-            }
-            catch (Exception ex)
-            {
-                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
-            }
-        }
-
-        public ApiData UpdateModuleParas(ModuleParaPost moduleParaPost)
-        {
-            try
-            {
-                return new ApiData(ParaServiceConstant.DB_SUCESS, this.GetModuleParaDAO().UpdateModuleParas(moduleParaPost));
-            }
-            catch (DBException dbex)
-            {
-                return new ApiData(dbex.Status, dbex.Message);
-            }
-            catch (Exception ex)
-            {
-                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
-            }
-        }
-        #endregion
-
-        #region 历史参数管理
-
-        //public List<long> QueryVersions(long projectId)
         public ApiData QueryVersions(long projectId)
         {
             try
@@ -737,7 +777,7 @@ namespace UtilZ.ParaService.BLL
             }
         }
 
-        public ApiData QueryVersionParaValue(long projectId, long version)
+        public ApiData QueryParaValues(long projectId, long version)
         {
             try
             {
@@ -752,6 +792,23 @@ namespace UtilZ.ParaService.BLL
                 verionParaValue.ParaGroups = this.GetParaGroupDAO().QueryParaGroups(projectId, -1, -1);
                 verionParaValue.Items = paraValueDAO.QueryVersionParas(projectId, version);
                 return new ApiData(ParaServiceConstant.DB_SUCESS, verionParaValue);
+            }
+            catch (DBException dbex)
+            {
+                return new ApiData(dbex.Status, dbex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new ApiData(ParaServiceConstant.DB_FAIL_NONE, ex.Message);
+            }
+        }
+
+        public ApiData QueryParaValues(string projectAlias, long version)
+        {
+            try
+            {
+                long projectId = this.GetProjectIdByProjectAlias(projectAlias);
+                return this.QueryParaValues(projectId, version);
             }
             catch (DBException dbex)
             {

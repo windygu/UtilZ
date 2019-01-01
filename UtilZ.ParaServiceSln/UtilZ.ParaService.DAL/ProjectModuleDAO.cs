@@ -89,6 +89,25 @@ namespace UtilZ.ParaService.DAL
             }
         }
 
+        public long QueryProjectModuleByModuleAlias(long projectId, string moduleAlias)
+        {
+            IDBAccess dbAccess = base.GetDBAccess();
+            string paraSign = dbAccess.ParaSign;
+            using (var conInfo = dbAccess.CreateConnection(Dotnet.DBBase.Model.DBVisitType.R))
+            {
+                var queryCmd = conInfo.Connection.CreateCommand();
+                queryCmd.CommandText = string.Format(@"SELECT ID FROM ProjectModule WHERE Alias={0}Alias", paraSign);
+                dbAccess.AddCommandParameter(queryCmd, "Alias", moduleAlias);
+                object obj = queryCmd.ExecuteScalar();
+                if (obj == DBNull.Value || obj == null)
+                {
+                    throw new DBException(ParaServiceConstant.DB_NOT_EIXST, $"项目中不存在别名为[{moduleAlias}]的模块");
+                }
+
+                return (long)obj;
+            }
+        }
+
         /// <summary>
         /// 添加项目模块返回主键
         /// </summary>

@@ -29,10 +29,22 @@ namespace UtilZ.ParaService.WebApp.Controllers._1_0
             return this._bll.QueryParaValues(projectId, moduleId, version);
         }
 
+        [HttpGet("projectAlias={projectAlias}&moduleAlias={moduleAlias}&version={version}")]
+        public ApiData Get(string projectAlias, string moduleAlias, long version)
+        {
+            return this._bll.QueryParaValues(projectAlias, moduleAlias, version);
+        }
+
         [HttpGet("projectID={projectId}&version={version}")]
         public ApiData Get(long projectId, long version)
         {
-            return this._bll.QueryVersionParaValue(projectId, version);
+            return this._bll.QueryParaValues(projectId, version);
+        }
+
+        [HttpGet("projectAlias={projectAlias}&version={version}")]
+        public ApiData Get(string projectAlias, long version)
+        {
+            return this._bll.QueryParaValues(projectAlias, version);
         }
 
         // POST: api/Project

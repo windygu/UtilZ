@@ -47,7 +47,7 @@
         }
 
         $(document).ready(function () {
-            initApiRootUrl();
+            config.conf.baseUrl = window.document.location.origin + config.conf.baseUrl;
 
             $("#btnLogin").click(function () {
                 var userName = $("#txtUserName").val();
