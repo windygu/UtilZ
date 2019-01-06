@@ -218,7 +218,6 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="token">取消线程对象</param>
         private static void ValueValidThreadMethod(CancellationToken token)
         {
-            const int waitMs = 30 * 1000;
             //当前所有项集合
             var items = new List<MemoryCacheItem>();
             DateTime currentTime;
@@ -270,6 +269,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>缓存项,获取成功返回缓存项,值过期或key不存在返回null</returns>
         public static object Get(string key)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             var item = _htCacheItems[key] as MemoryCacheItem;
             return item == null ? null : item.GetValue();
         }
@@ -281,6 +285,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>移除的缓存项</returns>
         public static object Remove(string key)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             var item = _htCacheItems[key] as MemoryCacheItem;
             _htCacheItems.Remove(key);
             return item == null ? null : item.GetValue();
@@ -293,6 +302,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="value">缓存项</param>
         public static void Add(string key, object value)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             lock (_htCacheItems.SyncRoot)
             {
                 if (_htCacheItems.ContainsKey(key))
@@ -312,6 +326,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
         public static void Add(string key, object value, int expiration)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             lock (_htCacheItems.SyncRoot)
             {
                 if (_htCacheItems.ContainsKey(key))
@@ -330,6 +349,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="value">缓存项</param>
         public static void Set(string key, object value)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             lock (_htCacheItems.SyncRoot)
             {
                 var oldItem = _htCacheItems[key] as MemoryCacheItem;
@@ -352,6 +376,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
         public static void Set(string key, object value, int expiration)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             lock (_htCacheItems.SyncRoot)
             {
                 var oldItem = _htCacheItems[key] as MemoryCacheItem;
@@ -375,6 +404,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="removedCallback">移除回调[key,value]</param>
         public static void Set(string key, object value, int expiration, Action<string, object> removedCallback)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             lock (_htCacheItems.SyncRoot)
             {
                 var oldItem = _htCacheItems[key] as MemoryCacheItem;
@@ -396,6 +430,11 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>存在返回true;不存在返回false</returns>
         public static bool Exist(string key)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             return _htCacheItems.ContainsKey(key);
         }
     }

@@ -55,7 +55,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void Trace(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null);
+        void Trace(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null);
 
         /// <summary>
         /// 追踪
@@ -99,7 +99,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void Debug(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null);
+        void Debug(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null);
 
         /// <summary>
         /// 调试
@@ -143,7 +143,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void Info(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null);
+        void Info(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null);
 
         /// <summary>
         /// 信息
@@ -187,7 +187,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常警告</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void Warn(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null);
+        void Warn(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null);
 
         /// <summary>
         /// 警告
@@ -231,7 +231,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常错误</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void Error(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null);
+        void Error(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null);
 
         /// <summary>
         /// 错误
@@ -275,7 +275,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常致命</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void Fatal(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null);
+        void Fatal(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null);
 
         /// <summary>
         /// 致命

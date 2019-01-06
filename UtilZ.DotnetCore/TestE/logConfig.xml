@@ -34,6 +34,10 @@
       <param name="SeparatorCount" value="0" des="分隔线长度,0表示无分隔线"/>
       <param name="EnableOutputCache" value="false" des="是否启用日志输出缓存,默认为false[true:启用;false:禁用]"/>
     </appender>-->
+
+    <appender name="redirectAppender" enable="true" type="R">
+      <param name="EnableOutputCache" value="true" des="是否启用日志输出缓存,默认为false[true:启用;false:禁用]"/>
+    </appender>
   </loger>
 
   <!--<loger name="flow" level="warn" enable="true">

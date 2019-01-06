@@ -30,11 +30,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 throw new ArgumentNullException("文件路径不能为空");
             }
 
-            this.IsFixPath = !filePath.Contains(LogConstant.PatternFlagChar);
+            this.IsFixPath = !filePath.Contains(LogConstant.PATTERN_FALG_CHAR);
             var fullPath = this.ConvertToFullPath(filePath);
             string[] paths = fullPath.Split(_pathSplitChars, StringSplitOptions.RemoveEmptyEntries);
             paths[0] = paths[0] + Path.DirectorySeparatorChar;
-            if (paths[paths.Length - 1].Contains(LogConstant.PatternFlagChar))
+            if (paths[paths.Length - 1].Contains(LogConstant.PATTERN_FALG_CHAR))
             {
                 this._pathBuilder = new FileAppenderVariateFileNameBuilder(config, paths, _pathSplitChars);
             }
@@ -68,7 +68,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             {
                 string[] paths = filePath.Split(_pathSplitChars, StringSplitOptions.RemoveEmptyEntries);
                 string firstPath = paths[0];
-                if (firstPath[0] == LogConstant.PatternFlagChar && firstPath[firstPath.Length - 1] == LogConstant.PatternFlagChar)
+                if (firstPath[0] == LogConstant.PATTERN_FALG_CHAR && firstPath[firstPath.Length - 1] == LogConstant.PATTERN_FALG_CHAR)
                 {
                     //*MyDocuments*
                     string pattern = firstPath.Substring(1, firstPath.Length - 2).ToLower();
@@ -81,7 +81,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                     else
                     {
                         //filePath = Path.Combine(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
-                        filePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, filePath);
+                        filePath = Path.Combine(LogConstant.CurrentAssemblyDirectory, filePath);
                         //if (EnvironmentEx.AppType == AppType.WebApp)
                         //{
                         //    filePath = Path.Combine(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
@@ -92,23 +92,13 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                         //}
                     }
                 }
-                else if (firstPath.Contains(LogConstant.PatternFlagChar))
+                else if (firstPath.Contains(LogConstant.PATTERN_FALG_CHAR))
                 {
-                    string dir = Path.GetDirectoryName(typeof(FileAppenderPathManager).Assembly.Location);
-                    filePath = string.Format(@"{0}/{1}", dir, filePath);
+                    filePath = string.Format(@"{0}/{1}", LogConstant.CurrentAssemblyDirectory, filePath);
                 }
                 else
                 {
-                    //filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
-                    filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.BaseDirectory, filePath);
-                    //if (EnvironmentEx.AppType == AppType.WebApp)
-                    //{
-                    //    filePath = string.Format(@"{0}/{1}", System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase, filePath);
-                    //}
-                    //else
-                    //{
-                    //    filePath = string.Format(@"{0}/{1}", Directory.GetParent(firstPath).FullName, filePath);
-                    //}
+                    filePath = string.Format(@"{0}/{1}", LogConstant.CurrentAssemblyDirectory, filePath);
                 }
             }
             else

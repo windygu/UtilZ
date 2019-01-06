@@ -41,7 +41,17 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 空队列等待线程消息通知
         /// </summary>
-        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent _emptyQueueWaitEventHandle = new AutoResetEvent(false);
+
+        private void EmptyQueueWaitEventHandleSet()
+        {
+            try
+            {
+                this._emptyQueueWaitEventHandle.Set();
+            }
+            catch (ObjectDisposedException)
+            { }
+        }
 
         /// <summary>
         /// 空队列等待超时时间
@@ -232,19 +242,11 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
 
                 this._cts = new CancellationTokenSource();
-                if (this._isDequeueMuiltItem)
-                {
-                    this._thread = new Thread(this.RunThreadQueueMuiltProcessMethod);
-                }
-                else
-                {
-                    this._thread = new Thread(this.RunThreadQueueSingleProcessMethod);
-                }
-
+                this._thread = new Thread(this.RunThreadQueueProcessMethod);
                 this._thread.IsBackground = this._isBackground;
                 this._thread.SetApartmentState(apartmentState);
                 this._thread.Name = this._threadName;
-                this._thread.Start();
+                this._thread.Start(this._cts.Token);
                 this._status = true;
             }
         }
@@ -282,7 +284,10 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             this._cts.Cancel();
-            this._autoResetEvent.Set();
+            this._cts.Dispose();
+            this._cts = null;
+
+            this.EmptyQueueWaitEventHandleSet();
             if (isAbort)
             {
                 this._thread.Abort();
@@ -303,9 +308,24 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 线程队列处理方法
         /// </summary>
-        private void RunThreadQueueSingleProcessMethod()
+        private void RunThreadQueueProcessMethod(object obj)
         {
-            CancellationToken token = this._cts.Token;
+            CancellationToken token = (CancellationToken)obj;
+            if (this._isDequeueMuiltItem)
+            {
+                this.RunThreadQueueMuiltProcessMethod(token);
+            }
+            else
+            {
+                this.RunThreadQueueSingleProcessMethod(token);
+            }
+        }
+
+        /// <summary>
+        /// 线程队列处理方法
+        /// </summary>
+        private void RunThreadQueueSingleProcessMethod(CancellationToken token)
+        {
             int count;
             T item;
             try
@@ -321,7 +341,7 @@ namespace UtilZ.Dotnet.Ex.Base
                     {
                         try
                         {
-                            this._autoResetEvent.WaitOne(this._emptyQueueWaitTimeout);
+                            this._emptyQueueWaitEventHandle.WaitOne(this._emptyQueueWaitTimeout);
                         }
                         catch (ObjectDisposedException)
                         {
@@ -352,9 +372,8 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 线程队列处理方法
         /// </summary>
-        private void RunThreadQueueMuiltProcessMethod()
+        private void RunThreadQueueMuiltProcessMethod(CancellationToken token)
         {
-            CancellationToken token = this._cts.Token;
             List<T> items = new List<T>();
             List<T> items2;
             try
@@ -368,35 +387,34 @@ namespace UtilZ.Dotnet.Ex.Base
                             items.Add(this._queue.Dequeue());
                         }
                     }
-
-                    if (items.Count < this._batchCount && this._autoResetEvent.WaitOne(this._millisecondsTimeout))
+                    try
                     {
-                        lock (this.SyncRoot)
+                        if (items.Count < this._batchCount && this._emptyQueueWaitEventHandle.WaitOne(this._millisecondsTimeout))
                         {
-                            while (this._queue.Count > 0 && items.Count < this._batchCount)
+                            lock (this.SyncRoot)
                             {
-                                items.Add(this._queue.Dequeue());
+                                while (this._queue.Count > 0 && items.Count < this._batchCount)
+                                {
+                                    items.Add(this._queue.Dequeue());
+                                }
                             }
                         }
-                    }
 
-                    if (items.Count == 0)
-                    {
-                        try
+                        if (items.Count == 0)
                         {
-                            this._autoResetEvent.WaitOne(this._emptyQueueWaitTimeout);
+                            this._emptyQueueWaitEventHandle.WaitOne(this._emptyQueueWaitTimeout);
                         }
-                        catch (ObjectDisposedException)
+                        else
                         {
-                            break;
+                            //数据处理
+                            items2 = items.ToList();
+                            items.Clear();
+                            this.OnRaiseProcessAction2(items2);
                         }
                     }
-                    else
+                    catch (ObjectDisposedException)
                     {
-                        //数据处理
-                        items2 = items.ToList();
-                        items.Clear();
-                        this.OnRaiseProcessAction2(items2);
+                        break;
                     }
                 }
             }
@@ -443,7 +461,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 if (this._queue.Count < this._capity)
                 {
                     this._queue.Enqueue(item);
-                    this._autoResetEvent.Set();
+                    this.EmptyQueueWaitEventHandleSet();
                     return true;
                 }
                 else
@@ -546,24 +564,6 @@ namespace UtilZ.Dotnet.Ex.Base
         }
 
         /// <summary>
-        /// 确定队列中是否至少有一个元素满足条件[至少有一个满足返回true;否则返回false]
-        /// </summary>
-        /// <param name="predicate">用于比较的函数</param>
-        /// <returns>至少有一个满足返回true;否则返回false</returns>
-        public bool Any(Func<T, bool> predicate)
-        {
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
-
-            lock (this.SyncRoot)
-            {
-                return this._queue.Any(predicate);
-            }
-        }
-
-        /// <summary>
         /// 释放资源
         /// </summary>
         public void Dispose()
@@ -585,13 +585,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
 
                 this.PrimitiveStop(false, false, 5000);
-
-                if (this._cts != null)
-                {
-                    this._cts.Dispose();
-                }
-
-                this._autoResetEvent.Dispose();
+                this._emptyQueueWaitEventHandle.Dispose();
                 this._stopAutoResetEvent.Dispose();
                 this._isDisposed = true;
             }

@@ -106,7 +106,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Trace(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, null, format, args);
+            this.InsAddLog(LogLevel.Trace, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Trace(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        void ILoger.Trace(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             this.InsAddLog(LogLevel.Trace, eventId, tag, ex, null);
         }
@@ -140,7 +140,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Trace(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, ex, format, args);
+            this.InsAddLog(LogLevel.Trace, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Debug(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, null, format, args);
+            this.InsAddLog(LogLevel.Debug, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Debug(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        void ILoger.Debug(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             this.InsAddLog(LogLevel.Debug, eventId, tag, ex, null);
         }
@@ -199,7 +199,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Debug(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, ex, format, args);
+            this.InsAddLog(LogLevel.Debug, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Info(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, null, format, args);
+            this.InsAddLog(LogLevel.Info, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Info(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        void ILoger.Info(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             this.InsAddLog(LogLevel.Info, eventId, tag, ex, null);
         }
@@ -258,7 +258,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Info(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, ex, format, args);
+            this.InsAddLog(LogLevel.Info, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Warn(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, null, format, args);
+            this.InsAddLog(LogLevel.Warn, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常警告</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Warn(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        void ILoger.Warn(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             this.InsAddLog(LogLevel.Warn, eventId, tag, ex, null);
         }
@@ -317,7 +317,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Warn(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, ex, format, args);
+            this.InsAddLog(LogLevel.Warn, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Error(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, null, format, args);
+            this.InsAddLog(LogLevel.Error, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常错误</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Error(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        void ILoger.Error(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             this.InsAddLog(LogLevel.Error, eventId, tag, ex, null);
         }
@@ -376,7 +376,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Error(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, ex, format, args);
+            this.InsAddLog(LogLevel.Error, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Fatal(string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, null, format, args);
+            this.InsAddLog(LogLevel.Fatal, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -422,7 +422,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常致命</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Fatal(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        void ILoger.Fatal(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             this.InsAddLog(LogLevel.Fatal, eventId, tag, ex, null);
         }
@@ -435,7 +435,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         void ILoger.Fatal(Exception ex, string format, params object[] args)
         {
-            this.InsAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, ex, format, args);
+            this.InsAddLog(LogLevel.Fatal, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
