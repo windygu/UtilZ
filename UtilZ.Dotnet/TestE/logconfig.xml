@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<logconfig>
+<logConfig>
   <!--Trace,Debug,Info,Warn,Error,Fatal,Off-->
   <loger name="" level="Trace" enable="true">
     <!--FileAppender[F],RedirectAppender[R],ConsoleAppender[C],DatabaseAppender[D],MailAppender[M],SystemLogAppender[S]-->
@@ -142,4 +142,4 @@
       <param name="FilterTo" value="faltal" />
     </appender>
   </loger>-->
-</logconfig>
+</logConfig>

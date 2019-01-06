@@ -90,12 +90,12 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// <summary>
         /// 事件ID最小值(包含该值,默认值为不限)
         /// </summary>
-        public int EventIdMin { get; set; } = LogConstant.DefaultEventId;
+        public int EventIdMin { get; set; } = LogConstant.DEFAULT_EVENT_ID;
 
         /// <summary>
         /// 事件ID最大值(包含该值,默认值为不限)
         /// </summary>
-        public int EventIdMax { get; set; } = LogConstant.DefaultEventId;
+        public int EventIdMax { get; set; } = LogConstant.DEFAULT_EVENT_ID;
 
         /// <summary>
         /// 消息匹配指定的字符串才被记录,为空或null不匹配(默认为null)
@@ -162,9 +162,9 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             int eventId;
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.EventIdMin)), out eventId))
             {
-                if (eventId < LogConstant.DefaultEventId)
+                if (eventId < LogConstant.DEFAULT_EVENT_ID)
                 {
-                    eventId = LogConstant.DefaultEventId;
+                    eventId = LogConstant.DEFAULT_EVENT_ID;
                 }
 
                 this.EventIdMin = eventId;
@@ -172,9 +172,9 @@ namespace UtilZ.Dotnet.Ex.Log.Config
 
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.EventIdMax)), out eventId))
             {
-                if (eventId < LogConstant.DefaultEventId)
+                if (eventId < LogConstant.DEFAULT_EVENT_ID)
                 {
-                    eventId = LogConstant.DefaultEventId;
+                    eventId = LogConstant.DEFAULT_EVENT_ID;
                 }
 
                 this.EventIdMax = eventId;

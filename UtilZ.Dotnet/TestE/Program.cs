@@ -17,10 +17,10 @@ namespace TestE
         [STAThread]
         static void Main()
         {
-            Loger.LoadConfig(@"logconfig.xml");
+            //Loger.LoadConfig(@"logconfig.xml");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestDB());
+            Application.Run(new FTestLoger());
         }
     }
 }

@@ -9,10 +9,24 @@ namespace UtilZ.Dotnet.Ex.Log
     /// </summary>
     public class LogConstant
     {
+        static LogConstant()
+        {
+            _currentAssemblyDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+        }
+
+        private static string _currentAssemblyDirectory;
+        /// <summary>
+        /// 获取当前应用程序所在根目录
+        /// </summary>
+        public static string CurrentAssemblyDirectory
+        {
+            get { return _currentAssemblyDirectory; }
+        }
+
         /// <summary>
         /// 默认事件ID
         /// </summary>
-        public const int DefaultEventId = -1;
+        public const int DEFAULT_EVENT_ID = -1;
 
         #region 日志级别中文字符串常量
         /// <summary>
@@ -101,46 +115,58 @@ namespace UtilZ.Dotnet.Ex.Log
         }
         #endregion
 
+        #region 配置
         /// <summary>
         /// 默认配置文件名称
         /// </summary>
-        public const string DefaultConfigFileName = "logConfig.xml";
+        public const string DEFAULT_CONFIG_FILE_NAME = "logConfig.xml";
+
+        /// <summary>
+        /// 日志配置根节点名称
+        /// </summary>
+        public const string LOGCONFIG_ROOT_ELEMENT_NAME = "logConfig";
+
+        /// <summary>
+        /// 日志记录器配置节点名称
+        /// </summary>
+        public const string LOGCONFIG_LOGER_ELEMENT_NAME = "loger";
 
         /// <summary>
         /// 通配符
         /// </summary>
-        public const char PatternFlagChar = '*';
+        public const char PATTERN_FALG_CHAR = '*';
+        #endregion
 
         #region 日志追加器简称通配符
         /// <summary>
         /// File
         /// </summary>
-        public const char FileAppenderPattern = 'F';
+        public const char FILE_APPENDER_PATTERN_BREIF = 'F';
 
         /// <summary>
         /// Redirect
         /// </summary>
-        public const char RedirectAppenderPattern = 'R';
+        public const char REDIRECT_APPENDER_PATTERN_BREIF = 'R';
 
         /// <summary>
         /// Console
         /// </summary>
-        public const char ConsoleAppenderPattern = 'C';
+        public const char CONSOLE_APPENDER_PATTERN_BREIF = 'C';
 
         /// <summary>
         /// Database
         /// </summary>
-        public const char DatabaseAppenderPattern = 'D';
+        public const char DATABASE_APPENDER_PATTERN_BREIF = 'D';
 
         /// <summary>
         /// Mail
         /// </summary>
-        public const char MailAppenderPattern = 'M';
+        public const char MAIL_APPENDER_PATTERN_BREIF = 'M';
 
         /// <summary>
         /// System
         /// </summary>
-        public const char SystemAppenderPattern = 'S';
+        public const char SYSTEM_APPENDER_PATTERN_BREIF = 'S';
         #endregion
     }
 }

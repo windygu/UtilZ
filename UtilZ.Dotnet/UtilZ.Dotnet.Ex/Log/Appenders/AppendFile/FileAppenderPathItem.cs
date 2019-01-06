@@ -18,10 +18,10 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
         public FileAppenderPathItem(string path)
         {
-            int begin = path.IndexOf(LogConstant.PatternFlagChar);
+            int begin = path.IndexOf(LogConstant.PATTERN_FALG_CHAR);
             if (begin > -1)
             {
-                int end = path.LastIndexOf(LogConstant.PatternFlagChar);
+                int end = path.LastIndexOf(LogConstant.PATTERN_FALG_CHAR);
                 if (end < 0)
                 {
                     throw new ArgumentException("日期匹配字符串无效");

@@ -123,12 +123,12 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 return false;
             }
 
-            if (config.EventIdMin != LogConstant.DefaultEventId && item.EventID < config.EventIdMin)
+            if (config.EventIdMin != LogConstant.DEFAULT_EVENT_ID && item.EventID < config.EventIdMin)
             {
                 return false;
             }
 
-            if (config.EventIdMax != LogConstant.DefaultEventId && item.EventID > config.EventIdMax)
+            if (config.EventIdMax != LogConstant.DEFAULT_EVENT_ID && item.EventID > config.EventIdMax)
             {
                 return false;
             }

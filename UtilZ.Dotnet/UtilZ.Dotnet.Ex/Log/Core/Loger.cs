@@ -32,17 +32,60 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         static Loger()
         {
-            const string logConfigFileName = LogConstant.DefaultConfigFileName;
-            if (File.Exists(logConfigFileName))
+            StaticStructLoadLogConfig();
+        }
+
+        private static void StaticStructLoadLogConfig()
+        {
+            try
             {
-                LoadConfig(logConfigFileName);
+                const string logConfigFileName = LogConstant.DEFAULT_CONFIG_FILE_NAME;
+                if (File.Exists(logConfigFileName))
+                {
+                    LoadConfig(logConfigFileName);
+                }
+                else
+                {
+                    var xmlFilePaths = Directory.GetFiles(LogConstant.CurrentAssemblyDirectory, "*.xml", SearchOption.TopDirectoryOnly);
+                    if (xmlFilePaths.Length == 0)
+                    {
+                        CreateDefaultLoger();
+                    }
+                    else
+                    {
+                        foreach (var xmlFilePath in xmlFilePaths)
+                        {
+                            try
+                            {
+                                var xdoc = XDocument.Load(xmlFilePath);
+                                if (PrimitiveLoadConfig(xdoc))
+                                {
+                                    return;
+                                }
+                            }
+                            catch (Exception exi)
+                            {
+                                LogSysInnerLog.OnRaiseLog($"加载日志配置[{xmlFilePath}]异常", exi);
+                            }
+                        }
+
+                        LogSysInnerLog.OnRaiseLog("没有可用的日志配置文件,使用默认配置", null);
+                        CreateDefaultLoger();
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var defaultLoger = new Loger();
-                defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
-                _defaultLoger = defaultLoger;
+                CreateDefaultLoger();
+                LogSysInnerLog.OnRaiseLog("加载日志配置异常,使用默认配置", ex);
             }
+        }
+
+        private static void CreateDefaultLoger()
+        {
+            var defaultLoger = new Loger();
+            defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
+            _defaultLoger = defaultLoger;
         }
 
         /// <summary>
@@ -81,20 +124,39 @@ namespace UtilZ.Dotnet.Ex.Log
             try
             {
                 var xdoc = XDocument.Load(configFilePath);
-                IEnumerable<XElement> logerEles = xdoc.XPathSelectElements(@"logconfig/loger");
+                PrimitiveLoadConfig(xdoc);
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog("加载配置文件异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 加载配置,加载前清空旧的配置
+        /// </summary>
+        /// <param name="xdoc">配置文件XDocument</param>
+        private static bool PrimitiveLoadConfig(XDocument xdoc)
+        {
+            if (string.Equals(xdoc.Root.Name.LocalName, LogConstant.LOGCONFIG_ROOT_ELEMENT_NAME, StringComparison.OrdinalIgnoreCase))
+            {
+                var logerEles = xdoc.Root.Elements(LogConstant.LOGCONFIG_LOGER_ELEMENT_NAME);
                 if (logerEles.Count() == 0)
                 {
-                    return;
+                    return true;
                 }
 
                 foreach (var logerEle in logerEles)
                 {
                     ParseLogerConfig(logerEle);
                 }
+
+                return true;
             }
-            catch (Exception ex)
+            else
             {
-                LogSysInnerLog.OnRaiseLog("加载配置文件异常", ex);
+                LogSysInnerLog.OnRaiseLog("无效的载配置文件", null);
+                return false;
             }
         }
 
@@ -217,22 +279,22 @@ namespace UtilZ.Dotnet.Ex.Log
             AppenderBase appender;
             switch (appenderTypeName[0])
             {
-                case LogConstant.FileAppenderPattern:
+                case LogConstant.FILE_APPENDER_PATTERN_BREIF:
                     appender = new FileAppender(appenderEle);
                     break;
-                case LogConstant.RedirectAppenderPattern:
+                case LogConstant.REDIRECT_APPENDER_PATTERN_BREIF:
                     appender = new RedirectAppender(appenderEle);
                     break;
-                case LogConstant.ConsoleAppenderPattern:
+                case LogConstant.CONSOLE_APPENDER_PATTERN_BREIF:
                     appender = new ConsoleAppender(appenderEle);
                     break;
-                case LogConstant.DatabaseAppenderPattern:
+                case LogConstant.DATABASE_APPENDER_PATTERN_BREIF:
                     appender = new DatabaseAppender(appenderEle);
                     break;
-                case LogConstant.MailAppenderPattern:
+                case LogConstant.MAIL_APPENDER_PATTERN_BREIF:
                     appender = new MailAppender(appenderEle);
                     break;
-                case LogConstant.SystemAppenderPattern:
+                case LogConstant.SYSTEM_APPENDER_PATTERN_BREIF:
                     appender = new SystemLogAppender(appenderEle);
                     break;
                 default:
@@ -434,7 +496,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Trace(string format, params object[] args)
         {
-            SAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, null, format, args);
+            SAddLog(LogLevel.Trace, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -455,7 +517,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        public static void Trace(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        public static void Trace(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             SAddLog(LogLevel.Trace, eventId, tag, ex, null);
         }
@@ -468,7 +530,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Trace(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Trace, LogConstant.DefaultEventId, null, ex, format, args);
+            SAddLog(LogLevel.Trace, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -493,7 +555,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Debug(string format, params object[] args)
         {
-            SAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, null, format, args);
+            SAddLog(LogLevel.Debug, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -514,7 +576,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        public static void Debug(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        public static void Debug(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             SAddLog(LogLevel.Debug, eventId, tag, ex, null);
         }
@@ -527,7 +589,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Debug(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Debug, LogConstant.DefaultEventId, null, ex, format, args);
+            SAddLog(LogLevel.Debug, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -552,7 +614,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Info(string format, params object[] args)
         {
-            SAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, null, format, args);
+            SAddLog(LogLevel.Info, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -573,7 +635,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        public static void Info(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        public static void Info(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             SAddLog(LogLevel.Info, eventId, tag, ex, null);
         }
@@ -586,7 +648,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Info(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Info, LogConstant.DefaultEventId, null, ex, format, args);
+            SAddLog(LogLevel.Info, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -611,7 +673,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Warn(string format, params object[] args)
         {
-            SAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, null, format, args);
+            SAddLog(LogLevel.Warn, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -632,7 +694,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常警告</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        public static void Warn(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        public static void Warn(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             SAddLog(LogLevel.Warn, eventId, tag, ex, null);
         }
@@ -645,7 +707,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Warn(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Warn, LogConstant.DefaultEventId, null, ex, format, args);
+            SAddLog(LogLevel.Warn, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -670,7 +732,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Error(string format, params object[] args)
         {
-            SAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, null, format, args);
+            SAddLog(LogLevel.Error, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -691,7 +753,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常错误</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        public static void Error(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        public static void Error(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             SAddLog(LogLevel.Error, eventId, tag, ex, null);
         }
@@ -704,7 +766,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Error(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Error, LogConstant.DefaultEventId, null, ex, format, args);
+            SAddLog(LogLevel.Error, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>
@@ -729,7 +791,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Fatal(string format, params object[] args)
         {
-            SAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, null, format, args);
+            SAddLog(LogLevel.Fatal, LogConstant.DEFAULT_EVENT_ID, null, null, format, args);
         }
 
         /// <summary>
@@ -750,7 +812,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常致命</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        public static void Fatal(Exception ex, int eventId = LogConstant.DefaultEventId, object tag = null)
+        public static void Fatal(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
         {
             SAddLog(LogLevel.Fatal, eventId, tag, ex, null);
         }
@@ -763,7 +825,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         public static void Fatal(Exception ex, string format, params object[] args)
         {
-            SAddLog(LogLevel.Fatal, LogConstant.DefaultEventId, null, ex, format, args);
+            SAddLog(LogLevel.Fatal, LogConstant.DEFAULT_EVENT_ID, null, ex, format, args);
         }
 
         /// <summary>

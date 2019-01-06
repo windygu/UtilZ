@@ -306,7 +306,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="logconfig.xml">
+    <None Include="logConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
