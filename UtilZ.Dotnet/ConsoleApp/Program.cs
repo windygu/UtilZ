@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
@@ -18,12 +19,32 @@ namespace ConsoleApp
 {
     class Program
     {
+        private static void TM()
+        {
+            SpinWait.SpinUntil(() => { return true; }, 100);
+        }
+
         static void Main(string[] args)
         {
-            //var subLog = new UtilZ.Dotnet.Ex.Log.LogOutput.LogOutputSubscribeItem(null, null);
-            //subLog.LogOutput += SubLog_LogOutput;
-            //Loger.LogOutput.AddLogOutput(subLog);
-            //Loger.LogOutput.Enable = true;
+            //Thread tre = new Thread(TM);
+
+            try
+            {
+                Task task = new Task(TM);
+                task.Start();
+
+                task.Wait();
+
+                task.Start();
+                task.Wait();
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            //RedirectOuputCenter.Add(new RedirectOutputChannel(SubLog_LogOutput));
 
 
             //TelnetServer ts = new TelnetServer(IPAddress.Parse("0.0.0.0"), 14002, "测试服务", ProCallback, 3);
@@ -395,7 +416,7 @@ namespace ConsoleApp
             return buffer;
         }
 
-        private static void SubLog_LogOutput(object sender, UtilZ.Dotnet.Ex.Log.Model.LogOutputArgs e)
+        private static void SubLog_LogOutput(RedirectOuputItem e)
         {
             string str;
             try

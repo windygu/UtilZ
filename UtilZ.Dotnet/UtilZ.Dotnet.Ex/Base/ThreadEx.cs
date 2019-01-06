@@ -342,7 +342,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 {
                     if (this._thread == null)
                     {
-                        return 0;
+                        throw new Exception("线程未启动");
                     }
                     else
                     {
@@ -385,17 +385,6 @@ namespace UtilZ.Dotnet.Ex.Base
                     return;
                 }
 
-                if (this._cts != null)
-                {
-                    if (!this._cts.IsCancellationRequested)
-                    {
-                        this._cts.Cancel();
-                    }
-
-                    this._cts.Dispose();
-                    this._cts = null;
-                }
-
                 IncreaseExcuteThreadCount();
                 this._cts = new CancellationTokenSource();
 
@@ -416,7 +405,7 @@ namespace UtilZ.Dotnet.Ex.Base
                 this._thread.IsBackground = this._isBackground;
                 this._isRuning = true;
                 this._isReqAbort = false;
-                this._thread.Start(obj);
+                this._thread.Start(new Tuple<object, CancellationToken>(obj, this._cts.Token));
             }
         }
 
@@ -428,14 +417,15 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             try
             {
-                var token = this._cts.Token;
+                var tuple = (Tuple<object, CancellationToken>)obj;
+                var token = tuple.Item2;
                 if (this._flag)
                 {
                     this._action(token);
                 }
                 else
                 {
-                    this._actionObj(token, obj);
+                    this._actionObj(token, tuple.Item1);
                 }
 
                 if (this._isReqAbort || token.IsCancellationRequested)
@@ -508,7 +498,13 @@ namespace UtilZ.Dotnet.Ex.Base
                     return;
                 }
 
-                this._cts.Cancel();
+                if (this._cts != null && !this._cts.IsCancellationRequested)
+                {
+                    this._cts.Cancel();
+                    this._cts.Dispose();
+                    this._cts = null;
+                }
+
                 this._isReqAbort = true;
                 this._thread = null;
             }
@@ -565,6 +561,7 @@ namespace UtilZ.Dotnet.Ex.Base
                     return;
                 }
 
+                this.Stop(true);
                 this._isDisposed = true;
                 try
                 {
