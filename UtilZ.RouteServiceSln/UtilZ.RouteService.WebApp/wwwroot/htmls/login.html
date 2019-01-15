@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>登录参数管理</title>
+    <link href="../css/site.css" rel="stylesheet" />
+    <style type="text/css">
+        .divLogin {
+            width: 500px;
+            height: 280px;
+            /*margin-left: auto;
+            margin-right:auto;*/
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .spanLabel {
+            width: 80px;
+            margin-left: 50px;
+            margin-top: 30px;
+        }
+
+        .inputText_login {
+            width: 310px;
+        }
+    </style>
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../js/config.js"></script>
+    <script type="text/javascript">
+        function initApiRootUrl() {
+            //获取当前网址，
+            var curPath = window.document.location.href;
+            //获取主机地址之后的目录，
+            var pathName = window.document.location.pathname;
+            var pos = curPath.indexOf(pathName);
+            //获取主机地址
+            var localhostPaht = curPath.substring(0, pos);
+            //获取带"/"的项目名，
+            //var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+            //return (localhostPaht);
+            //config.conf.baseUrl = localhostPaht + config.conf.baseUrl;
+            config.conf.baseUrl = window.document.location.origin + config.conf.baseUrl;
+        }
+
+        $(document).ready(function () {
+            config.conf.baseUrl = window.document.location.origin + config.conf.baseUrl;
+
+            $("#btnLogin").click(function () {
+                var userName = $("#txtUserName").val();
+                var password = $("#txtPassword").val();
+                if (userName == "") {
+                    alert("用户名不能为空");
+                    return;
+                }
+
+                if (password == "") {
+                    alert("密码不能为空");
+                    return;
+                }
+
+                var url = config.conf.baseUrl + "Authentication";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers:
+                    {
+                        "userName": userName,
+                        "password": password,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, status) {
+                        sessionStorage.setItem('token', data.access_token);
+                        window.location.href = "/htmls/projectManagement.html";
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="contentBackgroundColor divLogin">
+        <p class="ptitle" style="margin-top:30px;">登录参数管理系统</p>
+        <div style="margin-top:-40px;">
+            <div>
+                <span class="spanLabel spanLabel_TextAlign_Justify">用户名</span>
+                <span><input type="text" class="inputText_login inputText" id="txtUserName" value="admin" /></span>
+            </div>
+            <div>
+                <span class="spanLabel spanLabel_TextAlign_Justify">密码</span>
+                <span><input type="password" class="inputText_login inputText" id="txtPassword" value="admin" /></span>
+            </div>
+            <div>
+                <button class="buttonOKCancell" style="margin-left:135px;margin-top:30px;" id="btnLogin">登录</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

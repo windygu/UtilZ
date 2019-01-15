@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DBConfig>
+  <DBItems>
+    <Item DBID="1"
+         Name="SQLiteDB"
+         ConnectionType="1"
+         DatabaseName="F:\Project\Git\UtilZ\UtilZ.DotnetCore\TestE\SQLiteDB\SQLite.db"
+         DBType="SQLite"/>
+
+    <Item DBID="2"
+          Name="SqlServerDB"
+          ConnectionType="0"
+          ConnectionString="data source=192.168.0.102;initial catalog=ntestdb;user id=sa;password=qweQWE123"
+          DBType="SQLServer"/>
+
+    <Item DBID="3"
+          Name="MysqlDB"
+          ConnectionType="1"
+          Host="192.168.0.102"
+          Port="3306"
+          DatabaseName="test"
+          Account="yf"
+          Password="qweQWE123"
+          DBType="MySql"/>
+
+    <Item DBID="4"
+         Name="OracleDB"
+         ConnectionType="1"
+         Host="192.168.0.102"
+         DatabaseName="ntestdb.org"
+         Account="DBUSER"
+         Password="qwe123"
+         DBType="Oracle"/>
+
+    <Item DBID="5"
+        Name="SQLiteDB"
+        ConnectionType="1"
+        ReadConnectionCount="0"
+        DatabaseName="F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\DB\ParaDB.db"
+        DBType="SQLite"/>
+
+    <!--<Item DBID="5"
+        Name="SQLiteDB"
+        ConnectionType="1"
+        ReadConnectionCount="0"
+        WriteConnectionCount="0"
+        DatabaseName="F:\Code\Git\UtilZ\UtilZ.ParaServiceSln\UtilZ.ParaService.WebApp\DB\ParaDB.db"
+        DBType="SQLite"/>-->
+  </DBItems>
+</DBConfig>
