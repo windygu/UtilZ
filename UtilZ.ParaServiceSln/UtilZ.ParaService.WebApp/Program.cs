@@ -14,7 +14,7 @@ namespace UtilZ.ParaService.WebApp
     {
         public static void Main(string[] args)
         {
-            Models.WebAppConstant.Test();
+            //Models.WebAppConstant.Test();
 
             var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
