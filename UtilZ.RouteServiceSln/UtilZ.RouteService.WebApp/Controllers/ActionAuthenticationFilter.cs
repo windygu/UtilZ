@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UtilZ.RouteService.WebApp.Controllers._1_0;
 using UtilZ.RouteService.WebApp.Models;
 
 namespace UtilZ.RouteService.WebApp.Controllers
@@ -106,7 +107,6 @@ namespace UtilZ.RouteService.WebApp.Controllers
                 context.Result = controller.Unauthorized();
             }
 
-
             //var controller = (ControllerBase)context.Controller;
             //context.Result = controller.Unauthorized();
             //context.Result = new EmptyResult();
@@ -121,10 +121,11 @@ namespace UtilZ.RouteService.WebApp.Controllers
                 return false;
             }
 
-            //if (controller is ParaValueController && string.Equals(context.ActionDescriptor.RouteValues["action"], "get", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    return false;
-            //}
+            if (controller is DataRouteController &&
+                string.Equals(context.ActionDescriptor.RouteValues["action"], "get", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
 
             return true;
         }

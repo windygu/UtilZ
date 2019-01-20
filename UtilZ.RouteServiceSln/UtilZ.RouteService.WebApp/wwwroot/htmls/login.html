@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>登录参数管理</title>
+    <title>登录路由服务</title>
     <link href="../css/site.css" rel="stylesheet" />
     <style type="text/css">
         .divLogin {
@@ -75,7 +75,7 @@
                     //dataType: "json",
                     success: function (data, status) {
                         sessionStorage.setItem('token', data.access_token);
-                        window.location.href = "/htmls/projectManagement.html";
+                        window.location.href = "/htmls/dataRouteManager.html";
                     },
                     error: function (xhr) {
                         alert(xhr.statusText);
@@ -87,7 +87,7 @@
 </head>
 <body>
     <div class="contentBackgroundColor divLogin">
-        <p class="ptitle" style="margin-top:30px;">登录参数管理系统</p>
+        <p class="ptitle" style="margin-top:30px;">登录路由服务</p>
         <div style="margin-top:-40px;">
             <div>
                 <span class="spanLabel spanLabel_TextAlign_Justify">用户名</span>

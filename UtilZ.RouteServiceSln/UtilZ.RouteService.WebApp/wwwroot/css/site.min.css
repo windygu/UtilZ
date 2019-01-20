@@ -1,1 +1,162 @@
-body{padding-top:50px;padding-bottom:20px}.body-content{padding-left:15px;padding-right:15px}.carousel-caption p{font-size:20px;line-height:1.4}.carousel-inner .item img[src$=".svg"]{width:100%}#qrCode{margin:15px}@media screen and (max-width:767px){.carousel-caption{display:none}}
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: cadetblue;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+.contentBackgroundColor {
+    background-color: whitesmoke;
+}
+
+
+.spanLabel_TextAlign_Justify {
+    /*display: block;*/
+    display: -moz-inline-box;
+    display: inline-block;
+    font-size: 20px;
+    text-align: justify;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: justify; /* ie9*/
+    -moz-text-align-last: justify; /*ff*/
+}
+
+.spanLabel_TextAlign_Left {
+    font-size: 20px;
+    display: -moz-inline-box;
+    display: inline-block;
+    text-align: left;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: left; /* ie9*/
+    -moz-text-align-last: left; /*ff*/
+}
+
+.spanLabel_TextAlign_Right {
+    font-size: 20px;
+    display: -moz-inline-box;
+    display: inline-block;
+    text-align: right;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: right; /* ie9*/
+    -moz-text-align-last: right; /*ff*/
+}
+
+.select {
+    font-size: 18px;
+    width: 150px;
+}
+
+.ptitle {
+    font-size: 40px;
+    text-align: center;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: center; /* ie9*/
+    -moz-text-align-last: center; /*ff*/
+}
+
+.inputText {
+    font-size: 20px;
+}
+
+.buttonOKCancell {
+    font-size: 20px;
+    width: 100px;
+    height: 30px;
+}
+
+.spanLabel_Prompt {
+    color: red;
+    font-size: 20px;
+    display: -moz-inline-box;
+    display: inline-block;
+    text-align: left;
+    text-justify: distribute-all-lines; /*ie6-8*/
+    text-align-last: left; /* ie9*/
+    -moz-text-align-last: left; /*ff*/
+}
+
+.table {
+    margin-top: -40px;
+}
+
+th {
+    font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    color: #4f6b72;
+    border-right: 1px solid #C1DAD7;
+    border-bottom: 1px solid #C1DAD7;
+    border-top: 1px solid #C1DAD7;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 6px 6px 6px 12px;
+    background: #CAE8EA no-repeat;
+}
+
+td {
+    border-right: 1px solid #C1DAD7;
+    border-bottom: 1px solid #C1DAD7;
+    background: #fff;
+    font-size: 14px;
+    padding: 6px 6px 6px 12px;
+    color: #4f6b72;
+}
+
+    td.alt {
+        background: #F5FAFA;
+        color: #797268;
+    }
+
+    th.spec, td.spec {
+        border-left: 1px solid #C1DAD7;
+    }
+
+tr.select th, tr.select td {
+    background-color: #CAE8EA;
+    color: #797268;
+}
+
+.editButton {
+    margin: 2px;
+}
+
+.AddButton {
+    font-size: 25px;
+    color: cadetblue;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 160px;
+    height: 60px;
+}

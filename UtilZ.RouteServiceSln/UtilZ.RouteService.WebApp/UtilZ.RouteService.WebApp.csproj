@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,10 +15,6 @@
     <ProjectReference Include="..\UtilZ.RouteService.BLL\UtilZ.RouteService.BLL.csproj" />
     <ProjectReference Include="..\UtilZ.RouteService.DBModel\UtilZ.RouteService.DBModel.csproj" />
     <ProjectReference Include="..\UtilZ.RouteService.Model\UtilZ.RouteService.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\1_0\" />
   </ItemGroup>
 
   <ItemGroup>
