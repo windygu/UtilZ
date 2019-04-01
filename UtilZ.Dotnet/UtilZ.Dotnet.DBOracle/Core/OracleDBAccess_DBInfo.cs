@@ -87,7 +87,8 @@ namespace UtilZ.Dotnet.DBOracle.Core
             try
             {
                 var priKeyCols = this.InnerQueryPrikeyColumns(con, tableName);//主键列名集合
-                string sqlStr = string.Format("SELECT * FROM (SELECT A.*, ROWNUM RN FROM (SELECT * FROM {0}) A WHERE ROWNUM <= 1) WHERE RN >=0", tableName);
+                //string sqlStr = string.Format("SELECT * FROM (SELECT A.*, ROWNUM RN FROM (SELECT * FROM {0}) A WHERE ROWNUM <= 1) WHERE RN >=0", tableName);
+                string sqlStr = string.Format("SELECT * FROM {0} WHERE ROWNUM <1", tableName);
                 DataTable dt = this.InnerQueryData(con, sqlStr);
                 var dicFieldDbClrFieldType = this.GetFieldDbClrFieldType(tableName, dt.Columns);//字段的公共语言运行时类型字典集合
                 Dictionary<string, Type> colDBType = new Dictionary<string, Type>();
