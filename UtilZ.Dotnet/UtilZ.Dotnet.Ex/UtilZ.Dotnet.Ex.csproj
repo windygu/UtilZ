@@ -11,6 +11,7 @@
     <AssemblyName>UtilZ.Dotnet.Ex</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\UtilZ.Dotnet.Ex.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript" />
@@ -36,8 +39,11 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -47,9 +53,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\DisplayOrderAttribute.cs" />
     <Compile Include="Base\ActivatorEx.cs" />
+    <Compile Include="Base\BindingCollection\BindingCollection.cs" />
+    <Compile Include="Base\BindingCollection\BindingListChangedArgs.cs" />
+    <Compile Include="Base\BindingCollection\BindingListChangedType.cs" />
+    <Compile Include="Base\BindingCollection\ComparerResultType.cs" />
+    <Compile Include="Base\BindingCollection\ICollectionOwner.cs" />
+    <Compile Include="Base\BlockingCollectionEx.cs" />
     <Compile Include="Base\EnvironmentEx.cs" />
+    <Compile Include="Base\GUIDEx.cs" />
+    <Compile Include="Base\TimeEx.cs" />
+    <Compile Include="Base\TimeoutBase.cs" />
+    <Compile Include="Base\TTLV\ITTLVNodeCodec.cs" />
+    <Compile Include="Base\TTLV\ITTLVConverter.cs" />
+    <Compile Include="Base\TTLV\TTLVCommon.cs" />
+    <Compile Include="Base\TTLV\TTLVConverterBase.cs" />
+    <Compile Include="Base\TTLV\TTLVHelper_Decoding.cs" />
+    <Compile Include="Base\TTLV\TTLVHelper_Encoding.cs" />
+    <Compile Include="Base\TTLV\TTLVNodeCodec.cs" />
+    <Compile Include="Base\TTLV\TTLVDemo.cs" />
+    <Compile Include="Base\TTLV\TTLVHelper.cs" />
+    <Compile Include="Attributes\TTLVAttribute.cs" />
+    <Compile Include="Base\TTLV\TTLVNodeInfo.cs" />
+    <Compile Include="Base\TTLV\TTLVPrimitiveCollectionConverter.cs" />
+    <Compile Include="Base\TTLV\TTLVSerializeConverter.cs" />
+    <Compile Include="Base\TTLV\TTLVType.cs" />
+    <Compile Include="Base\TTLV\TTLVStructNode.cs" />
     <Compile Include="DataStruct\Array64.cs" />
     <Compile Include="Base\ArrayEx.cs" />
     <Compile Include="Base\AssemblyEx.cs" />
@@ -64,12 +93,11 @@
     <Compile Include="Base\FileEx.cs" />
     <Compile Include="Base\FileStringCodingEx.cs" />
     <Compile Include="Base\FontEx.cs" />
-    <Compile Include="Base\FtpEx.cs" />
     <Compile Include="Base\HashEx.cs" />
     <Compile Include="Base\ImageEx.cs" />
     <Compile Include="Base\IPAddressEx.cs" />
     <Compile Include="Base\MailEx.cs" />
-    <Compile Include="Base\NJScript.cs" />
+    <Compile Include="Base\JavascriptEx.cs" />
     <Compile Include="Base\NumberEx.cs" />
     <Compile Include="Base\ObjectEx.cs" />
     <Compile Include="Base\ProcessEx.cs" />
@@ -94,11 +122,18 @@
     <Compile Include="DataStruct\ReadOnlyDictionary.cs" />
     <Compile Include="DataStruct\SortedListEx.cs" />
     <Compile Include="Base\ThreadEx.cs" />
-    <Compile Include="Base\BindingListEx.cs" />
+    <Compile Include="Base\BindingCollection\BindingListEx.cs" />
     <Compile Include="Expression\BaseCalate.cs" />
     <Compile Include="Expression\Exceptions.cs" />
     <Compile Include="Expression\ExpressionCalculator.cs" />
     <Compile Include="Expression\Models.cs" />
+    <Compile Include="FileTransfer\DirectoryInfoItem.cs" />
+    <Compile Include="FileTransfer\FileInfoItem.cs" />
+    <Compile Include="FileTransfer\FileSystemItemInfo.cs" />
+    <Compile Include="FileTransfer\FtpFileTransfer.cs" />
+    <Compile Include="FileTransfer\IFileTransfer.cs" />
+    <Compile Include="FileTransfer\TransferFileException.cs" />
+    <Compile Include="FileTransfer\UpdateMode.cs" />
     <Compile Include="LMQ\LMQBase.cs" />
     <Compile Include="LMQ\LMQCenter.cs" />
     <Compile Include="LMQ\LMQConfigManager.cs" />
@@ -150,7 +185,6 @@
     <Compile Include="Model\DateTimeFormatProvider.cs" />
     <Compile Include="Attributes\DisplayNameExAttribute.cs" />
     <Compile Include="Model\DropdownBindingItem.cs" />
-    <Compile Include="Attributes\EnumAttribute.cs" />
     <Compile Include="Base\EnumEx.cs" />
     <Compile Include="Model\RegexConstant.cs" />
     <Compile Include="Model\TEventArgs.cs" />
@@ -167,6 +201,53 @@
     <Compile Include="Base\Util.cs" />
     <Compile Include="Model\UtilConstant.cs" />
     <Compile Include="NativeMethod\WindowAnimateType.cs" />
+    <Compile Include="RestFullBase\ApiResult.cs" />
+    <Compile Include="RestFullBase\ApiResultStatus.cs" />
+    <Compile Include="RestFullBase\CrossDomainExtensionBehavior.cs" />
+    <Compile Include="RestFullBase\CrossDomainHeaderMessageInspector.cs" />
+    <Compile Include="RestFullBase\Demo\IPersonInfoQuery.cs" />
+    <Compile Include="RestFullBase\Demo\PersonInfoQueryService.cs" />
+    <Compile Include="RestFullBase\Demo\RestFullClientDemo.cs" />
+    <Compile Include="RestFullBase\Demo\ServiceHost.cs" />
+    <Compile Include="RestFullBase\IRestFullServiceLauncher.cs" />
+    <Compile Include="RestFullBase\RestFullClientHelper.cs" />
+    <Compile Include="RestFullBase\RestFullServiceLauncher.cs" />
+    <Compile Include="RestFullBase\RestFullServiceLauncherManager.cs" />
+    <Compile Include="Transfer\Base\ResoucesInfo.cs" />
+    <Compile Include="Transfer\Base\ResourceTypeConstant.cs" />
+    <Compile Include="Transfer\Base\TransferDataType.cs" />
+    <Compile Include="Transfer\Base\TransferPolicy.cs" />
+    <Compile Include="Transfer\Core\CacheKeyGenerator.cs" />
+    <Compile Include="Transfer\Core\ReceiveDataItem.cs" />
+    <Compile Include="Transfer\Core\TransferChannel.cs" />
+    <Compile Include="Transfer\Core\TransferParaAnalyze.cs" />
+    <Compile Include="Transfer\Core\TransferParaManager.cs" />
+    <Compile Include="Transfer\Core\TransferReceiver.cs" />
+    <Compile Include="Transfer\Core\TransferReqDataSchduleInfo.cs" />
+    <Compile Include="Transfer\Core\TransferReqDataSchduleInfoManager.cs" />
+    <Compile Include="Transfer\Core\TransferResourceManager.cs" />
+    <Compile Include="Transfer\Core\TransferSender.cs" />
+    <Compile Include="Transfer\Messages\CommonHeader.cs" />
+    <Compile Include="Transfer\Messages\MessageBase.cs" />
+    <Compile Include="Transfer\Messages\ProtocolParser.cs" />
+    <Compile Include="Transfer\Messages\ResourceRequestMessage.cs" />
+    <Compile Include="Transfer\Messages\ResourceResponseMessage.cs" />
+    <Compile Include="Transfer\Messages\SendDataNotifyMessage.cs" />
+    <Compile Include="Transfer\Messages\TransferCompletedAckMessage.cs" />
+    <Compile Include="Transfer\Messages\TransferCompletedMessage.cs" />
+    <Compile Include="Transfer\Model\TransferCommands.cs" />
+    <Compile Include="Transfer\Model\TransferConfig.cs" />
+    <Compile Include="Transfer\Model\TransferConstant.cs" />
+    <Compile Include="Transfer\Net\Base\ITransferNet.cs" />
+    <Compile Include="Transfer\Net\Base\ReceiveDatagramInfo.cs" />
+    <Compile Include="Transfer\Net\Base\TransferProtocal.cs" />
+    <Compile Include="Transfer\Net\Udp\RevDataInfo.cs" />
+    <Compile Include="Transfer\Net\Base\SendDataException.cs" />
+    <Compile Include="Transfer\Net\Tcp\TcpTransferChannel.cs" />
+    <Compile Include="Transfer\Net\Tcp\TcpTransferNet.cs" />
+    <Compile Include="Transfer\Net\Base\NetConfig.cs" />
+    <Compile Include="Transfer\Net\Udp\UdpTransferNet.cs" />
+    <Compile Include="Transfer\TransferNet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\MemoryCacheEx.cs" />
     <Compile Include="MemoryCache\ZMemoryCacheItem.cs" />
@@ -187,8 +268,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -260,6 +260,26 @@ namespace UtilZ.Dotnet.Ex.Base
                 return (T)formatter.Deserialize(memoryStream);
             }
         }
+
+        /// <summary>
+        /// 二进制转换为可序列化的对象
+        /// </summary>
+        /// <param name="buffer">byte数组</param>
+        /// <returns>可序列化的类型实例</returns>
+        public static object BinaryDeserialize(byte[] buffer)
+        {
+            if (buffer == null || buffer.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
+
+            using (var memoryStream = new MemoryStream(buffer))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                memoryStream.Position = 0;
+                return formatter.Deserialize(memoryStream);
+            }
+        }
         #endregion
 
         #region  JSON序列化

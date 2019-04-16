@@ -71,7 +71,10 @@
     <Compile Include="Winform\Base\WinformControlEx.cs" />
     <Compile Include="Winform\Base\DropdownBox_ComboBox.cs" />
     <Compile Include="Winform\Base\DropdownBox_ToolStripComboBox.cs" />
-    <Compile Include="Winform\Controls\DataGridViewZ.cs">
+    <Compile Include="Winform\Controls\BarChartControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\DataGridViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Winform\Controls\LogControlF.cs">
@@ -92,26 +95,36 @@
     <Compile Include="Winform\Controls\OpacityPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Winform\Controls\PageGrid\DGVBindDataSourceInfo.cs" />
     <Compile Include="Winform\Controls\PageGrid\FPageGridColumnsSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winform\Controls\PageGrid\FPageGridColumnsSetting.Designer.cs">
+    <Compile Include="Winform\Controls\PageGrid\FPageGridColumnsSetting.designer.cs">
       <DependentUpon>FPageGridColumnsSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winform\Controls\PageGrid\Interface\DataRowClickArgs.cs" />
-    <Compile Include="Winform\Controls\PageGrid\Interface\DataRowSelectionChangedArgs.cs" />
-    <Compile Include="Winform\Controls\PageGrid\Interface\IPageDataGrid.cs" />
-    <Compile Include="Winform\Controls\PageGrid\Interface\PageInfo.cs" />
-    <Compile Include="Winform\Controls\PageGrid\Interface\PageSizeChangedArgs.cs" />
-    <Compile Include="Winform\Controls\PageGrid\Interface\QueryDataArgs.cs" />
-    <Compile Include="Winform\Controls\PageGrid\PageGridColumnSettingStatus.cs" />
+    <Compile Include="Winform\Controls\PageGrid\Model\DataRowClickArgs.cs" />
+    <Compile Include="Winform\Controls\PageGrid\Model\DataRowSelectionChangedArgs.cs" />
+    <Compile Include="Winform\Controls\PageGrid\Model\PageGridColumnSettingStatus.cs" />
+    <Compile Include="Winform\Controls\PageGrid\Model\PageInfo.cs" />
+    <Compile Include="Winform\Controls\PageGrid\Model\PageSizeChangedArgs.cs" />
+    <Compile Include="Winform\Controls\PageGrid\Model\QueryDataArgs.cs" />
     <Compile Include="Winform\Controls\PageGrid\PageGridControlCommon.cs" />
     <Compile Include="Winform\Controls\PageGrid\UCPageGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winform\Controls\PageGrid\UCPageGridControl.Designer.cs">
+    <Compile Include="Winform\Controls\PageGrid\UCPageGridControl.designer.cs">
       <DependentUpon>UCPageGridControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Winform\Controls\PageGrid\UCPageGridControl_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\PageGrid\UCPageGridControl_Method.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\PageGrid\UCPageGridControl_Property.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\PaintBaseControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Winform\Controls\PartAsynWait\Interface\IPartAsynWaitWinform.cs" />
     <Compile Include="Winform\Controls\PartAsynWait\PartAsynExcuteFactoryWinform.cs" />
@@ -185,14 +198,14 @@
     <Compile Include="Winform\Controls\PropertyGrid\TypeConverters\PropertyGridSortConverter.cs" />
     <Compile Include="Winform\Controls\PropertyGrid\UITypeEditors\PropertyGridDirectoryEditor.cs" />
     <Compile Include="Winform\Controls\PropertyGrid\UITypeEditors\PropertyGridFileEditor.cs" />
-    <Compile Include="Winform\Controls\RichTextBoxEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Winform\Controls\TreeViewZ.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Winform\Controls\UCOpacityControlBase.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\LineChartControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Winform\Interface\IControl.cs" />
     <Compile Include="Winform\Interface\IForm.cs" />
@@ -217,7 +230,6 @@
     <Compile Include="WPF\Controls\PartAsynWait\V1\WPFPartAsynExcuteV1.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteBase.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteTypeDefine.cs" />
-    <Compile Include="WPF\Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="WPF\Controls\WaitingControls\MetroLRWaitIndicator.xaml.cs">
       <DependentUpon>MetroLRWaitIndicator.xaml</DependentUpon>
     </Compile>

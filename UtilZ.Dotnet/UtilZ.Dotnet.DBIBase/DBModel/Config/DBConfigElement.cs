@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.DBIBase.DBModel.Constant;
 using UtilZ.Dotnet.Ex.Base;
-using UtilZ.Dotnet.Ex.Base.Foundation;
 
 namespace UtilZ.Dotnet.DBIBase.DBModel.Config
 {

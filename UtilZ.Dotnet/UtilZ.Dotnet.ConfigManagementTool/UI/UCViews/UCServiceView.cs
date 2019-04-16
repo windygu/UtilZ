@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using UtilZ.Dotnet.ConfigManagementTool.Model;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid;
 
 namespace UtilZ.Dotnet.ConfigManagementTool.UI.UCViews
 {
@@ -99,7 +100,7 @@ namespace UtilZ.Dotnet.ConfigManagementTool.UI.UCViews
             this._serviceParaList.AddRange(configParas);
         }
 
-        private void pgServiceList_DataRowDoubleClick(object sender, WindowEx.Winform.Controls.PageGrid.Interface.DataRowClickArgs e)
+        private void pgServiceList_DataRowDoubleClick(object sender, DataRowClickArgs e)
         {
             if (e.Row == null)
             {
@@ -110,11 +111,11 @@ namespace UtilZ.Dotnet.ConfigManagementTool.UI.UCViews
             var frm = new FServiceConfigParaKeyValueEdit(this._configLogic, serviceMap);
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                this.pgServiceList_SelectionChanged(sender, new WindowEx.Winform.Controls.PageGrid.Interface.DataRowSelectionChangedArgs(-1, -1, e.Row, null, null));
+                this.pgServiceList_SelectionChanged(sender, new DataRowSelectionChangedArgs(-1, -1, e.Row, null, null));
             }
         }
 
-        private void pgServiceParaList_DataRowDoubleClick(object sender, WindowEx.Winform.Controls.PageGrid.Interface.DataRowClickArgs e)
+        private void pgServiceParaList_DataRowDoubleClick(object sender, DataRowClickArgs e)
         {
             try
             {

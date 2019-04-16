@@ -155,11 +155,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pageGridControl1.BackColor = System.Drawing.SystemColors.Control;
-            this.pageGridControl1.ColumnSettingVisible = true;
             this.pageGridControl1.Location = new System.Drawing.Point(304, 22);
             this.pageGridControl1.MinimumSize = new System.Drawing.Size(30, 30);
             this.pageGridControl1.Name = "pageGridControl1";
-            this.pageGridControl1.PagingVisible = true;
             this.pageGridControl1.Size = new System.Drawing.Size(481, 352);
             this.pageGridControl1.TabIndex = 49;
             // 

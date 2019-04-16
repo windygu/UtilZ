@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using UtilZ.Dotnet.Ex.Model.Attributes;
+using UtilZ.Dotnet.Ex.Attributes;
 
 namespace UtilZ.Dotnet.Ex.Model
 {

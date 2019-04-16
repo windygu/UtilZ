@@ -38,14 +38,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnFirstPage = new System.Windows.Forms.Button();
             this.numPageIndex = new System.Windows.Forms.NumericUpDown();
-            this.cmsColVisibleSetting = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiHidenCol = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContent = new System.Windows.Forms.Panel();
             this.panelPage = new System.Windows.Forms.FlowLayoutPanel();
+            this.cmsColVisibleSetting = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiHidenCol = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).BeginInit();
-            this.cmsColVisibleSetting.SuspendLayout();
             this.panelPage.SuspendLayout();
+            this.cmsColVisibleSetting.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelPageCount
@@ -162,20 +162,6 @@
             this.numPageIndex.Size = new System.Drawing.Size(39, 21);
             this.numPageIndex.TabIndex = 11;
             // 
-            // cmsColVisibleSetting
-            // 
-            this.cmsColVisibleSetting.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiHidenCol});
-            this.cmsColVisibleSetting.Name = "cmsColVisibleSetting";
-            this.cmsColVisibleSetting.Size = new System.Drawing.Size(153, 48);
-            // 
-            // tsmiHidenCol
-            // 
-            this.tsmiHidenCol.Name = "tsmiHidenCol";
-            this.tsmiHidenCol.Size = new System.Drawing.Size(152, 22);
-            this.tsmiHidenCol.Text = "隐藏";
-            this.tsmiHidenCol.Click += new System.EventHandler(this.tsmiHidenCol_Click);
-            // 
             // panelContent
             // 
             this.panelContent.BackColor = System.Drawing.SystemColors.Control;
@@ -202,6 +188,20 @@
             this.panelPage.Size = new System.Drawing.Size(365, 24);
             this.panelPage.TabIndex = 6;
             // 
+            // cmsColVisibleSetting
+            // 
+            this.cmsColVisibleSetting.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiHidenCol});
+            this.cmsColVisibleSetting.Name = "cmsColVisibleSetting";
+            this.cmsColVisibleSetting.Size = new System.Drawing.Size(153, 48);
+            // 
+            // tsmiHidenCol
+            // 
+            this.tsmiHidenCol.Name = "tsmiHidenCol";
+            this.tsmiHidenCol.Size = new System.Drawing.Size(152, 22);
+            this.tsmiHidenCol.Text = "隐藏";
+            this.tsmiHidenCol.Click += new System.EventHandler(this.tsmiHidenCol_Click);
+            // 
             // UCPageGridControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -213,9 +213,9 @@
             this.Load += new System.EventHandler(this.UCPageGridControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPageIndex)).EndInit();
-            this.cmsColVisibleSetting.ResumeLayout(false);
             this.panelPage.ResumeLayout(false);
             this.panelPage.PerformLayout();
+            this.cmsColVisibleSetting.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -223,8 +223,6 @@
         #endregion
         private System.Windows.Forms.Button btnFirstPage;
         private System.Windows.Forms.NumericUpDown numPageIndex;
-        private System.Windows.Forms.ContextMenuStrip cmsColVisibleSetting;
-        private System.Windows.Forms.ToolStripMenuItem tsmiHidenCol;
         private System.Windows.Forms.Panel panelContent;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numPageSize;
@@ -234,5 +232,7 @@
         private System.Windows.Forms.Button btnPrePage;
         private System.Windows.Forms.Label labelPageCount;
         private System.Windows.Forms.FlowLayoutPanel panelPage;
+        private System.Windows.Forms.ContextMenuStrip cmsColVisibleSetting;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHidenCol;
     }
 }

@@ -6,8 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
-using UtilZ.Dotnet.Ex.Model;
-using UtilZ.Dotnet.Ex.Model.Attributes;
+using UtilZ.Dotnet.Ex.Attributes;
 
 namespace UtilZ.Dotnet.Ex.Base
 {
@@ -272,43 +271,43 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 使用SHA1哈希函数计算基于哈希值的消息验证代码(HMAC),同样的数据每次计算出的hash会是是不一样的
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "HMACSHA1", Description = "使用SHA1哈希函数计算基于哈希值的消息验证代码(HMAC),同样的数据每次计算出的hash会是是不一样的")]
+        [DisplayNameExAttribute("HMACSHA1", "使用SHA1哈希函数计算基于哈希值的消息验证代码(HMAC),同样的数据每次计算出的hash会是是不一样的")]
         HMACSHA1,
 
         /// <summary>
         /// 使用TripleDES计算输入数据CryptoStream的消息验证代码(MAC)
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "MACTripleDES", Description = "使用TripleDES计算输入数据CryptoStream的消息验证代码(MAC")]
+        [DisplayNameExAttribute("MACTripleDES", "使用TripleDES计算输入数据CryptoStream的消息验证代码(MAC")]
         MACTripleDES,
 
         /// <summary>
         /// 使用加密服务提供程序(CSP)提供的实现，计算输入数据的MD5哈希值
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "MD5CryptoServiceProvider", Description = "使用加密服务提供程序(CSP)提供的实现,计算输入数据的MD5哈希值")]
+        [DisplayNameExAttribute("MD5CryptoServiceProvider", "使用加密服务提供程序(CSP)提供的实现,计算输入数据的MD5哈希值")]
         MD5CryptoServiceProvider,
 
         /// <summary>
         /// 使用托管库计算输入数据的SHA1哈希值
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "SHA1Managed", Description = "使用托管库计算输入数据的SHA1哈希值")]
+        [DisplayNameExAttribute("SHA1Managed", "使用托管库计算输入数据的SHA1哈希值")]
         SHA1Managed,
 
         /// <summary>
         /// 使用托管库计算输入数据的SHA256哈希值
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "SHA256Managed", Description = "使用托管库计算输入数据的SHA256哈希值")]
+        [DisplayNameExAttribute("SHA256Managed", "使用托管库计算输入数据的SHA256哈希值")]
         SHA256Managed,
 
         /// <summary>
         /// 使用托管库计算输入数据的SHA384哈希值
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "SHA384Managed", Description = "使用托管库计算输入数据的SHA384哈希值")]
+        [DisplayNameExAttribute("SHA384Managed", "使用托管库计算输入数据的SHA384哈希值")]
         SHA384Managed,
 
         /// <summary>
         /// 使用托管库计算输入数据的SHA512哈希算法
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "SHA512Managed", Description = "使用托管库计算输入数据的SHA512哈希算法")]
+        [DisplayNameExAttribute("SHA512Managed", "使用托管库计算输入数据的SHA512哈希算法")]
         SHA512Managed
     }
 }

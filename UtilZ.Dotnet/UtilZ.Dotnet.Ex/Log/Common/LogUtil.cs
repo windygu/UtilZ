@@ -152,5 +152,41 @@ namespace UtilZ.Dotnet.Ex.Log
 
             return type;
         }
+
+        /// <summary>
+        /// 获取指定层级调用堆栈(格式:[类全名.方法名].[类全名.方法名].xxx)
+        /// </summary>
+        /// <param name="stackCount">要获取的堆栈数</param>
+        /// <returns>指定层级调用堆栈</returns>
+        public static string GetStackTrace(int stackCount = 1)
+        {
+            var stackTrace = new System.Diagnostics.StackTrace(2, true);
+            var frames = stackTrace.GetFrames();
+            if (frames.Length < stackCount)
+            {
+                stackCount = frames.Length;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < stackCount; i++)
+            {
+                var sf = frames[i];
+                string fileName = sf.GetFileName();
+                int lineNo = sf.GetFileLineNumber();
+                //int colNo = sf.GetFileColumnNumber();
+                MethodBase methodBase = sf.GetMethod();
+                var sogger = methodBase.DeclaringType.FullName;
+                string mn = methodBase.Name;
+
+                if (sb.Length > 0)
+                {
+                    sb.Append(".");
+                }
+
+                sb.Append(string.Format("[{0}.{1}]", methodBase.DeclaringType.FullName, methodBase.Name));
+            }
+
+            return sb.ToString();
+        }
     }
 }

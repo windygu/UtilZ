@@ -127,6 +127,24 @@
     <Compile Include="Common\PropertyGridX.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DB\FDBStruct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\FDBStruct.designer.cs">
+      <DependentUpon>FDBStruct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\FModelInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\FModelInfo.designer.cs">
+      <DependentUpon>FModelInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\FTableField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\FTableField.designer.cs">
+      <DependentUpon>FTableField.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\FTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +164,12 @@
       <DependentUpon>FTestPageGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\Model\Stu.cs" />
+    <Compile Include="DB\UCDBStructControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DB\UCDBStructControl.designer.cs">
+      <DependentUpon>UCDBStructControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\Units\MysqlUnitTest.cs" />
     <Compile Include="DB\Units\SQLiteMysqlUnitTest.cs" />
     <Compile Include="DB\Units\UnitTestBase.cs" />
@@ -220,6 +244,15 @@
     <EmbeddedResource Include="Common\FWave22.resx">
       <DependentUpon>FWave22.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DB\FDBStruct.resx">
+      <DependentUpon>FDBStruct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\FModelInfo.resx">
+      <DependentUpon>FModelInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\FTableField.resx">
+      <DependentUpon>FTableField.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DB\FTest.resx">
       <DependentUpon>FTest.cs</DependentUpon>
     </EmbeddedResource>
@@ -228,6 +261,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DB\FTestPageGrid.resx">
       <DependentUpon>FTestPageGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\UCDBStructControl.resx">
+      <DependentUpon>UCDBStructControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

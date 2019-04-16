@@ -15,6 +15,31 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.DBInfo
         /// <summary>
         /// 构造函数
         /// </summary>
+        public DBTableInfo()
+        {
+
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="tableInfo">表信息</param>
+        public DBTableInfo(DBTableInfo tableInfo)
+        {
+            if (tableInfo == null)
+            {
+                throw new ArgumentNullException("tableInfo");
+            }
+
+            this.Name = tableInfo.Name;
+            this.Comments = tableInfo.Comments;
+            this.DbFieldInfos = tableInfo.DbFieldInfos;
+            this.PriKeyFieldInfos = tableInfo.PriKeyFieldInfos;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="comments">注释</param>
         /// <param name="dbFieldInfos">表字段集合</param>
@@ -41,25 +66,25 @@ namespace UtilZ.Dotnet.DBIBase.DBModel.DBInfo
         /// 表名
         /// </summary>
         [DisplayName("表名")]
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// 备注
         /// </summary>
         [DisplayName("备注")]
-        public string Comments { get; private set; }
+        public string Comments { get; protected set; }
 
         /// <summary>
         /// 表字段集合
         /// </summary>
         [Browsable(false)]
-        public DBFieldInfoCollection DbFieldInfos { get; private set; }
+        public DBFieldInfoCollection DbFieldInfos { get; protected set; }
 
         /// <summary>
         /// 主键字段集合
         /// </summary>
         [Browsable(false)]
-        public DBFieldInfoCollection PriKeyFieldInfos { get; private set; }
+        public DBFieldInfoCollection PriKeyFieldInfos { get; protected set; }
 
         /// <summary>
         /// 获取字段数

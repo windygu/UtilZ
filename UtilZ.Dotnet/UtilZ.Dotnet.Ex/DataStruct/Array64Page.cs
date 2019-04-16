@@ -201,13 +201,12 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         /// <summary>
         /// 设置数组对象数据,返回实际设置数据长度
         /// </summary>
-        /// <typeparam name="T">数据类型</typeparam>
         /// <param name="buffer">要设置的源数据数组</param>
         /// <param name="offset">源数据数组中中的偏移量</param>
         /// <param name="beginIndex">当前数组对象中的起始位置索引</param>
         /// <param name="length">源数据数组中要写入的数据长度,如果超出当前数组范围,则以当前数组实际长度为准</param>
         /// <returns></returns>
-        internal int Set<T>(T[] buffer, int offset, long beginIndex, long length)
+        internal int Set(T[] buffer, int offset, long beginIndex, long length)
         {
             long currentNeedOffset = beginIndex - this._begin;
             long currentTotalOffset = 0;

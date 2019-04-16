@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Model.Attributes
+namespace UtilZ.Dotnet.Ex.Attributes
 {
     /// <summary>
     /// 显示名称特性
     /// </summary>
-    public class DisplayNameExAttribute : Attribute
+    [AttributeUsage(AttributeTargets.All)]
+    public class DisplayNameExAttribute : DisplayNameAttribute
     {
         /// <summary>
         /// 默认构造函数
@@ -63,9 +65,9 @@ namespace UtilZ.Dotnet.Ex.Model.Attributes
         /// 构造函数
         /// </summary>
         /// <param name="displayName">显示文本</param>
-        /// <param name="index">项显示顺序</param>
-        public DisplayNameExAttribute(string displayName, int index)
-            : this(displayName, index, null)
+        /// <param name="orderIndex">项显示顺序</param>
+        public DisplayNameExAttribute(string displayName, int orderIndex)
+            : this(displayName, orderIndex, null)
         {
         }
 
@@ -73,10 +75,10 @@ namespace UtilZ.Dotnet.Ex.Model.Attributes
         /// 构造函数
         /// </summary>
         /// <param name="displayName">显示文本</param>
-        /// <param name="index">项显示顺序</param>
+        /// <param name="orderIndex">项显示顺序</param>
         /// <param name="description">描述</param>
-        public DisplayNameExAttribute(string displayName, int index, string description)
-            : this(displayName, index, description, null)
+        public DisplayNameExAttribute(string displayName, int orderIndex, string description)
+            : this(displayName, orderIndex, description, null)
         {
         }
 
@@ -84,36 +86,31 @@ namespace UtilZ.Dotnet.Ex.Model.Attributes
         /// 构造函数
         /// </summary>
         /// <param name="displayName">显示文本</param>
-        /// <param name="index">项显示顺序</param>
+        /// <param name="orderIndex">项显示顺序</param>
         /// <param name="description">描述</param>
         /// <param name="tag">标识</param>
-        public DisplayNameExAttribute(string displayName, int index, string description, object tag)
+        public DisplayNameExAttribute(string displayName, int orderIndex, string description, object tag)
+            : base(displayName)
         {
-            this.DisplayName = displayName;
-            this.Index = index;
+            this.OrderIndex = orderIndex;
             this.Description = description;
             this.Tag = tag;
         }
 
         /// <summary>
-        /// 显示的文本
-        /// </summary>
-        public string DisplayName { get; set; }
-
-        /// <summary>
         /// 项显示顺序
         /// </summary>
-        public int Index { get; set; }
+        public int OrderIndex { get; private set; }
 
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
         /// <summary>
         /// 获取或设置标识
         /// </summary>
-        public object Tag { get; set; }
+        public object Tag { get; private set; }
 
         /// <summary>
         /// 重写ToString方法
@@ -121,7 +118,7 @@ namespace UtilZ.Dotnet.Ex.Model.Attributes
         /// <returns>返回特性文本</returns>
         public override string ToString()
         {
-            return this.DisplayName;
+            return base.DisplayName;
         }
     }
 }

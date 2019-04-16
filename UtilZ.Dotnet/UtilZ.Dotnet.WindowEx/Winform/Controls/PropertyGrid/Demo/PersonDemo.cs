@@ -15,7 +15,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
     /// </summary>
     [TypeConverter(typeof(PropertyGridSortConverter))]
     [DefaultProperty("Name")]
-    public class PersonDemo : IPropertyGridCategoryOrder, IPropertyGridCollection
+    internal class PersonDemo : IPropertyGridCategoryOrder, IPropertyGridCollection
     {
         private string _name = "Bob";
         private string _name1 = "Bob1";
@@ -204,7 +204,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
     /// Employee is our sample business or domin object. It derives from the general base class Person.
     /// </summary>
     [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
-    public class Employee2 : EmployeeBase// IPropertyGridCollectionItem
+    internal class Employee2 : EmployeeBase// IPropertyGridCollectionItem
     {
         public Employee2()
         {
@@ -239,7 +239,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
     /// Employee is our sample business or domin object. It derives from the general base class Person.
     /// </summary>
     [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
-    public class Employee : EmployeeBase// IPropertyGridCollectionItem
+    internal class Employee : EmployeeBase// IPropertyGridCollectionItem
     {
         public Employee()
         {
@@ -274,7 +274,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
     /// Employee is our sample business or domin object. It derives from the general base class Person.
     /// </summary>
     [TypeConverter(typeof(PropertyGridCollectionItemConverter))]
-    public class EmployeeBase//: IPropertyGridCollectionItem
+    internal class EmployeeBase//: IPropertyGridCollectionItem
     {
         public EmployeeBase()
         {

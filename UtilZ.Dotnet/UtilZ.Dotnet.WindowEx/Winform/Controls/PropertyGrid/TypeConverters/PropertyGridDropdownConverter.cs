@@ -139,7 +139,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.TypeConverters
                     }
                     else
                     {
-                        return EnumEx.GetEnumByNDisplayNameAttributeDisplayName(context.PropertyDescriptor.PropertyType, valueStr);
+                        return EnumEx.GetEnumByDisplayNameExAttributeDisplayName(context.PropertyDescriptor.PropertyType, valueStr);
                     }
                 }
                 else

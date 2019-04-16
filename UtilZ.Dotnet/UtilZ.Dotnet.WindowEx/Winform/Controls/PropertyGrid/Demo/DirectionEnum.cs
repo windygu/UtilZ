@@ -1,5 +1,5 @@
-﻿using UtilZ.Dotnet.Ex.Model;
-using UtilZ.Dotnet.Ex.Model.Attributes;
+﻿
+using UtilZ.Dotnet.Ex.Attributes;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
 {
@@ -11,25 +11,25 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
         /// <summary>
         /// 左
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "左")]
+        [DisplayNameExAttribute("左")]
         Left,
 
         /// <summary>
         /// 右
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "右")]
+        [DisplayNameExAttribute("右")]
         Right,
 
         /// <summary>
         /// 上
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "上")]
+        [DisplayNameExAttribute("上")]
         Up,
 
         /// <summary>
         /// 下
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "下")]
+        [DisplayNameExAttribute("下")]
         Down
     }
 }

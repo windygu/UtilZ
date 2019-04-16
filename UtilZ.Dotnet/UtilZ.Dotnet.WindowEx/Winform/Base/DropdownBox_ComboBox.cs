@@ -187,7 +187,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         public static void BindingIEnumerableGenericToComboBox<T>(System.Windows.Forms.ComboBox combox, IEnumerable<T> items, string displayMember = null, T selectedItem = null) where T : class
         {
             List<DropdownBindingItem> bindItems = DropdownBindingItem.GenericToDropdownBindingItems<T>(items, displayMember);
-            BindingIEnumerableGenericToComboBox<T>(combox, bindItems);
+            BindingIEnumerableGenericToComboBox<T>(combox, bindItems, selectedItem);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         public static void BindingIEnumerableGenericToComboBox<T>(System.Windows.Forms.ComboBox combox, Func<T, string> displayFun, IEnumerable<T> items, T selectedItem = null) where T : class
         {
             List<DropdownBindingItem> bindItems = DropdownBindingItem.GenericToDropdownBindingItems<T>(items, displayFun);
-            BindingIEnumerableGenericToComboBox<T>(combox, bindItems);
+            BindingIEnumerableGenericToComboBox<T>(combox, bindItems, selectedItem);
         }
 
         /// <summary>

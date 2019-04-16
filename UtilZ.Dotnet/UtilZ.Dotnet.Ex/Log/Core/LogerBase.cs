@@ -62,6 +62,18 @@ namespace UtilZ.Dotnet.Ex.Log
         }
 
         /// <summary>
+        /// 获取日志追加器
+        /// </summary>
+        /// <returns>日志追加器数组</returns>
+        AppenderBase[] ILoger.GetAppenders()
+        {
+            lock (this._appendersLock)
+            {
+                return this._appenders.ToArray();
+            }
+        }
+
+        /// <summary>
         /// 实例添加日志
         /// </summary>
         /// <param name="level">日志级别</param>
@@ -89,11 +101,12 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 实例添加日志
         /// </summary>
+        /// <param name="skipFrames"></param>
         /// <param name="level">日志级别</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常</param>
-        /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
+        /// <param name="msg">复合格式字符串,参数为空或null表示无格式化</param>
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
         protected abstract void PrimitiveAddLog(int skipFrames, LogLevel level, int eventId, object tag, Exception ex, string msg, params object[] args);
 
@@ -127,7 +140,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Trace(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
+        void ILoger.Trace(Exception ex, int eventId, object tag)
         {
             this.InsAddLog(LogLevel.Trace, eventId, tag, ex, null);
         }
@@ -186,7 +199,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Debug(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
+        void ILoger.Debug(Exception ex, int eventId, object tag)
         {
             this.InsAddLog(LogLevel.Debug, eventId, tag, ex, null);
         }
@@ -245,7 +258,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常信息</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Info(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
+        void ILoger.Info(Exception ex, int eventId, object tag)
         {
             this.InsAddLog(LogLevel.Info, eventId, tag, ex, null);
         }
@@ -304,7 +317,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常警告</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Warn(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
+        void ILoger.Warn(Exception ex, int eventId, object tag)
         {
             this.InsAddLog(LogLevel.Warn, eventId, tag, ex, null);
         }
@@ -363,7 +376,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常错误</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Error(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
+        void ILoger.Error(Exception ex, int eventId, object tag)
         {
             this.InsAddLog(LogLevel.Error, eventId, tag, ex, null);
         }
@@ -422,7 +435,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="ex">异常致命</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
-        void ILoger.Fatal(Exception ex, int eventId = LogConstant.DEFAULT_EVENT_ID, object tag = null)
+        void ILoger.Fatal(Exception ex, int eventId, object tag)
         {
             this.InsAddLog(LogLevel.Fatal, eventId, tag, ex, null);
         }

@@ -34,6 +34,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 实例添加日志
         /// </summary>
+        /// <param name="skipFrames"></param>
         /// <param name="level">日志级别</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>

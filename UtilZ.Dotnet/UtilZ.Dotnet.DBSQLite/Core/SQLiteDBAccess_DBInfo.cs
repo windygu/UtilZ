@@ -110,7 +110,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                     //comments:sqlite没有这一项
                     type = col.DataType;
                     fieldType = dicFieldDbClrFieldType[fieldName];
-                    colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
+                    colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, null, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
                 }
 
                 return colInfos;

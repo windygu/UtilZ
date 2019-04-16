@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
+using UtilZ.Dotnet.Ex.FileTransfer;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.Model;
 
@@ -474,7 +475,7 @@ namespace ConsoleApp
             Console.WriteLine(ftpUrl);
             try
             {
-                new FtpEx(ftpUrl);
+                new FtpFileTransfer(ftpUrl);
             }
             catch (Exception ex)
             {

@@ -7,7 +7,7 @@ using UtilZ.Dotnet.DBIBase.DBBase.Interface;
 using UtilZ.Dotnet.DBIBase.DBModel.Config;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
-using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;
+using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid;
 
 namespace TestE.DB
 {
@@ -53,7 +53,7 @@ namespace TestE.DB
             var dal = GetDBAccess();
             //var dbPageInfo = dal.QueryPageInfo(pageSize, "select count(0) from Stu");
             var dbPageInfo = dal.QueryPageInfoT<Stu>(pageSize);
-            ucPageGridControl1.SetPageInfo(new PageInfo(dbPageInfo.PageCount, dbPageInfo.PageSize, 1, dbPageInfo.TotalCount));
+            ucPageGridControl1.SetPageInfo(new PageInfo(dbPageInfo.PageCount, dbPageInfo.PageSize, dbPageInfo.TotalCount));
         }
 
         private void btnTest_Click(object sender, EventArgs e)
@@ -61,13 +61,13 @@ namespace TestE.DB
             this.QueryPageInfo(ucPageGridControl1.PageSizeMaximum);
         }
 
-        private void ucPageGridControl1_PageSizeChanged(object sender, UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface.PageSizeChangedArgs e)
+        private void ucPageGridControl1_PageSizeChanged(object sender, PageSizeChangedArgs e)
         {
             this.QueryPageInfo(e.PageSize);
         }
 
 
-        private void ucPageGridControl1_QueryData(object sender, UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface.QueryDataArgs e)
+        private void ucPageGridControl1_QueryData(object sender, QueryDataArgs e)
         {
             var dal = GetDBAccess();
             var stus = dal.QueryTPaging<Stu>(e.PageSize, e.PageIndex, "ID", true);
@@ -82,7 +82,7 @@ namespace TestE.DB
 
         private void btnColSettingVisible_Click(object sender, EventArgs e)
         {
-            ucPageGridControl1.ColumnSettingVisible = !ucPageGridControl1.ColumnSettingVisible;
+            ucPageGridControl1.ColumnSettingStatus= PageGridColumnSettingStatus.Float;
         }
     }
 }

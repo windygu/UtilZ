@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Model.Attributes
+namespace UtilZ.Dotnet.Ex.Attributes
 {
     /// <summary>
     /// 单位特性

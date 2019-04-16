@@ -31,6 +31,12 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="appender">日志追加器</param>
         void AddAppender(AppenderBase appender);
 
+        /// <summary>
+        /// 获取日志追加器
+        /// </summary>
+        /// <returns>日志追加器数组</returns>
+        AppenderBase[] GetAppenders();
+
         #region 记录日志方法
         #region Trace
         /// <summary>

@@ -9,8 +9,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
 {
     internal abstract class FileLogWriterBase
     {
-        protected readonly FileAppenderConfig _fileAppenderConfig;
-        protected readonly FileAppenderPathManager _pathManager;
+        private readonly FileAppenderConfig _fileAppenderConfig;
+        private readonly FileAppenderPathManager _pathManager;
 
         /// <summary>
         /// 日志安全策略
@@ -18,7 +18,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         private ILogSecurityPolicy _securityPolicy = null;
         private string _filePath;
         private long _fileSize = long.MinValue;
-        protected DateTime _createFilePathTime = DateTime.Now.AddMonths(-1);
+        private DateTime _createFilePathTime = DateTime.Now.AddMonths(-1);
 
         public FileLogWriterBase(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager)
         {
@@ -42,7 +42,19 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         /// 写日志
         /// </summary>
         /// <param name="item">日志项</param>
-        public abstract void WriteLog(LogItem item);
+        public void WriteLog(LogItem item)
+        {
+            this.WriteLog(this._fileAppenderConfig, this._pathManager, this._createFilePathTime, item);
+        }
+
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="fileAppenderConfig">配置</param>
+        /// <param name="pathManager">路由管理器</param>
+        /// <param name="createFilePathTime">创建时间</param>
+        /// <param name="item">日志项</param>
+        protected abstract void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogItem item);
 
         /// <summary>
         /// 写日志到文件

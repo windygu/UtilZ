@@ -18,16 +18,36 @@ namespace UtilZ.Dotnet.Ex.LRPC
         /// <summary>
         /// 本地远程调用回调
         /// </summary>
-        private Func<object, object> _pro;
+        private Func<object, object> _proF;
+        private Action<object> _proA;
 
         /// <summary>
         /// 调用本地远程调用回调
         /// </summary>
         /// <param name="obj">调用参数</param>
         /// <returns>调用结果</returns>
-        public object OnRaisePro(object obj)
+        public object OnRaiseProF(object obj)
         {
-            return this._pro(obj);
+            if (this._proF == null)
+            {
+                throw new InvalidOperationException("调用目标不正确,请尝试重载函数");
+            }
+
+            return this._proF(obj);
+        }
+
+        /// <summary>
+        /// 调用本地远程调用回调
+        /// </summary>
+        /// <param name="obj">调用参数</param>
+        public void OnRaiseProA(object obj)
+        {
+            if (this._proA == null)
+            {
+                throw new InvalidOperationException("调用目标不正确,请尝试重载函数");
+            }
+
+            this._proA(obj);
         }
 
         /// <summary>
@@ -38,7 +58,18 @@ namespace UtilZ.Dotnet.Ex.LRPC
         public LRPCChannel(string channelName, Func<object, object> pro)
         {
             this.ChannelName = channelName;
-            this._pro = pro;
+            this._proF = pro;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="channelName">本地远程调用通道名称</param>
+        /// <param name="pro">本地远程调用回调</param>
+        public LRPCChannel(string channelName, Action<object> pro)
+        {
+            this.ChannelName = channelName;
+            this._proA = pro;
         }
     }
 }

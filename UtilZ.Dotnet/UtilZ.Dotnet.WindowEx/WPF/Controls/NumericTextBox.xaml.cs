@@ -159,6 +159,10 @@ namespace UtilZ.Dotnet.WindowEx.WPF
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -178,43 +182,6 @@ namespace UtilZ.Dotnet.WindowEx.WPF
             {
                 e.Handled = true;
             }
-        }
-
-        private Int32 _index;  //光标位置
-        private bool _isReentry; //标识TextChanged事件是否重入
-        protected override void OnTextChanged(TextChangedEventArgs e)
-        {
-
-
-            //if (_isReentry)
-            //{
-            //    SelectionStart = _index;
-            //    return;
-            //}
-
-            //_isReentry = true;
-
-            //double temp;
-            //if (double.TryParse(Text, out temp))
-            //{
-            //    if (temp > Maximum)
-            //    {
-            //        temp = Maximum;
-            //    }
-            //    else if (temp < Minimum)
-            //    {
-            //        temp = Minimum;
-            //    }
-
-            //    _index = SelectionStart;
-            //}
-            //else
-            //{
-            //    temp = Minimum;
-            //}
-
-            //Text = temp.ToString();
-            //_isReentry = false;
         }
     }
 }

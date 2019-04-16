@@ -1,4 +1,6 @@
-﻿namespace TestE.DB
+﻿using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid;
+
+namespace TestE.DB
 {
     partial class FTestPageGrid
     {
@@ -104,10 +106,8 @@
             // 
             // ucPageGridControl1
             // 
-            this.ucPageGridControl1.AdvanceSettingVisible = true;
             this.ucPageGridControl1.AlignDirection = false;
             this.ucPageGridControl1.ColumnSettingStatus = UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.PageGridColumnSettingStatus.Hiden;
-            this.ucPageGridControl1.ColumnSettingVisible = false;
             this.ucPageGridControl1.ColumnSettingWidth = 20;
             this.ucPageGridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucPageGridControl1.FocusedRowIndex = -1;
@@ -115,13 +115,10 @@
             this.ucPageGridControl1.Location = new System.Drawing.Point(3, 17);
             this.ucPageGridControl1.Name = "ucPageGridControl1";
             this.ucPageGridControl1.PageSizeMaximum = 100;
-            this.ucPageGridControl1.PageSizeVisible = true;
-            this.ucPageGridControl1.PagingVisible = true;
-            this.ucPageGridControl1.RowNumVisible = true;
             this.ucPageGridControl1.Size = new System.Drawing.Size(551, 357);
             this.ucPageGridControl1.TabIndex = 42;
-            this.ucPageGridControl1.QueryData += new System.EventHandler<UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface.QueryDataArgs>(this.ucPageGridControl1_QueryData);
-            this.ucPageGridControl1.PageSizeChanged += new System.EventHandler<UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface.PageSizeChangedArgs>(this.ucPageGridControl1_PageSizeChanged);
+            this.ucPageGridControl1.QueryData += new System.EventHandler<QueryDataArgs>(this.ucPageGridControl1_QueryData);
+            this.ucPageGridControl1.PageSizeChanged += new System.EventHandler<PageSizeChangedArgs>(this.ucPageGridControl1_PageSizeChanged);
             // 
             // btnColSettingVisible
             // 

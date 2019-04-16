@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.Model;
-using UtilZ.Dotnet.Ex.Model.Attributes;
+using UtilZ.Dotnet.Ex.Attributes;
 
 namespace UtilZ.Dotnet.Ex.MemoryCache
 {

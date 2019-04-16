@@ -18,9 +18,9 @@ namespace TestE.Common
         }
 
         private readonly DemoModel _demoModel = new DemoModel();
-        private readonly PersonDemo _personDemo = new PersonDemo();
+        //private readonly PersonDemo _personDemo = new PersonDemo();
 
-        private readonly PersonDemo[] _personDemos = new PersonDemo[3] { new PersonDemo(), new PersonDemo(), new PersonDemo() };
+        //private readonly PersonDemo[] _personDemos = new PersonDemo[3] { new PersonDemo(), new PersonDemo(), new PersonDemo() };
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -28,8 +28,8 @@ namespace TestE.Common
             {
                 return;
             }
-            _personDemo.CollectionEditCompleted += _personDemo_CollectionEditCompleted;
-            PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
+            //_personDemo.CollectionEditCompleted += _personDemo_CollectionEditCompleted;
+            //PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
 
             //PropertyGridHelper.SetSelectedObject(propertyGrid1, _demoModel);
 
@@ -45,7 +45,7 @@ namespace TestE.Common
         private void _personDemo_CollectionEditCompleted(object sender, EventArgs e)
         {
             PropertyGridHelper.SetSelectedObject(propertyGrid1, null);
-            PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
+            //PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
         }
 
         void propertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
@@ -111,16 +111,16 @@ namespace TestE.Common
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            if (propertyGrid1.Tag == _personDemo)
-            {
-                propertyGrid1.Tag = _demoModel;
-                PropertyGridHelper.SetSelectedObject(propertyGrid1, _demoModel);
-            }
-            else
-            {
-                propertyGrid1.Tag = _personDemo;
-                PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
-            }
+            //if (propertyGrid1.Tag == _personDemo)
+            //{
+            //    propertyGrid1.Tag = _demoModel;
+            //    PropertyGridHelper.SetSelectedObject(propertyGrid1, _demoModel);
+            //}
+            //else
+            //{
+            //    propertyGrid1.Tag = _personDemo;
+            //    PropertyGridHelper.SetSelectedObject(propertyGrid1, _personDemo);
+            //}
         }
 
         private void FTestPRopertyGrid_FormClosing(object sender, FormClosingEventArgs e)

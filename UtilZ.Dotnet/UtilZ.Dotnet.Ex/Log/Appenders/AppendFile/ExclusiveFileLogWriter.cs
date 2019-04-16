@@ -15,19 +15,25 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
             base(fileAppenderConfig, pathManager)
         {
 
-
         }
 
-        public override void WriteLog(LogItem item)
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="fileAppenderConfig">配置</param>
+        /// <param name="pathManager">路由管理器</param>
+        /// <param name="createFilePathTime">创建时间</param>
+        /// <param name="item">日志项</param>
+        protected override void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogItem item)
         {
             DateTime currentTime = DateTime.Now;
             if (this._sw != null &&
-                !base._pathManager.IsFixPath &&
-                (base._fileAppenderConfig.MaxFileLength > 0 &&
-                this._sw.BaseStream.Length >= base._fileAppenderConfig.MaxFileLength ||
-                currentTime.Year != base._createFilePathTime.Year ||
-                currentTime.Month != base._createFilePathTime.Month ||
-                currentTime.Day != base._createFilePathTime.Day))
+                !pathManager.IsFixPath &&
+                (fileAppenderConfig.MaxFileLength > 0 &&
+                this._sw.BaseStream.Length >= fileAppenderConfig.MaxFileLength ||
+                currentTime.Year != createFilePathTime.Year ||
+                currentTime.Month != createFilePathTime.Month ||
+                currentTime.Day != createFilePathTime.Day))
             {
                 this._sw.Close();
                 this._sw = null;

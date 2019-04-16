@@ -4,12 +4,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.FileTransfer;
 
 namespace TestE.Common
 {
     public partial class FTestFTP : Form
     {
-        private readonly FtpEx _ftp;
+        private readonly IFileTransfer _ftp;
         public FTestFTP()
         {
             InitializeComponent();
@@ -17,7 +18,7 @@ namespace TestE.Common
             string ftpUrl = @"ftp://192.168.0.102/";
             string ftpUserName = string.Empty;
             string ftpPassword = string.Empty;
-            this._ftp = new FtpEx(ftpUrl, ftpUserName, ftpPassword);
+            this._ftp = new FtpFileTransfer(ftpUrl, ftpUserName, ftpPassword);
         }
 
         private void FTestFTP_Load(object sender, EventArgs e)
@@ -30,40 +31,40 @@ namespace TestE.Common
             try
             {
                 string dir = @"q1";
-                bool ret = this._ftp.DirectoryExists(dir);
+                bool ret = this._ftp.ExistDirectory(dir);
 
                 dir = @"/q1";
-                bool ret2 = this._ftp.DirectoryExists(dir);
+                bool ret2 = this._ftp.ExistDirectory(dir);
 
                 dir = @"q1/";
-                bool ret3 = this._ftp.DirectoryExists(dir);
+                bool ret3 = this._ftp.ExistDirectory(dir);
 
                 dir = @"\q1";
-                bool ret4 = this._ftp.DirectoryExists(dir);
+                bool ret4 = this._ftp.ExistDirectory(dir);
 
                 dir = @"\q1\";
-                bool ret5 = this._ftp.DirectoryExists(dir);
+                bool ret5 = this._ftp.ExistDirectory(dir);
 
                 dir = @"\q1/";
-                bool ret6 = this._ftp.DirectoryExists(dir);
+                bool ret6 = this._ftp.ExistDirectory(dir);
 
                 dir = @"/q1\";
-                bool ret7 = this._ftp.DirectoryExists(dir);
+                bool ret7 = this._ftp.ExistDirectory(dir);
 
                 dir = @"\q1/a";
-                bool ret8 = this._ftp.DirectoryExists(dir);
+                bool ret8 = this._ftp.ExistDirectory(dir);
 
                 dir = @"\q1/a/";
-                bool ret9 = this._ftp.DirectoryExists(dir);
+                bool ret9 = this._ftp.ExistDirectory(dir);
 
                 dir = @"\q1/a\";
-                bool ret10 = this._ftp.DirectoryExists(dir);
+                bool ret10 = this._ftp.ExistDirectory(dir);
 
                 dir = @"q1/a/";
-                bool ret11 = this._ftp.DirectoryExists(dir);
+                bool ret11 = this._ftp.ExistDirectory(dir);
 
                 dir = @"q1/a\";
-                bool ret12 = this._ftp.DirectoryExists(dir);
+                bool ret12 = this._ftp.ExistDirectory(dir);
             }
             catch (Exception ex)
             {
@@ -77,48 +78,48 @@ namespace TestE.Common
             try
             {
                 string dir = @"b1";
-                bool ret1 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"\b2";
-                bool ret2 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"b3\";
-                bool ret3 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"\b4\";
-                bool ret4 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"/b5";
-                bool ret5 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"b6/";
-                bool ret6 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"/b7";
-                bool ret7 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
 
 
                 dir = @"b8\c";
-                bool ret8 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"b9/c";
-                bool ret9 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
 
                 dir = @"\b10\c";
-                bool ret10 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"/b11\c";
-                bool ret11 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
 
 
                 dir = @"\b12\c/";
-                bool ret12 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
 
                 dir = @"/b13\c\";
-                bool ret13 = this._ftp.CreateDirectory(dir);
+                this._ftp.CreateDirectory(dir);
             }
             catch (Exception ex)
             {
@@ -132,10 +133,10 @@ namespace TestE.Common
             try
             {
                 string remoteFilePath = @"PowerMode.vsix";
-                bool ret = this._ftp.FileExists(remoteFilePath);
+                bool ret = this._ftp.ExistFile(remoteFilePath);
 
                 remoteFilePath = @"abc.msi";
-                bool ret2 = this._ftp.FileExists(remoteFilePath);
+                bool ret2 = this._ftp.ExistFile(remoteFilePath);
             }
             catch (Exception ex)
             {
@@ -183,26 +184,7 @@ namespace TestE.Common
                 localFilePath = @"F:\刀剑心.mp3";
                 using (var fs = new FileStream(localFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    int bufferSize = 1024;
-                    int offset = 0;
-                    byte[] buffer = new byte[bufferSize];
-                    this._ftp.UploadFile(remoteFilePath, fs.Length, () =>
-                    {
-                        if (offset == fs.Length)
-                        {
-                            return null;
-                        }
-
-                        if (offset + bufferSize > fs.Length)
-                        {
-                            bufferSize = (int)(fs.Length - offset);
-                            buffer = new byte[bufferSize];
-                        }
-
-                        fs.Read(buffer, 0, bufferSize);
-                        offset += bufferSize;
-                        return buffer;
-                    }, true);
+                    this._ftp.Upload(remoteFilePath, fs);
                 }
             }
             catch (Exception ex)
@@ -218,11 +200,11 @@ namespace TestE.Common
             {
                 string localFilePath = @"G:\Tmp\test\dotNetFx40_Full_x86_x64.exe";
                 string remoteFilePath = @"Soft\dotNetFx40_Full_x86_x64.exe";
-                this._ftp.DownloadFile(localFilePath, remoteFilePath, 2048, true);
+                this._ftp.Download(remoteFilePath, localFilePath);
 
                 localFilePath = @"G:\Tmp\test\feiq.rar";
                 remoteFilePath = @"feiq.rar";
-                this._ftp.DownloadFile(localFilePath, remoteFilePath, 2048, false);
+                this._ftp.Download(remoteFilePath, localFilePath);
             }
             catch (Exception ex)
             {
@@ -268,10 +250,10 @@ namespace TestE.Common
             try
             {
                 string remoteDir = null;
-                var dirList = this._ftp.GetDirectoryList(remoteDir);
+                var dirList = this._ftp.GetDirectories(remoteDir);
 
                 remoteDir = @"a";
-                var dirList2 = this._ftp.GetDirectoryList(remoteDir);
+                var dirList2 = this._ftp.GetDirectories(remoteDir);
             }
             catch (Exception ex)
             {
@@ -285,10 +267,10 @@ namespace TestE.Common
             try
             {
                 string remoteDir = null;
-                var dirList = this._ftp.GetFileList(remoteDir);
+                var dirList = this._ftp.GetFiles(remoteDir);
 
                 remoteDir = @"a";
-                var dirList2 = this._ftp.GetFileList(remoteDir);
+                var dirList2 = this._ftp.GetFiles(remoteDir);
             }
             catch (Exception ex)
             {
@@ -348,7 +330,7 @@ namespace TestE.Common
                 //this._ftp.DeleteDirectory(remoteDir, true);
 
                 remoteDir = @"bb";
-                this._ftp.DeleteDirectory(remoteDir);
+                this._ftp.DeleteDirectory(remoteDir, true);
             }
             catch (Exception ex)
             {

@@ -191,5 +191,33 @@ namespace UtilZ.Dotnet.Ex.Base
             }
             return fileName;
         }
+
+        /// <summary>
+        /// 尝试删除文件[删除成功返回true;失败返回false]
+        /// </summary>
+        /// <param name="filePath">目标文件路由</param>
+        /// <returns>删除成功返回true;失败返回false</returns>
+        public static bool TryDeleFile(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    return false;
+                }
+
+                if (!File.Exists(filePath))
+                {
+                    return false;
+                }
+
+                File.Delete(filePath);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

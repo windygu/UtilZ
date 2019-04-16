@@ -67,7 +67,18 @@
     <Compile Include="DBBase\Core\DbConnectionPool.cs" />
     <Compile Include="DBBase\Core\EFDbConfiguration.cs" />
     <Compile Include="DBBase\Core\EFDbContext.cs" />
+    <Compile Include="DBBase\Core\ExpressionNodeExConverter.cs" />
     <Compile Include="DBBase\Core\ORMManager.cs" />
+    <Compile Include="DBBase\ExpressTree\AbsCompareOperaterWhereGenerator.cs" />
+    <Compile Include="DBBase\ExpressTree\CompareOperater.cs" />
+    <Compile Include="DBBase\ExpressTree\CompareOperaterAttribute.cs" />
+    <Compile Include="DBBase\ExpressTree\CompareOperaterHelper.cs" />
+    <Compile Include="DBBase\ExpressTree\ExpressionNode.cs" />
+    <Compile Include="DBBase\ExpressTree\ExpressionNodeCollection.cs" />
+    <Compile Include="DBBase\ExpressTree\ExpressionNodeEx.cs" />
+    <Compile Include="DBBase\ExpressTree\ICompareOperaterWhereGenerator.cs" />
+    <Compile Include="DBBase\ExpressTree\IDBFiledValueConverter.cs" />
+    <Compile Include="DBBase\ExpressTree\SingleValueConditionValueGenerator.cs" />
     <Compile Include="DBBase\Factory\DBFactoryBase.cs" />
     <Compile Include="DBBase\Factory\DBFactoryManager.cs" />
     <Compile Include="DBBase\Interface\IDBAccess.cs" />
@@ -110,6 +121,7 @@
     <Compile Include="DBModel\Model\DBPageInfo.cs" />
     <Compile Include="DBModel\Model\DBVisitType.cs" />
     <Compile Include="DBModel\Model\EFDbContextException.cs" />
+    <Compile Include="DBModel\Model\LogicOperaters.cs" />
     <Compile Include="DBModel\Model\NDbParameter.cs" />
     <Compile Include="DBModel\Model\NDbParameterCollection.cs" />
     <Compile Include="DBModel\Model\StoredProcedurePara.cs" />

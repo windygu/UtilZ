@@ -40,9 +40,9 @@ namespace UtilZ.Dotnet.Ex.Log
         public const string DEBUGSTR = "调试";
 
         /// <summary>
-        /// 一般
+        /// 信息
         /// </summary>
-        public const string INFOSTR = "提示";
+        public const string INFOSTR = "信息";
 
         /// <summary>
         /// 警告

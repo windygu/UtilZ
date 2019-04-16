@@ -6,7 +6,7 @@ using UtilZ.Dotnet.DBIBase.DBModel.Config;
 using UtilZ.Dotnet.DBIBase.DBModel.Model;
 using UtilZ.Dotnet.Ex.LMQ;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
-using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;
+using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid;
 
 namespace TestE.DB
 {
@@ -120,7 +120,7 @@ namespace TestE.DB
 
                 int count;
                 object value = _unitTest.QueryData(config, pageIndex, _pageSize, out count);
-                pageGridControl1.SetPageInfo(new PageInfo( dbPageInfo.PageCount, _pageSize, pageIndex, dbPageInfo.TotalCount));
+                pageGridControl1.SetPageInfo(new PageInfo(_pageSize, pageIndex, dbPageInfo.TotalCount));
                 pageGridControl1.ShowData(value, "Stu");
             }
             catch (Exception ex)

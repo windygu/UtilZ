@@ -34,6 +34,17 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         protected readonly BaseConfig _config;
 
         /// <summary>
+        /// 获取配置对象
+        /// </summary>
+        public BaseConfig Config
+        {
+            get
+            {
+                return _config;
+            }
+        }
+
+        /// <summary>
         /// 日志写线程队列
         /// </summary>
         private LogAsynQueue<LogItem> _logWriteQueue = null;

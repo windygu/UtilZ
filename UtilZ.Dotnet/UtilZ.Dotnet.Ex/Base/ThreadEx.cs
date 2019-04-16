@@ -527,7 +527,7 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             lock (this._lock)
             {
-                if (this._isReqAbort)
+                if (this._isReqAbort || this._thread == null)
                 {
                     return;
                 }

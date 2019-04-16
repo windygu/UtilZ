@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.Ex.Base;
-using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
 {
@@ -33,12 +32,12 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             string settingDirectory = null;
             if (defaultDirFlag)
             {
-                if (string.IsNullOrEmpty(PageGridControlCommon._currentAssemblyDirectory))
+                if (string.IsNullOrEmpty(_currentAssemblyDirectory))
                 {
-                    PageGridControlCommon._currentAssemblyDirectory = ObjectEx.GetAssemblyDirectory<PageGridControlCommon>();
+                    _currentAssemblyDirectory = ObjectEx.GetAssemblyDirectory<PageGridControlCommon>();
                 }
 
-                settingDirectory = System.IO.Path.Combine(PageGridControlCommon._currentAssemblyDirectory, "Setting");
+                settingDirectory = System.IO.Path.Combine(_currentAssemblyDirectory, "Setting");
             }
             else
             {
@@ -146,6 +145,17 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             }
 
             gridControl.GridView.BestFitColumns();
+        }
+
+        /// <summary>
+        /// 比较DataGridViewColumn列名是否相同,相同返回true
+        /// </summary>
+        /// <param name="name1"></param>
+        /// <param name="name2"></param>
+        /// <returns></returns>
+        public static bool CompareColumnName(string name1, string name2)
+        {
+            return string.Equals(name1, name2, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

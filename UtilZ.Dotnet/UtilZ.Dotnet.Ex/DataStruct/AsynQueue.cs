@@ -284,9 +284,13 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                 return;
             }
 
-            this._cts.Cancel();
-            this._cts.Dispose();
-            this._cts = null;
+            var cts = this._cts;
+            if (cts != null)
+            {
+                cts.Cancel();
+                cts.Dispose();
+                this._cts = null;
+            }
 
             this.EmptyQueueWaitEventHandleSet();
             if (isAbort)
@@ -388,6 +392,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
                             items.Add(this._queue.Dequeue());
                         }
                     }
+
                     try
                     {
                         if (items.Count < this._batchCount && this._emptyQueueWaitEventHandle.WaitOne(this._millisecondsTimeout))

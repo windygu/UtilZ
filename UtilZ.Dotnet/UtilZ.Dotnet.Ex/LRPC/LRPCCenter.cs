@@ -16,12 +16,13 @@ namespace UtilZ.Dotnet.Ex.LRPC
         /// </summary>
         private static readonly Hashtable _htChannel = Hashtable.Synchronized(new Hashtable());
 
+        #region 创建调用通道
         /// <summary>
         /// 创建或替换已存在的本地远程调用通道
         /// </summary>
         /// <param name="channelName">通道名称</param>
         /// <param name="pro">通道回调</param>
-        public static void CreateOrReplaceChannel(string channelName, Func<object, object> pro)
+        public static void CreateOrReplaceChannelF(string channelName, Func<object, object> pro)
         {
             if (string.IsNullOrWhiteSpace(channelName))
             {
@@ -32,7 +33,30 @@ namespace UtilZ.Dotnet.Ex.LRPC
             {
                 throw new ArgumentNullException("pro", "回调委托不能为null");
             }
-            
+
+            lock (_htChannel.SyncRoot)
+            {
+                _htChannel[channelName] = new LRPCChannel(channelName, pro);
+            }
+        }
+
+        /// <summary>
+        /// 创建或替换已存在的本地远程调用通道
+        /// </summary>
+        /// <param name="channelName">通道名称</param>
+        /// <param name="pro">通道回调</param>
+        public static void CreateOrReplaceChannelA(string channelName, Action<object> pro)
+        {
+            if (string.IsNullOrWhiteSpace(channelName))
+            {
+                throw new ArgumentNullException("channelName", "本地远程调用通道名称不能为空或全空格");
+            }
+
+            if (pro == null)
+            {
+                throw new ArgumentNullException("pro", "回调委托不能为null");
+            }
+
             lock (_htChannel.SyncRoot)
             {
                 _htChannel[channelName] = new LRPCChannel(channelName, pro);
@@ -45,7 +69,37 @@ namespace UtilZ.Dotnet.Ex.LRPC
         /// <param name="channelName">通道名称</param>
         /// <param name="pro">通道回调</param>
         /// <returns>创建结果</returns>
-        public static bool TryCreateChannel(string channelName, Func<object, object> pro)
+        public static bool TryCreateChannelF(string channelName, Func<object, object> pro)
+        {
+            if (string.IsNullOrWhiteSpace(channelName))
+            {
+                throw new ArgumentNullException("channelName", "本地远程调用通道名称不能为空或全空格");
+            }
+
+            if (pro == null)
+            {
+                throw new ArgumentNullException("pro", "回调委托不能为null");
+            }
+
+            lock (_htChannel.SyncRoot)
+            {
+                if (_htChannel.ContainsKey(channelName))
+                {
+                    return false;
+                }
+
+                _htChannel.Add(channelName, new LRPCChannel(channelName, pro));
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// 创建本地远程调用通道[返回值:true:创建成功;false:创建失败,该通道已存在]
+        /// </summary>
+        /// <param name="channelName">通道名称</param>
+        /// <param name="pro">通道回调</param>
+        /// <returns>创建结果</returns>
+        public static bool TryCreateChannelA(string channelName, Action<object> pro)
         {
             if (string.IsNullOrWhiteSpace(channelName))
             {
@@ -74,7 +128,7 @@ namespace UtilZ.Dotnet.Ex.LRPC
         /// </summary>
         /// <param name="channelName">通道名称</param>
         /// <param name="pro">通道回调</param>
-        public static void CreateChannel(string channelName, Func<object, object> pro)
+        public static void CreateChannelF(string channelName, Func<object, object> pro)
         {
             if (string.IsNullOrWhiteSpace(channelName))
             {
@@ -96,6 +150,35 @@ namespace UtilZ.Dotnet.Ex.LRPC
                 _htChannel.Add(channelName, new LRPCChannel(channelName, pro));
             }
         }
+
+        /// <summary>
+        /// 创建本地远程调用通道
+        /// </summary>
+        /// <param name="channelName">通道名称</param>
+        /// <param name="pro">通道回调</param>
+        public static void CreateChannelA(string channelName, Action<object> pro)
+        {
+            if (string.IsNullOrWhiteSpace(channelName))
+            {
+                throw new ArgumentNullException("channelName", "本地远程调用通道名称不能为空或全空格");
+            }
+
+            if (pro == null)
+            {
+                throw new ArgumentNullException("pro", "回调委托不能为null");
+            }
+
+            lock (_htChannel.SyncRoot)
+            {
+                if (_htChannel.ContainsKey(channelName))
+                {
+                    throw new ArgumentException(string.Format("已存在名称为:{0}的本地远程调用通道", channelName));
+                }
+
+                _htChannel.Add(channelName, new LRPCChannel(channelName, pro));
+            }
+        }
+        #endregion
 
         /// <summary>
         /// 是否存在本地远程调用通道[存在返回true;不存在返回false]
@@ -151,13 +234,14 @@ namespace UtilZ.Dotnet.Ex.LRPC
             }
         }
 
+        #region 调用
         /// <summary>
         /// 本地远程调用[如果通道未创建则会抛出]NotFoundLRPCChannelException
         /// </summary>
         /// <param name="channelName">远程通道名称</param>
         /// <param name="obj">远程调用参数</param>
         /// <returns>远程调用输出结果</returns>
-        public static object RemoteCall(string channelName, object obj)
+        public static object RemoteCallF(string channelName, object obj)
         {
             LRPCChannel channel = _htChannel[channelName] as LRPCChannel;
             if (channel == null)
@@ -165,7 +249,23 @@ namespace UtilZ.Dotnet.Ex.LRPC
                 throw new NotFoundLRPCChannelException(string.Format("名称为:{0}的远程调用通道未创建", channelName));
             }
 
-            return channel.OnRaisePro(obj);
+            return channel.OnRaiseProF(obj);
+        }
+
+        /// <summary>
+        /// 本地远程调用[如果通道未创建则会抛出]NotFoundLRPCChannelException
+        /// </summary>
+        /// <param name="channelName">远程通道名称</param>
+        /// <param name="obj">远程调用参数</param>
+        public static void RemoteCallA(string channelName, object obj)
+        {
+            LRPCChannel channel = _htChannel[channelName] as LRPCChannel;
+            if (channel == null)
+            {
+                throw new NotFoundLRPCChannelException(string.Format("名称为:{0}的远程调用通道未创建", channelName));
+            }
+
+            channel.OnRaiseProA(obj);
         }
 
         /// <summary>
@@ -175,7 +275,7 @@ namespace UtilZ.Dotnet.Ex.LRPC
         /// <param name="obj">远程调用参数</param>
         /// <param name="result">远程调用输出结果</param>
         /// <returns>远程调用结果</returns>
-        public static bool TryRemoteCall(string channelName, object obj, out object result)
+        public static bool TryRemoteCallF(string channelName, object obj, out object result)
         {
             bool callResult;
             LRPCChannel channel = _htChannel[channelName] as LRPCChannel;
@@ -186,11 +286,35 @@ namespace UtilZ.Dotnet.Ex.LRPC
             }
             else
             {
-                result = channel.OnRaisePro(obj);
+                result = channel.OnRaiseProF(obj);
                 callResult = true;
             }
 
             return callResult;
         }
+
+        /// <summary>
+        /// 尝试本地远程调用[返回值:true:调用成功;false:调用失败]
+        /// </summary>
+        /// <param name="channelName">远程通道名称</param>
+        /// <param name="obj">远程调用参数</param>
+        /// <returns>远程调用结果</returns>
+        public static bool TryRemoteCallA(string channelName, object obj)
+        {
+            bool callResult;
+            LRPCChannel channel = _htChannel[channelName] as LRPCChannel;
+            if (channel == null)
+            {
+                callResult = false;
+            }
+            else
+            {
+                channel.OnRaiseProA(obj);
+                callResult = true;
+            }
+
+            return callResult;
+        }
+        #endregion
     }
 }

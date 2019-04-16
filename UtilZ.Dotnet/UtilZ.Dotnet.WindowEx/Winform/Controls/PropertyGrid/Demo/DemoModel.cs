@@ -143,6 +143,9 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
         /// 展开
         /// </summary>
         private Person p = new Person();
+        /// <summary>
+        /// 展开
+        /// </summary>
         [Category("人配置")]
         [DisplayName("人Person人")]
         public Person PersonEx

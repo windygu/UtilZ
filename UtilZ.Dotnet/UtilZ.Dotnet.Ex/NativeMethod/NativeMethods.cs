@@ -370,15 +370,27 @@ namespace UtilZ.Dotnet.Ex.NativeMethod
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
 
+        /// <summary>
+        /// 
+        /// </summary>
         [DllImport("icmp.dll", SetLastError = true)]
         public static extern IntPtr IcmpCreateFile();
 
+        /// <summary>
+        /// 
+        /// </summary>
         [DllImport("icmp.dll", SetLastError = true)]
         public static extern bool IcmpCloseHandle(IntPtr handle);
 
+        /// <summary>
+        /// 
+        /// </summary>
         [DllImport("icmp.dll", SetLastError = true)]
         public static extern Int32 IcmpSendEcho(IntPtr icmpHandle, Int32 destinationAddress, IntPtr requestData, Int16 requestSize, IntPtr requestOptions, IntPtr replyBuffer, Int32 replySize, Int32 timeout);
 
+        /// <summary>
+        /// 
+        /// </summary>
         [DllImport("icmp.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int IcmpSendEcho(IntPtr icmpHandle, int destinationAddress, string requestData, short requestSize, ref ICMP_OPTIONS requestOptions, ref ICMP_ECHO_REPLY replyBuffer, int replySize, int timeout);
     }

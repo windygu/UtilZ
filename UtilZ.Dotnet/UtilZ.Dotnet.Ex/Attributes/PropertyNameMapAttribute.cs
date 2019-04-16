@@ -7,7 +7,7 @@ using System.Text;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.MemoryCache;
 
-namespace UtilZ.Dotnet.Ex.Model.Attributes
+namespace UtilZ.Dotnet.Ex.Attributes
 {
     /// <summary>
     /// 属性名称映射属性

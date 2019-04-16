@@ -361,8 +361,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V5
         private const string CancellingText = "正在取消";
 
         private string _cancellText;
-        private bool _cancellEnabled;
-
         private Brush _btnBrush;
         private Brush _btnMouseOverBrush;
         private bool _btnCancelIsMouseOver = false;

@@ -1,5 +1,4 @@
-﻿using UtilZ.Dotnet.Ex.Model;
-using UtilZ.Dotnet.Ex.Model.Attributes;
+﻿using UtilZ.Dotnet.Ex.Attributes;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
 {
@@ -11,19 +10,19 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
         /// <summary>
         /// M
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "男")]
+        [DisplayNameExAttribute("男")]
         M,
 
         /// <summary>
         /// F
         /// </summary>
-        //[NDisplayNameAttribute(DisplayName = "女")]
+        //[NDisplayNameAttribute( "女")]
         F,
 
         /// <summary>
         /// O
         /// </summary>
-        [DisplayNameExAttribute(DisplayName = "中性")]
+        [DisplayNameExAttribute("中性")]
         O
     }
 }

@@ -16,7 +16,14 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
 
         }
 
-        public override void WriteLog(LogItem item)
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="fileAppenderConfig">配置</param>
+        /// <param name="pathManager">路由管理器</param>
+        /// <param name="createFilePathTime">创建时间</param>
+        /// <param name="item">日志项</param>
+        protected override void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogItem item)
         {
             string logFilePath = base.GetLogFilePath();
             if (string.IsNullOrWhiteSpace(logFilePath))

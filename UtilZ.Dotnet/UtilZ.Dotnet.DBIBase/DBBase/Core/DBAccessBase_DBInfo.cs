@@ -55,7 +55,15 @@ namespace UtilZ.Dotnet.DBIBase.DBBase.Core
         /// <returns>字段信息集合</returns>
         public List<DBFieldInfo> GetTableFieldInfos(string tableName)
         {
-            return this.InnerGetTableFieldInfos(null, tableName);
+            string dbInfoCacheKey = string.Format("{0}_{1}_GetTableFieldInfos", this.DBID, tableName);
+            var ret = UtilZ.Dotnet.Ex.Base.MemoryCacheEx.Get(dbInfoCacheKey) as List<DBFieldInfo>;
+            if (ret == null)
+            {
+                ret = this.InnerGetTableFieldInfos(null, tableName);
+                UtilZ.Dotnet.Ex.Base.MemoryCacheEx.Set(dbInfoCacheKey, ret, 1800);//缓存30分钟
+            }
+
+            return ret;
         }
 
         /// <summary>

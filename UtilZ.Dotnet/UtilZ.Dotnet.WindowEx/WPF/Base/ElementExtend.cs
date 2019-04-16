@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using UtilZ.Dotnet.Ex.Base;
 
 namespace UtilZ.Dotnet.WindowEx.WPF
 {
@@ -34,5 +35,34 @@ namespace UtilZ.Dotnet.WindowEx.WPF
             return (bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue;
         }
 
+        /// <summary>
+        /// 判断当前窗口是否已释放[返回值:true:已释放Invoke;false:未释放]
+        /// </summary>
+        /// <param name="window">要判判断的窗口</param>
+        /// <returns>返回值:true:已释放Invoke;false:未释放</returns>
+        public static bool IsDisposed(this Window window)
+        {
+            if (window == null)
+            {
+                throw new ArgumentNullException(nameof(window));
+            }
+
+            return new System.Windows.Interop.WindowInteropHelper(window).Handle == IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// 判断当前操作是否需要调用Invoke[返回值:true:调用Invoke;false:不需要]
+        /// </summary>
+        /// <param name="dispatcher">判断的对象</param>
+        /// <returns>返回值:true:调用Invoke;false:不需要</returns>
+        public static bool InvokeRequired(this System.Windows.Threading.DispatcherObject dispatcher)
+        {
+            if (dispatcher == null)
+            {
+                throw new ArgumentNullException(nameof(dispatcher));
+            }
+
+            return !dispatcher.Dispatcher.CheckAccess();
+        }
     }
 }

@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace UtilZ.Dotnet.Ex.Base
+{
+    /// <summary>
+    /// 时间扩展类
+    /// </summary>
+    public class TimeEx
+    {
+        private readonly static DateTime _refTime;
+        static TimeEx()
+        {
+            _refTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1, 0, 0, 0, 0));
+        }
+
+        /// <summary>
+        /// 获取当前时间的时间戳
+        /// </summary>
+        /// <param name="isUseUtcTime">是否使用utc时间[true:utc时间;false:本机时间]</param>
+        /// <returns>当前时间的时间戳</returns>
+        public static long GetTimestamp(bool isUseUtcTime = true)
+        {
+            TimeSpan ts;
+            if (isUseUtcTime)
+            {
+                ts = DateTime.UtcNow - _refTime;
+            }
+            else
+            {
+                ts = DateTime.Now - _refTime;
+            }
+
+            return Convert.ToInt64(ts.TotalMilliseconds);
+        }
+
+        /// <summary>
+        /// 日期时间转换为时间戳
+        /// </summary>
+        /// <param name="datetime">指定日期时间</param>
+        /// <returns>当前时间的时间戳</returns>
+        public static long DateTimeToTimestamp(DateTime datetime)
+        {
+            var ts = datetime - _refTime;
+            return Convert.ToInt64(ts.TotalMilliseconds);
+        }
+
+        /// <summary>
+        /// 时间戳转换为日期时间
+        /// </summary>
+        /// <param name="timestamp">时间戳</param>
+        /// <returns>时间</returns>
+        public static DateTime TimestampToDateTime(long timestamp)
+        {
+            return _refTime.AddMilliseconds(timestamp);
+        }
+    }
+}

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.ILEx.Compress;
-using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.Interface;
+using UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid;
 
 namespace TestE.Common
 {
@@ -24,7 +24,6 @@ namespace TestE.Common
             }
 
             var dgv = this.ucPageGridControl1.GridControl;
-            dgv.MouseRightButtonChangeSelectedRow = true;
             dgv.MultiSelect = false;
             //dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             var items = new BindingListEx<TestDGVModel>();
@@ -44,12 +43,12 @@ namespace TestE.Common
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ucPageGridControl1.ColumnSettingVisible = !ucPageGridControl1.ColumnSettingVisible;
+            ucPageGridControl1.ColumnSettingStatus= PageGridColumnSettingStatus.Float;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ucPageGridControl1.PagingVisible = !ucPageGridControl1.PagingVisible;
+            ucPageGridControl1.EnablePagingBar = !ucPageGridControl1.EnablePagingBar;
         }
 
         private void ucPageGridControl1_QueryData(object sender, QueryDataArgs e)

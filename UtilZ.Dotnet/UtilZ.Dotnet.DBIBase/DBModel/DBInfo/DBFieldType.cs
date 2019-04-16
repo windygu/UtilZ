@@ -1,5 +1,5 @@
-﻿using UtilZ.Dotnet.Ex.Model;
-using UtilZ.Dotnet.Ex.Model.Attributes;
+﻿using UtilZ.Dotnet.Ex.Attributes;
+using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.DBIBase.DBModel.DBInfo
 {

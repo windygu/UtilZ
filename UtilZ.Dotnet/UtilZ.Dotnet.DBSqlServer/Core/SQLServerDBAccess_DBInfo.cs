@@ -125,8 +125,6 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
                     string comments;
                     Type type;
                     DBFieldType fieldType;
-                    string caption = null;
-                    string description = null;
 
                     while (reader.Read())
                     {
@@ -137,8 +135,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
                         comments = reader.GetString(9);
                         type = colDBType[fieldName];
                         fieldType = dicFieldDbClrFieldType[fieldName];
-                        DBHelper.ParseComments(fieldName, comments, out caption, out description);
-                        colInfos.Add(new DBFieldInfo(tableName, caption, description, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
+                        colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
                     }
                 }
 
