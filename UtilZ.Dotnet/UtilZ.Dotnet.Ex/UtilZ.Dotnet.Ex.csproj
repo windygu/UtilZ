@@ -176,7 +176,7 @@
     <Compile Include="Log\RedirectOuput\RedirectOutputChannel.cs" />
     <Compile Include="Log\Security\ILogSecurityPolicy.cs" />
     <Compile Include="Log\Security\XSecurityPolicy.cs" />
-    <Compile Include="LRPC\LRPCCenter.cs" />
+    <Compile Include="LRPC\LRPCCore.cs" />
     <Compile Include="LRPC\LRPCChannel.cs" />
     <Compile Include="LRPC\NotFoundLRPCChannelException.cs" />
     <Compile Include="Model\BaseModel.cs" />

@@ -8,9 +8,9 @@ using System.Text;
 namespace UtilZ.Dotnet.Ex.LRPC
 {
     /// <summary>
-    /// 本地远程调用中心
+    /// 本地远程调用核心
     /// </summary>
-    public class LRPCCenter
+    public class LRPCCore
     {
         /// <summary>
         /// 远程调用Hashtable集合[key:通道名称(string);value:通道(LRPCChannel)]
