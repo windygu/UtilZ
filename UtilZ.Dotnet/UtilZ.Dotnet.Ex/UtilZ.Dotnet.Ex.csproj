@@ -124,7 +124,7 @@
     <Compile Include="Base\ThreadEx.cs" />
     <Compile Include="Base\BindingCollection\BindingListEx.cs" />
     <Compile Include="Expression\BaseCalate.cs" />
-    <Compile Include="Expression\Exceptions.cs" />
+    <Compile Include="Expression\OperNumException.cs" />
     <Compile Include="Expression\ExpressionCalculator.cs" />
     <Compile Include="Expression\Models.cs" />
     <Compile Include="FileTransfer\DirectoryInfoItem.cs" />
