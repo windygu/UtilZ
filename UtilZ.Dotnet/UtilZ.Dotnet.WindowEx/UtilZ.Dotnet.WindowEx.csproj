@@ -77,6 +77,9 @@
     <Compile Include="Winform\Controls\DataGridViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Winform\Controls\FlowLayoutPanelZ.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Winform\Controls\LogControlF.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,6 +94,9 @@
     </Compile>
     <Compile Include="Winform\Controls\NoneBorderForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Winform\Controls\NumberTextBox.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Winform\Controls\OpacityPanel.cs">
       <SubType>Component</SubType>

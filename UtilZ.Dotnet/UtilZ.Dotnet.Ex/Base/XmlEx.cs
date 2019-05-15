@@ -26,7 +26,7 @@ namespace UtilZ.Dotnet.Ex.Base
 
             if (string.IsNullOrEmpty(attributeName))
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => attributeName));
+                throw new ArgumentNullException(nameof(attributeName));
             }
 
             XAttribute attri = ele.Attribute(attributeName);

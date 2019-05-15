@@ -24,7 +24,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (process == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => process));
+                throw new ArgumentNullException(nameof(process));
             }
 
             NestProcess nprocess = new NestProcess(process);

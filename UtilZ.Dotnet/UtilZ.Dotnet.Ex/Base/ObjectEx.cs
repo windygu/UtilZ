@@ -20,19 +20,14 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>新实例</returns>
         public static T DeepCopy<T>(object obj)
         {
-            Func<T> function = () =>
+            using (var memoryStream = new MemoryStream())
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(memoryStream, obj);
-                    memoryStream.Position = 0;
-                    T newInstance = (T)formatter.Deserialize(memoryStream);
-                    return newInstance;
-                }
-            };
-
-            return AssemblyEx.ExcuteFuction<T>(function);
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(memoryStream, obj);
+                memoryStream.Position = 0;
+                T newInstance = (T)formatter.Deserialize(memoryStream);
+                return newInstance;
+            }
         }
 
         /// <summary>
@@ -65,6 +60,7 @@ namespace UtilZ.Dotnet.Ex.Base
             return Path.GetDirectoryName(type.Assembly.Location);
         }
 
+        /*
         /// <summary>
         /// 获取变量名称
         /// </summary>
@@ -99,93 +95,94 @@ namespace UtilZ.Dotnet.Ex.Base
 
             return varName;
         }
+        */
 
-        /// <summary>
-        /// 无序遍历集合
-        /// </summary>
-        /// <typeparam name="T">集合项类型</typeparam>
-        /// <param name="items">集合</param>
-        /// <param name="func">集合项要做的处理委托[返回值:true:继续遍历其它项;false:循环结束]</param>
-        public static void DisorderLoop<T>(IEnumerable<T> items, Func<T, bool> func)
-        {
-            if (items == null)
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(xx => items));
-            }
+        ///// <summary>
+        ///// 无序遍历集合
+        ///// </summary>
+        ///// <typeparam name="T">集合项类型</typeparam>
+        ///// <param name="items">集合</param>
+        ///// <param name="func">集合项要做的处理委托[返回值:true:继续遍历其它项;false:循环结束]</param>
+        //public static void DisorderLoop<T>(IEnumerable<T> items, Func<T, bool> func)
+        //{
+        //    if (items == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(items));
+        //    }
 
-            if (func == null)
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(xx => func));
-            }
+        //    if (func == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(func));
+        //    }
 
-            int count = items.Count();
-            //空集合直接返回
-            if (count == 0)
-            {
-                return;
-            }
+        //    int count = items.Count();
+        //    //空集合直接返回
+        //    if (count == 0)
+        //    {
+        //        return;
+        //    }
 
-            int length = count / 2;
-            if (count % 2 != 0)
-            {
-                length += 1;
-            }
+        //    int length = count / 2;
+        //    if (count % 2 != 0)
+        //    {
+        //        length += 1;
+        //    }
 
-            /*************************************************
-             *    fp              pl      pr              rp
-             * |-->|              |<--|-->|              |<--|
-             * |______________________|______________________|
-             **************************************************/
-            int fp = 0;
-            int pl = length - 1;
-            int pr = 0;
-            int rp = count - 1;
-            T tmpItem;
+        //    /*************************************************
+        //     *    fp              pl      pr              rp
+        //     * |-->|              |<--|-->|              |<--|
+        //     * |______________________|______________________|
+        //     **************************************************/
+        //    int fp = 0;
+        //    int pl = length - 1;
+        //    int pr = 0;
+        //    int rp = count - 1;
+        //    T tmpItem;
 
-            //fp,pl,pr,rp为四个方向移动的索引指针
-            for (fp = 0, pr = length; fp < length; fp++, pr++)
-            {
-                if (fp <= pl)
-                {
-                    tmpItem = items.ElementAt(fp);
-                    if (!func(tmpItem))
-                    {
-                        break;
-                    }
-                }
+        //    //fp,pl,pr,rp为四个方向移动的索引指针
+        //    for (fp = 0, pr = length; fp < length; fp++, pr++)
+        //    {
+        //        if (fp <= pl)
+        //        {
+        //            tmpItem = items.ElementAt(fp);
+        //            if (!func(tmpItem))
+        //            {
+        //                break;
+        //            }
+        //        }
 
-                if (pl > fp)
-                {
-                    tmpItem = items.ElementAt(pl);
-                    if (!func(tmpItem))
-                    {
-                        break;
-                    }
+        //        if (pl > fp)
+        //        {
+        //            tmpItem = items.ElementAt(pl);
+        //            if (!func(tmpItem))
+        //            {
+        //                break;
+        //            }
 
-                    pl--;
-                }
+        //            pl--;
+        //        }
 
-                if (pr <= rp)
-                {
-                    tmpItem = items.ElementAt(pr);
-                    if (!func(tmpItem))
-                    {
-                        break;
-                    }
-                }
+        //        if (pr <= rp)
+        //        {
+        //            tmpItem = items.ElementAt(pr);
+        //            if (!func(tmpItem))
+        //            {
+        //                break;
+        //            }
+        //        }
 
-                if (rp > pr)
-                {
-                    tmpItem = items.ElementAt(rp);
-                    if (!func(tmpItem))
-                    {
-                        break;
-                    }
+        //        if (rp > pr)
+        //        {
+        //            tmpItem = items.ElementAt(rp);
+        //            if (!func(tmpItem))
+        //            {
+        //                break;
+        //            }
 
-                    rp--;
-                }
-            }
-        }
+        //            rp--;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 获取当前可用物理内存大小(Microsoft.VisualBasic程序集->Microsoft.VisualBasic.Devices.ComputerInfo.AvailablePhysicalMemory)

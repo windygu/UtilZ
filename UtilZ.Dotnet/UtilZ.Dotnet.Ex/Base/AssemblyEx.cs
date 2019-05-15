@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,178 +14,12 @@ namespace UtilZ.Dotnet.Ex.Base
     /// </summary>
     public static class AssemblyEx
     {
-        /// <summary>
-        /// 多线程操作锁
-        /// </summary>
-        private readonly static object _monitor = new object();
-
-        /// <summary>
-        /// 已加载的程序集集合,为了加快效率,避免每次都遍历[key:程序集名称;value:Assembly]
-        /// </summary>
-        private readonly static Dictionary<string, System.Reflection.Assembly> _loadedAssemblies = new Dictionary<string, System.Reflection.Assembly>();
+        private readonly static ConcurrentDictionary<string, Assembly> _targetAssemblyDic = new ConcurrentDictionary<string, Assembly>();
 
         /// <summary>
         /// 是否内部加载数据库访问组件
         /// </summary>
         private static bool _enable = false;
-
-        /// <summary>
-        /// 待通查找的的程序集名称集合[key:程序集名称;value:程序集路径]
-        /// </summary>
-        private readonly static Dictionary<string, string> _dicPrepareLoadAssemblyNames = new Dictionary<string, string>();
-
-        /// <summary>
-        /// 获取待通过本辅助类查找的的程序集名称集合
-        /// </summary>
-        public static string[] PrepareLoadAssemblyNames
-        {
-            get
-            {
-                lock (_monitor)
-                {
-                    return _dicPrepareLoadAssemblyNames.Keys.ToArray();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 是否包含待通查找的的程序集[存在返回:true,否则返回false]
-        /// </summary>
-        /// <param name="assemblyName">程序集名称</param>
-        /// <returns>存在返回:true,否则返回false</returns>
-        public static bool ContainsPrepareLoadAssembly(string assemblyName)
-        {
-            lock (_monitor)
-            {
-                return _dicPrepareLoadAssemblyNames.ContainsKey(assemblyName);
-            }
-        }
-
-        /// <summary>
-        /// 添加一个程序集
-        /// </summary>
-        /// <param name="assembly">程序集</param>
-        public static void AddAssembly(System.Reflection.Assembly assembly)
-        {
-            lock (_monitor)
-            {
-                if (_loadedAssemblies.ContainsKey(assembly.FullName))
-                {
-                    return;
-                }
-
-                _loadedAssemblies.Add(assembly.FullName, assembly);
-            }
-        }
-
-        /// <summary>
-        /// 添加一个程序集集合
-        /// </summary>
-        /// <param name="assemblies">程序集集合</param>
-        public static void AddAssembly(IEnumerable<System.Reflection.Assembly> assemblies)
-        {
-            lock (_monitor)
-            {
-                foreach (var assembly in assemblies)
-                {
-                    if (_loadedAssemblies.ContainsKey(assembly.FullName))
-                    {
-                        return;
-                    }
-
-                    _loadedAssemblies.Add(assembly.FullName, assembly);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 添加一个待通查找的的程序集
-        /// </summary>
-        /// <param name="assemblyName">程序集名称</param>
-        /// <param name="assemblyFullPath">程序集全路径</param>
-        public static void AddPrepareLoadAssembly(string assemblyName, string assemblyFullPath)
-        {
-            if (string.IsNullOrEmpty(assemblyName))
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => assemblyName));
-            }
-
-            if (string.IsNullOrEmpty(assemblyFullPath))
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => assemblyFullPath));
-            }
-
-            lock (_monitor)
-            {
-                if (_dicPrepareLoadAssemblyNames.ContainsKey(assemblyName))
-                {
-                    throw new ArgumentException(string.Format("已存在程序集:{0}", assemblyName));
-                }
-
-                if (!System.IO.File.Exists(assemblyFullPath))
-                {
-                    throw new System.IO.FileNotFoundException(string.Format("程序集:{0}不存在", assemblyFullPath));
-                }
-
-                _dicPrepareLoadAssemblyNames.Add(assemblyName, assemblyFullPath);
-            }
-        }
-
-        /// <summary>
-        /// 添加一个待通查找的的程序集名称集合
-        /// </summary>
-        /// <param name="assemblyNames">程序集名称集合</param>
-        public static void AddPrepareLoadAssembly(Dictionary<string, string> assemblyNames)
-        {
-            lock (_monitor)
-            {
-                List<string> addedAssemblyNames = new List<string>();
-                foreach (KeyValuePair<string, string> assemblyName in assemblyNames)
-                {
-                    if (_dicPrepareLoadAssemblyNames.ContainsKey(assemblyName.Key))
-                    {
-                        foreach (string removeAssemblyName in addedAssemblyNames)
-                        {
-                            _dicPrepareLoadAssemblyNames.Remove(removeAssemblyName);
-                        }
-
-                        throw new ArgumentException(string.Format("已存在程序集:{0}", assemblyName));
-                    }
-
-                    if (!System.IO.File.Exists(assemblyName.Value))
-                    {
-                        foreach (string removeAssemblyName in addedAssemblyNames)
-                        {
-                            _dicPrepareLoadAssemblyNames.Remove(removeAssemblyName);
-                        }
-
-                        throw new System.IO.FileNotFoundException(string.Format("程序集:{0}不存在", assemblyName.Value));
-                    }
-
-                    _dicPrepareLoadAssemblyNames.Add(assemblyName.Key, assemblyName.Value);
-                    addedAssemblyNames.Add(assemblyName.Key);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 移除一个待通查找的的程序集
-        /// </summary>
-        /// <param name="assemblyName">程序集名称</param>
-        public static void RemovePrepareLoadAssembly(string assemblyName)
-        {
-            lock (_monitor)
-            {
-                if (_dicPrepareLoadAssemblyNames.ContainsKey(assemblyName))
-                {
-                    _dicPrepareLoadAssemblyNames.Remove(assemblyName);
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format("程序集:{0}不存在", assemblyName));
-                }
-            }
-        }
 
         /// <summary>
         /// 获取或设置是否内部加载数据库访问组件,true:内部加载,false:外部加载
@@ -193,179 +28,236 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             get
             {
-                lock (_monitor)
-                {
-                    return _enable;
-                }
+                return _enable;
             }
             set
             {
-                lock (_monitor)
+                if (_enable == value)
                 {
-                    if (_enable == value)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    _enable = value;
-                    if (_enable)
-                    {
-                        AppDomain.CurrentDomain.AssemblyResolve += LoadDBAccesAssembly;
-                    }
-                    else
-                    {
-                        AppDomain.CurrentDomain.AssemblyResolve -= LoadDBAccesAssembly;
-                    }
+                _enable = value;
+                if (_enable)
+                {
+                    AppDomain.CurrentDomain.AssemblyResolve += ManualLoadAssembly;
+                }
+                else
+                {
+                    AppDomain.CurrentDomain.AssemblyResolve -= ManualLoadAssembly;
                 }
             }
         }
+
+        /// <summary>
+        /// 查找范围[true:主程序及所有了子目录;false:仅RequestingAssembly所在目录]
+        /// </summary>
+        private static bool _findArea = false;
+
+        /// <summary>
+        /// 获取或设置查找范围[true:主程序及所有了子目录;false:仅RequestingAssembly所在目录]
+        /// </summary>
+        public static bool FindArea
+        {
+            get
+            {
+                return _findArea;
+            }
+            set
+            {
+                _findArea = value;
+            }
+        }
+
+        /// <summary>
+        /// 手动加载程序集委托列表
+        /// </summary>
+        private readonly static ConcurrentDictionary<string, Func<object, ResolveEventArgs, System.Reflection.Assembly>> _manualLoadAssemblyFuncDic = new ConcurrentDictionary<string, Func<object, ResolveEventArgs, Assembly>>();
 
         /// <summary>
         /// 加载数组库访问程序集
         /// </summary>
         /// <param name="sender">sender</param>
         /// <param name="args">需要的程序集名称信息参数</param>
-        public static System.Reflection.Assembly LoadDBAccesAssembly(object sender, ResolveEventArgs args)
+        private static System.Reflection.Assembly ManualLoadAssembly(object sender, ResolveEventArgs args)
         {
-            lock (_monitor)
+            Assembly targetAssembly;
+            //验证是否存在已查找过的集合中,如果已存在则直接取值返回
+            if (_targetAssemblyDic.TryGetValue(args.Name, out targetAssembly))
             {
-                //验证是否存在已查找过的集合中,如果已存在则直接取值返回
-                if (_loadedAssemblies.ContainsKey(args.Name))
+                return _targetAssemblyDic[args.Name];
+            }
+
+            string assemblyFullPath;
+            targetAssembly = FindAssembly(args.Name);
+            if (targetAssembly != null)
+            {
+                return targetAssembly;
+            }
+
+            string assemblyName = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
+            if (args.RequestingAssembly != null)
+            {
+                //先找请求的程序集目录
+                assemblyFullPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(args.RequestingAssembly.Location), assemblyName);
+                if (!System.IO.File.Exists(assemblyFullPath))
                 {
-                    return _loadedAssemblies[args.Name];
+                    //如果请求的程序集目录中没有程序集,则在工作目录中查找
+                    assemblyFullPath = System.IO.Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyName);
                 }
 
-                string assemblyFullPath;
-                Assembly targetAssembly = FindAssembly(args.Name);
-                if (targetAssembly == null)
+                if (System.IO.File.Exists(assemblyName))
                 {
-                    if (_dicPrepareLoadAssemblyNames.ContainsKey(args.Name))
-                    {
-                        //如果没在当前应用程序域中找到当前要查找的程序集,则通过程序集路径加载该程序集并添加到已查找过的集合中
-                        assemblyFullPath = _dicPrepareLoadAssemblyNames[args.Name];
-                        if (System.IO.File.Exists(assemblyFullPath))
-                        {
-                            targetAssembly = System.Reflection.Assembly.LoadFile(assemblyFullPath);
-                        }
-                        //else
-                        //{
-                        //    throw new System.IO.FileNotFoundException(string.Format("程序集:{0}不存在", assemblyFullPath));
-                        //}
-                    }
-                }
-
-                if (targetAssembly == null)
-                {
-                    string assemblyName = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
-                    //先找请求的程序集目录
-                    assemblyFullPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(args.RequestingAssembly.Location), assemblyName);
-                    if (!System.IO.File.Exists(assemblyName))
-                    {
-                        //如果请求的程序集目录中没有程序集,则在工作目录中查找
-                        assemblyFullPath = System.IO.Path.Combine(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyName);
-                    }
-
-                    if (System.IO.File.Exists(assemblyName))
-                    {
-                        targetAssembly = Assembly.LoadFile(assemblyName);
-                    }
+                    targetAssembly = Assembly.LoadFrom(assemblyName);
                 }
 
                 //添加到已加载的程序集字典集合中
                 if (targetAssembly != null)
                 {
-                    _loadedAssemblies.Add(args.Name, targetAssembly);
+                    return targetAssembly;
                 }
-
-                return targetAssembly;
-            }
-        }
-
-        /// <summary>
-        /// 启用程序集查找功能调用无返回值委托
-        /// </summary>
-        /// <param name="action">委托</param>
-        public static void ExcuteAction(Action action)
-        {
-            if (action == null)
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => action), "要执行的委托不能为null");
             }
 
-            lock (_monitor)
+            if (_findArea)
             {
-                bool resetFlag = false;
-                if (!_enable)
+                //在主程序目录以及所有子目录中查找目标程序集
+                string[] filePathArr = System.IO.Directory.GetFiles(DirectoryInfoEx.CurrentAssemblyDirectory, assemblyName, System.IO.SearchOption.AllDirectories);
+                if (filePathArr.Length == 0)
                 {
-                    _enable = true;
-                    resetFlag = true;
-                    AppDomain.CurrentDomain.AssemblyResolve += LoadDBAccesAssembly;
+                    return null;
                 }
 
                 try
                 {
-                    action();
+                    targetAssembly = Assembly.LoadFrom(filePathArr.First());
+                    return targetAssembly;
                 }
-                finally
+                catch
+                { }
+            }
+
+            //手动外部加载
+            foreach (var manualLoadAssemblyFunc in _manualLoadAssemblyFuncDic.Values.ToArray())
+            {
+                targetAssembly = manualLoadAssemblyFunc(sender, args);
+                if (targetAssembly != null)
                 {
-                    if (resetFlag)
-                    {
-                        AppDomain.CurrentDomain.AssemblyResolve -= LoadDBAccesAssembly;
-                        _enable = false;
-                    }
+                    return targetAssembly;
                 }
             }
+
+            return targetAssembly;
         }
 
         /// <summary>
-        /// 启用程序集查找功能调用带返回值委托
+        /// 添加一个手动加载程序集委托
         /// </summary>
-        /// <param name="function">委托</param>
-        /// <returns>执行委托返回值</returns>
-        public static T ExcuteFuction<T>(Func<T> function)
+        /// <param name="key">委托key</param>
+        /// <param name="func">委托,找着了返回目标程序集,未找着返回null</param>
+        public static void AddManualLoadAssemblyFunc(string key, Func<object, ResolveEventArgs, System.Reflection.Assembly> func)
         {
-            if (function == null)
-            {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => function), "要执行的委托不能为null");
-            }
-
-            lock (_monitor)
-            {
-                bool resetFlag = false;
-                if (!_enable)
-                {
-                    _enable = true;
-                    resetFlag = true;
-                    AppDomain.CurrentDomain.AssemblyResolve += LoadDBAccesAssembly;
-                }
-
-                try
-                {
-                    return function();
-                }
-                finally
-                {
-                    if (resetFlag)
-                    {
-                        AppDomain.CurrentDomain.AssemblyResolve -= LoadDBAccesAssembly;
-                        _enable = false;
-                    }
-                }
-            }
+            _manualLoadAssemblyFuncDic[key] = func;
         }
 
-        #region 查找程序集
+        /// <summary>
+        /// 移除一个手动加载程序集委托
+        /// </summary>
+        public static void RemoveManualLoadAssemblyFunc(string key)
+        {
+            Func<object, ResolveEventArgs, System.Reflection.Assembly> func;
+            _manualLoadAssemblyFuncDic.TryRemove(key, out func);
+        }
+
+        /// <summary>
+        /// 清空手动加载程序集委托
+        /// </summary>
+        public static void ClearManualLoadAssemblyFunc()
+        {
+            _manualLoadAssemblyFuncDic.Clear();
+        }
+
         /// <summary>
         /// 从当前应用程序域中查找指定名称的程序集[找到返回目标程序集,没找到返回null]
         /// </summary>
-        /// <param name="assemblyFullName">程序集全名</param>
+        /// <param name="name">程序集名称或全名</param>
         /// <returns>找到返回目标程序集,没找到返回null</returns>
-        public static Assembly FindAssembly(string assemblyFullName)
+        public static Assembly FindAssembly(string name)
         {
             Assembly[] assemblys = AppDomain.CurrentDomain.GetAssemblies();
-            return (from assembly in assemblys where assemblyFullName.Equals(assembly.FullName) select assembly).FirstOrDefault();
+            //return (from assembly in assemblys where string.Equals(name, assembly.FullName) || string.Equals(name, assembly.GetName().Name) select assembly).FirstOrDefault();
+            Assembly targetAssembly = (from assembly in assemblys where string.Equals(name, assembly.FullName) select assembly).FirstOrDefault();
+            if (targetAssembly != null)
+            {
+                return targetAssembly;
+            }
+
+            targetAssembly = (from assembly in assemblys where string.Equals(name, assembly.GetName().Name) select assembly).FirstOrDefault();
+            return targetAssembly;
         }
-        #endregion
+
+        /// <summary>
+        /// 添加一个程序集
+        /// </summary>
+        /// <param name="assembly">程序集</param>
+        public static void AddAssembly(System.Reflection.Assembly assembly)
+        {
+            _targetAssemblyDic[assembly.FullName] = assembly;
+            _targetAssemblyDic[assembly.GetName().Name] = assembly;
+        }
+
+        /// <summary>
+        /// 添加一个程序集集合
+        /// </summary>
+        /// <param name="assemblies">程序集集合</param>
+        public static void AddAssembly(IEnumerable<System.Reflection.Assembly> assemblies)
+        {
+            foreach (var assembly in assemblies)
+            {
+                AddAssembly(assembly);
+            }
+        }
+
+        /// <summary>
+        /// 获取目标程序集集合
+        /// </summary>
+        public static Assembly[] TargetAssemblys
+        {
+            get
+            {
+                return _targetAssemblyDic.Values.Distinct().ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 目标程序集中是否包含指定名称的程序集[存在返回:true,否则返回false]
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>存在返回:true,否则返回false</returns>
+        public static bool ContainsAssembly(string assemblyName)
+        {
+            return _targetAssemblyDic.ContainsKey(assemblyName);
+        }
+
+        /// <summary>
+        /// 移除目标程序集
+        /// </summary>
+        /// <param name="assembly"></param>
+        public static void RemoveAssembly(Assembly assembly)
+        {
+            Assembly assembly2;
+            _targetAssemblyDic.TryRemove(assembly.FullName, out assembly2);
+            _targetAssemblyDic.TryRemove(assembly.GetName().Name, out assembly2);
+        }
+
+        /// <summary>
+        /// 清空目标程序集集合
+        /// </summary>
+        public static void ClearAssembly()
+        {
+            _targetAssemblyDic.Clear();
+        }
+
+
 
         /// <summary>
         /// 获取程序集名称[获取失败或非.net程序集,则返回null]
@@ -376,13 +268,24 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             try
             {
-                return AssemblyName.GetAssemblyName(assemblyPath).FullName;
+                if (System.IO.File.Exists(assemblyPath))
+                {
+                    return AssemblyName.GetAssemblyName(assemblyPath).FullName;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch
             {
                 return null;
             }
         }
+
+
+
+
 
         /// <summary>
         /// 判断dll文件是64位还是32位[true:64位;false:32位;.NET AnyCpu程序集判断为32位]
@@ -420,6 +323,10 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
             }
         }
+
+
+
+
 
         /// <summary>
         /// 编码程序集[返回编码结果]
@@ -468,6 +375,10 @@ namespace UtilZ.Dotnet.Ex.Base
             CompilerResults cr = provider.CompileAssemblyFromFile(cp, sourceFilePaths);
             return cr;
         }
+
+
+
+
 
         /// <summary>
         /// 获取程序集GUID

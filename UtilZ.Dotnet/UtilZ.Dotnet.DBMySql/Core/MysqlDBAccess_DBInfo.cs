@@ -3,63 +3,43 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBIBase.DBBase.Factory;
-using UtilZ.Dotnet.DBIBase.DBModel.Common;
-using UtilZ.Dotnet.DBIBase.DBModel.DBInfo;
-using UtilZ.Dotnet.DBIBase.DBModel.Model;
+using System.Threading.Tasks;
+using UtilZ.Dotnet.DBIBase.Connection;
+using UtilZ.Dotnet.DBIBase.Model;
+using UtilZ.Dotnet.DBIBase.Core;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {
-    //Mysql数据库访问类-数据库信息相关
-    public partial class MySqlDBAccess
+    internal partial class MySqlDBAccess
     {
+        #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
         /// </summary>
+        /// <param name="con">IDbConnection</param>
         /// <param name="tableName">表名[表名区分大小写的数据库:Oracle,SQLite]</param>
         /// <returns>存在返回true,不存在返回false</returns>
-        public override bool IsExistTable(string tableName)
+        protected override bool PrimitiveExistTable(IDbConnection con, string tableName)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                return false;
-            }
-
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
-            {
-                // string sqlStr =@"SHOW TABLES LIKE '表名'";   -- 当前连接库中是否存在表
-                // string sqlStr = @"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME='表名' AND TABLE_SCHEMA='数据库名'";
-                string sqlStr = string.Format(@"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME=?TABLENAME AND TABLE_SCHEMA='{0}'", conInfo.Con.Database);
-                var paras = new NDbParameterCollection();
-                paras.Add("TABLENAME", tableName);
-                object value = this.InnerExecuteScalar(conInfo.Con, sqlStr, paras);
-                return Convert.ToInt32(value) > 0;
-            }
+            string sqlStr = $@"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME='{tableName}' AND TABLE_SCHEMA='{con.Database}'";
+            object value = base.PrimitiveExecuteScalar(con, sqlStr);
+            return base.ConvertObject<int>(value) > 0;
         }
 
         /// <summary>
         /// 判断表中是否存在字段[存在返回true,不存在返回false]
         /// </summary>
+        /// <param name="con">数据库连接对象</param>
         /// <param name="tableName">表名</param>
         /// <param name="fieldName">字段名</param>
         /// <returns>存在返回true,不存在返回false</returns>
-        public override bool IsExistField(string tableName, string fieldName)
+        protected override bool PrimitiveExistField(IDbConnection con, string tableName, string fieldName)
         {
-            if (string.IsNullOrWhiteSpace(tableName) || string.IsNullOrWhiteSpace(fieldName))
-            {
-                return false;
-            }
-
-            //string sqlStr = string.Format(@"SHOW COLUMNS FROM {0}TABLENAME where Field={0}FIELDNAME", dbParaSign);
-            string sqlStr = string.Format(@"select count(0) from information_schema.columns WHERE table_name =?TABLENAME and column_name=?FIELDNAME");
-            var paras = new NDbParameterCollection();
-            paras.Add("FIELDNAME", fieldName);
-            paras.Add("TABLENAME", tableName);
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
-            {
-                return Convert.ToInt64(this.InnerExecuteScalar(conInfo.Con, sqlStr, paras)) > 0;
-            }
+            string sqlStr = $@"select count(0) from information_schema.columns WHERE table_name ='{tableName}' and column_name='{fieldName}'";
+            object value = base.PrimitiveExecuteScalar(con, sqlStr);
+            return base.ConvertObject<int>(value) > 0;
         }
+        #endregion
 
         #region 获取表的字段信息
         /// <summary>
@@ -68,95 +48,51 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <param name="con">数据库连接对象</param>
         /// <param name="tableName">表名</param>
         /// <returns>字段信息集合</returns>
-        protected override List<DBFieldInfo> InnerGetTableFieldInfos(IDbConnection con, string tableName)
+        protected override List<DBFieldInfo> PrimitiveGetTableFieldInfo(IDbConnection con, string tableName)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
+            var priKeyCols = this.PrimitiveQueryPriKeyField(con, tableName);//主键列名集合
+            string sqlStr = $"SELECT * FROM {tableName} limit 0,0";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
+            var dicFieldDbClrFieldType = this.GetFieldDbClrFieldType(dt.Columns);//字段的公共语言运行时类型字典集合
+
+            //查询表C#中列信息,从空表中获得
+            Dictionary<string, Type> colDBType = new Dictionary<string, Type>();
+            foreach (DataColumn col in dt.Columns)
             {
-                return null;
+                colDBType.Add(col.ColumnName, col.DataType);
             }
 
-            DbConnectionInfo conInfo = null;
-            if (con == null)
+
+            IDbCommand cmd = this.CreateCommand(con);
+            cmd.CommandText = $@"SHOW FULL FIELDS FROM {tableName}";
+            List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
+
+            using (IDataReader reader = cmd.ExecuteReader())
             {
-                conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R);
-                con = conInfo.Con;
-            }
+                object value;
+                string fieldName;
+                string dbTypeName;
+                bool allowNull;
+                object defaultValue;
+                string comments;
+                Type type;
+                DBFieldType fieldType;
 
-            try
-            {
-                var priKeyCols = this.InnerQueryPrikeyColumns(con, tableName);//主键列名集合
-                DataTable dt = this.InnerQueryData(con, string.Format("SELECT * FROM {0} limit 0,0", tableName));
-                var dicFieldDbClrFieldType = this.GetFieldDbClrFieldType(tableName, dt.Columns);//字段的公共语言运行时类型字典集合
-
-                //查询表C#中列信息,从空表中获得
-                Dictionary<string, Type> colDBType = new Dictionary<string, Type>();
-                foreach (DataColumn col in dt.Columns)
+                while (reader.Read())
                 {
-                    colDBType.Add(col.ColumnName, col.DataType);
-                }
-
-
-                IDbCommand cmd = this.CreateCommand(con);
-                cmd.CommandText = string.Format(@"SHOW FULL FIELDS FROM {0}", tableName);
-                List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
-
-                using (IDataReader reader = cmd.ExecuteReader())
-                {
-                    object value;
-                    string fieldName;
-                    string dbTypeName;
-                    bool allowNull;
-                    object defaultValue;
-                    string comments;
-                    Type type;
-                    DBFieldType fieldType;
-
-                    while (reader.Read())
-                    {
-                        fieldName = reader["Field"].ToString();
-                        dbTypeName = reader["Type"].ToString();
-                        allowNull = reader["Null"].ToString().ToUpper().Equals("NO") ? false : true;
-                        value = reader["Default"];
-                        defaultValue = DBNull.Value.Equals(value) ? null : value;
-                        comments = reader["Comment"].ToString();
-                        type = colDBType[fieldName];
-                        fieldType = dicFieldDbClrFieldType[fieldName];
-                        colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
-                    }
-                }
-
-                return colInfos;
-            }
-            finally
-            {
-                if (conInfo != null)
-                {
-                    conInfo.Dispose();
+                    fieldName = reader["Field"].ToString();
+                    dbTypeName = reader["Type"].ToString();
+                    allowNull = reader["Null"].ToString().ToUpper().Equals("NO") ? false : true;
+                    value = reader["Default"];
+                    defaultValue = DBNull.Value.Equals(value) ? null : value;
+                    comments = reader["Comment"].ToString();
+                    type = colDBType[fieldName];
+                    fieldType = dicFieldDbClrFieldType[fieldName];
+                    colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
                 }
             }
-        }
-        #endregion
 
-        #region 获取表信息
-        /// <summary>
-        /// 获取当前用户有权限的所有表集合
-        /// </summary>
-        /// <param name="isGetFieldInfo">是否获取字段信息[true:获取字段信息;false:不获取;默认不获取]</param>
-        /// <returns>当前用户有权限的所有表集合</returns>
-        public override List<DBTableInfo> GetTableInfos(bool isGetFieldInfo = false)
-        {
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
-            {
-                string sqlStr = string.Format(@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{0}'", conInfo.Con.Database);
-                DataTable dt = this.InnerQueryData(conInfo.Con, sqlStr);
-                List<DBTableInfo> tables = new List<DBTableInfo>();
-                foreach (DataRow row in dt.Rows)
-                {
-                    tables.Add(this.InnerGetTableInfo(conInfo.Con, row[0].ToString(), isGetFieldInfo));
-                }
-
-                return tables;
-            }
+            return colInfos;
         }
 
         /// <summary>
@@ -165,22 +101,49 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <param name="con">数据库连接对象</param>
         /// <param name="tableName">表名</param>
         /// <returns>主键列名集合</returns>
-        protected override List<string> InnerQueryPrikeyColumns(IDbConnection con, string tableName)
+        protected override List<string> PrimitiveQueryPriKeyField(IDbConnection con, string tableName)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                return null;
-            }
-
             string sqlStr = string.Format(@"select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where table_name='{0}' AND COLUMN_KEY='PRI'", tableName);
-            DataTable dt = this.InnerQueryData(con, sqlStr);
+            DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
             List<string> priKeyCols = new List<string>();
             foreach (DataRow row in dt.Rows)
             {
-                priKeyCols.Add(row[0].ToString()); return priKeyCols;
+                priKeyCols.Add(row[0].ToString());
             }
 
             return priKeyCols;
+        }
+        #endregion
+
+        #region 获取表信息
+        /// <summary>
+        /// 获取当前用户有权限的所有表集合
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="getFieldInfo">是否获取字段信息[true:获取字段信息;false:不获取;默认不获取]</param>
+        /// <returns>当前用户有权限的所有表集合</returns>
+        protected override List<DBTableInfo> PrimitiveGetTableInfoList(IDbConnection con, bool getFieldInfo)
+        {
+            //string sqlStr = $@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{con.Database}'";
+            string sqlStr = @"SHOW TABLES";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
+
+            var tableInfoList = new List<DBTableInfo>();
+            string tableName;
+            DBIndexInfoCollection indexInfoCollection = null;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                tableName = row[0].ToString();
+                if (getFieldInfo)
+                {
+                    indexInfoCollection = this.PrimitiveGetTableIndexs(con, tableName);
+                }
+
+                tableInfoList.Add(this.PrimitiveGetTableInfoByName(con, tableName, getFieldInfo, indexInfoCollection));
+            }
+
+            return tableInfoList;
         }
 
         /// <summary>
@@ -188,112 +151,141 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// </summary>
         /// <param name="con">数据库连接对象</param>
         /// <param name="tableName">表名</param>
-        /// <param name="isGetFieldInfo">是否获取字段信息[true:获取字段信息;false:不获取;默认不获取]</param>
+        /// <param name="getFieldInfo">是否获取字段信息[true:获取字段信息;false:不获取;默认不获取]</param>
+        /// <param name="indexInfoCollection">索引集合</param>
         /// <returns>表信息</returns>
-        protected override DBTableInfo InnerGetTableInfo(IDbConnection con, string tableName, bool isGetFieldInfo = false)
+        protected override DBTableInfo PrimitiveGetTableInfoByName(IDbConnection con, string tableName, bool getFieldInfo, DBIndexInfoCollection indexInfoCollection)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
+            string sqlStr = $@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{con.Database}' AND TABLE_NAME = '{tableName}'";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
+            if (dt == null || dt.Rows.Count == 0)
             {
                 return null;
             }
 
-            DbConnectionInfo conInfo = null;
-            if (con == null)
+            string comments;//备注
+            object tmpValue = null;//临时变量
+            List<DBFieldInfo> colInfos = null;//字段集合
+            IEnumerable<DBFieldInfo> priKeyColInfos = null;//主键列字段集合
+            foreach (DataRow row in dt.Rows)
             {
-                conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R);
-                con = conInfo.Con;
-            }
-
-            try
-            {
-                string sqlStr = string.Format(@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{0}' AND TABLE_NAME = '{1}'", con.Database, tableName);
-                DataTable dt = this.InnerQueryData(con, sqlStr, null);
-                if (dt == null || dt.Rows.Count == 0)
+                tableName = row[0].ToString();
+                tmpValue = row[1];
+                if (tmpValue != null && tmpValue != DBNull.Value)
                 {
-                    return null;
+                    comments = tmpValue.ToString();
+                }
+                else
+                {
+                    comments = null;
                 }
 
-                string comments;//备注
-                object tmpValue = null;//临时变量
-                List<DBFieldInfo> colInfos = null;//字段集合
-                IEnumerable<DBFieldInfo> priKeyColInfos = null;//主键列字段集合
-                foreach (DataRow row in dt.Rows)
+                if (getFieldInfo)//获取字段信息
                 {
-                    tableName = row[0].ToString();
-                    tmpValue = row[1];
-                    if (tmpValue != null)
-                    {
-                        comments = tmpValue.ToString();
-                    }
-                    else
-                    {
-                        comments = null;
-                    }
-
-                    if (isGetFieldInfo)//获取字段信息
-                    {
-                        colInfos = this.InnerGetTableFieldInfos(con, tableName);//获取表所有字段集合
-                        priKeyColInfos = from col in colInfos where col.IsPriKey select col;//获取主键列字段集合
-                    }
-                    else//不获取字段信息
-                    {
-                        colInfos = new List<DBFieldInfo>();
-                        priKeyColInfos = new List<DBFieldInfo>();
-                    }
-
-                    return new DBTableInfo(tableName, comments, new DBFieldInfoCollection(colInfos), new DBFieldInfoCollection(priKeyColInfos));
+                    colInfos = this.PrimitiveGetTableFieldInfo(con, tableName);//获取表所有字段集合
+                    priKeyColInfos = from col in colInfos where col.IsPriKey select col;//获取主键列字段集合
+                }
+                else//不获取字段信息
+                {
+                    colInfos = new List<DBFieldInfo>();
+                    priKeyColInfos = new List<DBFieldInfo>();
                 }
 
-                return null;
+                return new DBTableInfo(tableName, comments, new DBFieldInfoCollection(colInfos),
+                    new DBFieldInfoCollection(priKeyColInfos), indexInfoCollection);
             }
-            finally
-            {
-                if (conInfo != null)
-                {
-                    conInfo.Dispose();
-                }
-            }
+
+            return null;
         }
         #endregion
 
-        #region 数据库表结构版本管理
         /// <summary>
-        /// 获取创建数据库表结构版本号表sql语句
+        /// 获取表索引信息集合
         /// </summary>
-        /// <param name="dbVersionTableName">表名</param>
-        /// <param name="dbStructVersionColName">版本列名</param>
-        /// <returns>创建数据库表结构版本号表sql语句</returns>
-        protected override string GetCreateDBVersionTableSql(string dbVersionTableName, string dbStructVersionColName)
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="tableName">表名</param>
+        /// <returns>表索引信息集合</returns>
+        protected override DBIndexInfoCollection PrimitiveGetTableIndexs(IDbConnection con, string tableName)
         {
-            return string.Format(@"CREATE TABLE {0} ({1} int)", dbVersionTableName, dbStructVersionColName);
+            var indexinfoList = new List<DBIndexInfo>();
+            string sqlStr = $"show index from {tableName}";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                /*****************************************************************************************************************************
+                * Table    Non_unique Key_name    Seg_in_index    Column_name Collation  Cardinality  Sub_part    Packed  Null    Index_type  Comment Index_comment
+                * stu      0          PRIMARY     1               ID          A          1075                                     BTREE             
+                * 
+                *****************************************************************************************************************************/
+
+                DataRow[] rowArr = new DataRow[dt.Rows.Count];
+                dt.Rows.CopyTo(rowArr, 0);
+                IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return base.ConvertObject<string>(t["Key_name"]); });
+
+                string indexName, fieldName;
+                StringBuilder sbDetail = new StringBuilder();
+                DataRow row;
+                string[] fieldArr;
+
+                foreach (var indexGroup in indexGroups)
+                {
+                    row = indexGroup.First();
+                    sbDetail.Clear();
+                    indexName = indexGroup.Key;
+
+                    sbDetail.AppendLine($"[Non_unique:{base.ConvertObject<string>(row["Non_unique"])}];");
+                    sbDetail.AppendLine($"[Seg_in_index:{base.ConvertObject<string>(row["Seq_in_index"])}];");
+                    sbDetail.AppendLine($"[Collation:{base.ConvertObject<string>(row["Collation"])}];");
+                    sbDetail.AppendLine($"[Cardinality:{base.ConvertObject<string>(row["Cardinality"])}];");
+
+                    sbDetail.AppendLine($"[Sub_part:{base.ConvertObject<string>(row["Sub_part"])}];");
+                    sbDetail.AppendLine($"[Packed:{base.ConvertObject<string>(row["Packed"])}];");
+                    sbDetail.AppendLine($"[Null:{base.ConvertObject<string>(row["Null"])}];");
+                    sbDetail.AppendLine($"[Index_type:{base.ConvertObject<string>(row["Index_type"])}];");
+                    sbDetail.AppendLine($"[Comment:{base.ConvertObject<string>(row["Comment"])}];");
+                    sbDetail.AppendLine($"[Index_comment:{base.ConvertObject<string>(row["Index_comment"])}];");
+
+                    fieldArr = indexGroup.Select(t => { return base.ConvertObject<string>(t["Column_name"]); }).ToArray();
+                    fieldName = string.Join(",", fieldArr);
+
+                    indexinfoList.Add(new DBIndexInfo(tableName, indexName, fieldName, sbDetail.ToString()));
+                }
+            }
+
+            return new DBIndexInfoCollection(indexinfoList);
         }
-        #endregion
 
         /// <summary>
         /// 获取数据库版本信息
         /// </summary>
+        /// <param name="con">数据库连接对象</param>
         /// <returns>数据库版本信息</returns>
-        public override string GetDataBaseVersion()
+        protected override DataBaseVersionInfo PrimitiveGetDataBaseVersion(IDbConnection con)
         {
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
+            string sqlStr = @"select version()";
+            object value = base.PrimitiveExecuteScalar(con, sqlStr);
+            string dataBaseVersion = base.ConvertObject<string>(value);//5.6.25-log
+            string verStr = dataBaseVersion.Substring(0, dataBaseVersion.IndexOf('.'));
+            int version;
+            if (!int.TryParse(verStr, out version))
             {
-                string sqlStr = @"select version()";
-                object obj = this.InnerExecuteScalar(conInfo.Con, sqlStr);
-                return obj == null ? string.Empty : obj.ToString();
+                version = 0;
             }
+
+            return new DataBaseVersionInfo(version, dataBaseVersion);
         }
 
         /// <summary>
         /// 获取数据库系统时间
         /// </summary>
+        /// <param name="con">数据库连接对象</param>
         /// <returns>数据库系统时间</returns>
-        public override DateTime GetDataBaseSysTime()
+        protected override DateTime PrimitiveGetDataBaseSysTime(IDbConnection con)
         {
             string sqlStr = @"select CURRENT_TIMESTAMP()";
-            using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
-            {
-                return Convert.ToDateTime(this.InnerExecuteScalar(conInfo.Con, sqlStr));
-            }
+            object value = base.PrimitiveExecuteScalar(con, sqlStr);
+            return base.ConvertObject<DateTime>(value);
         }
     }
 }

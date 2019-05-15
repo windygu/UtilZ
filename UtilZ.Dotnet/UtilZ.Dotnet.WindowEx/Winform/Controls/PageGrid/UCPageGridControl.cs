@@ -476,7 +476,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         #region 分页
         private void PageQuery(int pageIndex)
         {
-            this.InnerSetPageInfo(new PageInfo(this._pageInfo.PageSize, pageIndex, this._pageInfo.TotalCount));
+            this.PrimitiveSetPageInfo(new PageInfo(this._pageInfo.PageSize, pageIndex, this._pageInfo.TotalCount));
             this.OnRaiseQueryData(new QueryDataArgs(pageIndex, this._pageInfo.PageSize));
         }
 

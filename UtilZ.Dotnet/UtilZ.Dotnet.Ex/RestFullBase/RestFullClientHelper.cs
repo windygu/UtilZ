@@ -91,7 +91,6 @@ namespace UtilZ.Dotnet.Ex.RestFullBase
         {
             var request = CreateRequest(url, WebRequestMethods.Http.Post);
             string json = SerializeEx.RuntimeJsonSerializerObject(obj);
-            //string json = SerializeEx.WebScriptJsonSerializerObject(obj);
             var bytes = Encoding.UTF8.GetBytes(json);
             request.ContentLength = bytes.Length;
 

@@ -252,7 +252,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 labelPageCount.Text = string.Format("{0}页|共{1}条记录", pageInfo.PageCount, pageInfo.TotalCount);
             }
 
-            this.InnerSetPageInfo(pageInfo);
+            this.PrimitiveSetPageInfo(pageInfo);
 
             //外部更改查询页，触发分页查询事件
             if (pageInfo != null && pageInfo.PageCount > 0)
@@ -265,7 +265,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// 设置分页
         /// </summary>
         /// <param name="pageInfo">页信息</param>
-        private void InnerSetPageInfo(PageInfo pageInfo)
+        private void PrimitiveSetPageInfo(PageInfo pageInfo)
         {
             this.numPageIndex.ValueChanged -= this.numPageIndex_ValueChanged;
 
@@ -343,6 +343,8 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
             {
                 this.numPageIndex.ValueChanged += this.numPageIndex_ValueChanged;
             }
+
+            panelPage.OnSizeChanged();
         }
 
         /// <summary>

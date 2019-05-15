@@ -126,7 +126,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             if (item == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => item));
+                throw new ArgumentNullException(nameof(item));
             }
 
             var delNode = this.Find(item);
@@ -146,7 +146,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             if (node == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => node));
+                throw new ArgumentNullException(nameof(node));
             }
 
             if (this.ExistNode(node))

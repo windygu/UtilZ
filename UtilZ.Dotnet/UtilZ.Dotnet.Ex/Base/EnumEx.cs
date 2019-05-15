@@ -107,12 +107,12 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (enumType == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => enumType));
+                throw new ArgumentNullException(nameof(enumType));
             }
 
             if (string.IsNullOrEmpty(displayName))
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => displayName), "NEnumAttribute显示文本值不能为空或null");
+                throw new ArgumentNullException(nameof(displayName), "NEnumAttribute显示文本值不能为空或null");
             }
 
             AssertEnum(enumType);

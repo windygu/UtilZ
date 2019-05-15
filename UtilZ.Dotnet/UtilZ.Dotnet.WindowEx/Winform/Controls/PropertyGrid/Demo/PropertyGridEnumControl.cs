@@ -24,7 +24,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
 
             if (value == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => value));
+                throw new ArgumentNullException(nameof(value));
             }
 
             Type valueType = value.GetType();

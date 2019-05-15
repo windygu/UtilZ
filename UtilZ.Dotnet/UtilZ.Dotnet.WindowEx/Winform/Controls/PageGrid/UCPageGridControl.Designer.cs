@@ -39,7 +39,7 @@
             this.btnFirstPage = new System.Windows.Forms.Button();
             this.numPageIndex = new System.Windows.Forms.NumericUpDown();
             this.panelContent = new System.Windows.Forms.Panel();
-            this.panelPage = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelPage = new UtilZ.Dotnet.WindowEx.Winform.Controls.FlowLayoutPanelZ();
             this.cmsColVisibleSetting = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiHidenCol = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numPageSize)).BeginInit();
@@ -168,11 +168,13 @@
             this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContent.Location = new System.Drawing.Point(0, 0);
             this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(365, 86);
+            this.panelContent.Size = new System.Drawing.Size(365, 83);
             this.panelContent.TabIndex = 5;
             // 
             // panelPage
             // 
+            this.panelPage.AutoSize = true;
+            this.panelPage.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelPage.Controls.Add(this.label2);
             this.panelPage.Controls.Add(this.numPageSize);
             this.panelPage.Controls.Add(this.label4);
@@ -183,9 +185,9 @@
             this.panelPage.Controls.Add(this.btnLastPage);
             this.panelPage.Controls.Add(this.labelPageCount);
             this.panelPage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelPage.Location = new System.Drawing.Point(0, 86);
+            this.panelPage.Location = new System.Drawing.Point(0, 83);
             this.panelPage.Name = "panelPage";
-            this.panelPage.Size = new System.Drawing.Size(365, 24);
+            this.panelPage.Size = new System.Drawing.Size(365, 27);
             this.panelPage.TabIndex = 6;
             // 
             // cmsColVisibleSetting
@@ -193,12 +195,12 @@
             this.cmsColVisibleSetting.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiHidenCol});
             this.cmsColVisibleSetting.Name = "cmsColVisibleSetting";
-            this.cmsColVisibleSetting.Size = new System.Drawing.Size(153, 48);
+            this.cmsColVisibleSetting.Size = new System.Drawing.Size(101, 26);
             // 
             // tsmiHidenCol
             // 
             this.tsmiHidenCol.Name = "tsmiHidenCol";
-            this.tsmiHidenCol.Size = new System.Drawing.Size(152, 22);
+            this.tsmiHidenCol.Size = new System.Drawing.Size(100, 22);
             this.tsmiHidenCol.Text = "隐藏";
             this.tsmiHidenCol.Click += new System.EventHandler(this.tsmiHidenCol_Click);
             // 
@@ -217,6 +219,7 @@
             this.panelPage.PerformLayout();
             this.cmsColVisibleSetting.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -231,7 +234,7 @@
         private System.Windows.Forms.Button btnNextPage;
         private System.Windows.Forms.Button btnPrePage;
         private System.Windows.Forms.Label labelPageCount;
-        private System.Windows.Forms.FlowLayoutPanel panelPage;
+        private FlowLayoutPanelZ panelPage;
         private System.Windows.Forms.ContextMenuStrip cmsColVisibleSetting;
         private System.Windows.Forms.ToolStripMenuItem tsmiHidenCol;
     }

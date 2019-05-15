@@ -59,12 +59,12 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (treeView == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => treeView), string.Empty);
+                throw new ArgumentNullException(nameof(treeView), string.Empty);
             }
 
             if (treeView.SelectedNode == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => treeView.SelectedNode), string.Empty);
+                throw new ArgumentNullException(nameof(treeView.SelectedNode), string.Empty);
             }
 
             if (treeView.SelectedNode == lastSelectedNode)

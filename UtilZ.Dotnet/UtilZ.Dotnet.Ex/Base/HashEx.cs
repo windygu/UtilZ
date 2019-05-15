@@ -41,7 +41,7 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (data == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => data));
+                throw new ArgumentNullException(nameof(data));
             }
 
             using (HashAlgorithm entry = HashEx.CreateHashEntry(hashType))
@@ -70,7 +70,7 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (data == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => data));
+                throw new ArgumentNullException(nameof(data));
             }
 
             using (HashAlgorithm entry = HashEx.CreateHashEntry(hashType))

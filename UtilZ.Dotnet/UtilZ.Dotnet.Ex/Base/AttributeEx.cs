@@ -23,12 +23,12 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             if (valueObj == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => valueObj));
+                throw new ArgumentNullException(nameof(valueObj));
             }
 
             if (targetObj == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => targetObj));
+                throw new ArgumentNullException(nameof(targetObj));
             }
 
             System.Reflection.PropertyInfo[] propertyInfos = valueObj.GetType().GetProperties();

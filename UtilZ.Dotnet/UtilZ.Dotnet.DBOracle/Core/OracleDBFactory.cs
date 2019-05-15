@@ -4,50 +4,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBIBase.DBBase.Base;
-using UtilZ.Dotnet.DBIBase.DBBase.Core;
-using UtilZ.Dotnet.DBIBase.DBBase.Factory;
-using UtilZ.Dotnet.DBIBase.DBBase.Interface;
-using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using System.Threading.Tasks;
+using UtilZ.Dotnet.DBIBase.Config;
+using UtilZ.Dotnet.DBIBase.EF;
+using UtilZ.Dotnet.DBIBase.Factory;
+using UtilZ.Dotnet.DBIBase.Interaction;
+using UtilZ.Dotnet.DBIBase.Interface;
 
 namespace UtilZ.Dotnet.DBOracle.Core
 {
     /// <summary>
-    /// Oracle数据访问工厂类
+    /// Oracle数据访问对象创建工厂
     /// </summary>
-    public class OracleDBFactory : DBFactoryBase
+    public class OracleDBFactory : DBFactoryAbs
     {
-        /// <summary>
-        /// 数据库交互实例 数据库访问实例字典[key:dbid;value:数据库访问实例]
-        /// </summary>
-        private readonly DBInteractioBase _dbAccess = new OracleInteraction();
+        private readonly OracleDBInteraction _dbInteraction;
+        private readonly string _databaseTypeName;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public OracleDBFactory() : base()
+        public OracleDBFactory() :
+            base()
         {
-
+            this._dbInteraction = new OracleDBInteraction();
+            this._databaseTypeName = typeof(OracleConnection).Assembly.FullName;
         }
 
         /// <summary>
-        /// 获取数据库交互实例
+        /// 获取IDBInteraction对象
+        /// </summary>
+        /// <returns></returns>
+        public override IDBInteraction GetDBInteraction()
+        {
+            return this._dbInteraction;
+        }
+
+        /// <summary>
+        /// 创建数据库访问实例
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <returns>数据库交互实例</returns>
-        public override DBInteractioBase GetDBInteraction(DBConfigElement config)
-        {
-            return this._dbAccess;
-        }
-
-        /// <summary>
-        /// 获取数据库访问实例
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
         /// <returns>数据库访问实例</returns>
-        public override IDBAccess GetDBAccess(int dbid)
+        public override IDBAccess CreateDBAccess(DatabaseConfig config)
         {
-            return new OracleDBAccess(dbid);
+            return new OracleDBAccess(this._dbInteraction, config, this._databaseTypeName);
         }
 
         /// <summary>
@@ -55,14 +55,9 @@ namespace UtilZ.Dotnet.DBOracle.Core
         /// </summary>
         public override void AttatchEFConfig()
         {
-            //EFDbConfiguration.AddProviderServices("Oracle.ManagedDataAccess.Client", EFOracleProviderServices.Instance);
-            //EFDbConfiguration.AddProviderFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
-
-            //EFDbConfiguration.AddProviderServices(typeof(OracleClientFactory).Namespace, EFOracleProviderServices.Instance);
-            //EFDbConfiguration.AddProviderFactory(typeof(OracleClientFactory).Namespace, OracleClientFactory.Instance);
-
-            EFDbConfiguration.AddProviderServices("Oracle.ManagedDataAccess.Client", EFOracleProviderServices.Instance);
-            EFDbConfiguration.AddProviderFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
+            string providerInvariantName = typeof(OracleConnection).Namespace;
+            EFDbConfiguration.AddProviderServices(providerInvariantName, EFOracleProviderServices.Instance);
+            EFDbConfiguration.AddProviderFactory(providerInvariantName, OracleClientFactory.Instance);
         }
     }
 }

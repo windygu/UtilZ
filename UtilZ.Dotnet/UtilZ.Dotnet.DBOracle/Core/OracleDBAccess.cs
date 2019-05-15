@@ -1,68 +1,25 @@
-﻿using Oracle.ManagedDataAccess.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.DBIBase.DBBase.Core;
-using UtilZ.Dotnet.DBIBase.DBBase.Interface;
-using UtilZ.Dotnet.DBIBase.DBModel.Constant;
-using UtilZ.Dotnet.DBIBase.DBModel.Model;
+using System.Threading.Tasks;
+using UtilZ.Dotnet.DBIBase.Config;
+using UtilZ.Dotnet.DBIBase.Core;
+using UtilZ.Dotnet.DBIBase.Interaction;
 
 namespace UtilZ.Dotnet.DBOracle.Core
 {
-    /// <summary>
-    /// SQLServer数据库访问类
-    /// </summary>
-    public partial class OracleDBAccess : DBAccessBase
+    internal partial class OracleDBAccess : DBAccessAbs
     {
         /// <summary>
-        /// 数据库程序集名称
-        /// </summary>
-        private readonly string _databaseName;
-
-        /// <summary>
-        /// 数据库类型名称
-        /// </summary>
-        public override string DatabaseTypeName
-        {
-            get { return _databaseName; }
-        }
-
-        /// <summary>
-        /// 数据库参数字符
-        /// </summary>
-        private const string PARASIGN = ":";
-
-        /// <summary>
-        /// 数据库参数字符
-        /// </summary>
-        public override string ParaSign
-        {
-            get { return PARASIGN; }
-        }
-
-        /// <summary>
         /// sql语句最大长度
+        /// Oracle文档说是64K
         /// </summary>
-        public override long SqlMaxLength { get; protected set; }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
-        public OracleDBAccess(int dbid)
-            : base(dbid)
+        private const long SQL_MAX_LENGTH = 65536;
+        public OracleDBAccess(IDBInteraction dbInteraction, DatabaseConfig config, string databaseTypeName)
+            : base(dbInteraction, config, databaseTypeName, SQL_MAX_LENGTH)
         {
-            this._databaseName = typeof(OracleConnection).Assembly.FullName;
-            if (this.Config.SqlMaxLength == DBConstant.SqlMaxLength)
-            {
-                //Oracle文档说是64K
-                this.SqlMaxLength = 65536;
-            }
-            else
-            {
-                this.SqlMaxLength = this.Config.SqlMaxLength;
-            }
+
         }
     }
 }

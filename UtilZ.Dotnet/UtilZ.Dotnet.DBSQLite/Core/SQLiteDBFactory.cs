@@ -1,83 +1,55 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UtilZ.Dotnet.DBIBase.DBBase.Base;
-using UtilZ.Dotnet.DBIBase.DBBase.Factory;
-using UtilZ.Dotnet.DBIBase.DBBase.Core;
-using UtilZ.Dotnet.DBIBase.DBBase.Interface;
-using UtilZ.Dotnet.DBIBase.DBModel.Config;
+using System.Data.Entity.Core.Common;
 using System.Data.SQLite;
 using System.Data.SQLite.EF6;
-using System.Data.Entity.Core.Common;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UtilZ.Dotnet.DBIBase.Config;
+using UtilZ.Dotnet.DBIBase.EF;
+using UtilZ.Dotnet.DBIBase.Interaction;
+using UtilZ.Dotnet.DBIBase.Interface;
+using UtilZ.Dotnet.DBIBase.Factory;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {
     /// <summary>
-    /// SQLite数据访问工厂类
+    /// SQLite数据访问对象创建工厂
     /// </summary>
-    public class SQLiteDBFactory : DBFactoryBase
+    public class SQLiteDBFactory : DBFactoryAbs
     {
-        /// <summary>
-        /// 数据库交互实例字典集合[key:数据库编号ID;value:数据库交互实例]
-        /// </summary>
-        private readonly ConcurrentDictionary<int, DBInteractioBase> _dicWriteConsDBInteractions = new ConcurrentDictionary<int, DBInteractioBase>();
-
-        /// <summary>
-        /// 数据库交互实例字典集合锁
-        /// </summary>
-        private readonly object _dicWriteConsDBInteractionsMonitor = new object();
+        private readonly SQLiteDBInteraction _dbInteraction;
+        private readonly string _databaseTypeName;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SQLiteDBFactory() : base()
+        public SQLiteDBFactory() :
+            base()
         {
-
+            this._dbInteraction = new SQLiteDBInteraction();
+            this._databaseTypeName = typeof(System.Data.SQLite.SQLiteConnection).Assembly.FullName;
         }
 
         /// <summary>
-        /// 获取数据库交互实例
+        /// 获取IDBInteraction对象
+        /// </summary>
+        /// <returns></returns>
+        public override IDBInteraction GetDBInteraction()
+        {
+            return this._dbInteraction;
+        }
+
+        /// <summary>
+        /// 创建数据库访问实例
         /// </summary>
         /// <param name="config">数据库配置</param>
-        /// <returns>数据库交互实例</returns>
-        public override DBInteractioBase GetDBInteraction(DBConfigElement config)
-        {
-            DBInteractioBase dbInteraction;
-            int dbid = config.DBID;
-            if (this._dicWriteConsDBInteractions.ContainsKey(dbid))
-            {
-                dbInteraction = this._dicWriteConsDBInteractions[dbid];
-            }
-            else
-            {
-                lock (this._dicWriteConsDBInteractionsMonitor)
-                {
-                    if (this._dicWriteConsDBInteractions.ContainsKey(dbid))
-                    {
-                        dbInteraction = this._dicWriteConsDBInteractions[dbid];
-                    }
-                    else
-                    {
-                        dbInteraction = new SQLiteInteraction(config);
-                        this._dicWriteConsDBInteractions.TryAdd(dbid, dbInteraction);
-                    }
-                }
-            }
-
-            return dbInteraction;
-        }
-
-        /// <summary>
-        /// 获取数据库访问实例
-        /// </summary>
-        /// <param name="dbid">数据库编号ID</param>
         /// <returns>数据库访问实例</returns>
-        public override IDBAccess GetDBAccess(int dbid)
+        public override IDBAccess CreateDBAccess(DatabaseConfig config)
         {
-            string databaseName = ((SQLiteInteraction)this.GetDBInteraction(ConfigManager.GetConfigItem(dbid))).DatabaseTypeName;
-            return new SQLiteDBAccess(dbid, databaseName);
+            return new SQLiteDBAccess(this._dbInteraction, config, this._databaseTypeName);
         }
 
         /// <summary>
@@ -85,15 +57,13 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// </summary>
         public override void AttatchEFConfig()
         {
-            //SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
-            //SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
-            //var s = SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices));
-            //SetProviderServices("System.Data.SQLite", (DbProviderServices)s);
-
+            string providerInvariantName = typeof(SQLiteFactory).Namespace;
             DbProviderServices service = SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)) as DbProviderServices;
-            EFDbConfiguration.AddProviderServices(typeof(SQLiteFactory).Namespace, service);
-            EFDbConfiguration.AddProviderFactory(typeof(SQLiteProviderFactory).Namespace, SQLiteProviderFactory.Instance);
-            EFDbConfiguration.AddProviderFactory(typeof(SQLiteFactory).Namespace, SQLiteFactory.Instance);
+            EFDbConfiguration.AddProviderServices(providerInvariantName, service);
+            EFDbConfiguration.AddProviderFactory(providerInvariantName, SQLiteFactory.Instance);
+
+            providerInvariantName = typeof(SQLiteProviderFactory).Namespace;
+            EFDbConfiguration.AddProviderFactory(providerInvariantName, SQLiteProviderFactory.Instance);
         }
     }
 }

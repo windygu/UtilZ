@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UtilZ.Dotnet.Ex.Base;
 
-namespace UtilZ.Dotnet.Ex.Base
+namespace UtilZ.Dotnet.Ex.Base.Foundation
 {
     /// <summary>
     /// 创建快捷方式及关联程序和分享关联程序

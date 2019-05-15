@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EA8994CC-3B5B-4860-9E9B-6F85F59EB8C0}</ProjectGuid>
+    <ProjectGuid>{B5474D19-F871-4C3B-9301-0AA15538049C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UtilZ.Dotnet.DBIBase</RootNamespace>
     <AssemblyName>UtilZ.Dotnet.DBIBase</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,8 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\UtilZ.Dotnet.DBIBase.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\UtilZ.Dotnet.DBIBase.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -40,13 +37,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.7.17.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,78 +50,74 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBBase\Base\DBInteractionBase.cs" />
-    <Compile Include="DBBase\Core\CacheManager.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase_DBInfo.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase_Delete.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase_Insert.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase_Protected.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase_Query.cs" />
-    <Compile Include="DBBase\Core\DBAccessBase_Update.cs" />
-    <Compile Include="DBBase\Core\DBAccessManager.cs" />
-    <Compile Include="DBBase\Core\DbConnectionPool.cs" />
-    <Compile Include="DBBase\Core\EFDbConfiguration.cs" />
-    <Compile Include="DBBase\Core\EFDbContext.cs" />
-    <Compile Include="DBBase\Core\ExpressionNodeExConverter.cs" />
-    <Compile Include="DBBase\Core\ORMManager.cs" />
-    <Compile Include="DBBase\ExpressTree\AbsCompareOperaterWhereGenerator.cs" />
-    <Compile Include="DBBase\ExpressTree\CompareOperater.cs" />
-    <Compile Include="DBBase\ExpressTree\CompareOperaterAttribute.cs" />
-    <Compile Include="DBBase\ExpressTree\CompareOperaterHelper.cs" />
-    <Compile Include="DBBase\ExpressTree\ExpressionNode.cs" />
-    <Compile Include="DBBase\ExpressTree\ExpressionNodeCollection.cs" />
-    <Compile Include="DBBase\ExpressTree\ExpressionNodeEx.cs" />
-    <Compile Include="DBBase\ExpressTree\ICompareOperaterWhereGenerator.cs" />
-    <Compile Include="DBBase\ExpressTree\IDBFiledValueConverter.cs" />
-    <Compile Include="DBBase\ExpressTree\SingleValueConditionValueGenerator.cs" />
-    <Compile Include="DBBase\Factory\DBFactoryBase.cs" />
-    <Compile Include="DBBase\Factory\DBFactoryManager.cs" />
-    <Compile Include="DBBase\Interface\IDBAccess.cs" />
-    <Compile Include="DBBase\Interface\IDBAccess_DBInfo.cs" />
-    <Compile Include="DBBase\Interface\IDBAccess_Delete.cs" />
-    <Compile Include="DBBase\Interface\IDBAccess_Insert.cs" />
-    <Compile Include="DBBase\Interface\IDBAccess_Query.cs" />
-    <Compile Include="DBBase\Interface\IDBAccess_Update.cs" />
-    <Compile Include="DBBase\Interface\IEFDbContext.cs" />
-    <Compile Include="DBModel\Common\DBHelper.cs" />
-    <Compile Include="DBModel\Common\DBLog.cs" />
-    <Compile Include="DBModel\Config\BaseConfig.cs" />
-    <Compile Include="DBModel\Config\BaseConfigurationElementCollection.cs" />
-    <Compile Include="DBModel\Config\ConfigManager.cs" />
-    <Compile Include="DBModel\Config\DBConfigCollection.cs" />
-    <Compile Include="DBModel\Config\DBConfigElement.cs" />
-    <Compile Include="DBModel\Config\DBConfigSection.cs" />
-    <Compile Include="DBModel\Constant\DBConstant.cs" />
-    <Compile Include="DBModel\Constant\DbParameterStructTypeConstant.cs" />
-    <Compile Include="DBModel\DBInfo\DBFieldInfo.cs" />
-    <Compile Include="DBModel\DBInfo\DBFieldInfoCollection.cs" />
-    <Compile Include="DBModel\DBInfo\DBFieldType.cs" />
-    <Compile Include="DBModel\DBInfo\DBTableInfo.cs" />
-    <Compile Include="DBModel\DBObject\DataModelFieldInfo.cs" />
-    <Compile Include="DBModel\DBObject\DataModelFieldInfoCollection.cs" />
-    <Compile Include="DBModel\DBObject\DataModelInfo.cs" />
-    <Compile Include="DBModel\DBObject\DataModelTableInfo.cs" />
-    <Compile Include="DBModel\DBObject\DBColumnAttribute.cs" />
-    <Compile Include="DBModel\DBObject\DBColumnPropertyInfo.cs" />
-    <Compile Include="DBModel\DBObject\DBFieldDataAccessType.cs" />
-    <Compile Include="DBModel\DBObject\DBTableAttribute.cs" />
-    <Compile Include="DBModel\DBObject\IDBModelValueConvert.cs" />
-    <Compile Include="DBModel\Interface\IConStrDecryption.cs" />
-    <Compile Include="DBModel\Interface\IDBInteraction.cs" />
-    <Compile Include="DBModel\Interface\IDBInteractionEx.cs" />
-    <Compile Include="DBModel\Model\DbConnectionInfo.cs" />
-    <Compile Include="DBModel\Model\DBExcuteType.cs" />
-    <Compile Include="DBModel\Model\DBOrderInfo.cs" />
-    <Compile Include="DBModel\Model\DbOrderType.cs" />
-    <Compile Include="DBModel\Model\DBPageInfo.cs" />
-    <Compile Include="DBModel\Model\DBVisitType.cs" />
-    <Compile Include="DBModel\Model\EFDbContextException.cs" />
-    <Compile Include="DBModel\Model\LogicOperaters.cs" />
-    <Compile Include="DBModel\Model\NDbParameter.cs" />
-    <Compile Include="DBModel\Model\NDbParameterCollection.cs" />
-    <Compile Include="DBModel\Model\StoredProcedurePara.cs" />
-    <Compile Include="DBModel\Model\StoredProcedureResult.cs" />
+    <Compile Include="Connection\DbConnectionPoolManager.cs" />
+    <Compile Include="Connection\IDbConnectionInfo.cs" />
+    <Compile Include="Core\DBAccessAbs.cs" />
+    <Compile Include="Core\DBAccessAbs_DBInfo.cs" />
+    <Compile Include="Core\DBAccessAbs_Protected.cs" />
+    <Compile Include="Core\DBAccessAbs_Query.cs" />
+    <Compile Include="Core\DBAccessAbs_Update.cs" />
+    <Compile Include="Core\DBAccessEx.cs" />
+    <Compile Include="EF\EFConnectionFactory.cs" />
+    <Compile Include="EF\EFDbConfiguration.cs" />
+    <Compile Include="EF\EFDbContext.cs" />
+    <Compile Include="EF\EFDbContextException.cs" />
+    <Compile Include="EF\EFEntityTypeManager.cs" />
+    <Compile Include="EF\IEFDbContext.cs" />
+    <Compile Include="ExpressionTree\CompareOperater.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\CompareOperaterAttribute.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\CompareOperaterHelper.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\CompareOperaterWhereGeneratorAbs.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\ConditionValueGeneratorPara.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\ConditionValueNoSqlParaGeneratorPara.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\DBFiledValueConverterAbs.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\DBFiledValueConverterCollection.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\ICompareOperaterWhereGenerator.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\IDBFiledValueConverter.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\LikeCompareOperaterWhereGenerator.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\MultValueCompareOperaterWhereGenerator.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\NotInRangeCompareOperaterWhereGenerator.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\NullCompareOperaterWhereGenerator.cs" />
+    <Compile Include="ExpressionTree\CompareOperaterWhereGenerator\SingleValueCompareOperaterWhereGenerator.cs" />
+    <Compile Include="ExpressionTree\DBQueryFieldCollection.cs" />
+    <Compile Include="ExpressionTree\ExpressionNode.cs" />
+    <Compile Include="ExpressionTree\ExpressionNodeCollection.cs" />
+    <Compile Include="ExpressionTree\LogicOperaters.cs" />
+    <Compile Include="ExpressionTree\DBQueryExpression.cs" />
+    <Compile Include="ExpressionTree\DBQueryField.cs" />
+    <Compile Include="ExpressionTree\ISqlFieldValueFormator.cs" />
+    <Compile Include="ExpressionTree\SqlFieldValueFormatorAbs.cs" />
+    <Compile Include="Factory\TestEFDbContextDbConnectionInfo.cs" />
+    <Compile Include="Interface\IDBAccess_Query.cs" />
+    <Compile Include="Interface\IDBAccess_Update.cs" />
+    <Compile Include="Interaction\DBInteractionAbs.cs" />
+    <Compile Include="Interface\IDBAccess_DBInfo.cs" />
+    <Compile Include="Factory\DBFactoryManager.cs" />
+    <Compile Include="Connection\DbConnectionInfo.cs" />
+    <Compile Include="Connection\DbConnectionPool.cs" />
+    <Compile Include="Model\DataBaseVersionInfo.cs" />
+    <Compile Include="Model\DBFieldType.cs" />
+    <Compile Include="Model\DBHelper.cs" />
+    <Compile Include="Config\DatabaseConfigManager.cs" />
+    <Compile Include="Config\DatabaseConfig.cs" />
+    <Compile Include="Config\DatabaseConfigParserAbs.cs" />
+    <Compile Include="Config\DefaultDatabaseConfigParser.cs" />
+    <Compile Include="Config\IDatabaseConfigParser.cs" />
+    <Compile Include="Model\DBConstant.cs" />
+    <Compile Include="DBAccessManager.cs" />
+    <Compile Include="Interface\IDBAccess.cs" />
+    <Compile Include="Factory\DBFactoryAbs.cs" />
+    <Compile Include="Factory\IDBFactory.cs" />
+    <Compile Include="Interaction\IDBInteraction.cs" />
+    <Compile Include="Model\DBIndexInfo.cs" />
+    <Compile Include="Model\DBIndexInfoCollection.cs" />
+    <Compile Include="Model\DBOrderInfo.cs" />
+    <Compile Include="Model\DbOrderType.cs" />
+    <Compile Include="Model\DBPageInfo.cs" />
+    <Compile Include="Model\DBVisitType.cs" />
+    <Compile Include="Model\DBFieldInfo.cs" />
+    <Compile Include="Model\DBFieldInfoCollection.cs" />
+    <Compile Include="Model\DBTableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -134,11 +126,18 @@
       <Name>UtilZ.Dotnet.Ex</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Lib\EntityFramework.dll" />
     <Content Include="Lib\EntityFramework.xml" />
     <Content Include="Lib\Z.EntityFramework.Plus.EF6.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

@@ -19,17 +19,27 @@ namespace UtilZ.Dotnet.Ex.Base
         private static readonly Hashtable _htTypes = Hashtable.Synchronized(new Hashtable());
 
         /// <summary>
-        /// 创建数据库连接对象
+        /// 根据类型全名称转换为类型
         /// </summary>
         /// <param name="typeFullName">类型名称[格式:类型名,程序集命名.例如:Oracle.ManagedDataAccess.Client.OracleConnection,Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342]</param>
-        public static Type GetType(string typeFullName)
+        /// <param name="hasCache">是否缓存转换之后的类型[true:缓存;false:不缓存]</param>
+        public static Type ConvertTypeByTypeFullName(string typeFullName, bool hasCache = false)
         {
             if (string.IsNullOrWhiteSpace(typeFullName))
             {
                 return null;
             }
 
-            Type type = _htTypes[typeFullName] as Type;
+            Type type;
+            if (hasCache)
+            {
+                type = _htTypes[typeFullName] as Type;
+            }
+            else
+            {
+                type = null;
+            }
+
             if (type == null)
             {
                 string[] segs = typeFullName.Split(',');
@@ -87,7 +97,11 @@ namespace UtilZ.Dotnet.Ex.Base
                 }
 
                 type = assembly.GetType(segs[0].Trim(), false, true);
-                TypeEx._htTypes[typeFullName] = type;
+
+                if (hasCache)
+                {
+                    TypeEx._htTypes[typeFullName] = type;
+                }
             }
 
             return type;

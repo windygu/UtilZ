@@ -26,7 +26,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             EnumEx.AssertEnum(enumType);
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             if (ignoreList == null)
@@ -82,7 +82,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             EnumEx.AssertEnum(enumType);
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             if (combox.Items.Count == 0)
@@ -120,7 +120,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             EnumEx.AssertEnum<T>();
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             try
@@ -147,7 +147,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             try
@@ -213,7 +213,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             if (combox.Items.Count == 0)
@@ -252,7 +252,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             if (combox.SelectedIndex == -1)
@@ -283,7 +283,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             try
@@ -341,7 +341,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             if (combox.Items.Count == 0)
@@ -402,7 +402,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
         {
             if (combox == null)
             {
-                throw new ArgumentNullException(ObjectEx.GetVarName(p => combox), "目标控件不能为null");
+                throw new ArgumentNullException(nameof(combox), "目标控件不能为null");
             }
 
             if (combox.SelectedIndex == -1)

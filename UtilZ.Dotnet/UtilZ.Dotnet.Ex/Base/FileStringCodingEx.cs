@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UtilZ.Dotnet.Ex.Base.Foundation;
 
 namespace UtilZ.Dotnet.Ex.Base
 {
