@@ -21,12 +21,12 @@ namespace UtilZ.Dotnet.DBIBase.Connection
         /// <summary>
         /// 读连接对象集合池
         /// </summary>
-        private readonly BlockingCollection<DbConnection> _readConPool = new BlockingCollection<DbConnection>();
+        private readonly BlockingCollection<DbConnection> _readConPool;
 
         /// <summary>
         /// 写连接对象集合池
         /// </summary>
-        private readonly BlockingCollection<DbConnection> _writeConPool = new BlockingCollection<DbConnection>();
+        private readonly BlockingCollection<DbConnection> _writeConPool;
 
         /// <summary>
         /// 数据库配置
@@ -51,6 +51,9 @@ namespace UtilZ.Dotnet.DBIBase.Connection
             this._config = config;
             this._interaction = interaction;
 
+            this._readConPool = new BlockingCollection<DbConnection>(new ConcurrentStack<DbConnection>());
+            this._writeConPool = new BlockingCollection<DbConnection>(new ConcurrentStack<DbConnection>());
+
             this._readConStr = this._interaction.GenerateDBConStr(config, DBVisitType.R);
             for (int i = 0; i < config.ReadConCount; i++)
             {
@@ -69,7 +72,7 @@ namespace UtilZ.Dotnet.DBIBase.Connection
             DbProviderFactory dbProviderFactory = this._interaction.GetProviderFactory();
             var con = dbProviderFactory.CreateConnection();
             con.ConnectionString = conStr;
-            con.Open();
+            //con.Open();
             return con;
         }
 
@@ -111,6 +114,16 @@ namespace UtilZ.Dotnet.DBIBase.Connection
                     break;
                 default:
                     throw new NotSupportedException(string.Format("不支持的访问类型:{0}", visitType.ToString()));
+            }
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                this.ReleaseDbConnection(con, visitType);
+                throw new ApplicationException("打开数据库连接异常", ex);
             }
 
             return con;

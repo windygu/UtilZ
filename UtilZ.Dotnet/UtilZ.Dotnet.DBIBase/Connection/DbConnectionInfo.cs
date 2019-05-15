@@ -56,7 +56,7 @@ namespace UtilZ.Dotnet.DBIBase.Connection
             try
             {
                 this.Dispose(true);
-                GC.SuppressFinalize(this);
+                GC.SuppressFinalize(this.DbConnection);
             }
             catch (Exception ex)
             {
@@ -64,13 +64,24 @@ namespace UtilZ.Dotnet.DBIBase.Connection
             }
         }
 
+        private bool _isDisposed = false;
+        private readonly object _isDisposedLock = new object();
         /// <summary>
         /// 释放资源
         /// </summary>
         /// <param name="isDisposing">是否释放资源标识</param>
         protected virtual void Dispose(bool isDisposing)
         {
-            this._dbConnectionPool.ReleaseDbConnection(this.DbConnection, this.VisitType);
+            lock (this._isDisposedLock)
+            {
+                if (this._isDisposed)
+                {
+                    return;
+                }
+
+                this._dbConnectionPool.ReleaseDbConnection(this.DbConnection, this.VisitType);
+                this._isDisposed = true;
+            }
         }
         #endregion
     }
