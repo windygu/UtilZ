@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ADD0CB60-4460-48BF-96F5-AE8AE09FC6C9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Dotnet.SHPDevOps</RootNamespace>
+    <AssemblyName>UtilZ.Dotnet.SHPDevOps</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Imgs\DevOps.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\FHostChioce.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Base\FHostChioce.Designer.cs">
+      <DependentUpon>FHostChioce.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\UCHostTreeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\UCHostTreeControl.Designer.cs">
+      <DependentUpon>UCHostTreeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\UIHelper.cs" />
+    <Compile Include="HostManamement\FDisablePortEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostManamement\FDisablePortEdit.Designer.cs">
+      <DependentUpon>FDisablePortEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HostManamement\FEditHost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostManamement\FEditHost.Designer.cs">
+      <DependentUpon>FEditHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HostManamement\FEditHostGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostManamement\FEditHostGroup.Designer.cs">
+      <DependentUpon>FEditHostGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FMain.designer.cs">
+      <DependentUpon>FMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTest.Designer.cs">
+      <DependentUpon>FTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTestDiskControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTestDiskControl.Designer.cs">
+      <DependentUpon>FTestDiskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HostManamement\FEditHostType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostManamement\FEditHostType.Designer.cs">
+      <DependentUpon>FEditHostType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HostManamement\FScriptEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostManamement\FScriptEdit.Designer.cs">
+      <DependentUpon>FScriptEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HostManamement\HardInfoShowItem.cs" />
+    <Compile Include="HostManamement\UCHostManagerControl_HostAppMonitor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HostManamement\UCHostManagerControl_HostContextMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HostManamement\UCHostManagerControl_HostHardInfo_HostStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HostManamement\UCHostManagerControl_HostProcess.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HostManamement\UCHostManagerControl_HostType.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HostManamement\UCDiskInfo.xaml.cs">
+      <DependentUpon>UCDiskInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HostManamement\UCHostManagerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HostManamement\UCHostManagerControl.designer.cs">
+      <DependentUpon>UCHostManagerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Routemanagement\FDataRouteEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Routemanagement\FDataRouteEdit.Designer.cs">
+      <DependentUpon>FDataRouteEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceManagement\FServiceEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServiceManagement\FServiceEdit.Designer.cs">
+      <DependentUpon>FServiceEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Routemanagement\UCRouteManagerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Routemanagement\UCRouteManagerControl.Designer.cs">
+      <DependentUpon>UCRouteManagerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceManagement\FAddServiceMirror.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServiceManagement\FAddServiceMirror.Designer.cs">
+      <DependentUpon>FAddServiceMirror.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceManagement\FServiceInsCountEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServiceManagement\FServiceInsCountEdit.Designer.cs">
+      <DependentUpon>FServiceInsCountEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceManagement\UCServiceManagerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ServiceManagement\UCServiceManagerControl.Designer.cs">
+      <DependentUpon>UCServiceManagerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\UCSettingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Setting\UCSettingControl.Designer.cs">
+      <DependentUpon>UCSettingControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Base\FHostChioce.resx">
+      <DependentUpon>FHostChioce.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base\UCHostTreeControl.resx">
+      <DependentUpon>UCHostTreeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HostManamement\FDisablePortEdit.resx">
+      <DependentUpon>FDisablePortEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HostManamement\FEditHost.resx">
+      <DependentUpon>FEditHost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HostManamement\FEditHostGroup.resx">
+      <DependentUpon>FEditHostGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FMain.resx">
+      <DependentUpon>FMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTest.resx">
+      <DependentUpon>FTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FTestDiskControl.resx">
+      <DependentUpon>FTestDiskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HostManamement\FEditHostType.resx">
+      <DependentUpon>FEditHostType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HostManamement\FScriptEdit.resx">
+      <DependentUpon>FScriptEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="HostManamement\UCHostManagerControl.resx">
+      <DependentUpon>UCHostManagerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Routemanagement\FDataRouteEdit.resx">
+      <DependentUpon>FDataRouteEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceManagement\FServiceEdit.resx">
+      <DependentUpon>FServiceEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Routemanagement\UCRouteManagerControl.resx">
+      <DependentUpon>UCRouteManagerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceManagement\FAddServiceMirror.resx">
+      <DependentUpon>FAddServiceMirror.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceManagement\FServiceInsCountEdit.resx">
+      <DependentUpon>FServiceInsCountEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceManagement\UCServiceManagerControl.resx">
+      <DependentUpon>UCServiceManagerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setting\UCSettingControl.resx">
+      <DependentUpon>UCSettingControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Imgs\Group.png" />
+    <Content Include="Imgs\Host.png" />
+    <Content Include="Imgs\OffLine.png" />
+    <Content Include="Imgs\DevOps.ico" />
+    <None Include="logConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\UtilZ.Dotnet\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
+      <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
+      <Name>UtilZ.Dotnet.Ex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UtilZ.Dotnet\UtilZ.Dotnet.WindowEx\UtilZ.Dotnet.WindowEx.csproj">
+      <Project>{2e7f4a5f-361b-4b39-966b-34e7bc57a2b0}</Project>
+      <Name>UtilZ.Dotnet.WindowEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPBase\UtilZ.Dotnet.SHPBase.csproj">
+      <Project>{A1B5B78B-05A5-4683-8946-84C8BC48CB01}</Project>
+      <Name>UtilZ.Dotnet.SHPBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPDevOpsBLL\UtilZ.Dotnet.SHPDevOpsBLL.csproj">
+      <Project>{08257859-321A-4FD5-9BF4-717BC0B65BCA}</Project>
+      <Name>UtilZ.Dotnet.SHPDevOpsBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPDevOpsModel\UtilZ.Dotnet.SHPDevOpsModel.csproj">
+      <Project>{1E28EA8C-EDEA-42F7-B752-F26A336C2ABD}</Project>
+      <Name>UtilZ.Dotnet.SHPDevOpsModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="HostManamement\UCDiskInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

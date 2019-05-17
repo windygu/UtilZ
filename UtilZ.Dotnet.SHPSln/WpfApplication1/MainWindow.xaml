@@ -1,0 +1,32 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="WpfApplication1.MainWindow"
+        mc:Ignorable="d"
+    
+        Title="MainWindow" Height="350" Width="525">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <!--xmlns:Wpf="clr-namespace:UtilZ.Dotnet.CEF.Wpf;assembly=UtilZ.Dotnet.CEF"
+        <Wpf:WpfCefBrowser x:Name="Browser" StartUrl=""></Wpf:WpfCefBrowser>-->
+
+        <Grid x:Name="grid" Grid.Row="0">
+            
+        </Grid>
+        
+        <!--<cef:ChromiumWebBrowser x:Name="browser" Grid.Row="0"/>-->
+
+        <Grid Grid.Row="1">
+            <Button Width="100" Height="27" Click="Button_Click" Margin="10,2,407,1">LoadPage</Button>
+            <Button Width="100" Height="27" Click="Button_Click_1" Margin="124,3,293,0">Test</Button>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>test cef</title>
+    <script type="text/javascript">
+        function sum(a, b) {
+            document.getElementById("txt1").value = a + b;
+        }
+
+        function btnClick() {
+            alert(document.getElementById("txt1").value);
+        }
+    </script>
+</head>
+<body>
+    <input id="txt1" type="text" value="" placeholder="来呀,快活呀...反正有大把时光.." />
+    <button onclick="btnClick()">测试</button>
+</body>
+</html>

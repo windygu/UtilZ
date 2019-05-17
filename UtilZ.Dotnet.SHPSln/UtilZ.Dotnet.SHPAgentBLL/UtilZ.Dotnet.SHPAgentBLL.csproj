@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7856663A-7116-4D92-BD71-852F00B70004}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Dotnet.SHPAgentBLL</RootNamespace>
+    <AssemblyName>UtilZ.Dotnet.SHPAgentBLL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AgentBLL.cs" />
+    <Compile Include="AgentProtectMonitor.cs" />
+    <Compile Include="AgentService.cs" />
+    <Compile Include="AppMonitorManagement.cs" />
+    <Compile Include="CommandExcutors\ControlAppCommandExcutors\ProcessAddMonitorCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\ControlAppCommandExcutors\RemoveMonitorAppCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\AddHostCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\AgentCommandExcutorBase.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\DevOpsMigrateNotifyCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\ExcuteScriptCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\DeleteHostCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\EvnChangedNotifyCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\KillProcessCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\KillProcessTreeCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\LogoutCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\RestartCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\HostCommandExcutors\ShutdownCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\IAgentCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\ControlAppCommandExcutors\ControlAppCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\RouteCommandExcutors\ServiceDeployReqCommandExcutor.cs" />
+    <Compile Include="CommandExcutors\RouteCommandExcutors\ServiceInsDeleteReqCommandExcutor.cs" />
+    <Compile Include="HostLoadsUploader.cs" />
+    <Compile Include="HostHardInfoHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceDeployer.cs" />
+    <Compile Include="ServiceInstanceManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\UtilZ.Dotnet\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
+      <Project>{B5D06430-E6E2-40B3-BA77-15778ABD31DD}</Project>
+      <Name>UtilZ.Dotnet.Ex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.Compress\UtilZ.Dotnet.Compress.csproj">
+      <Project>{9eb14ff4-f517-4a7c-92d8-07854367f89f}</Project>
+      <Name>UtilZ.Dotnet.Compress</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPAgentDAL\UtilZ.Dotnet.SHPAgentDAL.csproj">
+      <Project>{D2D44322-221B-469B-A4FE-E3AC21D44229}</Project>
+      <Name>UtilZ.Dotnet.SHPAgentDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPAgentModel\UtilZ.Dotnet.SHPAgentModel.csproj">
+      <Project>{976D062D-7DD6-4DE8-8B50-377B2CFCD040}</Project>
+      <Name>UtilZ.Dotnet.SHPAgentModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPAutoPatchBase\UtilZ.Dotnet.SHPAutoPatchBase.csproj">
+      <Project>{A528FA3B-80BE-42F4-8F3A-E74299893BA0}</Project>
+      <Name>UtilZ.Dotnet.SHPAutoPatchBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.SHPBase\UtilZ.Dotnet.SHPBase.csproj">
+      <Project>{A1B5B78B-05A5-4683-8946-84C8BC48CB01}</Project>
+      <Name>UtilZ.Dotnet.SHPBase</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

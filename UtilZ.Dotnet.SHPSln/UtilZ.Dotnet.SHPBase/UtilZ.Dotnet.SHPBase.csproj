@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A1B5B78B-05A5-4683-8946-84C8BC48CB01}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UtilZ.Dotnet.SHPBase</RootNamespace>
+    <AssemblyName>UtilZ.Dotnet.SHPBase</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\CommandBaseT.cs" />
+    <Compile Include="Base\CommandExcutorType.cs" />
+    <Compile Include="Exceptions\SHPException.cs" />
+    <Compile Include="Exceptions\SHPRouteException.cs" />
+    <Compile Include="Commands\AppControl\AppControlType.cs" />
+    <Compile Include="Commands\AppControl\ControlAppCommand.cs" />
+    <Compile Include="Commands\AppControl\RemoveMonitorAppCommand.cs" />
+    <Compile Include="BaseCommandExcutors\CommandExcutorAttribute.cs" />
+    <Compile Include="BaseCommandExcutors\CommandExcutorBase.cs" />
+    <Compile Include="BaseCommandExcutors\ICommandExcutor.cs" />
+    <Compile Include="BaseCommandExcutors\SHPCommandExcutorManager.cs" />
+    <Compile Include="BaseCommandExcutors\SHPSyncCommandResultExcutor.cs" />
+    <Compile Include="Base\CommandBase.cs" />
+    <Compile Include="Commands\AppControl\ProcessAddMonitorCommand.cs" />
+    <Compile Include="Commands\Host\DevOpsMigrateNotifyCommand.cs" />
+    <Compile Include="Commands\Host\DevOpsMigrateNotifyResCommand.cs" />
+    <Compile Include="Commands\Host\ScriptType.cs" />
+    <Compile Include="Commands\Service\ServiceListenInfoChangeNoifyCommand.cs" />
+    <Compile Include="Commands\Service\ServiceInsDeleteReqCommand.cs" />
+    <Compile Include="Commands\Service\ServiceInsDeleteResCommand.cs" />
+    <Compile Include="Commands\SHPSyncCommandResultCommand.cs" />
+    <Compile Include="Common\ColorHelper.cs" />
+    <Compile Include="Commands\Host\AddHostResCommand.cs" />
+    <Compile Include="Commands\Host\ExcuteScriptCommand.cs" />
+    <Compile Include="Commands\Host\EvnChangedNotifyCommand.cs" />
+    <Compile Include="Common\FileTransferFactory.cs" />
+    <Compile Include="Model\DataRouteInfo.cs" />
+    <Compile Include="Model\HostDisablePortInfo.cs" />
+    <Compile Include="Model\HostStatus.cs" />
+    <Compile Include="Model\HostTypeItem.cs" />
+    <Compile Include="Model\ServiceDeployPara.cs" />
+    <Compile Include="Model\ServiceListenInfo.cs" />
+    <Compile Include="Model\ServiceInfo.cs" />
+    <Compile Include="Model\ServiceInsStatus.cs" />
+    <Compile Include="Model\ServiceMirrorInfo.cs" />
+    <Compile Include="Model\ServiceMirrorType.cs" />
+    <Compile Include="Model\ServiceRouteInfo.cs" />
+    <Compile Include="Model\SHPServiceInsInfo.cs" />
+    <Compile Include="Model\ServiceRouteRemoveResPara.cs" />
+    <Compile Include="Monitor\AppMonitorHelper.cs" />
+    <Compile Include="Monitor\IAppMonitor.cs" />
+    <Compile Include="Net\ISHPNet.cs" />
+    <Compile Include="Exceptions\SHPOperationException.cs" />
+    <Compile Include="Base\SHPBaseModel.cs" />
+    <Compile Include="Base\SHPCommandExcuteResult.cs" />
+    <Compile Include="Base\ICommand.cs" />
+    <Compile Include="Net\SHPNet.cs" />
+    <Compile Include="Base\SHPTransferCommand.cs" />
+    <Compile Include="Base\SHPResult.cs" />
+    <Compile Include="Common\PluginInfo.cs" />
+    <Compile Include="Base\SHPCommandAttribute.cs" />
+    <Compile Include="Common\SHPPluginManager.cs" />
+    <Compile Include="Base\SHPCommandDefine.cs" />
+    <Compile Include="Common\SHPConstant.cs" />
+    <Compile Include="Common\TransferPolicyManager.cs" />
+    <Compile Include="Commands\Host\AddHostCommand.cs" />
+    <Compile Include="Commands\Host\DeleteHostCommand.cs" />
+    <Compile Include="Commands\Host\KillProcessTreeCommand.cs" />
+    <Compile Include="Commands\Host\LogoutCommand.cs" />
+    <Compile Include="Commands\Host\RestartCommand.cs" />
+    <Compile Include="Commands\Host\ShutdownCommand.cs" />
+    <Compile Include="Commands\Host\EvnChangedNotifyResCommand.cs" />
+    <Compile Include="Commands\Host\HostStatusInfoUploadCommand.cs" />
+    <Compile Include="Commands\Host\KillProcessCommand.cs" />
+    <Compile Include="Model\HostGroup.cs" />
+    <Compile Include="Model\HostHardInfo.cs" />
+    <Compile Include="Model\HostInfo.cs" />
+    <Compile Include="Model\HostStatusInfo.cs" />
+    <Compile Include="Model\HostProcessInfoItem.cs" />
+    <Compile Include="Model\ExtendInfo.cs" />
+    <Compile Include="Model\SHPConfigBase.cs" />
+    <Compile Include="Monitor\AppMonitorItem.cs" />
+    <Compile Include="Monitor\IAppMonitorManagement.cs" />
+    <Compile Include="Plugin\Base\ISHPDevOpsBase.cs" />
+    <Compile Include="Plugin\Base\ISHPHardBase.cs" />
+    <Compile Include="Plugin\Base\ISHPPluginBase.cs" />
+    <Compile Include="Plugin\Base\SHPDevOpsBase.cs" />
+    <Compile Include="Plugin\Base\SHPHardBase.cs" />
+    <Compile Include="Plugin\Base\SHPPluginBase.cs" />
+    <Compile Include="Plugin\PluginABase\ISHPADevOps.cs" />
+    <Compile Include="Plugin\PluginABase\ISHPAHardCollect.cs" />
+    <Compile Include="Plugin\PluginABase\SHPADevOpsBase.cs" />
+    <Compile Include="Plugin\PluginABase\SHPAHardCollectBase.cs" />
+    <Compile Include="Plugin\PluginDBase\ISHPDDevOps.cs" />
+    <Compile Include="Plugin\PluginDBase\ISHPHardDisplay.cs" />
+    <Compile Include="Plugin\Base\SHPPluginAttribute.cs" />
+    <Compile Include="Plugin\PluginDBase\SHPDDevOpsBase.cs" />
+    <Compile Include="Plugin\PluginDBase\SHPHardDisplayBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Commands\Service\ServiceDeployReqCommand.cs" />
+    <Compile Include="ServiceBasic\Baisc\ISHPServiceRestfullService.cs" />
+    <Compile Include="ServiceBasic\Baisc\SHPServiceRestfullService.cs" />
+    <Compile Include="ServiceBasic\Command\ISHPServiceBasicCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicCommandBase.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicPostDataCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicRequestDataCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicResponseDataCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicRevDataRequestCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicRevDataResponseCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicTransferCommand.cs" />
+    <Compile Include="ServiceBasic\Command\SHPServiceBasicTransferCommandDefine.cs" />
+    <Compile Include="ServiceBasic\Model\GetServiceInsInfoPara.cs" />
+    <Compile Include="ServiceBasic\Model\PreReceiveDataInfo.cs" />
+    <Compile Include="ServiceBasic\Model\AgentServiceMethodNameConstant.cs" />
+    <Compile Include="ServiceBasic\Baisc\ISHPServiceBasic.cs" />
+    <Compile Include="ServiceBasic\Model\GetServiceRoutePara.cs" />
+    <Compile Include="ServiceBasic\Model\SHPBasicServiceInfo.cs" />
+    <Compile Include="ServiceBasic\Model\ServiceInsListenInfo.cs" />
+    <Compile Include="ServiceBasic\Model\SHPServiceResponseData.cs" />
+    <Compile Include="ServiceBasic\Model\SHPAgentServiceInsInfo.cs" />
+    <Compile Include="ServiceBasic\Model\ServiceRouteServiceMethodNameConstant.cs" />
+    <Compile Include="ServiceBasic\Baisc\SHPBasicService.cs" />
+    <Compile Include="ServiceBasic\Model\ServiceRouteTransferPolicy.cs" />
+    <Compile Include="ServiceBasic\Model\ServiceStatus.cs" />
+    <Compile Include="ServiceBasic\Baisc\SHPServiceBasicFactory.cs" />
+    <Compile Include="ServiceBasic\Baisc\SHPBasicTerminal.cs" />
+    <Compile Include="ServiceBasic\Model\SHPServiceTransferData.cs" />
+    <Compile Include="ServiceBasic\Model\ServiceStatusInfo.cs" />
+    <Compile Include="ServiceBasic\Baisc\SHPServiceBasicBase.cs" />
+    <Compile Include="ServiceBasic\Model\TransferBasicPolicy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\UtilZ.Dotnet\UtilZ.Dotnet.Ex\UtilZ.Dotnet.Ex.csproj">
+      <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
+      <Name>UtilZ.Dotnet.Ex</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
