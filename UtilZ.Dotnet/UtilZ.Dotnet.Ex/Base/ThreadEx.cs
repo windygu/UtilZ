@@ -12,7 +12,7 @@ namespace UtilZ.Dotnet.Ex.Base
     /// <summary>
     /// 线程扩展类
     /// </summary>
-    public class ThreadEx : IThreadEx, IDisposable
+    public class ThreadEx : IThreadEx
     {
         #region 线程数限制
         /// <summary>
@@ -591,7 +591,7 @@ namespace UtilZ.Dotnet.Ex.Base
     /// <summary>
     /// 扩展线程接口
     /// </summary>
-    public interface IThreadEx
+    public interface IThreadEx : IDisposable
     {
         /// <summary>
         /// 启动线程

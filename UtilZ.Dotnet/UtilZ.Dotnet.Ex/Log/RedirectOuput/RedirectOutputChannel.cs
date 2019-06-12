@@ -23,14 +23,21 @@ namespace UtilZ.Dotnet.Ex.Log
         private readonly string _appenderName = null;
 
         /// <summary>
+        /// 日志记录器名称
+        /// </summary>
+        private readonly string _loggerName = null;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="logOutput">日志输出回调</param>
         /// <param name="appenderName">过滤日志追加器名称,忽略大小写[空或null不作验证,其它值需要有匹配的日志追加器验证]</param>
-        public RedirectOutputChannel(Action<RedirectOuputItem> logOutput, string appenderName = null)
+        /// <param name="loggerName">日志记录器名称</param>
+        public RedirectOutputChannel(Action<RedirectOuputItem> logOutput, string appenderName = null, string loggerName = null)
         {
             this._logOutput = logOutput;
             this._appenderName = appenderName;
+            this._loggerName = loggerName;
         }
 
         /// <summary>
@@ -41,17 +48,28 @@ namespace UtilZ.Dotnet.Ex.Log
         {
             try
             {
-                var handler = this._logOutput;
-                if (handler == null || logItem == null)
+                if (!string.IsNullOrEmpty(this._loggerName) &&
+                    !string.Equals(this._loggerName, logItem.Item.Name))
                 {
+                    //日志记录器名称不为空或null,且与产生日志的日志记录器名称不匹配，直接返回
                     return;
                 }
 
-                if (string.IsNullOrEmpty(this._appenderName) ||
-                    string.Equals(this._appenderName, logItem.AppenderName, StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrEmpty(this._appenderName) &&
+                    !string.Equals(this._appenderName, logItem.AppenderName))
                 {
-                    handler(logItem);
+                    //日志重定制追加器名称不为空或null,且与重定向日志追加器名称不匹配，直接返回
+                    return;
                 }
+
+                var handler = this._logOutput;
+                if (handler == null || logItem == null)
+                {
+                    //重定向委托为空，直接返回
+                    return;
+                }
+
+                handler(logItem);
             }
             catch (Exception ex)
             {

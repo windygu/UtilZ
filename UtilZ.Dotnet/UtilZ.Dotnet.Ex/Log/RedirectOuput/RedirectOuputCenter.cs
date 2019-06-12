@@ -81,15 +81,15 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="logItem"></param>
         private static void LogOutput(RedirectOuputItem logItem)
         {
-            RedirectOutputChannel[] logOutputSubscribeItems;
-            lock (_logOutputSubscribeItemsMonitor)
+            RedirectOutputChannel[] redirectOutputChannelArr;
+            lock (_logOutputSubscribeItemListMonitor)
             {
-                logOutputSubscribeItems = _logOutputSubscribeItems.ToArray();
+                redirectOutputChannelArr = _logOutputSubscribeItemList.ToArray();
             }
 
-            foreach (var logOutputSubscribeItem in logOutputSubscribeItems)
+            foreach (var redirectOutputChannel in redirectOutputChannelArr)
             {
-                logOutputSubscribeItem.OnRaiseLogOutput(logItem);
+                redirectOutputChannel.OnRaiseLogOutput(logItem);
             }
         }
         #endregion
@@ -98,26 +98,26 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 日志输出订阅项集合
         /// </summary>
-        private static readonly List<RedirectOutputChannel> _logOutputSubscribeItems = new List<RedirectOutputChannel>();
-
-        /// <summary>
-        /// 获取日志输出订阅项集合
-        /// </summary>
-        public static List<RedirectOutputChannel> LogOutputSubscribeItems
-        {
-            get
-            {
-                lock (_logOutputSubscribeItemsMonitor)
-                {
-                    return _logOutputSubscribeItems.ToList();
-                }
-            }
-        }
+        private static readonly List<RedirectOutputChannel> _logOutputSubscribeItemList = new List<RedirectOutputChannel>();
 
         /// <summary>
         /// 日志输出订阅项集合线程锁
         /// </summary>
-        private static readonly object _logOutputSubscribeItemsMonitor = new object();
+        private static readonly object _logOutputSubscribeItemListMonitor = new object();
+
+        /// <summary>
+        /// 获取日志输出订阅项数组集合
+        /// </summary>
+        public static RedirectOutputChannel[] RedirectOutputChannelArray
+        {
+            get
+            {
+                lock (_logOutputSubscribeItemListMonitor)
+                {
+                    return _logOutputSubscribeItemList.ToArray();
+                }
+            }
+        }
 
         /// <summary>
         /// 添加日志输出订阅项
@@ -130,11 +130,11 @@ namespace UtilZ.Dotnet.Ex.Log
                 return;
             }
 
-            lock (_logOutputSubscribeItemsMonitor)
+            lock (_logOutputSubscribeItemListMonitor)
             {
-                if (!_logOutputSubscribeItems.Contains(item))
+                if (!_logOutputSubscribeItemList.Contains(item))
                 {
-                    _logOutputSubscribeItems.Add(item);
+                    _logOutputSubscribeItemList.Add(item);
                 }
             }
         }
@@ -150,11 +150,11 @@ namespace UtilZ.Dotnet.Ex.Log
                 return;
             }
 
-            lock (_logOutputSubscribeItemsMonitor)
+            lock (_logOutputSubscribeItemListMonitor)
             {
-                if (_logOutputSubscribeItems.Contains(item))
+                if (_logOutputSubscribeItemList.Contains(item))
                 {
-                    _logOutputSubscribeItems.Remove(item);
+                    _logOutputSubscribeItemList.Remove(item);
                 }
             }
         }
@@ -164,9 +164,9 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         public static void Clear()
         {
-            lock (_logOutputSubscribeItemsMonitor)
+            lock (_logOutputSubscribeItemListMonitor)
             {
-                _logOutputSubscribeItems.Clear();
+                _logOutputSubscribeItemList.Clear();
             }
         }
         #endregion
