@@ -58,6 +58,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             this._config = this.CreateConfig(ele);
 
             this._layoutFormat = this.CreateLogLayout(this._config);
+            this._levelMapDic = this.CreateLogLevelMapDic(this._config.LevelMap);
             this._status = true;
             if (this._config != null && this._config.EnableOutputCache)
             {
@@ -79,12 +80,46 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             this._config = config;
 
             this._layoutFormat = this.CreateLogLayout(this._config);
+            this._levelMapDic = this.CreateLogLevelMapDic(this._config.LevelMap);
             this._status = true;
             if (this._config != null && this._config.EnableOutputCache)
             {
                 this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
             }
         }
+
+        private Dictionary<LogLevel, string> CreateLogLevelMapDic(string levelMap)
+        {
+            //levelMap=>Info:信息;Warn:warning;...
+            if (string.IsNullOrWhiteSpace(levelMap))
+            {
+                return null;
+            }
+
+            string[] levelMapStrArr = levelMap.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var splitChs = new char[':'];
+            string[] keyValue;
+            LogLevel logLevel;
+            Type logLevelType = typeof(LogLevel);
+            var levelMapDic = new Dictionary<LogLevel, string>();
+
+            foreach (var levelMapStr in levelMapStrArr)
+            {
+                keyValue = levelMapStr.Split(splitChs, StringSplitOptions.RemoveEmptyEntries);
+                if (keyValue.Length != 2)
+                {
+                    continue;
+                }
+
+                if (Enum.TryParse<LogLevel>(keyValue[0], true, out logLevel))
+                {
+                    levelMapDic[logLevel] = keyValue[1];
+                }
+            }
+
+            return levelMapDic;
+        }
+
 
         private string CreateLogLayout(BaseConfig config)
         {
@@ -197,6 +232,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         private readonly string _layoutFormat = null;
 
         /// <summary>
+        /// 日志级别名称映射字典集合
+        /// </summary>
+        private readonly Dictionary<LogLevel, string> _levelMapDic;
+
+        /// <summary>
         /// 布局一条日志文本记录
         /// </summary>
         /// <param name="item">日志信息对象</param>
@@ -237,7 +277,14 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 if (layoutFormat.Contains(LogConstant.LEVEL))
                 {
                     layoutFormat = layoutFormat.Replace(LogConstant.LEVEL, string.Format("{{{0}}}", index++));
-                    args.Add(LogConstant.GetLogLevelName(item.Level));
+                    if (this._levelMapDic != null && this._levelMapDic.ContainsKey(item.Level))
+                    {
+                        args.Add(this._levelMapDic[item.Level]);
+                    }
+                    else
+                    {
+                        args.Add(LogConstant.GetLogLevelName(item.Level));
+                    }
                 }
 
                 //事件ID

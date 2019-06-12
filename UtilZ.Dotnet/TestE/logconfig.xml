@@ -7,6 +7,7 @@
     <appender name="fileAppender" enable="true" type="F">
       <!--<param name="Layout" value="%d %l %e %c 堆栈:%s" des="日志布局"/>-->
       <param name="DateFormat" value="yyyy-MM-dd HH:mm:ss" des="时间格式"/>
+      <param name="LevelMap" value="Info:信息;Warn:warning" des="日志级别名称映射,为空使用内置映射"/>
       <param name="SeparatorCount" value="140" des="分隔线长度,0表示无分隔线"/>
       <param name="EnableOutputCache" value="false" des="是否启用日志输出缓存,默认为true[true:启用;false:禁用]"/>
 

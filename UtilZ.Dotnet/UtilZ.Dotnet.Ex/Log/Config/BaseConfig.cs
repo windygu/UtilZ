@@ -46,6 +46,11 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
         }
 
+        /// <summary>
+        /// 日志级别名称映射[Info:信息;Warn:warning;...]
+        /// </summary>
+        public string LevelMap { get; set; } = null;
+
         private int _separatorCount = 0;
         /// <summary>
         /// 分隔线长度
@@ -130,6 +135,8 @@ namespace UtilZ.Dotnet.Ex.Log.Config
 
             this.Layout = LogUtil.GetChildXElementValue(ele, nameof(this.Layout));
             this.DateFormat = LogUtil.GetChildXElementValue(ele, nameof(this.DateFormat));
+            this.LevelMap = LogUtil.GetChildXElementValue(ele, nameof(this.LevelMap));
+
             int separatorCount;
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.SeparatorCount)), out separatorCount))
             {
