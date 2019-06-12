@@ -13,11 +13,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
     /// </summary>
     public abstract class AppenderBase : IDisposable
     {
-        /// <summary>
-        /// 当前日志追加器状态是否可用[true:可用;false:不可用]
-        /// </summary>
-        protected readonly bool _status = true;
-
         private string _name = null;
         /// <summary>
         /// 日志追加器名称
@@ -50,20 +45,24 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         private LogAsynQueue<LogItem> _logWriteQueue = null;
 
         /// <summary>
+        /// 日志布局
+        /// </summary>
+        private string _layoutFormat = null;
+
+        /// <summary>
+        /// 日志级别名称映射字典集合
+        /// </summary>
+        private Dictionary<LogLevel, string> _levelMapDic;
+
+        #region 构造函数-初始化
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
         public AppenderBase(XElement ele)
         {
             this._config = this.CreateConfig(ele);
-
-            this._layoutFormat = this.CreateLogLayout(this._config);
-            this._levelMapDic = this.CreateLogLevelMapDic(this._config.LevelMap);
-            this._status = true;
-            if (this._config != null && this._config.EnableOutputCache)
-            {
-                this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
-            }
+            this.Init();
         }
 
         /// <summary>
@@ -78,13 +77,16 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             }
 
             this._config = config;
+            this.Init();
+        }
 
+        private void Init()
+        {
             this._layoutFormat = this.CreateLogLayout(this._config);
             this._levelMapDic = this.CreateLogLevelMapDic(this._config.LevelMap);
-            this._status = true;
             if (this._config != null && this._config.EnableOutputCache)
             {
-                this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
+                this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.AppenderName));
             }
         }
 
@@ -141,6 +143,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
             return layoutFormat;
         }
+        #endregion
 
         /// <summary>
         /// 写日志
@@ -224,17 +227,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
             return true;
         }
-
-        #region layout
-        /// <summary>
-        /// 日志布局
-        /// </summary>
-        private readonly string _layoutFormat = null;
-
-        /// <summary>
-        /// 日志级别名称映射字典集合
-        /// </summary>
-        private readonly Dictionary<LogLevel, string> _levelMapDic;
 
         /// <summary>
         /// 布局一条日志文本记录
@@ -348,7 +340,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
             return logMsg;
         }
-        #endregion
 
         /// <summary>
         /// 重写ToString

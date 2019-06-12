@@ -84,7 +84,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 if (this._fileAppenderConfig == null ||
                 this._fileLogWriter == null ||
                 !base.Validate(this._fileAppenderConfig, item) ||
-                !this._status)
+                !this._fileAppenderConfig.Enable)
                 {
                     return;
                 }

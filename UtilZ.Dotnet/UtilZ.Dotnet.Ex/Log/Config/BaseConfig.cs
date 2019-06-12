@@ -16,18 +16,18 @@ namespace UtilZ.Dotnet.Ex.Log.Config
     {
         #region 基础配置
         /// <summary>
-        /// 日志记录器名称
+        /// 日志追加器名称
         /// </summary>
-        public string Name { get; set; } = null;
+        public string AppenderName { get; set; } = null;
 
         /// <summary>
-        /// 日志布局
+        /// 日志布局[%d %l %e %c 堆栈:%s]
         /// </summary>
         public string Layout { get; set; } = null;
 
         private string _dateFormat = null;
         /// <summary>
-        /// 时间格式
+        /// 时间格式[yyyy-MM-dd HH:mm:ss]
         /// </summary>
         public string DateFormat
         {
@@ -125,7 +125,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 return;
             }
 
-            this.Name = LogUtil.GetAttributeValue(ele, nameof(this.Name).ToLower());
+            this.AppenderName = LogUtil.GetAttributeValue(ele, "name");
 
             bool enable;
             if (bool.TryParse(LogUtil.GetAttributeValue(ele, nameof(this.Enable).ToLower()), out enable))
