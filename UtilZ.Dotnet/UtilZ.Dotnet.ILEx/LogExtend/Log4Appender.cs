@@ -65,24 +65,24 @@ namespace UtilZ.Dotnet.ILEx.LogExtend
                 }
 
                 item.LogProcess();
-                string content = LayoutManager.LayoutLog(item, this._config);
+                string logMsg = LayoutManager.LayoutLog(item, this._config);
                 switch (item.Level)
                 {
                     case LogLevel.Trace:
                     case LogLevel.Debug:
-                        log.Debug(content);
+                        log.Debug(logMsg);
                         break;
                     case LogLevel.Info:
-                        log.Info(content);
+                        log.Info(logMsg);
                         break;
                     case LogLevel.Warn:
-                        log.Warn(content);
+                        log.Warn(logMsg);
                         break;
                     case LogLevel.Error:
-                        log.Error(content);
+                        log.Error(logMsg);
                         break;
                     case LogLevel.Fatal:
-                        log.Fatal(content);
+                        log.Fatal(logMsg);
                         break;
                     default:
                         throw new NotSupportedException(string.Format("不支持的日志级别:{0}", item.Level.ToString()));

@@ -22,8 +22,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         /// <param name="fileAppenderConfig">配置</param>
         /// <param name="pathManager">路由管理器</param>
         /// <param name="createFilePathTime">创建时间</param>
-        /// <param name="item">日志项</param>
-        protected override void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogItem item)
+        /// <param name="logMessage">日志信息项</param>
+        protected override void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogMessageItem logMessage)
         {
             string logFilePath = base.GetLogFilePath();
             if (string.IsNullOrWhiteSpace(logFilePath))
@@ -33,7 +33,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
 
             using (var sw = File.AppendText(logFilePath))
             {
-                base.WriteLogToFile(item, sw);
+                base.WriteLogToFile(logMessage, sw);
             }
         }
     }

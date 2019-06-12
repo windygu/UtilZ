@@ -41,10 +41,10 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         /// <summary>
         /// 写日志
         /// </summary>
-        /// <param name="item">日志项</param>
-        public void WriteLog(LogItem item)
+        /// <param name="logMessage">日志信息项</param>
+        public void WriteLog(LogMessageItem logMessage)
         {
-            this.WriteLog(this._fileAppenderConfig, this._pathManager, this._createFilePathTime, item);
+            this.WriteLog(this._fileAppenderConfig, this._pathManager, this._createFilePathTime, logMessage);
         }
 
         /// <summary>
@@ -53,17 +53,17 @@ namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
         /// <param name="fileAppenderConfig">配置</param>
         /// <param name="pathManager">路由管理器</param>
         /// <param name="createFilePathTime">创建时间</param>
-        /// <param name="item">日志项</param>
-        protected abstract void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogItem item);
+        /// <param name="logMessage">日志信息项</param>
+        protected abstract void WriteLog(FileAppenderConfig fileAppenderConfig, FileAppenderPathManager pathManager, DateTime createFilePathTime, LogMessageItem logMessage);
 
         /// <summary>
         /// 写日志到文件
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="sw"></param>
-        protected void WriteLogToFile(LogItem item, StreamWriter sw)
+        /// <param name="logMessage">日志信息项</param>
+        /// <param name="sw">StreamWriter</param>
+        protected void WriteLogToFile(LogMessageItem logMessage, StreamWriter sw)
         {
-            string logMsg = LayoutManager.LayoutLog(item, this._fileAppenderConfig);
+            string logMsg = logMessage.LogMsg;
             if (this._securityPolicy != null)
             {
                 logMsg = this._securityPolicy.Encryption(logMsg);
