@@ -164,7 +164,6 @@
     <Compile Include="Log\Config\RedirectAppendConfig.cs" />
     <Compile Include="Log\Core\EmptyLoger.cs" />
     <Compile Include="Log\Core\ILoger.cs" />
-    <Compile Include="Log\Core\LayoutManager.cs" />
     <Compile Include="Log\Core\Loger.cs" />
     <Compile Include="Log\Core\LogerBase.cs" />
     <Compile Include="Log\Model\InnerLogOutputArgs.cs" />

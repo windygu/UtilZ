@@ -65,7 +65,7 @@ namespace UtilZ.Dotnet.ILEx.LogExtend
                 }
 
                 item.LogProcess();
-                string logMsg = LayoutManager.LayoutLog(item, this._config);
+                string logMsg = base.LayoutLog(item);
                 switch (item.Level)
                 {
                     case LogLevel.Trace:

@@ -168,5 +168,42 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         public const char SYSTEM_APPENDER_PATTERN_BREIF = 'S';
         #endregion
+
+        #region 日志布局字段
+        /// <summary>
+        /// 时间
+        /// </summary>
+        public const string TIME = "%d";
+
+        /// <summary>
+        /// 日志级别
+        /// </summary>
+        public const string LEVEL = "%l";
+
+        /// <summary>
+        /// 事件ID
+        /// </summary>
+        public const string EVENT = "%e";
+
+        /// <summary>
+        /// 与对象关联的用户定义数据
+        /// </summary>
+        public const string TAG = "%g";
+
+        /// <summary>
+        /// 线程ID
+        /// </summary>
+        public const string THREAD = "%t";
+
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public const string CONTENT = "%c";
+
+        /// <summary>
+        /// 堆栈
+        /// </summary>
+        public const string STACKTRACE = "%s";
+        #endregion
     }
 }

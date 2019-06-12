@@ -54,7 +54,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                     return;
                 }
 
-                string logMsg = LayoutManager.LayoutLog(item, this._consoleAppenderConfig);
+                string logMsg = base.LayoutLog(item);
                 Console.WriteLine(logMsg);
             }
             catch (Exception ex)

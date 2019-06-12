@@ -56,6 +56,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         public AppenderBase(XElement ele)
         {
             this._config = this.CreateConfig(ele);
+
+            this._layoutFormat = this.CreateLogLayout(this._config);
             this._status = true;
             if (this._config != null && this._config.EnableOutputCache)
             {
@@ -75,11 +77,34 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             }
 
             this._config = config;
+
+            this._layoutFormat = this.CreateLogLayout(this._config);
             this._status = true;
             if (this._config != null && this._config.EnableOutputCache)
             {
                 this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.Name));
             }
+        }
+
+        private string CreateLogLayout(BaseConfig config)
+        {
+            string layoutFormat = config.Layout;
+            if (string.IsNullOrWhiteSpace(layoutFormat))
+            {
+                //如果日志布局格式为空则采用默认日志布局
+                //layoutFormat = string.Format("时间:{0}\r\n级别:{1}\r\n线程:{2}\r\n事件ID:{3}\r\n日志:{4}\r\n堆栈:{5}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.THREAD, LogConstant.EVENT, LogConstant.CONTENT, LogConstant.STACKTRACE);
+                layoutFormat = string.Format("{0} {1} {2} 堆栈:{3}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT, LogConstant.STACKTRACE);
+                //layoutFormat = string.Format("{0} {1} {2}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT);
+            }
+
+            //是否显示分隔线
+            int separatorCount = config.SeparatorCount;
+            if (separatorCount > 1)
+            {
+                layoutFormat = string.Format("{0}\r\n{1}", config.SeparatorLine, layoutFormat);
+            }
+
+            return layoutFormat;
         }
 
         /// <summary>
@@ -164,6 +189,119 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
             return true;
         }
+
+        #region layout
+        /// <summary>
+        /// 日志布局
+        /// </summary>
+        private readonly string _layoutFormat = null;
+
+        /// <summary>
+        /// 布局一条日志文本记录
+        /// </summary>
+        /// <param name="item">日志信息对象</param>
+        /// <returns>日志文本记录</returns>
+        protected string LayoutLog(LogItem item)
+        {
+            string logMsg = string.Empty;
+            try
+            {
+                string layoutFormat = this._layoutFormat;
+                List<object> args = new List<object>();
+                int index = 0;
+                string tmp;
+                //时间
+                if (layoutFormat.Contains(LogConstant.TIME))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.TIME, string.Format("{{{0}}}", index++));
+                    if (string.IsNullOrWhiteSpace(this._config.DateFormat))
+                    {
+                        tmp = item.Time.ToString(LogConstant.DateTimeFormat);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            tmp = item.Time.ToString(this._config.DateFormat);
+                        }
+                        catch
+                        {
+                            tmp = item.Time.ToString(LogConstant.DateTimeFormat);
+                        }
+                    }
+
+                    args.Add(tmp);
+                }
+
+                //日志级别
+                if (layoutFormat.Contains(LogConstant.LEVEL))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.LEVEL, string.Format("{{{0}}}", index++));
+                    args.Add(LogConstant.GetLogLevelName(item.Level));
+                }
+
+                //事件ID
+                if (layoutFormat.Contains(LogConstant.EVENT))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.EVENT, string.Format("{{{0}}}", index++));
+                    args.Add(item.EventID);
+                }
+
+                if (layoutFormat.Contains(LogConstant.TAG))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.TAG, string.Format("{{{0}}}", index++));
+                    args.Add(item.Tag);
+                }
+
+                //线程
+                if (layoutFormat.Contains(LogConstant.THREAD))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.THREAD, string.Format("{{{0}}}", index++));
+                    if (string.IsNullOrWhiteSpace(item.ThreadName))
+                    {
+                        tmp = item.ThreadID.ToString();
+                    }
+                    else
+                    {
+                        tmp = item.ThreadName;
+                    }
+
+                    args.Add(tmp);
+                }
+
+                //内容
+                if (layoutFormat.Contains(LogConstant.CONTENT))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.CONTENT, string.Format("{{{0}}}", index++));
+                    args.Add(item.Content);
+                }
+
+                //堆栈位置信息
+                if (layoutFormat.Contains(LogConstant.STACKTRACE))
+                {
+                    layoutFormat = layoutFormat.Replace(LogConstant.STACKTRACE, string.Format("{{{0}}}", index++));
+                    args.Add(item.StackTraceInfo);
+                }
+
+                //生成日志
+                if (args.Count > 0)
+                {
+                    logMsg = string.Format(layoutFormat, args.ToArray());
+                }
+                else
+                {
+                    logMsg = item.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog("LayoutManager", ex);
+                logMsg = item.ToString();
+            }
+
+            return logMsg;
+        }
+        #endregion
 
         /// <summary>
         /// 重写ToString
