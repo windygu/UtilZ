@@ -16,7 +16,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">页索引</param>
         /// <param name="totalCount">总数据记录数</param>
-        public PageInfo(int pageSize, int pageIndex, long totalCount)
+        public PageInfo(long pageSize, long pageIndex, long totalCount)
         {
             long pageCount = totalCount / pageSize;
             if (totalCount % pageSize > 0)
@@ -24,7 +24,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 pageCount += 1;
             }
 
-            this.PageCount = (int)pageCount;
+            this.PageCount = pageCount;
             this.PageSize = pageSize;
             this.PageIndex = pageIndex;
             this.TotalCount = totalCount;
@@ -33,17 +33,17 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <summary>
         /// 分总页数
         /// </summary>
-        public int PageCount { get; private set; }
+        public long PageCount { get; private set; }
 
         /// <summary>
         /// 分页大小
         /// </summary>
-        public int PageSize { get; private set; }
+        public long PageSize { get; private set; }
 
         /// <summary>
         /// 页索引
         /// </summary>
-        public int PageIndex { get; private set; }
+        public long PageIndex { get; private set; }
 
         /// <summary>
         /// 总数据记录数

@@ -44,16 +44,6 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// </summary>
         private LogAsynQueue<LogItem> _logWriteQueue = null;
 
-        /// <summary>
-        /// 日志布局
-        /// </summary>
-        private string _layoutFormat = null;
-
-        /// <summary>
-        /// 日志级别名称映射字典集合
-        /// </summary>
-        private Dictionary<LogLevel, string> _levelMapDic;
-
         #region 构造函数-初始化
         /// <summary>
         /// 构造函数
@@ -82,67 +72,13 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
 
         private void Init()
         {
-            this._layoutFormat = this.CreateLogLayout(this._config);
-            this._levelMapDic = this.CreateLogLevelMapDic(this._config.LevelMap);
             if (this._config != null && this._config.EnableOutputCache)
             {
                 this._logWriteQueue = new LogAsynQueue<LogItem>(this.PrimitiveWriteLog, string.Format("{0}日志输出线程", this._config.AppenderName));
             }
         }
 
-        private Dictionary<LogLevel, string> CreateLogLevelMapDic(string levelMap)
-        {
-            //levelMap=>Info:信息;Warn:warning;...
-            if (string.IsNullOrWhiteSpace(levelMap))
-            {
-                return null;
-            }
 
-            string[] levelMapStrArr = levelMap.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            var splitChs = new char[':'];
-            string[] keyValue;
-            LogLevel logLevel;
-            Type logLevelType = typeof(LogLevel);
-            var levelMapDic = new Dictionary<LogLevel, string>();
-
-            foreach (var levelMapStr in levelMapStrArr)
-            {
-                keyValue = levelMapStr.Split(splitChs, StringSplitOptions.RemoveEmptyEntries);
-                if (keyValue.Length != 2)
-                {
-                    continue;
-                }
-
-                if (Enum.TryParse<LogLevel>(keyValue[0], true, out logLevel))
-                {
-                    levelMapDic[logLevel] = keyValue[1];
-                }
-            }
-
-            return levelMapDic;
-        }
-
-
-        private string CreateLogLayout(BaseConfig config)
-        {
-            string layoutFormat = config.Layout;
-            if (string.IsNullOrWhiteSpace(layoutFormat))
-            {
-                //如果日志布局格式为空则采用默认日志布局
-                //layoutFormat = string.Format("时间:{0}\r\n级别:{1}\r\n线程:{2}\r\n事件ID:{3}\r\n日志:{4}\r\n堆栈:{5}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.THREAD, LogConstant.EVENT, LogConstant.CONTENT, LogConstant.STACKTRACE);
-                layoutFormat = string.Format("{0} {1} {2} 堆栈:{3}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT, LogConstant.STACKTRACE);
-                //layoutFormat = string.Format("{0} {1} {2}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT);
-            }
-
-            //是否显示分隔线
-            int separatorCount = config.SeparatorCount;
-            if (separatorCount > 1)
-            {
-                layoutFormat = string.Format("{0}\r\n{1}", config.SeparatorLine, layoutFormat);
-            }
-
-            return layoutFormat;
-        }
         #endregion
 
         /// <summary>
@@ -238,7 +174,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             string logMsg = string.Empty;
             try
             {
-                string layoutFormat = this._layoutFormat;
+                string layoutFormat = this._config.Layout;
                 List<object> args = new List<object>();
                 int index = 0;
                 string tmp;
@@ -269,14 +205,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 if (layoutFormat.Contains(LogConstant.LEVEL))
                 {
                     layoutFormat = layoutFormat.Replace(LogConstant.LEVEL, string.Format("{{{0}}}", index++));
-                    if (this._levelMapDic != null && this._levelMapDic.ContainsKey(item.Level))
-                    {
-                        args.Add(this._levelMapDic[item.Level]);
-                    }
-                    else
-                    {
-                        args.Add(LogConstant.GetLogLevelName(item.Level));
-                    }
+                    args.Add(this._config.GetLogLevelName(item.Level));
                 }
 
                 //事件ID

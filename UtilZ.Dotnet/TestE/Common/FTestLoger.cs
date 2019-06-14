@@ -63,7 +63,10 @@ namespace TestE.Common
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Loger.GetLoger(null).GetAppenders()[0].Config.Layout = string.Format("{0} {1} {2}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT);
             Loger.Debug("Debug");
+            Loger.Info("Info");
+            Loger.Warn("Warn");
 
             try
             {

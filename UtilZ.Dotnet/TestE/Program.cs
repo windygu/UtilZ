@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using TestE.Common;
-using TestE.DB;
 using TestE.Winform;
 using UtilZ.Dotnet.Ex.Log;
 

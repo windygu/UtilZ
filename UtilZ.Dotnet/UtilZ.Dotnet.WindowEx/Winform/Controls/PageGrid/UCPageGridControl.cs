@@ -474,7 +474,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         #endregion
 
         #region 分页
-        private void PageQuery(int pageIndex)
+        private void PageQuery(long pageIndex)
         {
             this.PrimitiveSetPageInfo(new PageInfo(this._pageInfo.PageSize, pageIndex, this._pageInfo.TotalCount));
             this.OnRaiseQueryData(new QueryDataArgs(pageIndex, this._pageInfo.PageSize));
@@ -503,7 +503,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 return;
             }
 
-            int pageIndex = this._pageInfo.PageIndex - 1;
+            var pageIndex = this._pageInfo.PageIndex - 1;
             if (pageIndex < 1)
             {
                 return;
@@ -519,7 +519,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 return;
             }
 
-            int pageIndex = this._pageInfo.PageIndex + 1;
+            long pageIndex = this._pageInfo.PageIndex + 1;
             if (pageIndex > this._pageInfo.PageCount)
             {
                 return;
@@ -535,7 +535,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
                 return;
             }
 
-            int pageIndex = this._pageInfo.PageCount;
+            long pageIndex = this._pageInfo.PageCount;
             if (this._pageInfo.PageIndex == pageIndex)
             {
                 return;

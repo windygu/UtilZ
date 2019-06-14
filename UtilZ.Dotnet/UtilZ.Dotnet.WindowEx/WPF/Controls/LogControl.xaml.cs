@@ -26,9 +26,37 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
     public partial class LogControl : UserControl, ILogControl
     {
         /// <summary>
-        /// 最多显示项数
+        /// 最多显示项数依赖属性
         /// </summary>
-        private int _maxItemCount = 100;
+        private static readonly DependencyProperty MaxItemCountProperty =
+            DependencyProperty.RegisterAttached(nameof(LogControl.MaxItemCount), typeof(int), typeof(LogControl), new PropertyMetadata(100, PropertyChanged));
+
+        /// <summary>
+        /// 是否锁定滚动依赖属性
+        /// </summary>
+        private static readonly DependencyProperty IsLockProperty =
+            DependencyProperty.RegisterAttached(nameof(LogControl.IsLock), typeof(bool), typeof(LogControl), new PropertyMetadata(false, PropertyChanged));
+
+        private static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as LogControl;
+            if (e.Property == LogControl.MaxItemCountProperty)
+            {
+                control.RemoveOutElements();
+            }
+            else if (e.Property == LogControl.IsLockProperty)
+            {
+                if ((bool)e.NewValue)
+                {
+                    control._logShowQueue.Stop();
+                }
+                else
+                {
+                    control._logShowQueue.Start();
+                }
+            }
+        }
+
         /// <summary>
         /// 获取或设置最多显示项数
         /// </summary>
@@ -38,28 +66,16 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MaxItemCount
         {
-            get { return _maxItemCount; }
+            get
+            {
+                return (int)this.GetValue(LogControl.MaxItemCountProperty);
+            }
             set
             {
-                if (_maxItemCount == value)
-                {
-                    return;
-                }
-
-                if (value < 1)
-                {
-                    _maxItemCount = 1;
-                }
-                else
-                {
-                    _maxItemCount = value;
-                }
-
-                this.RemoveOutElements();
+                this.SetValue(LogControl.MaxItemCountProperty, value);
             }
         }
 
-        private bool _isLock = false;
         /// <summary>
         /// 是否锁定滚动
         /// </summary>
@@ -69,23 +85,13 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsLock
         {
-            get { return _isLock; }
+            get
+            {
+                return (bool)this.GetValue(LogControl.IsLockProperty);
+            }
             set
             {
-                if (_isLock == value)
-                {
-                    return;
-                }
-
-                _isLock = value;
-                if (_isLock)
-                {
-                    this._logShowQueue.Stop();
-                }
-                else
-                {
-                    this._logShowQueue.Start();
-                }
+                this.SetValue(LogControl.IsLockProperty, value);
             }
         }
 
@@ -220,7 +226,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     content.Inlines.Add(run);
                     this._lines.Add(run);
 
-                    if (!this._isLock)
+                    if (!this.IsLock)
                     {
                         this.RemoveOutElements();
                     }
@@ -236,7 +242,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
 
         private void RemoveOutElements()
         {
-            var maxItemCount = this._maxItemCount;
+            var maxItemCount = this.MaxItemCount;
             while (this._lines.Count > maxItemCount)
             {
                 content.Inlines.Remove(this._lines[0]);

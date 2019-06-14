@@ -15,7 +15,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// </summary>
         /// <param name="pageIndex">当前要查询页数</param>
         /// <param name="pageSize">查询页大小</param>
-        public QueryDataArgs(int pageIndex, int pageSize)
+        public QueryDataArgs(long pageIndex, long pageSize)
         {
             this.PageIndex = pageIndex;
             this.PageSize = pageSize;
@@ -24,11 +24,11 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid
         /// <summary>
         /// 获取当前要查询页数
         /// </summary>
-        public int PageIndex { get; private set; }
+        public long PageIndex { get; private set; }
 
         /// <summary>
         /// 查询页大小
         /// </summary>
-        public int PageSize { get; private set; }
+        public long PageSize { get; private set; }
     }
 }

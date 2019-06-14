@@ -45,7 +45,6 @@ namespace UtilZ.Dotnet.Ex.Log
             }
 
             return value;
-
         }
 
         /// <summary>

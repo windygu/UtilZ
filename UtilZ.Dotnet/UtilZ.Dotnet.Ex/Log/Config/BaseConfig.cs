@@ -20,10 +20,19 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// </summary>
         public string AppenderName { get; set; } = null;
 
+        private string _layout = null;
         /// <summary>
         /// 日志布局[%d %l %e %c 堆栈:%s]
         /// </summary>
-        public string Layout { get; set; } = null;
+        public string Layout
+        {
+            get { return _layout; }
+            set
+            {
+                _layout = value;
+                this.UpdateLogLayout();
+            }
+        }
 
         private string _dateFormat = null;
         /// <summary>
@@ -46,12 +55,26 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
         }
 
+        private string _levelMap = null;
         /// <summary>
         /// 日志级别名称映射[Info:信息;Warn:warning;...]
         /// </summary>
-        public string LevelMap { get; set; } = null;
+        public string LevelMap
+        {
+            get { return _levelMap; }
+            set
+            {
+                if (string.Equals(_levelMap, value))
+                {
+                    return;
+                }
 
-        private int _separatorCount = 0;
+                _levelMap = value;
+                this.UpdateLogLevelMapDic();
+            }
+        }
+
+        private int _separatorCount = 140;
         /// <summary>
         /// 分隔线长度
         /// </summary>
@@ -66,14 +89,9 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 }
 
                 _separatorCount = value;
-                this.SeparatorLine = new string('-', _separatorCount);
+                this.UpdateLogLayout();
             }
         }
-
-        /// <summary>
-        /// 获取分隔线
-        /// </summary>
-        internal string SeparatorLine { get; private set; } = null;
 
         /// <summary>
         /// 是否启用日志输出缓存[true:启用;false:禁用]
@@ -113,13 +131,19 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         public Type MatchExceptionType { get; set; } = null;
         #endregion
 
+
+
+        /// <summary>
+        /// 日志级别名称映射字典集合
+        /// </summary>
+        private Dictionary<LogLevel, string> _levelMapDic;
+
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
         public BaseConfig(XElement ele)
         {
-            this.SeparatorCount = 140;
             if (ele == null)
             {
                 return;
@@ -133,14 +157,14 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                 this.Enable = enable;
             }
 
-            this.Layout = LogUtil.GetChildXElementValue(ele, nameof(this.Layout));
+            this._layout = LogUtil.GetChildXElementValue(ele, nameof(this.Layout));
             this.DateFormat = LogUtil.GetChildXElementValue(ele, nameof(this.DateFormat));
             this.LevelMap = LogUtil.GetChildXElementValue(ele, nameof(this.LevelMap));
 
             int separatorCount;
             if (int.TryParse(LogUtil.GetChildXElementValue(ele, nameof(this.SeparatorCount)), out separatorCount))
             {
-                this.SeparatorCount = separatorCount;
+                this._separatorCount = separatorCount;
             }
 
             bool enableOutputCache;
@@ -200,6 +224,77 @@ namespace UtilZ.Dotnet.Ex.Log.Config
                     LogSysInnerLog.OnRaiseLog(this, ex);
                 }
             }
+
+            this.UpdateLogLayout();
+        }
+
+        private void UpdateLogLevelMapDic()
+        {
+            string levelMap = this._levelMap;
+            //levelMap=>Info:信息;Warn:warning;...
+            if (string.IsNullOrWhiteSpace(levelMap))
+            {
+                return;
+            }
+
+            string[] levelMapStrArr = levelMap.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var splitChs = new char[] { ':' };
+            string[] keyValue;
+            LogLevel logLevel;
+            Type logLevelType = typeof(LogLevel);
+            var levelMapDic = new Dictionary<LogLevel, string>();
+
+            foreach (var levelMapStr in levelMapStrArr)
+            {
+                keyValue = levelMapStr.Split(splitChs, StringSplitOptions.RemoveEmptyEntries);
+                if (keyValue.Length != 2)
+                {
+                    continue;
+                }
+
+                if (Enum.TryParse<LogLevel>(keyValue[0], true, out logLevel))
+                {
+                    levelMapDic[logLevel] = keyValue[1];
+                }
+            }
+
+            this._levelMapDic = levelMapDic;
+        }
+
+        private void UpdateLogLayout()
+        {
+            string layoutFormat = this._layout;
+            if (string.IsNullOrWhiteSpace(layoutFormat))
+            {
+                //如果日志布局格式为空则采用默认日志布局
+                //layoutFormat = string.Format("时间:{0}\r\n级别:{1}\r\n线程:{2}\r\n事件ID:{3}\r\n日志:{4}\r\n堆栈:{5}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.THREAD, LogConstant.EVENT, LogConstant.CONTENT, LogConstant.STACKTRACE);
+                layoutFormat = string.Format("{0} {1} {2} 堆栈:{3}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT, LogConstant.STACKTRACE);
+                //layoutFormat = string.Format("{0} {1} {2}", LogConstant.TIME, LogConstant.LEVEL, LogConstant.CONTENT);
+            }
+
+            //是否显示分隔线
+            int separatorCount = this._separatorCount;
+            if (separatorCount > 1)
+            {
+                layoutFormat = string.Format("{0}\r\n{1}", new string('-', separatorCount), layoutFormat);
+            }
+
+            this._layout = layoutFormat;
+        }
+
+        internal string GetLogLevelName(LogLevel level)
+        {
+            string levelName;
+            if (this._levelMapDic != null && this._levelMapDic.ContainsKey(level))
+            {
+                levelName = this._levelMapDic[level];
+            }
+            else
+            {
+                levelName = LogConstant.GetLogLevelName(level);
+            }
+
+            return levelName;
         }
     }
 }

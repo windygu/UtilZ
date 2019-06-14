@@ -55,6 +55,8 @@ namespace TestE.Winform
             var sub = new SubscibeItem("123");
             sub.MessageNotify = CompletedNotify;
             LMQCenter.Subscibe(sub);
+
+            //logControl1.MaxItemCount = 10;
         }
 
         private void CompletedNotify(SubscibeItem sub, object obj)
