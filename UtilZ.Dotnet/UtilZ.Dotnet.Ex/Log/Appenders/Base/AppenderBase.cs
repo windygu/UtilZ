@@ -182,22 +182,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 if (layoutFormat.Contains(LogConstant.TIME))
                 {
                     layoutFormat = layoutFormat.Replace(LogConstant.TIME, string.Format("{{{0}}}", index++));
-                    if (string.IsNullOrWhiteSpace(this._config.DateFormat))
-                    {
-                        tmp = item.Time.ToString(LogConstant.DateTimeFormat);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            tmp = item.Time.ToString(this._config.DateFormat);
-                        }
-                        catch
-                        {
-                            tmp = item.Time.ToString(LogConstant.DateTimeFormat);
-                        }
-                    }
-
+                    tmp = item.Time.ToString(this._config.DateFormat);
                     args.Add(tmp);
                 }
 

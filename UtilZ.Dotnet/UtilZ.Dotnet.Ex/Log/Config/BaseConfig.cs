@@ -34,7 +34,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
         }
 
-        private string _dateFormat = null;
+        private string _dateFormat = LogConstant.DateTimeFormat;
         /// <summary>
         /// 时间格式[yyyy-MM-dd HH:mm:ss]
         /// </summary>
@@ -43,14 +43,14 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             get { return _dateFormat; }
             set
             {
-                try
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _dateFormat = LogConstant.DateTimeFormat;
+                }
+                else
                 {
                     DateTime.Now.ToString(value);
                     _dateFormat = value;
-                }
-                catch (Exception ex)
-                {
-                    LogSysInnerLog.OnRaiseLog(this, ex);
                 }
             }
         }
@@ -158,7 +158,15 @@ namespace UtilZ.Dotnet.Ex.Log.Config
             }
 
             this._layout = LogUtil.GetChildXElementValue(ele, nameof(this.Layout));
-            this.DateFormat = LogUtil.GetChildXElementValue(ele, nameof(this.DateFormat));
+            try
+            {
+                this.DateFormat = LogUtil.GetChildXElementValue(ele, nameof(this.DateFormat));
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(this, ex);
+            }
+
             this.LevelMap = LogUtil.GetChildXElementValue(ele, nameof(this.LevelMap));
 
             int separatorCount;
@@ -284,10 +292,11 @@ namespace UtilZ.Dotnet.Ex.Log.Config
 
         internal string GetLogLevelName(LogLevel level)
         {
+            var levelMapDic = this._levelMapDic;
             string levelName;
-            if (this._levelMapDic != null && this._levelMapDic.ContainsKey(level))
+            if (levelMapDic != null && levelMapDic.ContainsKey(level))
             {
-                levelName = this._levelMapDic[level];
+                levelName = levelMapDic[level];
             }
             else
             {
