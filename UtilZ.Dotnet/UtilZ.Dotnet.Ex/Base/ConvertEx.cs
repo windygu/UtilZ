@@ -23,7 +23,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <returns>转换后的值,存放在object中,如果转换失败为目标类型的默认值</returns>
         public static TResult ToObject<T, TResult>(T value) where T : IConvertible
         {
-            return (TResult)ToObject(typeof(T), value);
+            return (TResult)ToObject(typeof(TResult), value);
         }
 
         /// <summary>
@@ -367,14 +367,14 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 获得类型默认值
         /// </summary>
-        /// <param name="targetValueType">要获取默认值的目标类型</param>
+        /// <param name="targetType">要获取默认值的目标类型</param>
         /// <returns>类型默认值</returns>
-        public static object GetTypeDefaultValue(Type targetValueType)
+        public static object GetTypeDefaultValue(Type targetType)
         {
             object defaultValue;
-            if (targetValueType.IsValueType)
+            if (targetType.IsValueType)
             {
-                defaultValue = Activator.CreateInstance(targetValueType);
+                defaultValue = Activator.CreateInstance(targetType);
             }
             else
             {

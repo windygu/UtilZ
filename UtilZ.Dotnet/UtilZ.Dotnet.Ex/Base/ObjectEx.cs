@@ -193,6 +193,6 @@ namespace UtilZ.Dotnet.Ex.Base
             //var cm = new Microsoft.VisualBasic.Devices.ComputerInfo();
             //return cm.AvailablePhysicalMemory;
             throw new NotImplementedException();
-        }
+        }        
     }
 }
