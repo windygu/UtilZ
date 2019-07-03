@@ -15,20 +15,23 @@ namespace UtilZ.ParaService.WebApp
         public static void Main(string[] args)
         {
             //Models.WebAppConstant.Test();
+            string currentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+            //string currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine($"currentDirectory:{currentDirectory}");
 
             var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(currentDirectory)
             .AddJsonFile("hosting.json", optional: true)
             .Build();
-            CreateWebHostBuilder(args, config).Build().Run();
+            CreateWebHostBuilder(args, config, currentDirectory).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args, IConfiguration config) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args, IConfiguration config, string currentDirectory) =>
             WebHost.CreateDefaultBuilder(args)
             .UseConfiguration(config)
-                .UseContentRoot(Directory.GetCurrentDirectory())//定义contentroot  
-                .UseWebRoot(Directory.GetCurrentDirectory() + "/wwwroot")//定义webroot
-                                                                         //.UseUrls("http://*:12018", "https://*:22018")
+                .UseContentRoot(currentDirectory)//定义contentroot  
+                .UseWebRoot(Path.Combine(currentDirectory, "wwwroot"))//定义webroot
+                                                                      //.UseUrls("http://*:12018", "https://*:22018")
                 .UseStartup<Startup>();
     }
 }
