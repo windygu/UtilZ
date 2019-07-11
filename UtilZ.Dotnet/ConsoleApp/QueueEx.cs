@@ -55,6 +55,9 @@ namespace ConsoleApp
                     this.Enqueue(enumerator.Current);
                 }
             }
+
+
+
         }
 
         public QueueEx(int capacity)
