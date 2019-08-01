@@ -118,7 +118,10 @@ namespace UtilZ.Dotnet.DBIBase.Connection
 
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
             }
             catch (Exception ex)
             {
