@@ -16,23 +16,43 @@ namespace UtilZ.Dotnet.ILEx.Compress
         /// <summary>
         /// 压缩单个文件到zip文件
         /// </summary>
-        /// <param name="file">待压缩的文件</param>
+        /// <param name="filePath">待压缩的文件</param>
         /// <param name="compressFilePath">压缩文件保存路径</param>
         /// <param name="compressionLevel">压缩程度，范围0-9，数值越大，压缩程序越高[默认为5]</param>
         /// <param name="blockSize">分块大小[默认为1024]</param>
-        public static void CompressFileToZip(string file, string compressFilePath, int compressionLevel = 5, int blockSize = 10204)
+        public static void CompressFileToZip(string filePath, string compressFilePath, int compressionLevel = 5, int blockSize = 10204)
         {
-            if (!System.IO.File.Exists(file))//如果文件没有找到，则报错
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new FileNotFoundException("The specified file " + file + " could not be found. Zipping aborderd");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            using (FileStream streamToZip = new FileStream(file, FileMode.Open, FileAccess.Read))
+            if (!System.IO.File.Exists(filePath))//如果文件没有找到，则报错
+            {
+                throw new FileNotFoundException("目标文件不存在", filePath);
+            }
+
+            if (string.IsNullOrWhiteSpace(compressFilePath))
+            {
+                throw new ArgumentNullException(nameof(compressFilePath));
+            }
+
+            if (compressionLevel < 0 || compressionLevel > 9)
+            {
+                throw new ArgumentOutOfRangeException(nameof(compressionLevel));
+            }
+
+            if (blockSize < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(blockSize));
+            }
+
+            using (FileStream streamToZip = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 using (FileStream fs = File.Create(compressFilePath))
                 {
                     ZipOutputStream zipStream = new ZipOutputStream(fs);
-                    ZipEntry zipEntry = new ZipEntry(file);
+                    ZipEntry zipEntry = new ZipEntry(filePath);
                     zipStream.PutNextEntry(zipEntry);
                     zipStream.SetLevel(compressionLevel);
                     byte[] buffer = new byte[blockSize];
@@ -66,6 +86,26 @@ namespace UtilZ.Dotnet.ILEx.Compress
         /// <param name="compressLevel">压缩程度，范围0-9，数值越大，压缩程序越高[默认为5]</param>
         public static void CompressDirectoryToZip(string directory, string compressFilePath, int compressLevel = 5)
         {
+            if (string.IsNullOrWhiteSpace(directory))
+            {
+                throw new ArgumentNullException(nameof(directory));
+            }
+
+            if (!Directory.Exists(directory))
+            {
+                throw new FileNotFoundException("目标目录不存在", directory);
+            }
+
+            if (string.IsNullOrWhiteSpace(compressFilePath))
+            {
+                throw new ArgumentNullException(nameof(compressFilePath));
+            }
+
+            if (compressionLevel < 0 || compressionLevel > 9)
+            {
+                throw new ArgumentOutOfRangeException(nameof(compressionLevel));
+            }
+
             string[] files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
 
             string rootMark = directory + "\\";//得到当前路径的位置，以备压缩时将所压缩内容转变成相对路径。
@@ -112,6 +152,21 @@ namespace UtilZ.Dotnet.ILEx.Compress
         /// <returns>解压后的文件列表</returns>
         public static void DeCompressZip(string compressFilePath, string deCompressDirectory)
         {
+            if (string.IsNullOrWhiteSpace(compressFilePath))
+            {
+                throw new ArgumentNullException(nameof(compressFilePath));
+            }
+
+            if (!File.Exists(compressFilePath))
+            {
+                throw new FileNotFoundException("目标压缩文件不存在", compressFilePath);
+            }
+
+            if (string.IsNullOrWhiteSpace(deCompressDirectory))
+            {
+                throw new ArgumentNullException(nameof(deCompressDirectory));
+            }
+
             //检查输出目录是否以“\\”结尾
             if (deCompressDirectory.EndsWith("\\") == false || deCompressDirectory.EndsWith(":\\") == false)
             {
@@ -132,34 +187,123 @@ namespace UtilZ.Dotnet.ILEx.Compress
                         Directory.CreateDirectory(directoryName);
                     }
 
-                    if (fileName != String.Empty)
+                    if (string.IsNullOrWhiteSpace(fileName))
                     {
-                        //如果文件的压缩后大小为0那么说明这个文件是空的,因此不需要进行读出写入,但是实际上是有需要的
-                        //if (theEntry.CompressedSize == 0)
-                        //{
-                        //    break;
-                        //}
+                        continue;
+                    }
 
-                        //解压文件到指定的目录
-                        directoryName = Path.GetDirectoryName(deCompressDirectory + theEntry.Name);
-                        //建立下面的目录和子目录
-                        Directory.CreateDirectory(directoryName);
+                    //如果文件的压缩后大小为0那么说明这个文件是空的,因此不需要进行读出写入,但是实际上是有需要的
+                    //if (theEntry.CompressedSize == 0)
+                    //{
+                    //    break;
+                    //}
 
-                        using (FileStream streamWriter = File.Create(deCompressDirectory + theEntry.Name))
+                    //解压文件到指定的目录
+                    directoryName = Path.GetDirectoryName(deCompressDirectory + theEntry.Name);
+                    //建立下面的目录和子目录
+                    Directory.CreateDirectory(directoryName);
+
+                    using (FileStream streamWriter = File.Create(deCompressDirectory + theEntry.Name))
+                    {
+                        int size = 2048;
+                        byte[] data = new byte[2048];
+                        while (true)
                         {
-                            int size = 2048;
-                            byte[] data = new byte[2048];
-                            while (true)
+                            size = zipStream.Read(data, 0, data.Length);
+                            if (size > 0)
                             {
-                                size = zipStream.Read(data, 0, data.Length);
-                                if (size > 0)
-                                {
-                                    streamWriter.Write(data, 0, size);
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                                streamWriter.Write(data, 0, size);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            GC.Collect();
+        }
+
+        /// <summary>
+        /// 解zip压缩文件中的指定文件
+        /// </summary>
+        /// <param name="compressFilePath">待解压缩的文件路径</param>
+        /// <param name="filePaths">压缩包中要解压的相对文件路径路径</param>
+        /// <param name="deCompressDirectory">解压缩目录</param>
+        /// <returns>解压后的文件列表</returns>
+        public static void DeCompressZip(string compressFilePath, IEnumerable<string> filePaths, string deCompressDirectory)
+        {
+            if (string.IsNullOrWhiteSpace(compressFilePath))
+            {
+                throw new ArgumentNullException(nameof(compressFilePath));
+            }
+
+            if (!File.Exists(compressFilePath))
+            {
+                throw new FileNotFoundException("目标压缩文件不存在", compressFilePath);
+            }
+
+            if (filePaths == null || filePaths.Count() == 0)
+            {
+                throw new ArgumentNullException(nameof(filePaths));
+            }
+
+            if (string.IsNullOrWhiteSpace(deCompressDirectory))
+            {
+                throw new ArgumentNullException(nameof(deCompressDirectory));
+            }
+
+            //检查输出目录是否以“\\”结尾
+            if (deCompressDirectory.EndsWith("\\") == false || deCompressDirectory.EndsWith(":\\") == false)
+            {
+                deCompressDirectory += "\\";
+            }
+            throw new NotImplementedException();
+            using (ZipInputStream zipStream = new ZipInputStream(File.OpenRead(compressFilePath)))
+            {
+                ZipEntry theEntry = null;
+                while ((theEntry = zipStream.GetNextEntry()) != null)
+                {
+                    string directoryName = Path.GetDirectoryName(deCompressDirectory);
+                    string fileName = Path.GetFileName(theEntry.Name);
+
+                    //生成解压目录【用户解压到硬盘根目录时，不需要创建】
+                    if (!string.IsNullOrEmpty(directoryName))
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+
+                    if (string.IsNullOrWhiteSpace(fileName))
+                    {
+                        continue;
+                    }
+
+                    //如果文件的压缩后大小为0那么说明这个文件是空的,因此不需要进行读出写入,但是实际上是有需要的
+                    //if (theEntry.CompressedSize == 0)
+                    //{
+                    //    break;
+                    //}
+
+                    //解压文件到指定的目录
+                    directoryName = Path.GetDirectoryName(deCompressDirectory + theEntry.Name);
+                    //建立下面的目录和子目录
+                    Directory.CreateDirectory(directoryName);
+                    string filePath = deCompressDirectory + theEntry.Name;
+                    using (FileStream streamWriter = File.Create(filePath))
+                    {
+                        int size = 2048;
+                        byte[] data = new byte[2048];
+                        while (true)
+                        {
+                            size = zipStream.Read(data, 0, data.Length);
+                            if (size > 0)
+                            {
+                                streamWriter.Write(data, 0, size);
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
                     }
