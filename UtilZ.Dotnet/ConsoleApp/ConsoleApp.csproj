@@ -51,6 +51,10 @@
       <Project>{b5d06430-e6e2-40b3-ba77-15778abd31dd}</Project>
       <Name>UtilZ.Dotnet.Ex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UtilZ.Dotnet.ILEx\UtilZ.Dotnet.ILEx.csproj">
+      <Project>{a88ed0e1-9bae-42bb-aae1-e37c2a3380ac}</Project>
+      <Name>UtilZ.Dotnet.ILEx</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

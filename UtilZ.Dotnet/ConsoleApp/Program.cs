@@ -15,6 +15,7 @@ using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.FileTransfer;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.Ex.Model;
+using UtilZ.Dotnet.ILEx.Compress;
 
 namespace ConsoleApp
 {
@@ -31,16 +32,25 @@ namespace ConsoleApp
 
             try
             {
-                Task task = new Task(TM);
-                task.Start();
+                //Task task = new Task(TM);
+                //task.Start();
 
-                task.Wait();
+                //task.Wait();
 
-                task.Start();
-                task.Wait();
+                //task.Start();
+                //task.Wait();
 
+                string zipFilePath = @"F:\tmp.zip";
+                //string[] filePaths = { @"tmp\demo.pdman.json", @"tmp\新建文件夹\新建 RTF 文档.rtf" };
+                //CompressHelper.DeCompressZip(zipFilePath, filePaths, @"F:\新建文件夹");
+
+                var fileList = CompressHelper.GetZipFileList(zipFilePath);
+
+                //string rarFilePath = @"F:\tmp.rar";
+                //string[] filePaths = { @"tmp\demo.pdman.json", @"tmp\新建文件夹\新建 RTF 文档.rtf" };
+                //CompressHelper.DecompressRar(rarFilePath, filePaths, @"F:\新建文件夹");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

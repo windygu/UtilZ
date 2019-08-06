@@ -13,6 +13,7 @@ namespace UtilZ.Dotnet.ILEx.Compress
     /// </summary>
     public class CompressHelper : CompressEx
     {
+        #region Zip
         /// <summary>
         /// 压缩单个文件到zip文件
         /// </summary>
@@ -322,23 +323,65 @@ namespace UtilZ.Dotnet.ILEx.Compress
             GC.Collect();
         }
 
+        /// <summary>
+        /// 获取rar文件内的文件列表
+        /// </summary>
+        /// <param name="zipFilePath">zip压缩文件路径</param>
+        /// <returns>rar文件内的文件列表</returns>
+        public static List<string> GetZipFileList(string zipFilePath)
+        {
+            if (string.IsNullOrWhiteSpace(zipFilePath))
+            {
+                throw new ArgumentNullException(nameof(zipFilePath));
+            }
+
+            if (!File.Exists(zipFilePath))
+            {
+                throw new FileNotFoundException("目标压缩文件不存在", zipFilePath);
+            }
+
+            var fileList = new List<string>();
+            using (ZipInputStream zipStream = new ZipInputStream(File.OpenRead(zipFilePath)))
+            {
+                ZipEntry theEntry = null;
+                string fileName;
+                while ((theEntry = zipStream.GetNextEntry()) != null)
+                {
+                    fileName = Path.GetFileName(theEntry.Name);
+                    if (string.IsNullOrWhiteSpace(fileName))
+                    {
+                        //目录
+                        continue;
+                    }
+                    else
+                    {
+                        fileList.Add(theEntry.Name);
+                    }
+                }
+            }
+
+            GC.Collect();
+            return fileList;
+        }
+        #endregion
+
         #region DecompressRar
         /// <summary>
         /// 解压rar压缩文件
         /// </summary>
-        /// <param name="rarFile">rar压缩文件路径</param>
+        /// <param name="rarFilePath">rar压缩文件路径</param>
         /// <param name="decompressDir">解压目录</param>
         /// <param name="isCreateDir">是否创建压缩文件中的目录,true:按照压缩文件中的文件目录结构解压,false:压缩文件中的所有文件全部解压到解压目录中[默认为true]</param>
-        public static void DecompressRar(string rarFile, string decompressDir, bool isCreateDir = true)
+        public static void DecompressRar(string rarFilePath, string decompressDir, bool isCreateDir = true)
         {
-            if (string.IsNullOrWhiteSpace(rarFile))
+            if (string.IsNullOrWhiteSpace(rarFilePath))
             {
-                throw new ArgumentNullException(nameof(rarFile));
+                throw new ArgumentNullException(nameof(rarFilePath));
             }
 
-            if (!File.Exists(rarFile))
+            if (!File.Exists(rarFilePath))
             {
-                throw new FileNotFoundException("目标压缩文件不存在", rarFile);
+                throw new FileNotFoundException("目标压缩文件不存在", rarFilePath);
             }
 
             if (string.IsNullOrWhiteSpace(decompressDir))
@@ -346,7 +389,7 @@ namespace UtilZ.Dotnet.ILEx.Compress
                 throw new ArgumentNullException(nameof(decompressDir));
             }
 
-            using (Unrar unrar = new Unrar(rarFile))
+            using (Unrar unrar = new Unrar(rarFilePath))
             {
                 unrar.Open(Unrar.OpenMode.Extract);
                 unrar.DestinationPath = decompressDir;
@@ -375,20 +418,20 @@ namespace UtilZ.Dotnet.ILEx.Compress
         /// <summary>
         /// 解压rar压缩文件
         /// </summary>
-        /// <param name="rarFile">rar压缩文件路径</param>
+        /// <param name="rarFilePath">rar压缩文件路径</param>
         /// <param name="filePaths">目标文件名集合,压缩包中相对路径</param>
         /// <param name="decompressDir">解压目录</param>
         /// <param name="isCreateDir">是否创建压缩文件中的目录,true:按照压缩文件中的文件目录结构解压,false:压缩文件中的所有文件全部解压到解压目录中[默认为true]</param>
-        public static void DecompressRar(string rarFile, IEnumerable<string> filePaths, string decompressDir, bool isCreateDir = true)
+        public static void DecompressRar(string rarFilePath, IEnumerable<string> filePaths, string decompressDir, bool isCreateDir = true)
         {
-            if (string.IsNullOrWhiteSpace(rarFile))
+            if (string.IsNullOrWhiteSpace(rarFilePath))
             {
-                throw new ArgumentNullException(nameof(rarFile));
+                throw new ArgumentNullException(nameof(rarFilePath));
             }
 
-            if (!File.Exists(rarFile))
+            if (!File.Exists(rarFilePath))
             {
-                throw new FileNotFoundException("目标压缩文件不存在", rarFile);
+                throw new FileNotFoundException("目标压缩文件不存在", rarFilePath);
             }
 
             if (filePaths == null || filePaths.Count() == 0)
@@ -403,7 +446,7 @@ namespace UtilZ.Dotnet.ILEx.Compress
 
             var filePathArr = filePaths.Select(t => { return t.Trim().Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).ToLower(); }).ToArray();
 
-            using (Unrar unrar = new Unrar(rarFile))
+            using (Unrar unrar = new Unrar(rarFilePath))
             {
                 unrar.Open(Unrar.OpenMode.Extract);
                 unrar.DestinationPath = decompressDir;
@@ -437,17 +480,22 @@ namespace UtilZ.Dotnet.ILEx.Compress
         /// <summary>
         /// 获取rar文件内的文件列表
         /// </summary>
-        /// <param name="rarFile">rar压缩文件路径</param>
+        /// <param name="rarFilePath">rar压缩文件路径</param>
         /// <returns>rar文件内的文件列表</returns>
-        public static List<string> GetRarFileList(string rarFile)
+        public static List<string> GetRarFileList(string rarFilePath)
         {
-            if (!File.Exists(rarFile))
+            if (string.IsNullOrWhiteSpace(rarFilePath))
             {
-                throw new FileNotFoundException("不能找到需要解压的文件", rarFile);
+                throw new ArgumentNullException(nameof(rarFilePath));
             }
 
-            var files = new List<string>();
-            using (Unrar unrar = new Unrar(rarFile))
+            if (!File.Exists(rarFilePath))
+            {
+                throw new FileNotFoundException("目标压缩文件不存在", rarFilePath);
+            }
+
+            var fileList = new List<string>();
+            using (Unrar unrar = new Unrar(rarFilePath))
             {
                 unrar.Open(Unrar.OpenMode.Extract);
                 unrar.DestinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Templates), "TmpRar");
@@ -455,14 +503,14 @@ namespace UtilZ.Dotnet.ILEx.Compress
                 {
                     if (!unrar.CurrentFile.IsDirectory)
                     {
-                        files.Add(unrar.CurrentFile.FileName);
+                        fileList.Add(unrar.CurrentFile.FileName);
                     }
 
                     unrar.Skip();
                 }
             }
 
-            return files;
+            return fileList;
         }
         #endregion
     }
