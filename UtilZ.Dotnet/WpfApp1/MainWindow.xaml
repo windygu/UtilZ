@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Background="Red">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -25,6 +25,47 @@
             <CheckBox Grid.Column="1" IsChecked="{Binding ElementName=logControl,Path=IsLock}" Content="锁定"/>
             <TextBox Grid.Column="2" Text="{Binding ElementName=logControl,Path=MaxItemCount}"/>
         </Grid>
-        <wex:LogControl x:Name="logControl" Grid.Row="1" MaxItemCount="10"/>
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.Resources>
+
+                <Style x:Key="TabItemFocusVisual">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Rectangle Margin="3,3,3,1" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#F3F3F3" Offset="0"/>
+                    <GradientStop Color="#EBEBEB" Offset="0.5"/>
+                    <GradientStop Color="#DDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#CDCDCD" Offset="1"/>
+                </LinearGradientBrush>
+                <LinearGradientBrush x:Key="TabItemHotBackground" EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#EAF6FD" Offset="0.15"/>
+                    <GradientStop Color="#D9F0FC" Offset=".5"/>
+                    <GradientStop Color="#BEE6FD" Offset=".5"/>
+                    <GradientStop Color="#A7D9F5" Offset="1"/>
+                </LinearGradientBrush>
+                
+                <SolidColorBrush x:Key="TabItemSelectedBackground" Color="#F9F9F9"/>
+                <SolidColorBrush x:Key="TabItemHotBorderBrush" Color="#3C7FB1"/>
+                
+                <SolidColorBrush x:Key="TabItemDisabledBackground" Color="#F4F4F4"/>
+                <SolidColorBrush x:Key="TabItemDisabledBorderBrush" Color="#FFC9C7BA"/>
+            </Grid.Resources>
+            <TabControl BorderThickness="0" Padding="0">
+                <TabItem Header="监控">
+                    
+                </TabItem>
+                <TabItem Header="日志">
+                    <wex:LogControl x:Name="logControl" MaxItemCount="10"/>
+                </TabItem>
+                
+            </TabControl>
+
+        </Grid>
     </Grid>
 </Window>
