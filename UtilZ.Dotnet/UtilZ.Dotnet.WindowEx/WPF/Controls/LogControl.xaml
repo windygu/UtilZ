@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="Black">
     <Grid>
-        <RichTextBox x:Name="rtxt" Background="Transparent" VerticalScrollBarVisibility="Auto" IsReadOnly="True">
+        <RichTextBox x:Name="rtxt" Background="Transparent" VerticalScrollBarVisibility="Auto" IsReadOnly="True" BorderThickness="0">
             <FlowDocument>
                 <Paragraph x:Name="content">
                     <!--<Span x:Name="sp1">
