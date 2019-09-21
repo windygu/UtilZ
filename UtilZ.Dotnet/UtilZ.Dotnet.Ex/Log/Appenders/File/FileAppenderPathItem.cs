@@ -66,9 +66,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// 检查日志文件路径是否是有效路径[有效返回true;无效返回false]
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="createTime"></param>
         /// <returns></returns>
-        internal bool CheckPath(string path)
+        internal bool CheckPath(string path, out DateTime createTime)
         {
+            createTime = default(DateTime);
             if (this._isRealCreatePath)
             {
                 if (path.Length != this._pathLength)
@@ -77,8 +79,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 }
 
                 string timeStr = path.Substring(this._datePatternIndex, this._datePatternLength);
-                DateTime time;
-                return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out time);
+                return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out createTime);
             }
             else
             {

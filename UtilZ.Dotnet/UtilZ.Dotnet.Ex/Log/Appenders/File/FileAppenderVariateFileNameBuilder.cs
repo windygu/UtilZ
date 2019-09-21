@@ -28,7 +28,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 if (Directory.Exists(dir))
                 {
                     this.ClearExpireLogFile(dir);
-                    logFilePath = base.GetLastLogFilePath(dir);
+                    logFilePath = base.GetLastWriteLogFilePath(dir);
                     if (string.IsNullOrWhiteSpace(logFilePath))
                     {
                         logFilePath = tmpFilePath;
@@ -164,9 +164,10 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 return false;
             }
 
+            DateTime createTime;
             for (int i = 0; i < paths.Length; i++)
             {
-                if (!this._pathItems[i].CheckPath(paths[i]))
+                if (!this._pathItems[i].CheckPath(paths[i], out createTime))
                 {
                     return false;
                 }
@@ -233,10 +234,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// 检查日志文件路径是否是有效路径[有效返回true;无效返回false]
         /// </summary>
         /// <param name="filePath"></param>
+        /// <param name="createTime"></param>
         /// <returns></returns>
-        protected override bool CheckPath(string filePath)
+        protected override bool CheckPath(string filePath, out DateTime createTime)
         {
-            return this._lastPathItem.CheckPath(Path.GetFileName(filePath));
+            return this._lastPathItem.CheckPath(Path.GetFileName(filePath), out createTime);
         }
 
         private string PrimitiveCreateLogFilePath2()

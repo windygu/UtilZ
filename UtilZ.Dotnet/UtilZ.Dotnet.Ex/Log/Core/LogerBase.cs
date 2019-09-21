@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.Ex.Log.Appender;
 
@@ -58,6 +59,24 @@ namespace UtilZ.Dotnet.Ex.Log
             lock (this._appendersLock)
             {
                 this._appenders.Add(appender);
+            }
+        }
+
+        /// <summary>
+        /// 根据日志追加器名称获取日志追加器
+        /// </summary>
+        /// <param name="appenderName">日志追加器名称</param>
+        /// <returns>日志追加器</returns>
+        AppenderBase ILoger.GetAppenderByName(string appenderName)
+        {
+            lock (this._appendersLock)
+            {
+                return this._appenders.Where(t =>
+                {
+                    return appenderName == null && string.IsNullOrEmpty(t.Name) ||
+                    t.Name == null && string.IsNullOrEmpty(appenderName) ||
+                    string.Equals(t.Name, appenderName);
+                }).FirstOrDefault();
             }
         }
 

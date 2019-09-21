@@ -88,7 +88,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
             }
             else
             {
-                dstSqlStr = $"SELECT* FROM(SELECT UDTWQS_T.*,ROWNUM AS {pagingAssistFieldName} FROM({sqlStr}) UDTWQS_T WHERE ROWNUM < {endIndex} {orderStr}) WHERE {pagingAssistFieldName}>= {startIndex}";
+                dstSqlStr = $"SELECT* FROM(SELECT UDTWQS_T.*,ROWNUM AS {pagingAssistFieldName} FROM({sqlStr}) UDTWQS_T WHERE ROWNUM < {endIndex} ORDER BY {orderStr}) WHERE {pagingAssistFieldName}>= {startIndex}";
             }
 
             return dstSqlStr;

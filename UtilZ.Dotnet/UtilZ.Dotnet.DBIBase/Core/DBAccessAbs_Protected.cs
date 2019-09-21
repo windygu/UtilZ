@@ -54,13 +54,13 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// 执行SQL语句,返回查询结果
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        protected DataTable PrimitiveQueryDataToDataTable(string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        protected DataTable PrimitiveQueryDataToDataTable(string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
             using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
             {
-                return this.PrimitiveQueryDataToDataTable(connectionInfo.DbConnection, sqlStr, sqlParameterDic);
+                return this.PrimitiveQueryDataToDataTable(connectionInfo.DbConnection, sqlStr, parameterNameValueDic);
             }
         }
 
@@ -69,11 +69,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        protected DataTable PrimitiveQueryDataToDataTable(IDbConnection con, string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        protected DataTable PrimitiveQueryDataToDataTable(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = this.CreateCommand(con, sqlStr, sqlParameterDic);
+            var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic);
             var da = this.PrimitiveCreateDbDataAdapter();
             da.SelectCommand = cmd;
             DataSet ds = new DataSet();
@@ -91,13 +91,13 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        protected object PrimitiveExecuteScalar(string sqlStr, DBVisitType visitType, Dictionary<string, object> sqlParameterDic = null)
+        protected object PrimitiveExecuteScalar(string sqlStr, DBVisitType visitType, Dictionary<string, object> parameterNameValueDic = null)
         {
             using (var conInfo = new DbConnectionInfo(this._dbid, visitType))
             {
-                return this.PrimitiveExecuteScalar(conInfo.DbConnection, sqlStr, sqlParameterDic);
+                return this.PrimitiveExecuteScalar(conInfo.DbConnection, sqlStr, parameterNameValueDic);
             }
         }
 
@@ -106,11 +106,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        protected object PrimitiveExecuteScalar(IDbConnection con, string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        protected object PrimitiveExecuteScalar(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = this.CreateCommand(con, sqlStr, sqlParameterDic);
+            var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic);
             return cmd.ExecuteScalar();
         }
 
@@ -119,13 +119,13 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        protected int PrimitiveExecuteNonQuery(string sqlStr, DBVisitType visitType, Dictionary<string, object> sqlParameterDic = null)
+        protected int PrimitiveExecuteNonQuery(string sqlStr, DBVisitType visitType, Dictionary<string, object> parameterNameValueDic = null)
         {
             using (var conInfo = new DbConnectionInfo(this._dbid, visitType))
             {
-                return this.PrimitiveExecuteNonQuery(conInfo.DbConnection, sqlStr, sqlParameterDic);
+                return this.PrimitiveExecuteNonQuery(conInfo.DbConnection, sqlStr, parameterNameValueDic);
             }
         }
 
@@ -134,11 +134,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        protected int PrimitiveExecuteNonQuery(IDbConnection con, string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        protected int PrimitiveExecuteNonQuery(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = this.CreateCommand(con, sqlStr, sqlParameterDic);
+            var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic);
             return cmd.ExecuteNonQuery();
         }
 
@@ -152,7 +152,8 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="dataBaseVersion">数据库版本信息</param>
         /// <param name="pagingAssistFieldName">分页字段名称</param>
         /// <returns>分页查询SQL语句</returns>
-        protected string PrimitiveConvertSqlToPagingQuerySql(string sqlStr, IEnumerable<DBOrderInfo> orderInfos, long pageIndex, long pageSize, DataBaseVersionInfo dataBaseVersion, out string pagingAssistFieldName)
+        protected string PrimitiveConvertSqlToPagingQuerySql(string sqlStr, IEnumerable<DBOrderInfo> orderInfos, 
+            long pageIndex, long pageSize, DataBaseVersionInfo dataBaseVersion, out string pagingAssistFieldName)
         {
             return this._dbInteraction.ConvertSqlToPagingQuerySql(sqlStr, orderInfos, pageIndex, pageSize, dataBaseVersion, out pagingAssistFieldName);
         }

@@ -90,7 +90,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 }
 
                 string logMsg = base.LayoutLog(item);
-                this._fileLogWriter.WriteLog(new LogMessageItem(item.Name, logMsg));
+                this._fileLogWriter.WriteLog(new LogMessageItem(item.LogerName, logMsg));
             }
             catch (Exception ex)
             {

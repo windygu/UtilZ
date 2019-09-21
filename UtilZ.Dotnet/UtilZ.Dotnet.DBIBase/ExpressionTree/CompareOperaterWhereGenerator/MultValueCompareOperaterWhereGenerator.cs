@@ -55,7 +55,7 @@ namespace UtilZ.Dotnet.DBIBase.ExpressionTree.CompareOperaterWhereGenerator
                     value = para.DBFiledValueConverter.Convert(value);
                 }
 
-                para.SqlParameterDic.Add(parameterName, value);
+                para.ParameterNameValueDic.Add(parameterName, value);
 
                 if (i < lastIndex)
                 {

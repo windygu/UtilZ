@@ -47,14 +47,14 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="dbAccess">IDBAccess</param>
         /// <param name="con">连接对象</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>命令</returns>
-        public static IDbCommand CreateCommand(this IDBAccess dbAccess, IDbConnection con, Dictionary<string, object> sqlParameterDic = null)
+        public static IDbCommand CreateCommand(this IDBAccess dbAccess, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null)
         {
             var cmd = con.CreateCommand();
-            if (sqlParameterDic != null && sqlParameterDic.Count > 0)
+            if (parameterNameValueDic != null && parameterNameValueDic.Count > 0)
             {
-                foreach (var kv in sqlParameterDic)
+                foreach (var kv in parameterNameValueDic)
                 {
                     AddParameter(cmd, kv.Key, kv.Value);
                 }
@@ -71,12 +71,13 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="dbAccess">IDBAccess</param>
         /// <param name="con">连接对象</param>
         /// <param name="sqlStr">SQL语句</param>
-        /// <param name="sqlParameterDic">命令参数字典集合[key:参数名;value:参数值]</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="transaction">事务对象</param>
         /// <returns>命令</returns>
-        public static IDbCommand CreateCommand(this IDBAccess dbAccess, IDbConnection con, string sqlStr, Dictionary<string, object> sqlParameterDic = null, IDbTransaction transaction = null)
+        public static IDbCommand CreateCommand(this IDBAccess dbAccess, IDbConnection con, string sqlStr, 
+            Dictionary<string, object> parameterNameValueDic = null, IDbTransaction transaction = null)
         {
-            IDbCommand cmd = CreateCommand(dbAccess, con, sqlParameterDic);
+            IDbCommand cmd = CreateCommand(dbAccess, con, parameterNameValueDic);
             cmd.Transaction = transaction;
             cmd.CommandText = sqlStr;
             return cmd;

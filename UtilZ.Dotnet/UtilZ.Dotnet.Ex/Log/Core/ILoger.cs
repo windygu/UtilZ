@@ -32,6 +32,13 @@ namespace UtilZ.Dotnet.Ex.Log
         void AddAppender(AppenderBase appender);
 
         /// <summary>
+        /// 根据日志追加器名称获取日志追加器
+        /// </summary>
+        /// <param name="appenderName">日志追加器名称</param>
+        /// <returns>日志追加器</returns>
+        AppenderBase GetAppenderByName(string appenderName);
+
+        /// <summary>
         /// 获取日志追加器
         /// </summary>
         /// <returns>日志追加器数组</returns>

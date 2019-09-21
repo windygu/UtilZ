@@ -58,7 +58,7 @@ namespace UtilZ.Dotnet.ILEx.LogExtend
                 }
 
                 // 获取log4net日志记录器
-                log4net.ILog log = log4net.LogManager.GetLogger(item.Name);
+                log4net.ILog log = log4net.LogManager.GetLogger(item.LogerName);
                 if (log == null)
                 {
                     return;

@@ -161,6 +161,11 @@ namespace UtilZ.Dotnet.Ex.Base
             else
             {
                 string dir = Path.GetDirectoryName(filePath);
+                if (string.IsNullOrWhiteSpace(dir))
+                {
+                    dir = _currentAssemblyDirectory;
+                }
+
                 if (Directory.Exists(dir))
                 {
                     selectPath = dir;
@@ -221,7 +226,8 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             var dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
+            if (!string.IsNullOrWhiteSpace(dir) &&
+                !Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
@@ -240,7 +246,8 @@ namespace UtilZ.Dotnet.Ex.Base
             }
 
             var dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
+            if (!string.IsNullOrWhiteSpace(dir) &&
+                !Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir, directorySecurity);
             }

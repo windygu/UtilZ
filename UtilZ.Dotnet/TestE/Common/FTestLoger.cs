@@ -5,9 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace TestE.Common
 {
@@ -22,7 +24,12 @@ namespace TestE.Common
             //System.Threading.Thread.Sleep(20 * 1000);
             //Loger.LoadInit();
 
-            RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
+            var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, null);
+            if (redirectAppenderToUI != null)
+            {
+                redirectAppenderToUI.RedirectOuput += RedirectLogOutput;
+            }
+
             checkBox1.Checked = true;
         }
 
@@ -41,7 +48,7 @@ namespace TestE.Common
             logControlF1.AddLog(str, 1);
         }
 
-        private void RedirectLogOutput(RedirectOuputItem e)
+        private void RedirectLogOutput(object sender, RedirectOuputArgs e)
         {
             string str;
             try
@@ -58,7 +65,10 @@ namespace TestE.Common
 
         private void FTestLoger_Load(object sender, EventArgs e)
         {
-            Loger.Info("Info Test");
+            Task.Factory.StartNew(() =>
+            {
+                Loger.Error("Error Test");
+            });
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -149,11 +159,19 @@ namespace TestE.Common
         {
             if (checkBox1.Checked)
             {
-                RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
+                var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, null);
+                if (redirectAppenderToUI != null)
+                {
+                    redirectAppenderToUI.RedirectOuput += RedirectLogOutput;
+                }
             }
             else
             {
-                RedirectOuputCenter.Clear();
+                var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, null);
+                if (redirectAppenderToUI != null)
+                {
+                    redirectAppenderToUI.RedirectOuput -= RedirectLogOutput;
+                }
             }
 
         }

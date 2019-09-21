@@ -122,15 +122,15 @@ namespace UtilZ.Dotnet.DBIBase.ExpressionTree
         /// <param name="filedValueConverterCollection">数据库字段值转换对象集合</param>
         /// <param name="paraSign">SQL参数符号字符串</param>
         /// <param name="parameterIndex">参数索引</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>where语句</returns>
-        public string ToWhere(Dictionary<string, Dictionary<string, DBFieldInfo>> tableFieldInfoDic, Dictionary<string, string> tableAliaNameDic,
-            DBFiledValueConverterCollection filedValueConverterCollection, string paraSign,
-            ref int parameterIndex, out Dictionary<string, object> sqlParameterDic)
+        public string ToWhere(Dictionary<string, Dictionary<string, DBFieldInfo>> tableFieldInfoDic,
+            Dictionary<string, string> tableAliaNameDic, DBFiledValueConverterCollection filedValueConverterCollection,
+            string paraSign, ref int parameterIndex, out Dictionary<string, object> parameterNameValueDic)
         {
             var sbSql = new StringBuilder();
-            sqlParameterDic = new Dictionary<string, object>();
-            var para = new ConditionValueGeneratorPara(sbSql, paraSign, parameterIndex, sqlParameterDic);
+            parameterNameValueDic = new Dictionary<string, object>();
+            var para = new ConditionValueGeneratorPara(sbSql, paraSign, parameterIndex, parameterNameValueDic);
             this.CreateQueryFieldWhereSql(para, tableAliaNameDic, tableFieldInfoDic, this, filedValueConverterCollection);
             parameterIndex = para.GetParameterIndex();
             return sbSql.ToString();
@@ -201,8 +201,8 @@ namespace UtilZ.Dotnet.DBIBase.ExpressionTree
         /// <param name="filedValueConverterCollection">数据库字段值转换对象集合</param>
         /// <param name="fieldValueFormator">字段值格式化对象</param>
         /// <returns>where语句</returns>
-        public string ToWhereNoParameter(Dictionary<string, Dictionary<string, DBFieldInfo>> tableFieldInfoDic,
-            Dictionary<string, string> tableAliaNameDic, DBFiledValueConverterCollection filedValueConverterCollection, ISqlFieldValueFormator fieldValueFormator)
+        public string ToWhereNoParameter(Dictionary<string, Dictionary<string, DBFieldInfo>> tableFieldInfoDic, Dictionary<string, string> tableAliaNameDic,
+            DBFiledValueConverterCollection filedValueConverterCollection, ISqlFieldValueFormator fieldValueFormator)
         {
             var sbSql = new StringBuilder();
             var para = new ConditionValueNoSqlParaGeneratorPara(sbSql, fieldValueFormator);

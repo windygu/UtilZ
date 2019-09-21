@@ -30,6 +30,7 @@ using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TestDB.EFModel;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace TestDB
 {
@@ -47,7 +48,12 @@ namespace TestDB
                 return;
             }
 
-            RedirectOuputCenter.Add(new RedirectOutputChannel(this.LogOutputToUI, "RedirectToUI"));
+            var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, "RedirectToUI");
+            if (redirectAppenderToUI != null)
+            {
+                redirectAppenderToUI.RedirectOuput += RedirectAppenderToUI_RedirectOuput; ;
+            }
+
 
             List<DatabaseConfig> itemList = DatabaseConfigManager.GetAllConfigItems();
             DropdownBoxHelper.BindingIEnumerableGenericToComboBox<DatabaseConfig>(comboBoxDB, itemList, nameof(DatabaseConfig.ConName), itemList.Where(t => { return t.DBID == _pssqlDbid; }).FirstOrDefault());
@@ -58,12 +64,7 @@ namespace TestDB
             EFEntityTypeManager.RegisterEntityType(5, typeof(Stu));
         }
 
-
-        /// <summary>
-        /// 日志输出到UI
-        /// </summary>
-        /// <param name="e"></param>
-        private void LogOutputToUI(RedirectOuputItem e)
+        private void RedirectAppenderToUI_RedirectOuput(object sender, RedirectOuputArgs e)
         {
             try
             {
@@ -661,9 +662,10 @@ namespace TestDB
                 var filedValueConverterCollection = new DBFiledValueConverterCollection();
 
 
-                Dictionary<string, object> sqlParameterDic;
+                Dictionary<string, object> parameterNameValueDic;
                 int parameterIndex = 1;
-                string where = queryExpression.ConditionExpressionNodes.ToWhere(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, dbAccess.ParaSign, ref parameterIndex, out sqlParameterDic);
+                string where = queryExpression.ConditionExpressionNodes.ToWhere(dbTableInfoDic, tableAliaNameDic,
+                    filedValueConverterCollection, dbAccess.ParaSign, ref parameterIndex, out parameterNameValueDic);
                 Loger.Info(where);
 
                 ISqlFieldValueFormator fieldValueFormator = DBAccessManager.GetFieldValueFormator(config);
@@ -687,18 +689,18 @@ namespace TestDB
                 orCondition.Children.Add(new ExpressionNode(CompareOperater.GreaterThan, tblB, "Level", 6));
                 expressionNodeCollection.Add(orCondition);
 
-                sqlParameterDic = null;
+                parameterNameValueDic = null;
                 parameterIndex = 1;
-                string where2 = expressionNodeCollection.ToWhere(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, dbAccess.ParaSign, ref parameterIndex, out sqlParameterDic);
+                string where2 = expressionNodeCollection.ToWhere(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, dbAccess.ParaSign, ref parameterIndex, out parameterNameValueDic);
                 Loger.Info(where2);
 
                 string whereNoPara2 = expressionNodeCollection.ToWhereNoParameter(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, fieldValueFormator);
                 Loger.Info(whereNoPara2);
 
                 tableAliaNameDic.Clear();
-                sqlParameterDic = null;
+                parameterNameValueDic = null;
                 parameterIndex = 1;
-                string where3 = expressionNodeCollection.ToWhere(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, dbAccess.ParaSign, ref parameterIndex, out sqlParameterDic);
+                string where3 = expressionNodeCollection.ToWhere(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, dbAccess.ParaSign, ref parameterIndex, out parameterNameValueDic);
                 Loger.Info(where3);
 
                 string whereNoPara3 = expressionNodeCollection.ToWhereNoParameter(dbTableInfoDic, tableAliaNameDic, filedValueConverterCollection, fieldValueFormator);
@@ -724,7 +726,7 @@ namespace TestDB
                 {
                     var actionArr = ef.Action.ToArray();
                     var roleArr = ef.Role.ToArray();
-                    
+
                     //Action
                     var roles = ef.Query<EFModel.Role>(r => r.ID == 2).ToArray();
                     var newRole = new EFModel.Role();

@@ -9,14 +9,8 @@ namespace UtilZ.Dotnet.Ex.Model
     /// <summary>
     /// UI显示基类
     /// </summary>
-    [Serializable]
     public class DropdownBindingItem
     {
-        /// <summary>
-        /// 获取显示字段名称
-        /// </summary>
-        public const string DisplayNameFieldName = "DisplayName";
-
         /// <summary>
         /// 获取或设置显示名称
         /// </summary>

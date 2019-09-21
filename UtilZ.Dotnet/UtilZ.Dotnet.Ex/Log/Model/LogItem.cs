@@ -21,14 +21,14 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="thread">线程</param>
         /// <param name="skipFrames">调用堆栈跳过帧数</param>
         /// <param name="getStackTraceMethodParameterNameType">获取堆栈方法参数名称类型</param>
-        /// <param name="name">日志记录器名称</param>
+        /// <param name="logerName">日志记录器名称</param>
         /// <param name="level">日志级别</param>
         /// <param name="eventId">事件ID</param>
         /// <param name="tag">与对象关联的用户定义数据</param>
         /// <param name="ex">异常信息</param>
         /// <param name="format">复合格式字符串,参数为空或null表示无格式化</param>
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象</param>
-        public LogItem(DateTime time, Thread thread, int skipFrames, bool getStackTraceMethodParameterNameType, string name,
+        public LogItem(DateTime time, Thread thread, int skipFrames, bool getStackTraceMethodParameterNameType, string logerName,
             LogLevel level, int eventId, object tag, Exception ex, string format, params object[] args)
         {
             this.Time = time;
@@ -40,7 +40,7 @@ namespace UtilZ.Dotnet.Ex.Log
             this.StackTrace = new StackTrace(skipFrames, true);
             this.Format = format;
             this.Exception = ex;
-            this.Name = name;
+            this.LogerName = logerName;
             this._getStackTraceMethodParameterNameType = getStackTraceMethodParameterNameType;
             this.Args = args;
         }
@@ -79,7 +79,7 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// 日志记录器名称
         /// </summary>
-        public string Name { get; private set; }
+        public string LogerName { get; private set; }
 
         /// <summary>
         /// 事件ID

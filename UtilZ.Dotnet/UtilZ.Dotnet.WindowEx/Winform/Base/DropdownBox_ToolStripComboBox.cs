@@ -39,7 +39,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             try
             {
                 toolStripComboBox.Items.Clear();
-                List<DropdownBindingItem> items = EnumEx.GetNDisplayNameAttributeDisplayNameBindingItems(enumType);
+                List<DropdownBindingItem> items = EnumEx.GetDisplayNameExAttributeItemList(enumType);
                 int selectedIndex = -1;
 
                 for (int i = 0; i < items.Count; i++)

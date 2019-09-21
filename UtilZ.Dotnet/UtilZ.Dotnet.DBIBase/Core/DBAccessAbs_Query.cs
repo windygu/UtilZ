@@ -16,13 +16,13 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="pageSize">页大小</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">命令的参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>分页信息</returns>
-        public DBPageInfo QueryPageInfo(long pageSize, string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        public DBPageInfo QueryPageInfo(long pageSize, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return this.QueryPageInfo(conInfo.DbConnection, pageSize, sqlStr, sqlParameterDic);
+                return this.QueryPageInfo(conInfo.DbConnection, pageSize, sqlStr, parameterNameValueDic);
             }
         }
 
@@ -32,16 +32,16 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="con">娄所谓中连接对象</param>
         /// <param name="pageSize">页大小</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">命令的参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>分页信息</returns>
-        public DBPageInfo QueryPageInfo(IDbConnection con, long pageSize, string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        public DBPageInfo QueryPageInfo(IDbConnection con, long pageSize, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
             if (pageSize < 1)
             {
                 throw new ArgumentOutOfRangeException("页大小不能小于1", nameof(pageSize));
             }
 
-            object obj = this.PrimitiveExecuteScalar(con, sqlStr, sqlParameterDic);
+            object obj = this.PrimitiveExecuteScalar(con, sqlStr, parameterNameValueDic);
             long totalCount = this.ConvertObject<Int64>(obj);
             long pageCount = totalCount / pageSize;
             if (totalCount % pageSize != 0)
@@ -78,11 +78,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">查询页索引</param>
         /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="dataBaseVersion">数据库版本信息</param>
         /// <returns>数据表</returns>
         public DataTable QueryPagingData(string sqlStr, string orderByColName, long pageSize, long pageIndex, bool orderFlag,
-            Dictionary<string, object> sqlParameterDic = null, DataBaseVersionInfo dataBaseVersion = null)
+            Dictionary<string, object> parameterNameValueDic = null, DataBaseVersionInfo dataBaseVersion = null)
         {
             List<DBOrderInfo> orderInfos = null;
             if (!string.IsNullOrWhiteSpace(orderByColName))
@@ -93,7 +93,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
 
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return this.PrimitiveQueryPagingData(conInfo.DbConnection, sqlStr, orderInfos, pageSize, pageIndex, sqlParameterDic, dataBaseVersion);
+                return this.PrimitiveQueryPagingData(conInfo.DbConnection, sqlStr, orderInfos, pageSize, pageIndex, parameterNameValueDic, dataBaseVersion);
             }
         }
 
@@ -106,11 +106,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">查询页索引</param>
         /// <param name="orderFlag">排序类型[true:升序;false:降序]</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="dataBaseVersion">数据库版本信息</param>
         /// <returns>数据表</returns>
-        public DataTable QueryPagingData(IDbConnection con, string sqlStr, string orderByColName, long pageSize,
-            long pageIndex, bool orderFlag, Dictionary<string, object> sqlParameterDic = null, DataBaseVersionInfo dataBaseVersion = null)
+        public DataTable QueryPagingData(IDbConnection con, string sqlStr, string orderByColName, long pageSize, long pageIndex,
+            bool orderFlag, Dictionary<string, object> parameterNameValueDic = null, DataBaseVersionInfo dataBaseVersion = null)
         {
             List<DBOrderInfo> orderInfos = null;
             if (!string.IsNullOrWhiteSpace(orderByColName))
@@ -119,7 +119,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 orderInfos.Add(new DBOrderInfo(orderByColName, orderFlag));
             }
 
-            return this.PrimitiveQueryPagingData(con, sqlStr, orderInfos, pageSize, pageIndex, sqlParameterDic, dataBaseVersion);
+            return this.PrimitiveQueryPagingData(con, sqlStr, orderInfos, pageSize, pageIndex, parameterNameValueDic, dataBaseVersion);
         }
 
         /// <summary>
@@ -129,15 +129,15 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="orderInfos">排序列名集合[null为或空不排序]</param>
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">查询页索引</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="dataBaseVersion">数据库版本信息</param>
         /// <returns>数据表</returns>
         public DataTable QueryPagingData(string sqlStr, IEnumerable<DBOrderInfo> orderInfos, long pageSize, long pageIndex,
-            Dictionary<string, object> sqlParameterDic = null, DataBaseVersionInfo dataBaseVersion = null)
+            Dictionary<string, object> parameterNameValueDic = null, DataBaseVersionInfo dataBaseVersion = null)
         {
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.R))
             {
-                return this.PrimitiveQueryPagingData(conInfo.DbConnection, sqlStr, orderInfos, pageSize, pageIndex, sqlParameterDic, dataBaseVersion);
+                return this.PrimitiveQueryPagingData(conInfo.DbConnection, sqlStr, orderInfos, pageSize, pageIndex, parameterNameValueDic, dataBaseVersion);
             }
         }
 
@@ -149,13 +149,13 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="orderInfos">排序列名集合[null为或空不排序]</param>
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">查询页索引</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="dataBaseVersion">数据库版本信息</param>
         /// <returns>数据表</returns>
         public DataTable QueryPagingData(IDbConnection con, string sqlStr, IEnumerable<DBOrderInfo> orderInfos, long pageSize,
-            long pageIndex, Dictionary<string, object> sqlParameterDic = null, DataBaseVersionInfo dataBaseVersion = null)
+            long pageIndex, Dictionary<string, object> parameterNameValueDic = null, DataBaseVersionInfo dataBaseVersion = null)
         {
-            return this.PrimitiveQueryPagingData(con, sqlStr, orderInfos, pageSize, pageIndex, sqlParameterDic, dataBaseVersion);
+            return this.PrimitiveQueryPagingData(con, sqlStr, orderInfos, pageSize, pageIndex, parameterNameValueDic, dataBaseVersion);
         }
 
         /// <summary>
@@ -166,11 +166,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="orderInfos">排序列名集合[null为或空不排序]</param>
         /// <param name="pageSize">页大小</param>
         /// <param name="pageIndex">查询页索引</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="dataBaseVersion">数据库版本信息</param>
         /// <returns>数据表</returns>
         private DataTable PrimitiveQueryPagingData(IDbConnection con, string sqlStr, IEnumerable<DBOrderInfo> orderInfos, long pageSize,
-            long pageIndex, Dictionary<string, object> sqlParameterDic = null, DataBaseVersionInfo dataBaseVersion = null)
+            long pageIndex, Dictionary<string, object> parameterNameValueDic = null, DataBaseVersionInfo dataBaseVersion = null)
         {
             if (string.IsNullOrWhiteSpace(sqlStr))
             {
@@ -191,7 +191,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
 
             string pagingAssistFieldName;
             string pagingQuerySql = this.PrimitiveConvertSqlToPagingQuerySql(sqlStr, orderInfos, pageIndex, pageSize, dataBaseVersion, out pagingAssistFieldName);
-            DataTable dt = this.PrimitiveQueryDataToDataTable(con, pagingQuerySql, sqlParameterDic);
+            DataTable dt = this.PrimitiveQueryDataToDataTable(con, pagingQuerySql, parameterNameValueDic);
             if (!string.IsNullOrWhiteSpace(pagingAssistFieldName))
             {
                 dt.Columns.Remove(pagingAssistFieldName);

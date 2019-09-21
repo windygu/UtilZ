@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace TestE.Common
 {
@@ -62,10 +63,14 @@ namespace TestE.Common
                 }
             }, "生产者线程", true);
 
-            RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
+            var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, null);
+            if (redirectAppenderToUI != null)
+            {
+                redirectAppenderToUI.RedirectOuput += RedirectLogOutput;
+            }
         }
 
-        private void RedirectLogOutput(RedirectOuputItem e)
+        private void RedirectLogOutput(object sender, RedirectOuputArgs e)
         {
             this.Invoke(new Action(() =>
             {

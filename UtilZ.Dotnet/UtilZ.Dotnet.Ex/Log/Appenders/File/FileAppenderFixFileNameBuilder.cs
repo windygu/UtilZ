@@ -67,7 +67,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 if (Directory.Exists(dir))
                 {
                     this.ClearExpireLogFile(dir);
-                    tmpFilePath = base.GetLastLogFilePath(dir);
+                    tmpFilePath = base.GetLastWriteLogFilePath(dir);
                     if (!string.IsNullOrWhiteSpace(tmpFilePath))
                     {
                         return tmpFilePath;
@@ -114,9 +114,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// 检查日志文件路径是否是有效路径[有效返回true;无效返回false]
         /// </summary>
         /// <param name="filePath"></param>
+        /// <param name="createTime"></param>
         /// <returns></returns>
-        protected override bool CheckPath(string filePath)
+        protected override bool CheckPath(string filePath, out DateTime createTime)
         {
+            createTime = default(DateTime);
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
             if (!fileNameWithoutExtension.StartsWith(this._fileNameWithoutExtension))
             {
@@ -129,6 +131,10 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             {
                 if (index > 0)
                 {
+                    //string timeStr = filePath.Substring(this._datePatternIndex, this._datePatternLength);
+                    //return DateTime.TryParseExact(timeStr, this._datePattern, null, System.Globalization.DateTimeStyles.None, out createTime);
+                    //todo..此处获取日志文件日志在日志文件被复制后有BUG产生
+                    createTime = File.GetCreationTime(filePath);
                     return true;
                 }
             }
@@ -158,9 +164,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             FileInfo[] srcFileInfos = base.RootDirectoryInfo.GetFiles(base._searchPattern, SearchOption.TopDirectoryOnly);
             List<FileInfo> fileInfos = new List<FileInfo>();
+            DateTime createTime;
+
             foreach (var fileInfo in srcFileInfos)
             {
-                if (this.CheckPath(fileInfo.FullName))
+                if (this.CheckPath(fileInfo.FullName, out createTime))
                 {
                     fileInfos.Add(fileInfo);
                 }

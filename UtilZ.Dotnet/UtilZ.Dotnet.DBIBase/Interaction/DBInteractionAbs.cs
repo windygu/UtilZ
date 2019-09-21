@@ -140,8 +140,6 @@ namespace UtilZ.Dotnet.DBIBase.Interaction
 
             //排序列
             StringBuilder sbOrder = new StringBuilder();
-            sbOrder.Append("ORDER BY ");
-
             foreach (var orderInfo in orderInfos)
             {
                 sbOrder.Append(orderInfo.FieldName);

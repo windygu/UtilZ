@@ -146,6 +146,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         {
             if (ele == null)
             {
+                this.UpdateLogLayout();
                 return;
             }
 

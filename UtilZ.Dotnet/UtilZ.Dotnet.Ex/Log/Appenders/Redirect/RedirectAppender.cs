@@ -17,7 +17,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
-        public RedirectAppender(XElement ele) : base(ele)
+        public RedirectAppender(XElement ele) 
+            : base(ele)
         {
             this._redirectAppendConfig = (RedirectAppendConfig)base._config;
         }
@@ -26,7 +27,8 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// 构造函数
         /// </summary>
         /// <param name="config">配置对象</param>
-        public RedirectAppender(BaseConfig config) : base(config)
+        public RedirectAppender(BaseConfig config)
+            : base(config)
         {
             this._redirectAppendConfig = (RedirectAppendConfig)base._config;
         }
@@ -42,6 +44,11 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         }
 
         /// <summary>
+        /// 重定向输出事件
+        /// </summary>
+        public event EventHandler<RedirectOuputArgs> RedirectOuput;
+
+        /// <summary>
         /// 写日志
         /// </summary>
         /// <param name="item">日志项</param>
@@ -49,12 +56,17 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         {
             try
             {
-                if (this._redirectAppendConfig == null || !base.Validate(this._redirectAppendConfig, item))
+                if (this._redirectAppendConfig == null ||
+                    !base.Validate(this._redirectAppendConfig, item))
                 {
                     return;
                 }
 
-                RedirectOuputCenter.Output(base.Name, item);
+                var handler = this.RedirectOuput;
+                if (handler != null)
+                {
+                    handler(this, new RedirectOuputArgs(item));
+                }
             }
             catch (Exception ex)
             {

@@ -37,7 +37,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
             try
             {
                 combox.Items.Clear();
-                List<DropdownBindingItem> items = EnumEx.GetNDisplayNameAttributeDisplayNameBindingItems(enumType);
+                List<DropdownBindingItem> items = EnumEx.GetDisplayNameExAttributeItemList(enumType);
                 if (items.Count == 0)
                 {
                     return;
@@ -61,7 +61,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
                     combox.Items.Add(item);
                 }
 
-                combox.DisplayMember = DropdownBindingItem.DisplayNameFieldName;
+                combox.DisplayMember = nameof(DropdownBindingItem.DisplayName);
                 combox.SelectedIndex = selectedIndex == -1 ? 0 : selectedIndex;
             }
             catch (Exception ex)
@@ -322,7 +322,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Base
                     }
                 }
 
-                combox.DisplayMember = DropdownBindingItem.DisplayNameFieldName;
+                combox.DisplayMember = nameof(DropdownBindingItem.DisplayName);
                 combox.SelectedIndex = selectedIndex == -1 ? 0 : selectedIndex;
             }
             catch (Exception ex)

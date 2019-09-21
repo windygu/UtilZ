@@ -68,7 +68,8 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
-        public FileAppenderConfig(XElement ele) : base(ele)
+        public FileAppenderConfig(XElement ele)
+            : base(ele)
         {
             base.EnableOutputCache = true;
             this.MaxFileSize = 10 * 1024;//默认值10MB

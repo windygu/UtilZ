@@ -70,7 +70,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
             return Path.Combine(paths.ToArray());
         }
 
-        protected string GetLastLogFilePath(string dir)
+        protected string GetLastWriteLogFilePath(string dir)
         {
             try
             {
@@ -81,30 +81,38 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 }
 
 
-                TimeSpan tsCurrentTime = DateTime.Now - this._defaultTime;
+                DateTime currenttime = DateTime.Now;
+                TimeSpan tsCurrentTime = currenttime - this._defaultTime;
                 DateTime createTime;
                 TimeSpan tsCreateTime;
-                var orderLogFilePath = new SortedList<DateTime, string>();
+                List<LogFileInfo> orderLogFilePathList = new List<LogFileInfo>();
+
                 foreach (var filePath in filePaths)
                 {
-                    if (this.CheckPath(filePath))
+                    if (this.CheckPath(filePath, out createTime))
                     {
-                        createTime = File.GetCreationTime(filePath);
+                        //createTime = File.GetCreationTime(filePath);
+                        if ((currenttime - createTime).Days > 2)
+                        {
+                            //如果日志文件时间在两天之外,不作为参考
+                            continue;
+                        }
+
                         tsCreateTime = createTime - this._defaultTime;
                         if (tsCreateTime.TotalDays <= tsCurrentTime.TotalDays)
                         {
-                            orderLogFilePath.Add(createTime, filePath);
+                            orderLogFilePathList.Add(new LogFileInfo(createTime, filePath));
                         }
                     }
                 }
 
-                if (orderLogFilePath.Count == 0)
+                if (orderLogFilePathList.Count == 0)
                 {
                     //当前日志目录下没有符合路径标准的日志文件
                     return null;
                 }
 
-                var lastLogFilePath = orderLogFilePath.ElementAt(orderLogFilePath.Count - 1).Value;
+                var lastLogFilePath = orderLogFilePathList.OrderByDescending(t => { return t.CreateTime; }).FirstOrDefault().FilePath;
                 if (this.CompareLastLogFilePath(new FileInfo(lastLogFilePath)))
                 {
                     //最后一个文件符合追加
@@ -129,8 +137,9 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         /// 检查日志文件路径是否是有效路径[有效返回true;无效返回false]
         /// </summary>
         /// <param name="filePath"></param>
+        /// <param name="createTime"></param>
         /// <returns></returns>
-        protected abstract bool CheckPath(string filePath);
+        protected abstract bool CheckPath(string filePath, out DateTime createTime);
 
         protected void DeleteLogFileByFileCount(List<FileInfo> fileInfos, HashSet<string> hsDelLogFileFullPathDirs)
         {

@@ -167,14 +167,26 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        public object ExecuteScalar(string sqlStr, DBVisitType visitType, Dictionary<string, object> sqlParameterDic = null)
+        public object ExecuteScalar(string sqlStr, DBVisitType visitType, Dictionary<string, object> parameterNameValueDic = null)
         {
             using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
             {
-                return this.PrimitiveExecuteScalar(connectionInfo.DbConnection, sqlStr, sqlParameterDic);
+                return this.PrimitiveExecuteScalar(connectionInfo.DbConnection, sqlStr, parameterNameValueDic);
             }
+        }
+
+        /// <summary>
+        /// ExecuteScalar执行SQL语句,返回执行结果的第一行第一列；
+        /// </summary>
+        /// <param name="sqlStr">sql语句</param>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
+        /// <returns>返回执行结果</returns>
+        public object ExecuteScalar(string sqlStr, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null)
+        {
+            return this.PrimitiveExecuteScalar(con, sqlStr, parameterNameValueDic);
         }
 
         /// <summary>
@@ -182,14 +194,26 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        public int ExecuteNonQuery(string sqlStr, DBVisitType visitType, Dictionary<string, object> sqlParameterDic = null)
+        public int ExecuteNonQuery(string sqlStr, DBVisitType visitType, Dictionary<string, object> parameterNameValueDic = null)
         {
             using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
             {
-                return this.PrimitiveExecuteNonQuery(connectionInfo.DbConnection, sqlStr, sqlParameterDic);
+                return this.PrimitiveExecuteNonQuery(connectionInfo.DbConnection, sqlStr, parameterNameValueDic);
             }
+        }
+
+        /// <summary>
+        /// ExecuteNonQuery执行SQL语句,返回受影响的行数
+        /// </summary>
+        /// <param name="sqlStr">sql语句</param>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
+        /// <returns>返回执行结果</returns>
+        public int ExecuteNonQuery(string sqlStr, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null)
+        {
+            return this.PrimitiveExecuteNonQuery(con, sqlStr, parameterNameValueDic);
         }
         #endregion
 
@@ -198,23 +222,23 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// 执行SQL语句,返回查询结果
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        public DataTable QueryDataToDataTable(string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        public DataTable QueryDataToDataTable(string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            return this.PrimitiveQueryDataToDataTable(sqlStr, sqlParameterDic);
+            return this.PrimitiveQueryDataToDataTable(sqlStr, parameterNameValueDic);
         }
 
         /// <summary>
         /// 执行SQL语句,返回查询结果
         /// </summary>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        public DataTable QueryDataToDataTable(IDbConnection con, string sqlStr, Dictionary<string, object> sqlParameterDic = null)
+        public DataTable QueryDataToDataTable(string sqlStr, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null)
         {
-            return this.PrimitiveQueryDataToDataTable(con, sqlStr, sqlParameterDic);
+            return this.PrimitiveQueryDataToDataTable(con, sqlStr, parameterNameValueDic);
         }
         #endregion
 

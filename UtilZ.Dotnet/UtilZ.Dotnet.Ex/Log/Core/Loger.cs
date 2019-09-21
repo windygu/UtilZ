@@ -306,6 +306,39 @@ namespace UtilZ.Dotnet.Ex.Log
         }
 
         /// <summary>
+        /// 根据日志追加器名称获取指定日志记录器中的日志追加器
+        /// </summary>
+        /// <param name="logerName">日志记录器名称</param>
+        /// <param name="appenderName">日志追加器名称</param>
+        /// <returns>日志追加器</returns>
+        public static AppenderBase GetAppenderByName(string logerName, string appenderName)
+        {
+            ILoger loger = GetLoger(logerName);
+            if (loger == null)
+            {
+                return null;
+            }
+
+            return loger.GetAppenderByName(appenderName);
+        }
+
+        /// <summary>
+        /// 获取指定日志记录器中的日志追加器
+        /// </summary>
+        /// <param name="logerName">日志记录器名称</param>
+        /// <returns>日志追加器数组</returns>
+        public static AppenderBase[] GetAppenders(string logerName)
+        {
+            ILoger loger = GetLoger(logerName);
+            if (loger == null)
+            {
+                return null;
+            }
+
+            return loger.GetAppenders();
+        }
+
+        /// <summary>
         /// 获取日志记录器,如果日志记录器成功返回配置的日志记录器,如果不存在返回空日志记录器
         /// </summary>
         /// <param name="logerName">日志记录器名称</param>

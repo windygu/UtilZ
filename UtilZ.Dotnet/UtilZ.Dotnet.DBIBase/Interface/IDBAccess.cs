@@ -74,18 +74,36 @@ namespace UtilZ.Dotnet.DBIBase.Interface
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        object ExecuteScalar(string sqlStr, DBVisitType visitType, Dictionary<string, object> sqlParameterDic = null);
+        object ExecuteScalar(string sqlStr, DBVisitType visitType, Dictionary<string, object> parameterNameValueDic = null);
+
+        /// <summary>
+        /// ExecuteScalar执行SQL语句,返回执行结果的第一行第一列；
+        /// </summary>
+        /// <param name="sqlStr">sql语句</param>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
+        /// <returns>返回执行结果</returns>
+        object ExecuteScalar(string sqlStr, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null);
 
         /// <summary>
         /// ExecuteNonQuery执行SQL语句,返回受影响的行数
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="visitType">数据库访问类型</param>
-        /// <param name="sqlParameterDic">命令的参数集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        int ExecuteNonQuery(string sqlStr, DBVisitType visitType, Dictionary<string, object> sqlParameterDic = null);
+        int ExecuteNonQuery(string sqlStr, DBVisitType visitType, Dictionary<string, object> parameterNameValueDic = null);
+
+        /// <summary>
+        /// ExecuteNonQuery执行SQL语句,返回受影响的行数
+        /// </summary>
+        /// <param name="sqlStr">sql语句</param>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
+        /// <returns>返回执行结果</returns>
+        int ExecuteNonQuery(string sqlStr, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null);
         #endregion
 
         #region 快速查询
@@ -93,18 +111,18 @@ namespace UtilZ.Dotnet.DBIBase.Interface
         /// 执行SQL语句,返回查询结果
         /// </summary>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        DataTable QueryDataToDataTable(string sqlStr, Dictionary<string, object> sqlParameterDic = null);
+        DataTable QueryDataToDataTable(string sqlStr, Dictionary<string, object> parameterNameValueDic = null);
 
         /// <summary>
         /// 执行SQL语句,返回查询结果
         /// </summary>
-        /// <param name="con">数据库连接对象</param>
         /// <param name="sqlStr">sql语句</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
+        /// <param name="con">数据库连接对象</param>
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <returns>返回执行结果</returns>
-        DataTable QueryDataToDataTable(IDbConnection con, string sqlStr, Dictionary<string, object> sqlParameterDic = null);
+        DataTable QueryDataToDataTable(string sqlStr, IDbConnection con, Dictionary<string, object> parameterNameValueDic = null);
         #endregion
     }
 }

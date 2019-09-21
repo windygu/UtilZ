@@ -110,7 +110,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
                 */
 
                     //SQLServer2012+新特性,在高并发时性能强于ROW_NUMBER方式
-                    pagingSql = $"{sqlStr} order by {orderStr} OFFSET {startIndex} ROW FETCH NEXT {pageSize} rows only";
+                    pagingSql = $"{sqlStr} ORDER BY {orderStr} OFFSET {startIndex} ROW FETCH NEXT {pageSize} rows only";
                     pagingAssistFieldName = null;
                 }
                 else

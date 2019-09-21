@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace TestE.Winform
 {
@@ -32,11 +33,15 @@ namespace TestE.Winform
 
         private void FTestTelnetServer_Load(object sender, EventArgs e)
         {
-            RedirectOuputCenter.Add(new RedirectOutputChannel(RedirectLogOutput, null));
+            var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, null);
+            if (redirectAppenderToUI != null)
+            {
+                redirectAppenderToUI.RedirectOuput += RedirectLogOutput;
+            }
             ts.Start();
         }
 
-        private void RedirectLogOutput(RedirectOuputItem e)
+        private void RedirectLogOutput(object sender, RedirectOuputArgs e)
         {
             logControl1.AddLog(string.Format("{0} {1}", e.Item.Time, e.Item.Content));
         }

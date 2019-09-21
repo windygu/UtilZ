@@ -34,69 +34,6 @@ namespace UtilZ.Dotnet.Ex.Base
             }
         }
 
-        #region 获取枚举项上的特性显示文本
-        /// <summary>
-        /// 获取枚举项上的特性显示文本
-        /// </summary>
-        /// <param name="enumItem">枚举值</param>
-        /// <returns>特性显示文本</returns>
-        public static string GetEnumItemDisplayName(object enumItem)
-        {
-            if (enumItem == null)
-            {
-                return string.Empty;
-            }
-
-            return GetEnumItemText(enumItem.GetType(), enumItem);
-        }
-
-        /// <summary>
-        /// 获取枚举项上的特性显示文本
-        /// </summary>
-        /// <typeparam name="T">枚举类型</typeparam>
-        /// <param name="enumItem">枚举值</param>
-        /// <returns>特性显示文本</returns>
-        public static string GetEnumItemDisplayName<T>(T enumItem) where T : struct, IComparable, IFormattable, IConvertible
-        {
-            Type enumType = typeof(T);
-            return GetEnumItemText(enumType, enumItem);
-        }
-
-        /// <summary>
-        /// 获取枚举项上的显示文本
-        /// </summary>
-        /// <param name="enumType">枚举类型</param>
-        /// <param name="enumItem">枚举项</param>
-        /// <returns>显示文本</returns>
-        private static string GetEnumItemText(Type enumType, object enumItem)
-        {
-            AssertEnum(enumType);
-            var fields = enumType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-            Type enumAttriType = typeof(DisplayNameExAttribute);
-            object[] csAttris = null;
-            object enumValue = null;
-
-            foreach (var field in fields)
-            {
-                enumValue = field.GetValue(null);
-                if (enumItem.Equals(enumValue))
-                {
-                    csAttris = field.GetCustomAttributes(enumAttriType, false);
-                    if (csAttris.Length == 0)
-                    {
-                        return enumValue.ToString();
-                    }
-                    else
-                    {
-                        return ((DisplayNameExAttribute)csAttris[0]).DisplayName;
-                    }
-                }
-            }
-
-            return string.Empty;
-        }
-        #endregion
-
         /// <summary>
         /// 根据枚举DisplayNameExAttribute特性文本获取对应的枚举项
         /// </summary>
@@ -157,7 +94,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         /// <param name="enumType">枚举类型</param>
         /// <returns>绑定列表集合</returns>
-        public static List<DropdownBindingItem> GetNDisplayNameAttributeDisplayNameBindingItems(Type enumType)
+        public static List<DropdownBindingItem> GetDisplayNameExAttributeItemList(Type enumType)
         {
             AssertEnum(enumType);
 
@@ -233,6 +170,69 @@ namespace UtilZ.Dotnet.Ex.Base
             return itemAttriDic;
         }
 
+        #region 获取枚举项上的特性显示文本
+        /// <summary>
+        /// 获取枚举项上的特性显示文本
+        /// </summary>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>特性显示文本</returns>
+        public static string GetEnumItemDisplayName(object enumItem)
+        {
+            if (enumItem == null)
+            {
+                return string.Empty;
+            }
+
+            return PrimitiveGetEnumItemDisplayName(enumItem.GetType(), enumItem);
+        }
+
+        /// <summary>
+        /// 获取枚举项上的特性显示文本
+        /// </summary>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>特性显示文本</returns>
+        public static string GetEnumItemDisplayName<T>(T enumItem) where T : struct, IComparable, IFormattable, IConvertible
+        {
+            Type enumType = typeof(T);
+            return PrimitiveGetEnumItemDisplayName(enumType, enumItem);
+        }
+
+        /// <summary>
+        /// 获取枚举项上的显示文本
+        /// </summary>
+        /// <param name="enumType">枚举类型</param>
+        /// <param name="enumItem">枚举项</param>
+        /// <returns>显示文本</returns>
+        private static string PrimitiveGetEnumItemDisplayName(Type enumType, object enumItem)
+        {
+            AssertEnum(enumType);
+            var fields = enumType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            Type enumAttriType = typeof(DisplayNameExAttribute);
+            object[] csAttris = null;
+            object enumValue = null;
+
+            foreach (var field in fields)
+            {
+                enumValue = field.GetValue(null);
+                if (enumItem.Equals(enumValue))
+                {
+                    csAttris = field.GetCustomAttributes(enumAttriType, false);
+                    if (csAttris.Length == 0)
+                    {
+                        return enumValue.ToString();
+                    }
+                    else
+                    {
+                        return ((DisplayNameExAttribute)csAttris[0]).DisplayName;
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+        #endregion
+
         #region 获取枚举项上的标识
         /// <summary>
         /// 获取枚举项上的标识
@@ -242,7 +242,7 @@ namespace UtilZ.Dotnet.Ex.Base
         public static object GetEnumItemTag(object enumItem)
         {
             Type enumType = enumItem.GetType();
-            return GetEnumItemTag(enumType, enumItem);
+            return PrimitiveGetEnumItemTag(enumType, enumItem);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace UtilZ.Dotnet.Ex.Base
         public static object GetEnumItemTag<T>(T enumItem) where T : struct, IComparable, IFormattable, IConvertible
         {
             Type enumType = typeof(T);
-            return GetEnumItemTag(enumType, enumItem);
+            return PrimitiveGetEnumItemTag(enumType, enumItem);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="enumType">枚举类型</param>
         /// <param name="enumItem">枚举值</param>
         /// <returns>枚举项上的标识</returns>
-        private static object GetEnumItemTag(Type enumType, object enumItem)
+        private static object PrimitiveGetEnumItemTag(Type enumType, object enumItem)
         {
             AssertEnum(enumType);
             var fields = enumType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
@@ -291,5 +291,129 @@ namespace UtilZ.Dotnet.Ex.Base
             return string.Empty;
         }
         #endregion
+
+        #region 获取枚举项上的描述
+        /// <summary>
+        /// 获取枚举项上的描述
+        /// </summary>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>枚举项上的标识</returns>
+        public static string GetEnumItemDescription(object enumItem)
+        {
+            Type enumType = enumItem.GetType();
+            return PrimitiveGetEnumItemDescription(enumType, enumItem);
+        }
+
+        /// <summary>
+        /// 获取枚举项上的描述
+        /// </summary>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>枚举项上的标识</returns>
+        public static string GetEnumItemDescription<T>(T enumItem) where T : struct, IComparable, IFormattable, IConvertible
+        {
+            Type enumType = typeof(T);
+            return PrimitiveGetEnumItemDescription(enumType, enumItem);
+        }
+
+        /// <summary>
+        /// 获取枚举项上的描述
+        /// </summary>
+        /// <param name="enumType">枚举类型</param>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>枚举项上的标识</returns>
+        private static string PrimitiveGetEnumItemDescription(Type enumType, object enumItem)
+        {
+            AssertEnum(enumType);
+            var fields = enumType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            Type enumAttriType = typeof(DisplayNameExAttribute);
+            object[] csAttris = null;
+            object enumValue = null;
+
+            foreach (var field in fields)
+            {
+                enumValue = field.GetValue(null);
+                if (enumItem.Equals(enumValue))
+                {
+                    csAttris = field.GetCustomAttributes(enumAttriType, false);
+                    if (csAttris.Length == 0)
+                    {
+                        return enumValue.ToString();
+                    }
+                    else
+                    {
+                        return ((DisplayNameExAttribute)csAttris[0]).Description;
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+        #endregion
+
+
+        #region 获取枚举项上的特性显示文本
+        /// <summary>
+        /// 获取枚举项上的特性
+        /// </summary>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>特性</returns>
+        public static DisplayNameExAttribute GetEnumItemDisplayNameExAttribute(object enumItem)
+        {
+            if (enumItem == null)
+            {
+                return null;
+            }
+
+            return PrimitiveGetEnumItemDisplayNameExAttribute(enumItem.GetType(), enumItem);
+        }
+
+        /// <summary>
+        /// 获取枚举项上的特性
+        /// </summary>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <param name="enumItem">枚举值</param>
+        /// <returns>特性显示文本</returns>
+        public static DisplayNameExAttribute GetEnumItemDisplayNameExAttribute<T>(T enumItem) where T : struct, IComparable, IFormattable, IConvertible
+        {
+            Type enumType = typeof(T);
+            return PrimitiveGetEnumItemDisplayNameExAttribute(enumType, enumItem);
+        }
+
+        /// <summary>
+        /// 获取枚举项上的特性
+        /// </summary>
+        /// <param name="enumType">枚举类型</param>
+        /// <param name="enumItem">枚举项</param>
+        /// <returns>显示文本</returns>
+        private static DisplayNameExAttribute PrimitiveGetEnumItemDisplayNameExAttribute(Type enumType, object enumItem)
+        {
+            AssertEnum(enumType);
+            var fields = enumType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            Type enumAttriType = typeof(DisplayNameExAttribute);
+            object[] csAttris = null;
+            object enumValue = null;
+
+            foreach (var field in fields)
+            {
+                enumValue = field.GetValue(null);
+                if (enumItem.Equals(enumValue))
+                {
+                    csAttris = field.GetCustomAttributes(enumAttriType, false);
+                    if (csAttris.Length == 0)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return (DisplayNameExAttribute)csAttris[0];
+                    }
+                }
+            }
+
+            return null;
+        }
+        #endregion
+
     }
 }

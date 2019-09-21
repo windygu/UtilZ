@@ -33,7 +33,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PropertyGrid.Demo
                 throw new ArgumentException(string.Format("类型:{0}不是枚举类型", valueType.FullName));
             }
 
-            List<DropdownBindingItem> dbiItems = EnumEx.GetNDisplayNameAttributeDisplayNameBindingItems(valueType);
+            List<DropdownBindingItem> dbiItems = EnumEx.GetDisplayNameExAttributeItemList(valueType);
             DropdownBindingItem selectedItem = (from item in dbiItems where value.Equals(item.Value) select item).FirstOrDefault();
             DropdownBoxHelper.BindingIEnumerableGenericToComboBox<DropdownBindingItem>(comboBoxEnum, dbiItems, "Text", selectedItem);
         }

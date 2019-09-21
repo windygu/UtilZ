@@ -15,9 +15,10 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
-        public RedirectAppendConfig(XElement ele) : base(ele)
+        public RedirectAppendConfig(XElement ele) 
+            : base(ele)
         {
-
+            //base.EnableOutputCache = true;
         }
     }
 }

@@ -151,9 +151,11 @@
     <Compile Include="Log\Appenders\File\FileAppenderVariateFileNameBuilder.cs" />
     <Compile Include="Log\Appenders\File\FileLogWriterBase.cs" />
     <Compile Include="Log\Appenders\File\InterProcessFileLogWriter.cs" />
+    <Compile Include="Log\Appenders\File\LogFileInfo.cs" />
     <Compile Include="Log\Appenders\File\MinimalFileLogWriter.cs" />
     <Compile Include="Log\Appenders\Mail\MailAppender.cs" />
     <Compile Include="Log\Appenders\Redirect\RedirectAppender.cs" />
+    <Compile Include="Log\Appenders\Redirect\RedirectOuputArgs.cs" />
     <Compile Include="Log\Appenders\System\SystemLogAppender.cs" />
     <Compile Include="Log\Common\LogAsynQueue.cs" />
     <Compile Include="Log\Common\LogSysInnerLog.cs" />
@@ -171,9 +173,6 @@
     <Compile Include="Log\Model\LogItem.cs" />
     <Compile Include="Log\Model\LogLevel.cs" />
     <Compile Include="Log\Model\LogMessageItem.cs" />
-    <Compile Include="Log\RedirectOuput\RedirectOuputCenter.cs" />
-    <Compile Include="Log\RedirectOuput\RedirectOuputItem.cs" />
-    <Compile Include="Log\RedirectOuput\RedirectOutputChannel.cs" />
     <Compile Include="Log\Security\ILogSecurityPolicy.cs" />
     <Compile Include="Log\Security\XSecurityPolicy.cs" />
     <Compile Include="LRPC\LRPCCore.cs" />

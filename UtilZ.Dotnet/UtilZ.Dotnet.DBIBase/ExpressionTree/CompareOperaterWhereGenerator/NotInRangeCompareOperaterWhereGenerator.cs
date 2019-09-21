@@ -50,8 +50,8 @@ namespace UtilZ.Dotnet.DBIBase.ExpressionTree.CompareOperaterWhereGenerator
                 value2 = para.DBFiledValueConverter.Convert(value2);
             }
 
-            para.SqlParameterDic.Add(parameterName1, value1);
-            para.SqlParameterDic.Add(parameterName2, value2);
+            para.ParameterNameValueDic.Add(parameterName1, value1);
+            para.ParameterNameValueDic.Add(parameterName2, value2);
         }
 
         /// <summary>

@@ -26,7 +26,12 @@ namespace UtilZ.Dotnet.DBIBase.Factory
 
         static DBFactoryManager()
         {
-            Dictionary<string, Assembly> assembliyDic = AppDomain.CurrentDomain.GetAssemblies().ToDictionary(p => { return p.GetName().Name; });
+            var assemblyArr = AppDomain.CurrentDomain.GetAssemblies();
+            Dictionary<string, Assembly> assembliyDic = new Dictionary<string, Assembly>();
+            foreach (var assemblyItem in assemblyArr)
+            {
+                assembliyDic[assemblyItem.GetName().Name] = assemblyItem;
+            }
 
             Assembly currentAssembly = typeof(DBFactoryManager).Assembly;
             var ignoreAssemblyNames = new List<string>();

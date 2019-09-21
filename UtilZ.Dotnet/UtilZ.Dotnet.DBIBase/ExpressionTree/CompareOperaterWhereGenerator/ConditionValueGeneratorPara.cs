@@ -26,9 +26,9 @@ namespace UtilZ.Dotnet.DBIBase.ExpressionTree.CompareOperaterWhereGenerator
         public string ParaSign { get; private set; }
 
         /// <summary>
-        /// 参数字典集合
+        /// 参数名-值字典集合
         /// </summary>
-        public Dictionary<string, object> SqlParameterDic { get; private set; }
+        public Dictionary<string, object> ParameterNameValueDic { get; private set; }
 
         /// <summary>
         /// 值列表
@@ -76,12 +76,13 @@ namespace UtilZ.Dotnet.DBIBase.ExpressionTree.CompareOperaterWhereGenerator
         /// <param name="sqlStringBuilder">sbSql</param>
         /// <param name="paraSign">数据库参数字符</param>
         /// <param name="parameterIndex">参数索引</param>
-        /// <param name="sqlParameterDic">参数字典集合</param>
-        public ConditionValueGeneratorPara(StringBuilder sqlStringBuilder, string paraSign, int parameterIndex, Dictionary<string, object> sqlParameterDic)
+        /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
+        public ConditionValueGeneratorPara(StringBuilder sqlStringBuilder, string paraSign, 
+            int parameterIndex, Dictionary<string, object> parameterNameValueDic)
         {
             this.SqlStringBuilder = sqlStringBuilder;
             this.ParaSign = paraSign;
-            this.SqlParameterDic = sqlParameterDic;
+            this.ParameterNameValueDic = parameterNameValueDic;
             this._parameterIndex = parameterIndex;
         }
     }

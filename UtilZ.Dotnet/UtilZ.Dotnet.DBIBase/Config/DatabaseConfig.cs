@@ -12,6 +12,7 @@ namespace UtilZ.Dotnet.DBIBase.Config
     /// <summary>
     /// 数据库配置类
     /// </summary>
+    [Serializable]
     public class DatabaseConfig
     {
         /// <summary>
@@ -35,12 +36,12 @@ namespace UtilZ.Dotnet.DBIBase.Config
         public string ConStr { get; set; } = null;
 
         /// <summary>
-        /// 数据库连接字符串
+        /// 主机名或IP
         /// </summary>
         public string Host { get; set; } = null;
 
         /// <summary>
-        /// 数据库服务器端口号
+        /// 端口号
         /// </summary>
         public int Port { get; set; } = 0;
 
