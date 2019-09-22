@@ -42,7 +42,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
             }
 
             object obj = this.PrimitiveExecuteScalar(con, sqlStr, parameterNameValueDic);
-            long totalCount = this.ConvertObject<Int64>(obj);
+            long totalCount = DBAccessEx.ConvertObject<Int64>(obj);
             long pageCount = totalCount / pageSize;
             if (totalCount % pageSize != 0)
             {

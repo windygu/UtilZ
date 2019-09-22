@@ -23,7 +23,7 @@ namespace UtilZ.Dotnet.DBIBase
         /// <summary>
         /// 数据库访问对象实例字典[key:数据库编号ID;value:数据库访问实例]
         /// </summary>
-        private static readonly ConcurrentDictionary<int, IDBAccess> _dicDBAccess = new ConcurrentDictionary<int, IDBAccess>();
+        private static readonly ConcurrentDictionary<int, IDBAccess> _dbAccessDic = new ConcurrentDictionary<int, IDBAccess>();
 
         /// <summary>
         /// 线程锁
@@ -38,17 +38,17 @@ namespace UtilZ.Dotnet.DBIBase
         public static IDBAccess GetDBAccessInstance(int dbid)
         {
             IDBAccess dbAccess;
-            if (!_dicDBAccess.TryGetValue(dbid, out dbAccess))
+            if (!_dbAccessDic.TryGetValue(dbid, out dbAccess))
             {
                 lock (_dicDBAccessLock)
                 {
-                    if (!_dicDBAccess.TryGetValue(dbid, out dbAccess))
+                    if (!_dbAccessDic.TryGetValue(dbid, out dbAccess))
                     {
                         var dbBConfigItem = DatabaseConfigManager.GetConfig(dbid);
                         IDBFactory dbFactory = DBFactoryManager.GetDBFactory(dbBConfigItem);
                         dbAccess = dbFactory.CreateDBAccess(dbBConfigItem);
 
-                        if (!_dicDBAccess.TryAdd(dbid, dbAccess))
+                        if (!_dbAccessDic.TryAdd(dbid, dbAccess))
                         {
                             Loger.Warn(string.Format("添加数据库编号ID为{0}数据库访问实例失败", dbid), null);
                         }
@@ -67,7 +67,7 @@ namespace UtilZ.Dotnet.DBIBase
         public static IDBAccess RemoveDBAccessInstance(int dbid)
         {
             IDBAccess dbAccess;
-            if (_dicDBAccess.TryRemove(dbid, out dbAccess))
+            if (_dbAccessDic.TryRemove(dbid, out dbAccess))
             {
                 dbAccess.Dispose();
                 DbConnectionPoolManager.RemoveDbConnectionPool(dbid);
@@ -83,7 +83,7 @@ namespace UtilZ.Dotnet.DBIBase
         {
             lock (_dicDBAccessLock)
             {
-                foreach (var dbAccess in _dicDBAccess.Values)
+                foreach (var dbAccess in _dbAccessDic.Values)
                 {
                     dbAccess.Dispose();
                 }

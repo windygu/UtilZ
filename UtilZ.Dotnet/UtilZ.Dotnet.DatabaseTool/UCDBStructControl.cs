@@ -95,7 +95,7 @@ namespace UtilZ.Dotnet.DatabaseTool
                 {
                     p.AsynWait.Hint = $"正在查询数据库[{dbConfig.ConName}]结构,请稍候...";
                     IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(p.Para.DBID);
-                    this._tableList = dbAccess.GetTableInfoList(true).OrderBy(t => { return t.Name; }).Select(t => { return new DBTableInfoEx(t); }).ToList();
+                    this._tableList = dbAccess.Database.GetTableInfoList(true).OrderBy(t => { return t.Name; }).Select(t => { return new DBTableInfoEx(t); }).ToList();
                     if (p.AsynWait.InvokeRequired)
                     {
                         p.AsynWait.Invoke(new Action(() =>

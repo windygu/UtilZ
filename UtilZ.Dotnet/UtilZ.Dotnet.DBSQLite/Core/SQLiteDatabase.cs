@@ -1,18 +1,28 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UtilZ.Dotnet.DBIBase.Connection;
 using UtilZ.Dotnet.DBIBase.Core;
-using System.Data;
+using UtilZ.Dotnet.DBIBase.Interface;
 using UtilZ.Dotnet.DBIBase.Model;
-using System.Collections;
 
 namespace UtilZ.Dotnet.DBSQLite.Core
 {
-    internal partial class SQLiteDBAccess
+    internal class SQLiteDatabase : DatabaseAbs
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbAccess">数据库访问对象</param>
+        public SQLiteDatabase(IDBAccess dbAccess)
+            : base(dbAccess)
+        {
+
+        }
+
         #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -151,7 +161,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             var indexTupleRowArr = new Tuple<string, DataRow>[dtIndex.Rows.Count];
             for (int i = 0; i < dtIndex.Rows.Count; i++)
             {
-                indexTupleRowArr[i] = new Tuple<string, DataRow>(base.ConvertObject<string>(dtIndex.Rows[i]["tbl_name"]), dtIndex.Rows[i]);
+                indexTupleRowArr[i] = new Tuple<string, DataRow>(DBAccessEx.ConvertObject<string>(dtIndex.Rows[i]["tbl_name"]), dtIndex.Rows[i]);
             }
 
             DataRow[] indexArr;
@@ -289,9 +299,9 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                 foreach (DataRow row in rows)
                 {
                     sbDetail.Clear();
-                    indexName = base.ConvertObject<string>(row["name"]);//Stu_Index_Name
-                    sbDetail.AppendLine($"[rootpage:{base.ConvertObject<string>(row["rootpage"])}]");//63
-                    sql = base.ConvertObject<string>(row["sql"]);//CREATE INDEX "Stu_Index_Name" ON "Stu"("Name")
+                    indexName = DBAccessEx.ConvertObject<string>(row["name"]);//Stu_Index_Name
+                    sbDetail.AppendLine($"[rootpage:{DBAccessEx.ConvertObject<string>(row["rootpage"])}]");//63
+                    sql = DBAccessEx.ConvertObject<string>(row["sql"]);//CREATE INDEX "Stu_Index_Name" ON "Stu"("Name")
 
                     lastLeftParenthesisIndex = sql.LastIndexOf('(');
                     lastRightParenthesisIndex = sql.LastIndexOf(')');
@@ -314,7 +324,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         {
             string sqlStr = @"select sqlite_version()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            string dataBaseVersion = base.ConvertObject<string>(value);//dataBaseVersion:3.8.2
+            string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);//dataBaseVersion:3.8.2
             string verStr = dataBaseVersion.Substring(0, dataBaseVersion.IndexOf('.'));
             int version;
             if (!int.TryParse(verStr, out version))
@@ -334,7 +344,8 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         {
             string sqlStr = @"select datetime('now','localtime')";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<DateTime>(value);
+            return DBAccessEx.ConvertObject<DateTime>(value);
         }
+
     }
 }

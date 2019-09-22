@@ -3,13 +3,25 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using UtilZ.Dotnet.DBIBase.Core;
+using UtilZ.Dotnet.DBIBase.Interface;
 using UtilZ.Dotnet.DBIBase.Model;
 
 namespace UtilZ.Dotnet.DBOracle.Core
 {
-    internal partial class OracleDBAccess
+    internal class OracleDatabase : DatabaseAbs
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbAccess">数据库访问对象</param>
+        public OracleDatabase(IDBAccess dbAccess)
+            : base(dbAccess)
+        {
+
+        }
+
         #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -21,7 +33,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
         {
             string sqlStr = $@"select count(0) from tabs where TABLE_NAME ='{tableName}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
 
         /// <summary>
@@ -35,7 +47,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
         {
             string sqlStr = $@"SELECT count(0) FROM USER_TAB_COLUMNS WHERE TABLE_NAME = '{tableName}' AND COLUMN_NAME = '{fieldName}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
         #endregion
 
@@ -61,7 +73,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
             }
 
             sqlStr = $@"select t.COLUMN_NAME,t.DATA_TYPE,t.NULLABLE,t.DATA_DEFAULT,c.COMMENTS from user_tab_columns t,user_col_comments c where t.table_name = c.table_name and t.column_name = c.column_name and t.table_name = '{tableName}'";
-            IDbCommand cmd = this.CreateCommand(con, sqlStr);
+            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con, sqlStr);
 
             List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
             object value;
@@ -164,7 +176,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
             var indexTupleRowArr = new Tuple<string, DataRow>[dtIndex.Rows.Count];
             for (int i = 0; i < dtIndex.Rows.Count; i++)
             {
-                indexTupleRowArr[i] = new Tuple<string, DataRow>(base.ConvertObject<string>(dtIndex.Rows[i]["TABLE_NAME"]), dtIndex.Rows[i]);
+                indexTupleRowArr[i] = new Tuple<string, DataRow>(DBAccessEx.ConvertObject<string>(dtIndex.Rows[i]["TABLE_NAME"]), dtIndex.Rows[i]);
             }
 
             DataRow[] indexArr;
@@ -281,7 +293,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
 
         private DBIndexInfoCollection ConvertTableIndexs(string tableName, DataColumnCollection cols, DataRow[] rowArr)
         {
-            IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return base.ConvertObject<string>(t["INDEX_NAME"]); });
+            IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return DBAccessEx.ConvertObject<string>(t["INDEX_NAME"]); });
             var indexinfoList = new List<DBIndexInfo>();
             string indexName, fieldName;
             StringBuilder sbDetail = new StringBuilder();
@@ -293,13 +305,13 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
                 indexName = indexGroup.Key;
 
                 row = indexGroup.First();
-                fieldArr = indexGroup.Select(t => { return base.ConvertObject<string>(t["COLUMN_NAME"]); }).ToArray();
+                fieldArr = indexGroup.Select(t => { return DBAccessEx.ConvertObject<string>(t["COLUMN_NAME"]); }).ToArray();
                 fieldName = string.Join(",", fieldArr);
 
                 sbDetail.Clear();
                 for (int i = 3; i < cols.Count; i++)
                 {
-                    sbDetail.AppendLine($"[{cols[i].ColumnName}:{base.ConvertObject<string>(row[cols[i]])}]");
+                    sbDetail.AppendLine($"[{cols[i].ColumnName}:{DBAccessEx.ConvertObject<string>(row[cols[i]])}]");
                 }
 
                 indexinfoList.Add(new DBIndexInfo(tableName, indexName, fieldName, sbDetail.ToString()));
@@ -353,7 +365,8 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         {
             string sqlStr = @"select current_date from dual";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<DateTime>(value);
+            return DBAccessEx.ConvertObject<DateTime>(value);
         }
+
     }
 }

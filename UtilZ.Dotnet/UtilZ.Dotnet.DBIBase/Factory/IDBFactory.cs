@@ -30,6 +30,6 @@ namespace UtilZ.Dotnet.DBIBase.Factory
         /// <summary>
         /// 附加EF配置
         /// </summary>
-        void AttatchEFConfig();
+        void AttatchEFConfig();       
     }
 }

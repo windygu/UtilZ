@@ -8,7 +8,10 @@ using UtilZ.Dotnet.DBIBase.Model;
 
 namespace UtilZ.Dotnet.DBIBase.Interface
 {
-    public partial interface IDBAccess
+    /// <summary>
+    /// 数据库接口
+    /// </summary>
+    public interface IDatabase
     {
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]

@@ -52,12 +52,14 @@
   <ItemGroup>
     <Compile Include="Connection\DbConnectionPoolManager.cs" />
     <Compile Include="Connection\IDbConnectionInfo.cs" />
+    <Compile Include="Core\DatabaseAbs.cs" />
+    <Compile Include="Core\DatabaseAbs_Protected.cs" />
     <Compile Include="Core\DBAccessAbs.cs" />
-    <Compile Include="Core\DBAccessAbs_DBInfo.cs" />
     <Compile Include="Core\DBAccessAbs_Protected.cs" />
     <Compile Include="Core\DBAccessAbs_Query.cs" />
     <Compile Include="Core\DBAccessAbs_Update.cs" />
     <Compile Include="Core\DBAccessEx.cs" />
+    <Compile Include="Core\DBAccessHelper.cs" />
     <Compile Include="EF\EFConnectionFactory.cs" />
     <Compile Include="EF\EFDbConfiguration.cs" />
     <Compile Include="EF\EFDbContext.cs" />
@@ -88,10 +90,10 @@
     <Compile Include="ExpressionTree\ISqlFieldValueFormator.cs" />
     <Compile Include="ExpressionTree\SqlFieldValueFormatorAbs.cs" />
     <Compile Include="Factory\TestEFDbContextDbConnectionInfo.cs" />
+    <Compile Include="Interface\IDatabase.cs" />
     <Compile Include="Interface\IDBAccess_Query.cs" />
     <Compile Include="Interface\IDBAccess_Update.cs" />
     <Compile Include="Interaction\DBInteractionAbs.cs" />
-    <Compile Include="Interface\IDBAccess_DBInfo.cs" />
     <Compile Include="Factory\DBFactoryManager.cs" />
     <Compile Include="Connection\DbConnectionInfo.cs" />
     <Compile Include="Connection\DbConnectionPool.cs" />

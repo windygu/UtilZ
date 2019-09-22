@@ -1,20 +1,28 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UtilZ.Dotnet.DBIBase.Model;
 using UtilZ.Dotnet.DBIBase.Core;
-using System.Collections;
+using UtilZ.Dotnet.DBIBase.Interface;
+using UtilZ.Dotnet.DBIBase.Model;
 
 namespace UtilZ.Dotnet.DBPostgreSQL.Core
 {
-    /// <summary>
-    /// PostgreSQLDBAccess_DBInfo
-    /// </summary>
-    internal partial class PostgreSQLDBAccess
+    internal class PostgreSQLDatabase : DatabaseAbs
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbAccess">数据库访问对象</param>
+        public PostgreSQLDatabase(IDBAccess dbAccess)
+            : base(dbAccess)
+        {
+
+        }
+
         #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -26,7 +34,7 @@ namespace UtilZ.Dotnet.DBPostgreSQL.Core
         {
             string sqlStr = $@"select count(0) from pg_tables where schemaname='public' and tablename = '{tableName}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
 
         /// <summary>
@@ -40,7 +48,7 @@ namespace UtilZ.Dotnet.DBPostgreSQL.Core
         {
             string sqlStr = $@"select count(0) from information_schema.columns WHERE table_name ='{tableName}' and column_name='{fieldName}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
         #endregion
 
@@ -64,7 +72,7 @@ namespace UtilZ.Dotnet.DBPostgreSQL.Core
                 colDBType.Add(col.ColumnName, col.DataType);
             }
 
-            IDbCommand cmd = this.CreateCommand(con);
+            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con);
             cmd.CommandText = $@"select ordinal_position as order,
 column_name as name,
 data_type as type,
@@ -366,7 +374,7 @@ order by
             //show server_version_num
             string sqlStr = @"select version()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            string dataBaseVersion = base.ConvertObject<string>(value);//PostgreSQL 10.7, compiled by Visual C++ build 1800, 64-bit
+            string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);//PostgreSQL 10.7, compiled by Visual C++ build 1800, 64-bit
 
             int beginIndex = dataBaseVersion.IndexOf(' ');
             int endIndex = dataBaseVersion.IndexOf('.');
@@ -392,7 +400,8 @@ order by
             //select now();
             string sqlStr = @"select CURRENT_TIMESTAMP";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<DateTime>(value);
+            return DBAccessEx.ConvertObject<DateTime>(value);
         }
+
     }
 }

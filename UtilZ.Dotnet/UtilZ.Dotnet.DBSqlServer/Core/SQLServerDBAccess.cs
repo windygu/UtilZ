@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UtilZ.Dotnet.DBIBase.Config;
 using UtilZ.Dotnet.DBIBase.Core;
 using UtilZ.Dotnet.DBIBase.Interaction;
+using UtilZ.Dotnet.DBIBase.Interface;
 
 namespace UtilZ.Dotnet.DBSqlServer.Core
 {
@@ -21,6 +22,15 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
             : base(dbInteraction, config, databaseTypeName, SQL_MAX_LENGTH)
         {
 
+        }
+
+        /// <summary>
+        /// 创建数据库对象
+        /// </summary>
+        /// <returns></returns>
+        protected override IDatabase CreateDatabase()
+        {
+            return new SqlServerDatabase(this);
         }
     }
 }

@@ -81,6 +81,23 @@ namespace UtilZ.Dotnet.DBIBase.Core
         {
             get { return _sqlMaxLength; }
         }
+
+        private IDatabase _database = null;
+        /// <summary>
+        /// 数据库对象
+        /// </summary>
+        public IDatabase Database
+        {
+            get
+            {
+                if (this._database == null)
+                {
+                    this._database = this.CreateDatabase();
+                }
+
+                return this._database;
+            }
+        }
         #endregion
 
         /// <summary>
@@ -241,6 +258,12 @@ namespace UtilZ.Dotnet.DBIBase.Core
             return this.PrimitiveQueryDataToDataTable(con, sqlStr, parameterNameValueDic);
         }
         #endregion
+
+        /// <summary>
+        /// 创建数据库对象
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IDatabase CreateDatabase();
 
         #region IDisposable
         /// <summary>

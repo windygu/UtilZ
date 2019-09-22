@@ -5,6 +5,51 @@
                   DBID="1"
            ConName="SQLiteDB"
            DBConInfoType="1"
+           DatabaseName="F:\Code\Git\UtilZ\UtilZ.Dotnet\WebApplication1\DB\DB2.sqlite"
+           DBFactory="UtilZ.Dotnet.DBSQLite.Core.SQLiteDBFactory,DBPlugins\SQLite\UtilZ.Dotnet.DBSQLite">
+    </DBConfigItem>
+
+    <DBConfigItem DBID="2"
+         ConName="SqlServer"
+         DBConInfoType="0"
+         ConStr="data source=192.168.0.106;initial catalog=NTestDB;user id=sa;password=xtaITXwwx982+-"
+         DBFactory="UtilZ.Dotnet.DBSqlServer.Core.SQLServerDBFactory,DBPlugins\SQLServer\UtilZ.Dotnet.DBSqlServer"/>
+
+    <DBConfigItem DBID="3"
+         ConName="OracleDB"
+         DBConInfoType="1"
+         Host="192.168.0.106"
+         DatabaseName="NTestDB"
+         Account="DBUSER"
+         Password="asd123"
+         DBFactory="UtilZ.Dotnet.DBOracle.Core.OracleDBFactory,DBPlugins\Oracle\UtilZ.Dotnet.DBOracle"/>
+
+    <DBConfigItem DBID="4"
+         ConName="MysqlDB"
+         DBConInfoType="1"
+         Host="192.168.0.106"
+         Port="3306"
+         DatabaseName="test"
+         Account="yf"
+         Password="qweQWE123"
+         DBFactory="UtilZ.Dotnet.DBMySql.Core.MySqlDBFactory,DBPlugins\MySql\UtilZ.Dotnet.DBMySql"/>
+
+    <DBConfigItem DBID="5"
+         ConName="PostgreSQL"
+         DBConInfoType="1"
+         Host="192.168.0.106"
+         Port="5432"
+         DatabaseName="postgres"
+         Account="postgres"
+         Password="qwe123"
+         DBFactory="UtilZ.Dotnet.DBPostgreSQL.Core.PostgreSQLDBFactory,DBPlugins\PostgreSQL\UtilZ.Dotnet.DBPostgreSQL"/>
+
+    
+    
+    <!--<DBConfigItem Parser=""
+                  DBID="1"
+           ConName="SQLiteDB"
+           DBConInfoType="1"
            DatabaseName="D:\Demo\SQLiteDB\test.db"
            DBFactory="UtilZ.Dotnet.DBSQLite.Core.SQLiteDBFactory,DBPlugins\SQLite\UtilZ.Dotnet.DBSQLite">
     </DBConfigItem>
@@ -50,7 +95,11 @@
          DatabaseName="POSDB"
          Account="hzdb_zd"
          Password="123456"
-         DBFactory="UtilZ.Dotnet.DBOracle.Core.OracleDBFactory,DBPlugins\Oracle\UtilZ.Dotnet.DBOracle"/>
+         DBFactory="UtilZ.Dotnet.DBOracle.Core.OracleDBFactory,DBPlugins\Oracle\UtilZ.Dotnet.DBOracle"/>-->
+    
+    
+    
+    
     
     <!--<DBConfigItem DBID="1"
            ConName="SQLiteDB"
@@ -92,7 +141,7 @@
          Host="192.168.0.104"
          DatabaseName="ntestdb.org"
          Account="DBUSER"
-         Password="qwe123"
+         Password="asd123"
          DBFactory="UtilZ.Dotnet.DBOracle.Core.OracleDBFactory,DBPlugins\Oracle\UtilZ.Dotnet.DBOracle"/>-->
   </DBConfigItems>
 </DBConfig>

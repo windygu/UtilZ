@@ -127,7 +127,7 @@ namespace TestDB
             {
                 var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
-                DateTime sysTime = dbAccess.GetDataBaseSysTime();
+                DateTime sysTime = dbAccess.Database.GetDataBaseSysTime();
                 Loger.Info($"[{config.ConName}] [{sysTime.ToString()}]");
             }
             catch (Exception ex)
@@ -433,7 +433,7 @@ namespace TestDB
             {
                 var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
-                var dataBaseVersion = dbAccess.GetDataBaseVersion();
+                var dataBaseVersion = dbAccess.Database.GetDataBaseVersion();
                 Loger.Info($"[{config.ConName}] [{dataBaseVersion.Version}] [{dataBaseVersion.VersionInfo}]");
             }
             catch (Exception ex)
@@ -448,7 +448,7 @@ namespace TestDB
             {
                 var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
-                var tableInfoList = dbAccess.GetTableInfoList(ckGetFieldInfo.Checked);
+                var tableInfoList = dbAccess.Database.GetTableInfoList(ckGetFieldInfo.Checked);
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("----------------------------------------------------------------------------");
                 sb.AppendLine($"[{config.ConName}] [{tableInfoList.Count}]");
@@ -485,7 +485,7 @@ namespace TestDB
 
                 var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
-                var isExist = dbAccess.ExistTable(tblName);
+                var isExist = dbAccess.Database.ExistTable(tblName);
                 Loger.Info($"[{config.ConName}] [{txtTblName.Text}] [{isExist}]");
             }
             catch (Exception ex)
@@ -508,7 +508,7 @@ namespace TestDB
 
                 var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
                 IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
-                var isExist = dbAccess.ExistField(tblName, fieldName);
+                var isExist = dbAccess.Database.ExistField(tblName, fieldName);
                 Loger.Info($"[{config.ConName}] [{tblName}] [{fieldName}] [{isExist}]");
             }
             catch (Exception ex)
@@ -656,7 +656,7 @@ namespace TestDB
                 var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
                 var dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
 
-                List<DBTableInfo> dbTableInfos = dbAccess.GetTableInfoList(true);
+                List<DBTableInfo> dbTableInfos = dbAccess.Database.GetTableInfoList(true);
                 var dbTableInfoDic = dbTableInfos.ToDictionary(k => { return k.Name; }, v => { return v.DbFieldInfos.ToDictionary(t => { return t.FieldName; }); });
 
                 var filedValueConverterCollection = new DBFiledValueConverterCollection();

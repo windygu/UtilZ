@@ -59,8 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SQLiteDatabase.cs" />
     <Compile Include="Core\SQLiteDBAccess.cs" />
-    <Compile Include="Core\SQLiteDBAccess_DBInfo.cs" />
     <Compile Include="Core\SQLiteDBInteraction.cs" />
     <Compile Include="Core\SQLiteDBFactory.cs" />
     <Compile Include="Core\SQLiteSqlFieldValueFormator.cs" />
@@ -81,8 +81,12 @@
     <Content Include="Lib\System.Data.SQLite.EF6.dll" />
     <Content Include="Lib\System.Data.SQLite.Linq.dll" />
     <Content Include="Lib\System.Data.SQLite.xml" />
-    <Content Include="x64\SQLite.Interop.dll" />
-    <Content Include="x86\SQLite.Interop.dll" />
+    <None Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Lib\System.Data.SQLite.dll.config" />

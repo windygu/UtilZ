@@ -65,8 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\PostgreSQLDatabase.cs" />
     <Compile Include="Core\PostgreSQLDBAccess.cs" />
-    <Compile Include="Core\PostgreSQLDBAccess_DBInfo.cs" />
     <Compile Include="Core\PostgreSQLDBFactory.cs" />
     <Compile Include="Core\PostgreSQLDBInteraction.cs" />
     <Compile Include="Core\PostgreSQLSqlFieldValueFormator.cs" />

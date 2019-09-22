@@ -4,14 +4,24 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UtilZ.Dotnet.DBIBase.Connection;
-using UtilZ.Dotnet.DBIBase.Model;
 using UtilZ.Dotnet.DBIBase.Core;
+using UtilZ.Dotnet.DBIBase.Interface;
+using UtilZ.Dotnet.DBIBase.Model;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {
-    internal partial class MySqlDBAccess
+    internal class MySqlDatabase : DatabaseAbs
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbAccess">数据库访问对象</param>
+        public MySqlDatabase(IDBAccess dbAccess)
+            : base(dbAccess)
+        {
+
+        }
+
         #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -23,7 +33,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         {
             string sqlStr = $@"select Count(0) from INFORMATION_SCHEMA.TABLES where TABLE_NAME='{tableName}' AND TABLE_SCHEMA='{con.Database}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
 
         /// <summary>
@@ -37,7 +47,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         {
             string sqlStr = $@"select count(0) from information_schema.columns WHERE table_name ='{tableName}' and column_name='{fieldName}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
         #endregion
 
@@ -63,7 +73,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
             }
 
 
-            IDbCommand cmd = this.CreateCommand(con);
+            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con);
             cmd.CommandText = $@"SHOW FULL FIELDS FROM {tableName}";
             List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
 
@@ -221,7 +231,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
 
                 DataRow[] rowArr = new DataRow[dt.Rows.Count];
                 dt.Rows.CopyTo(rowArr, 0);
-                IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return base.ConvertObject<string>(t["Key_name"]); });
+                IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return DBAccessEx.ConvertObject<string>(t["Key_name"]); });
 
                 string indexName, fieldName;
                 StringBuilder sbDetail = new StringBuilder();
@@ -234,19 +244,19 @@ namespace UtilZ.Dotnet.DBMySql.Core
                     sbDetail.Clear();
                     indexName = indexGroup.Key;
 
-                    sbDetail.AppendLine($"[Non_unique:{base.ConvertObject<string>(row["Non_unique"])}];");
-                    sbDetail.AppendLine($"[Seg_in_index:{base.ConvertObject<string>(row["Seq_in_index"])}];");
-                    sbDetail.AppendLine($"[Collation:{base.ConvertObject<string>(row["Collation"])}];");
-                    sbDetail.AppendLine($"[Cardinality:{base.ConvertObject<string>(row["Cardinality"])}];");
+                    sbDetail.AppendLine($"[Non_unique:{DBAccessEx.ConvertObject<string>(row["Non_unique"])}];");
+                    sbDetail.AppendLine($"[Seg_in_index:{DBAccessEx.ConvertObject<string>(row["Seq_in_index"])}];");
+                    sbDetail.AppendLine($"[Collation:{DBAccessEx.ConvertObject<string>(row["Collation"])}];");
+                    sbDetail.AppendLine($"[Cardinality:{DBAccessEx.ConvertObject<string>(row["Cardinality"])}];");
 
-                    sbDetail.AppendLine($"[Sub_part:{base.ConvertObject<string>(row["Sub_part"])}];");
-                    sbDetail.AppendLine($"[Packed:{base.ConvertObject<string>(row["Packed"])}];");
-                    sbDetail.AppendLine($"[Null:{base.ConvertObject<string>(row["Null"])}];");
-                    sbDetail.AppendLine($"[Index_type:{base.ConvertObject<string>(row["Index_type"])}];");
-                    sbDetail.AppendLine($"[Comment:{base.ConvertObject<string>(row["Comment"])}];");
-                    sbDetail.AppendLine($"[Index_comment:{base.ConvertObject<string>(row["Index_comment"])}];");
+                    sbDetail.AppendLine($"[Sub_part:{DBAccessEx.ConvertObject<string>(row["Sub_part"])}];");
+                    sbDetail.AppendLine($"[Packed:{DBAccessEx.ConvertObject<string>(row["Packed"])}];");
+                    sbDetail.AppendLine($"[Null:{DBAccessEx.ConvertObject<string>(row["Null"])}];");
+                    sbDetail.AppendLine($"[Index_type:{DBAccessEx.ConvertObject<string>(row["Index_type"])}];");
+                    sbDetail.AppendLine($"[Comment:{DBAccessEx.ConvertObject<string>(row["Comment"])}];");
+                    sbDetail.AppendLine($"[Index_comment:{DBAccessEx.ConvertObject<string>(row["Index_comment"])}];");
 
-                    fieldArr = indexGroup.Select(t => { return base.ConvertObject<string>(t["Column_name"]); }).ToArray();
+                    fieldArr = indexGroup.Select(t => { return DBAccessEx.ConvertObject<string>(t["Column_name"]); }).ToArray();
                     fieldName = string.Join(",", fieldArr);
 
                     indexinfoList.Add(new DBIndexInfo(tableName, indexName, fieldName, sbDetail.ToString()));
@@ -265,7 +275,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         {
             string sqlStr = @"select version()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            string dataBaseVersion = base.ConvertObject<string>(value);//5.6.25-log
+            string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);//5.6.25-log
             string verStr = dataBaseVersion.Substring(0, dataBaseVersion.IndexOf('.'));
             int version;
             if (!int.TryParse(verStr, out version))
@@ -285,7 +295,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         {
             string sqlStr = @"select CURRENT_TIMESTAMP()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<DateTime>(value);
+            return DBAccessEx.ConvertObject<DateTime>(value);
         }
     }
 }

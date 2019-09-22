@@ -53,8 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\MySqlClientFactoryZ.cs" />
+    <Compile Include="Core\MySqlDatabase.cs" />
     <Compile Include="Core\MySqlDBAccess.cs" />
-    <Compile Include="Core\MySqlDBAccess_DBInfo.cs" />
     <Compile Include="Core\MySqlDBFactory.cs" />
     <Compile Include="Core\MySqlDBInteraction.cs" />
     <Compile Include="Core\MySqlSqlFieldValueFormator.cs" />

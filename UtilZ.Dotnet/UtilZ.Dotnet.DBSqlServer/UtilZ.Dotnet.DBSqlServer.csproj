@@ -48,8 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SqlServerDatabase.cs" />
     <Compile Include="Core\SQLServerDBAccess.cs" />
-    <Compile Include="Core\SQLServerDBAccess_DBInfo.cs" />
     <Compile Include="Core\SQLServerDBFactory.cs" />
     <Compile Include="Core\SQLServerDBInteraction.cs" />
     <Compile Include="Core\SQLServerSqlFieldValueFormator.cs" />

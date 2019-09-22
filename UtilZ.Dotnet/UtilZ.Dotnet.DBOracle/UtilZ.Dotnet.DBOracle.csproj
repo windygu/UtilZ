@@ -52,8 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\OracleDatabase.cs" />
     <Compile Include="Core\OracleDBAccess.cs" />
-    <Compile Include="Core\OracleDBAccess_DBInfo.cs" />
     <Compile Include="Core\OracleDBFactory.cs" />
     <Compile Include="Core\OracleDBInteraction.cs" />
     <Compile Include="Core\OracleSqlFieldValueFormator.cs" />

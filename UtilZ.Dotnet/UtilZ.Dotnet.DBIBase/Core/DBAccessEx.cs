@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UtilZ.Dotnet.DBIBase.Config;
+using UtilZ.Dotnet.DBIBase.Connection;
 using UtilZ.Dotnet.DBIBase.Interface;
 using UtilZ.Dotnet.DBIBase.Model;
 
@@ -15,6 +16,33 @@ namespace UtilZ.Dotnet.DBIBase.Core
     /// </summary>
     public static class DBAccessEx
     {
+        /// <summary>
+        /// 转换ExecuteScalar结果为指定对象
+        /// </summary>
+        /// <typeparam name="T">目标类型</typeparam>
+        /// <param name="obj">ExecuteScalar结果</param>
+        /// <returns>转换结果</returns>
+        public static T ConvertObject<T>(object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+            {
+                return default(T);
+            }
+
+            T result;
+            Type conversionType = typeof(T);
+            if (obj.GetType() == conversionType)
+            {
+                result = (T)obj;
+            }
+            else
+            {
+                result = (T)Convert.ChangeType(obj, conversionType);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 设置命令配置参数
         /// </summary>

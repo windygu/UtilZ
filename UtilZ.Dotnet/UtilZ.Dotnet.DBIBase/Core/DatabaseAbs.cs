@@ -5,13 +5,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UtilZ.Dotnet.DBIBase.Connection;
+using UtilZ.Dotnet.DBIBase.Interface;
 using UtilZ.Dotnet.DBIBase.Model;
 using UtilZ.Dotnet.Ex.Model;
 
 namespace UtilZ.Dotnet.DBIBase.Core
 {
-    public abstract partial class DBAccessAbs
+    /// <summary>
+    /// 数据库基类
+    /// </summary>
+    public abstract partial class DatabaseAbs : IDatabase
     {
+        /// <summary>
+        /// 数据库访问对象
+        /// </summary>
+        protected readonly IDBAccess _dbAccess;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbAccess">数据库访问对象</param>
+        public DatabaseAbs(IDBAccess dbAccess)
+        {
+            this._dbAccess = dbAccess;
+        }
+
+        /// <summary>
+        /// 创建数据库连接
+        /// </summary>
+        /// <returns></returns>
+        protected IDbConnectionInfo CreateConnection()
+        {
+            return this._dbAccess.CreateConnection(DBVisitType.R);
+        }
+
         #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -25,7 +52,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 throw new ArgumentNullException(nameof(tableName));
             }
 
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveExistTable(connectionInfo.DbConnection, tableName);
             }
@@ -57,7 +84,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 throw new ArgumentNullException(nameof(fieldName));
             }
 
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveExistField(connectionInfo.DbConnection, tableName, fieldName);
             }
@@ -85,15 +112,17 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 throw new ArgumentNullException(nameof(tableName));
             }
 
-            //string sqlStr = $"select * from {tableName} where 0=1";
-            string sqlStr = $"select * from {tableName}";
-            string pagingAssistFieldName;
-            sqlStr = this.PrimitiveConvertSqlToPagingQuerySql(sqlStr, null, 1, 1, null, out pagingAssistFieldName);
-            DataTable dt = this.PrimitiveQueryDataToDataTable(sqlStr);
-            if (!string.IsNullOrWhiteSpace(pagingAssistFieldName))
-            {
-                dt.Columns.Remove(pagingAssistFieldName);
-            }
+            string sqlStr = $"select * from {tableName} where 0=1";
+            DataTable dt = this._dbAccess.QueryDataToDataTable(sqlStr);
+
+            //string sqlStr = $"select * from {tableName}";
+            //string pagingAssistFieldName;
+            //sqlStr = this.PrimitiveConvertSqlToPagingQuerySql(sqlStr, null, 1, 1, null, out pagingAssistFieldName);
+            //DataTable dt = this.PrimitiveQueryDataToDataTable(sqlStr);
+            //if (!string.IsNullOrWhiteSpace(pagingAssistFieldName))
+            //{
+            //    dt.Columns.Remove(pagingAssistFieldName);
+            //}
 
             var binaryCols = new List<string>();
 
@@ -121,7 +150,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 throw new ArgumentNullException(nameof(tableName));
             }
 
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveGetTableFieldInfo(connectionInfo.DbConnection, tableName);
             }
@@ -147,7 +176,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 throw new ArgumentNullException(nameof(tableName));
             }
 
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveQueryPriKeyField(connectionInfo.DbConnection, tableName);
             }
@@ -186,7 +215,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>当前用户有权限的所有表集合</returns>
         public List<DBTableInfo> GetTableInfoList(bool getFieldInfo = false)
         {
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveGetTableInfoList(connectionInfo.DbConnection, getFieldInfo);
             }
@@ -213,7 +242,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
                 throw new ArgumentNullException(nameof(tableName));
             }
 
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 DBIndexInfoCollection indexInfoCollection;
                 if (getFieldInfo)
@@ -247,7 +276,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>表索引信息集合</returns>
         public DBIndexInfoCollection GetTableIndexs(string tableName)
         {
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveGetTableIndexs(connectionInfo.DbConnection, tableName);
             }
@@ -267,7 +296,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>数据库版本信息</returns>
         public DataBaseVersionInfo GetDataBaseVersion()
         {
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveGetDataBaseVersion(connectionInfo.DbConnection);
             }
@@ -286,7 +315,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>数据库系统时间</returns>
         public DateTime GetDataBaseSysTime()
         {
-            using (var connectionInfo = new DbConnectionInfo(this._dbid, Model.DBVisitType.R))
+            using (var connectionInfo = this.CreateConnection())
             {
                 return this.PrimitiveGetDataBaseSysTime(connectionInfo.DbConnection);
             }

@@ -4,14 +4,24 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UtilZ.Dotnet.DBIBase.Connection;
 using UtilZ.Dotnet.DBIBase.Core;
+using UtilZ.Dotnet.DBIBase.Interface;
 using UtilZ.Dotnet.DBIBase.Model;
 
 namespace UtilZ.Dotnet.DBSqlServer.Core
 {
-    internal partial class SQLServerDBAccess
+    internal class SqlServerDatabase : DatabaseAbs
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbAccess">数据库访问对象</param>
+        public SqlServerDatabase(IDBAccess dbAccess)
+            : base(dbAccess)
+        {
+
+        }
+
         #region 判断表或字段是否存在
         /// <summary>
         /// 判断表是否存在[存在返回true,不存在返回false]
@@ -25,7 +35,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
             //string sqlStr = @"select COUNT(0) from sys.tables where name='表名' and type = 'u';";
             string sqlStr = $@"select COUNT(0) from sys.tables where name='{tableName}' and type = 'u'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
 
         /// <summary>
@@ -39,7 +49,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
         {
             string sqlStr = $@"select count(0) from syscolumns where name='{fieldName}' and objectproperty(id,'IsUserTable')=1 and object_name(id)='{tableName}'";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<int>(value) > 0;
+            return DBAccessEx.ConvertObject<int>(value) > 0;
         }
         #endregion
 
@@ -62,7 +72,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
                 colDBType.Add(col.ColumnName, col.DataType);
             }
 
-            IDbCommand cmd = this.CreateCommand(con);
+            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con);
             cmd.CommandText = string.Format(@"SELECT  C.name as [字段名]
 	                                                    ,T.name as [字段类型]
                                                         ,convert(bit,C.IsNullable)  as [可否为空]
@@ -175,7 +185,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
             var indexTupleRowArr = new Tuple<string, DataRow>[dtIndex.Rows.Count];
             for (int i = 0; i < dtIndex.Rows.Count; i++)
             {
-                indexTupleRowArr[i] = new Tuple<string, DataRow>(base.ConvertObject<string>(dtIndex.Rows[i]["TableName"]), dtIndex.Rows[i]);
+                indexTupleRowArr[i] = new Tuple<string, DataRow>(DBAccessEx.ConvertObject<string>(dtIndex.Rows[i]["TableName"]), dtIndex.Rows[i]);
             }
 
             DataRow[] indexArr;
@@ -320,7 +330,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
 
         private DBIndexInfoCollection ConvertTableIndexs(string tableName, DataRow[] rowArr)
         {
-            IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return base.ConvertObject<string>(t["IndexName"]); });
+            IEnumerable<IGrouping<string, DataRow>> indexGroups = rowArr.GroupBy(t => { return DBAccessEx.ConvertObject<string>(t["IndexName"]); });
             string indexName, fieldName, detail;
             DataRow row;
             string[] fieldArr;
@@ -330,9 +340,9 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
             {
                 row = indexGroup.First();
                 indexName = indexGroup.Key;
-                detail = $"[ColumnOrder:{base.ConvertObject<string>(row["ColumnOrder"])}]";
+                detail = $"[ColumnOrder:{DBAccessEx.ConvertObject<string>(row["ColumnOrder"])}]";
 
-                fieldArr = indexGroup.Select(t => { return base.ConvertObject<string>(t["ColumnName"]); }).ToArray();
+                fieldArr = indexGroup.Select(t => { return DBAccessEx.ConvertObject<string>(t["ColumnName"]); }).ToArray();
                 fieldName = string.Join(",", fieldArr);
 
                 indexinfoList.Add(new DBIndexInfo(tableName, indexName, fieldName, detail));
@@ -350,7 +360,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         {
             string sqlStr = @"select @@version";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            string dataBaseVersion = base.ConvertObject<string>(value);
+            string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);
 
             //dataBaseVersion:Microsoft SQL Server 2008 R2 (RTM) - 10.50.1600.1 (X64)   Apr  2 2010 15:48:46   Copyright (c) Microsoft Corporation  Data Center Edition (64-bit) on Windows NT 6.1 <X64> (Build 7600: )
             /*******************************************************************************************************************
@@ -380,7 +390,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         {
             string sqlStr = @"select GETDATE()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
-            return base.ConvertObject<DateTime>(value);
+            return DBAccessEx.ConvertObject<DateTime>(value);
         }
     }
 }

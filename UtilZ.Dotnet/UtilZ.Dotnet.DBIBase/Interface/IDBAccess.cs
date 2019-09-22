@@ -39,6 +39,11 @@ namespace UtilZ.Dotnet.DBIBase.Interface
         /// sql语句最大长度
         /// </summary>
         long SqlMaxLength { get; }
+
+        /// <summary>
+        /// 数据库对象
+        /// </summary>
+        IDatabase Database { get; }
         #endregion
 
         #region ADO.NET执行原子操作方法
