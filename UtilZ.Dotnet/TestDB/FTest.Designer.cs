@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnDatabasePropertyInfo = new System.Windows.Forms.Button();
+            this.btnEF = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnExistTable = new System.Windows.Forms.Button();
             this.ckGetFieldInfo = new System.Windows.Forms.CheckBox();
@@ -49,7 +51,8 @@
             this.comboBoxDB = new System.Windows.Forms.ComboBox();
             this.btnDataBaseSysTime = new System.Windows.Forms.Button();
             this.logControl = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF();
-            this.btnEF = new System.Windows.Forms.Button();
+            this.btnUserName = new System.Windows.Forms.Button();
+            this.btnDataBaseName = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,6 +69,9 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnDataBaseName);
+            this.splitContainer1.Panel1.Controls.Add(this.btnUserName);
+            this.splitContainer1.Panel1.Controls.Add(this.btnDatabasePropertyInfo);
             this.splitContainer1.Panel1.Controls.Add(this.btnEF);
             this.splitContainer1.Panel1.Controls.Add(this.btnClear);
             this.splitContainer1.Panel1.Controls.Add(this.btnExistTable);
@@ -93,6 +99,26 @@
             this.splitContainer1.Size = new System.Drawing.Size(900, 650);
             this.splitContainer1.SplitterDistance = 202;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // btnDatabasePropertyInfo
+            // 
+            this.btnDatabasePropertyInfo.Location = new System.Drawing.Point(95, 102);
+            this.btnDatabasePropertyInfo.Name = "btnDatabasePropertyInfo";
+            this.btnDatabasePropertyInfo.Size = new System.Drawing.Size(155, 23);
+            this.btnDatabasePropertyInfo.TabIndex = 20;
+            this.btnDatabasePropertyInfo.Text = "DatabasePropertyInfo";
+            this.btnDatabasePropertyInfo.UseVisualStyleBackColor = true;
+            this.btnDatabasePropertyInfo.Click += new System.EventHandler(this.btnDatabasePropertyInfo_Click);
+            // 
+            // btnEF
+            // 
+            this.btnEF.Location = new System.Drawing.Point(13, 102);
+            this.btnEF.Name = "btnEF";
+            this.btnEF.Size = new System.Drawing.Size(75, 23);
+            this.btnEF.TabIndex = 19;
+            this.btnEF.Text = "EF";
+            this.btnEF.UseVisualStyleBackColor = true;
+            this.btnEF.Click += new System.EventHandler(this.btnEF_Click);
             // 
             // btnClear
             // 
@@ -301,15 +327,25 @@
             this.logControl.Size = new System.Drawing.Size(900, 444);
             this.logControl.TabIndex = 0;
             // 
-            // btnEF
+            // btnUserName
             // 
-            this.btnEF.Location = new System.Drawing.Point(13, 102);
-            this.btnEF.Name = "btnEF";
-            this.btnEF.Size = new System.Drawing.Size(75, 23);
-            this.btnEF.TabIndex = 19;
-            this.btnEF.Text = "EF";
-            this.btnEF.UseVisualStyleBackColor = true;
-            this.btnEF.Click += new System.EventHandler(this.btnEF_Click);
+            this.btnUserName.Location = new System.Drawing.Point(13, 131);
+            this.btnUserName.Name = "btnUserName";
+            this.btnUserName.Size = new System.Drawing.Size(75, 23);
+            this.btnUserName.TabIndex = 21;
+            this.btnUserName.Text = "UserName";
+            this.btnUserName.UseVisualStyleBackColor = true;
+            this.btnUserName.Click += new System.EventHandler(this.btnUserName_Click);
+            // 
+            // btnDataBaseName
+            // 
+            this.btnDataBaseName.Location = new System.Drawing.Point(95, 131);
+            this.btnDataBaseName.Name = "btnDataBaseName";
+            this.btnDataBaseName.Size = new System.Drawing.Size(93, 23);
+            this.btnDataBaseName.TabIndex = 22;
+            this.btnDataBaseName.Text = "DataBaseName";
+            this.btnDataBaseName.UseVisualStyleBackColor = true;
+            this.btnDataBaseName.Click += new System.EventHandler(this.btnDataBaseName_Click);
             // 
             // FTest
             // 
@@ -354,6 +390,9 @@
         private System.Windows.Forms.CheckBox ckGetFieldInfo;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnEF;
+        private System.Windows.Forms.Button btnDatabasePropertyInfo;
+        private System.Windows.Forms.Button btnDataBaseName;
+        private System.Windows.Forms.Button btnUserName;
     }
 }
 

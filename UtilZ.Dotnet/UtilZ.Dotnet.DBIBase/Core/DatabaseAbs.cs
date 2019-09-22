@@ -66,6 +66,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>存在返回true,不存在返回false</returns>
         protected abstract bool PrimitiveExistTable(IDbConnection con, string tableName);
 
+
         /// <summary>
         /// 判断表中是否存在字段[存在返回true,不存在返回false]
         /// </summary>
@@ -164,6 +165,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>字段信息集合</returns>
         protected abstract List<DBFieldInfo> PrimitiveGetTableFieldInfo(IDbConnection con, string tableName);
 
+
         /// <summary>
         /// 查询主键字段集合
         /// </summary>
@@ -189,6 +191,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="tableName">表名</param>
         /// <returns>主键列名集合</returns>
         protected abstract List<string> PrimitiveQueryPriKeyField(IDbConnection con, string tableName);
+
 
         /// <summary>
         /// 获取字段的公共语言运行时类型字典集合
@@ -228,6 +231,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="getFieldInfo">是否获取字段信息[true:获取字段信息;false:不获取;默认不获取]</param>
         /// <returns>当前用户有权限的所有表集合</returns>
         protected abstract List<DBTableInfo> PrimitiveGetTableInfoList(IDbConnection con, bool getFieldInfo);
+
 
         /// <summary>
         /// 获取表信息[表不存在返回null]
@@ -269,6 +273,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         protected abstract DBTableInfo PrimitiveGetTableInfoByName(IDbConnection con, string tableName, bool getFieldInfo, DBIndexInfoCollection indexInfoCollection);
         #endregion
 
+
         /// <summary>
         /// 获取表索引信息集合
         /// </summary>
@@ -290,6 +295,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>表索引信息集合</returns>
         protected abstract DBIndexInfoCollection PrimitiveGetTableIndexs(IDbConnection con, string tableName);
 
+
         /// <summary>
         /// 获取数据库版本信息
         /// </summary>
@@ -309,6 +315,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>数据库版本信息</returns>
         protected abstract DataBaseVersionInfo PrimitiveGetDataBaseVersion(IDbConnection con);
 
+
         /// <summary>
         /// 获取数据库系统时间
         /// </summary>
@@ -327,5 +334,65 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="con">数据库连接对象</param>
         /// <returns>数据库系统时间</returns>
         protected abstract DateTime PrimitiveGetDataBaseSysTime(IDbConnection con);
+
+
+        /// <summary>
+        /// 获取当前登录用户名
+        /// </summary>
+        /// <returns>当前登录用户名</returns>
+        public string GetLoginUserName()
+        {
+            using (var connectionInfo = this.CreateConnection())
+            {
+                return this.PrimitiveGetLoginUserName(connectionInfo.DbConnection);
+            }
+        }
+
+        /// <summary>
+        /// 获取当前登录用户名
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <returns>当前登录用户名</returns>
+        protected abstract string PrimitiveGetLoginUserName(IDbConnection con);
+
+
+        /// <summary>
+        /// 获取数据库名称
+        /// </summary>
+        /// <returns>数据库名称</returns>
+        public string GetDatabaseName()
+        {
+            using (var connectionInfo = this.CreateConnection())
+            {
+                return this.PrimitiveGetDatabaseName(connectionInfo.DbConnection);
+            }
+        }
+
+        /// <summary>
+        /// 获取数据库名称
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <returns>数据库名称</returns>
+        protected abstract string PrimitiveGetDatabaseName(IDbConnection con);
+
+
+
+        private DatabasePropertyInfo _lastDatabasePropertyInfo = null;
+        /// <summary>
+        /// 获取数据库属性信息
+        /// </summary>
+        /// <returns>数据库属性信息</returns>
+        public DatabasePropertyInfo GetDatabasePropertyInfo()
+        {
+            this._lastDatabasePropertyInfo = this.PrimitiveGetDatabasePropertyInfo(this._lastDatabasePropertyInfo);
+            return this._lastDatabasePropertyInfo;
+        }
+
+        /// <summary>
+        /// 获取数据库属性信息
+        /// </summary>
+        /// <param name="lastDatabasePropertyInfo">前一次获取到的数据库属性信息</param>
+        /// <returns>数据库属性信息</returns>
+        protected abstract DatabasePropertyInfo PrimitiveGetDatabasePropertyInfo(DatabasePropertyInfo lastDatabasePropertyInfo);
     }
 }

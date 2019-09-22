@@ -97,6 +97,7 @@
     <Compile Include="Factory\DBFactoryManager.cs" />
     <Compile Include="Connection\DbConnectionInfo.cs" />
     <Compile Include="Connection\DbConnectionPool.cs" />
+    <Compile Include="Model\DatabasePropertyInfo.cs" />
     <Compile Include="Model\DataBaseVersionInfo.cs" />
     <Compile Include="Model\DBFieldType.cs" />
     <Compile Include="Model\DBHelper.cs" />

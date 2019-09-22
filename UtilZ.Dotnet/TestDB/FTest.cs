@@ -755,5 +755,50 @@ namespace TestDB
             }
 
         }
+
+        private void btnDatabasePropertyInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
+                IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
+                DatabasePropertyInfo databasePropertyInfo = dbAccess.Database.GetDatabasePropertyInfo();
+                Loger.Info($"[{config.ConName}] [{databasePropertyInfo.ToString()}]");
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
+        }
+
+        private void btnUserName_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
+                IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
+                string userName = dbAccess.Database.GetLoginUserName();
+                Loger.Info($"[{config.ConName}] [LoginUserName:{userName}]");
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
+        }
+
+        private void btnDataBaseName_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
+                IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
+                string databaseName = dbAccess.Database.GetDatabaseName();
+                Loger.Info($"[{config.ConName}] [DatabaseName:{databaseName}]");
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
+        }
     }
 }

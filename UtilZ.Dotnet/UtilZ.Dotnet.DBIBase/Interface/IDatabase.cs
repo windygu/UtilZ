@@ -93,5 +93,23 @@ namespace UtilZ.Dotnet.DBIBase.Interface
         /// </summary>
         /// <returns>数据库系统时间</returns>
         DateTime GetDataBaseSysTime();
+
+        /// <summary>
+        /// 获取当前登录用户名
+        /// </summary>
+        /// <returns>当前登录用户名</returns>
+        string GetLoginUserName();
+
+        /// <summary>
+        /// 获取数据库名称
+        /// </summary>
+        /// <returns>数据库名称</returns>
+        string GetDatabaseName();
+
+        /// <summary>
+        /// 获取数据库属性信息
+        /// </summary>
+        /// <returns>数据库属性信息</returns>
+        DatabasePropertyInfo GetDatabasePropertyInfo();
     }
 }

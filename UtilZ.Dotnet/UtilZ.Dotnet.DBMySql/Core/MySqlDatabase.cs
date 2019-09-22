@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UtilZ.Dotnet.DBIBase.Core;
 using UtilZ.Dotnet.DBIBase.Interface;
 using UtilZ.Dotnet.DBIBase.Model;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.DBMySql.Core
 {
@@ -297,5 +299,170 @@ namespace UtilZ.Dotnet.DBMySql.Core
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             return DBAccessEx.ConvertObject<DateTime>(value);
         }
+
+        /// <summary>
+        /// 获取当前登录用户名
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <returns>当前登录用户名</returns>
+        protected override string PrimitiveGetLoginUserName(IDbConnection con)
+        {
+            string userName;
+            if (string.IsNullOrWhiteSpace(base._dbAccess.Config.Account))
+            {
+                string sqlStr = @"select user()";
+                object obj = base.PrimitiveExecuteScalar(con, sqlStr);
+                userName = obj.ToString();
+                int index = userName.IndexOf('@');
+                if (index > 0)
+                {
+                    userName = userName.Substring(0, index);
+                }
+
+                base._dbAccess.Config.Account = userName;
+            }
+            else
+            {
+                userName = base._dbAccess.Config.Account;
+            }
+
+            return userName;
+        }
+
+        /// <summary>
+        /// 获取数据库名称
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <returns>数据库名称</returns>
+        protected override string PrimitiveGetDatabaseName(IDbConnection con)
+        {
+            string databaseName;
+            if (string.IsNullOrWhiteSpace(base._dbAccess.Config.DatabaseName))
+            {
+                string queryDatabaseNameSqlStr = @"select database()";
+                object obj = base.PrimitiveExecuteScalar(con, queryDatabaseNameSqlStr);
+                databaseName = obj.ToString();
+                base._dbAccess.Config.DatabaseName = databaseName;
+            }
+            else
+            {
+                databaseName = base._dbAccess.Config.DatabaseName;
+            }
+
+            return databaseName;
+        }
+
+        #region 获取数据库属性信息
+        /// <summary>
+        /// 获取数据库属性信息
+        /// </summary>
+        /// <param name="lastDatabasePropertyInfo">前一次获取到的数据库属性信息</param>
+        /// <returns>数据库属性信息</returns>
+        protected override DatabasePropertyInfo PrimitiveGetDatabasePropertyInfo(DatabasePropertyInfo lastDatabasePropertyInfo)
+        {
+            using (var con = base.CreateConnection())
+            {
+                var dbConnection = con.DbConnection;
+                long memorySize = this.PrimitiveGetMemorySize(dbConnection);
+                long diskSize = this.PrimitiveGetDiskSize(dbConnection);
+                int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
+                int connectCount, concurrentConnectCount;
+                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+
+                DateTime startTime, createtTime;
+                if (lastDatabasePropertyInfo == null)
+                {
+                    startTime = this.PrimitiveGetStartTime(dbConnection);
+                    createtTime = this.PrimitiveGetCreatetTime(dbConnection);
+                }
+                else
+                {
+                    startTime = lastDatabasePropertyInfo.StartTime;
+                    createtTime = lastDatabasePropertyInfo.CreatetTime;
+                }
+
+                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
+                    connectCount, concurrentConnectCount, startTime, createtTime);
+            }
+        }
+
+        /// <summary>
+        /// 获取内存占用大小，单位/字节
+        /// </summary>
+        /// <returns>内存占用大小</returns>
+        private long PrimitiveGetMemorySize(DbConnection dbConnection)
+        {
+            string sqlStr = @"SELECT (@@key_buffer_size + @@innodb_buffer_pool_size + @@query_cache_size + @@tmp_table_size) AS result";
+            object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
+            return DBAccessEx.ConvertObject<long>(obj);
+        }
+
+        /// <summary>
+        /// 获取磁盘空间占用大小，单位/字节
+        /// </summary>
+        /// <returns>磁盘空间占用大小</returns>
+        private long PrimitiveGetDiskSize(DbConnection dbConnection)
+        {
+            string dataBaseName = this.PrimitiveGetDatabaseName(dbConnection);
+            string sqlStr = $@"SELECT sum(DATA_LENGTH+INDEX_LENGTH) FROM information_schema.TABLES WHERE TABLE_SCHEMA='{dataBaseName}'";
+            object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
+            return DBAccessEx.ConvertObject<long>(obj);
+        }
+
+        /// <summary>
+        /// 获取最大连接数
+        /// </summary>
+        /// <returns>最大连接数</returns>
+        private int PrimitiveGetMaxConnectCount(DbConnection dbConnection)
+        {
+            string sqlStr = @"show variables like 'max_connections'";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
+            object obj = dt.Rows[0][1];
+            return DBAccessEx.ConvertObject<int>(obj);
+        }
+
+        /// <summary>
+        /// 获取连接数和并发连接数
+        /// </summary>
+        /// <returns>连接数</returns>
+        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        {
+            string sqlStr = @"show full processlist";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
+            connectCount = dt.Rows.Count;
+            concurrentConnectCount = connectCount - dt.Select("Command='Sleep'").Length;
+        }
+
+        /// <summary>
+        /// 获取数据库启动时间
+        /// </summary>
+        /// <returns>数据库启动时间</returns>
+        private DateTime PrimitiveGetStartTime(DbConnection dbConnection)
+        {
+            //原理:当前时间减去数据库运行时长,则得到数据库启动时间
+            string queryRunDurationSqlStr = @"show global status like 'uptime'";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, queryRunDurationSqlStr);
+            object obj = dt.Rows[0][1];
+            double duration = DBAccessEx.ConvertObject<double>(obj);//数据库启动后运行时长，单位为秒            
+
+            DateTime currentTime = this.PrimitiveGetDataBaseSysTime(dbConnection);
+            duration = 0 - duration;
+            DateTime startTime = currentTime.AddSeconds(duration);
+            return startTime;
+        }
+
+        /// <summary>
+        /// 获取数据库创建时间
+        /// </summary>
+        /// <returns>数据库创建时间</returns>
+        private DateTime PrimitiveGetCreatetTime(DbConnection dbConnection)
+        {
+            string dataBaseName = this.PrimitiveGetDatabaseName(dbConnection);
+            string sqlStr = $@"select MIN(CREATE_TIME) from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{dataBaseName}'";
+            object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
+            DateTime createtTime = DBAccessEx.ConvertObject<DateTime>(obj);
+            return createtTime;
+        }
+        #endregion
     }
 }

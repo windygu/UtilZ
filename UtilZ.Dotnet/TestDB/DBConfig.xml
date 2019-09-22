@@ -19,7 +19,7 @@
          ConName="OracleDB"
          DBConInfoType="1"
          Host="192.168.0.106"
-         DatabaseName="NTestDB"
+         DatabaseName="NTESTDB"
          Account="DBUSER"
          Password="asd123"
          DBFactory="UtilZ.Dotnet.DBOracle.Core.OracleDBFactory,DBPlugins\Oracle\UtilZ.Dotnet.DBOracle"/>

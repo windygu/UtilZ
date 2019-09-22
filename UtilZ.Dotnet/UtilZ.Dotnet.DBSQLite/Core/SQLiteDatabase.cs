@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Data.SQLite;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -347,5 +351,160 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             return DBAccessEx.ConvertObject<DateTime>(value);
         }
 
+        /// <summary>
+        /// 获取当前登录用户名
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <returns>当前登录用户名</returns>
+        protected override string PrimitiveGetLoginUserName(IDbConnection con)
+        {
+            return base._dbAccess.Config.Account;
+        }
+
+        /// <summary>
+        /// 获取数据库名称
+        /// </summary>
+        /// <param name="con">数据库连接对象</param>
+        /// <returns>数据库名称</returns>
+        protected override string PrimitiveGetDatabaseName(IDbConnection con)
+        {
+            string databaseName;
+            if (string.IsNullOrWhiteSpace(base._dbAccess.Config.DatabaseName))
+            {
+                var scsb = new SQLiteConnectionStringBuilder(con.ConnectionString);
+                databaseName = scsb.DataSource;
+                base._dbAccess.Config.DatabaseName = databaseName;
+            }
+            else
+            {
+                databaseName = base._dbAccess.Config.DatabaseName;
+            }
+
+            return databaseName;
+        }
+
+        #region 获取数据库属性信息
+        /// <summary>
+        /// 获取数据库属性信息
+        /// </summary>
+        /// <param name="lastDatabasePropertyInfo">前一次获取到的数据库属性信息</param>
+        /// <returns>数据库属性信息</returns>
+        protected override DatabasePropertyInfo PrimitiveGetDatabasePropertyInfo(DatabasePropertyInfo lastDatabasePropertyInfo)
+        {
+            using (var con = base.CreateConnection())
+            {
+                var dbConnection = con.DbConnection;
+                long memorySize = this.PrimitiveGetMemorySize(dbConnection);
+                long diskSize = this.PrimitiveGetDiskSize(dbConnection);
+                int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
+                int connectCount, concurrentConnectCount;
+                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+
+                DateTime startTime, createtTime;
+                if (lastDatabasePropertyInfo == null)
+                {
+                    startTime = this.PrimitiveGetStartTime(dbConnection);
+                    createtTime = this.PrimitiveGetCreatetTime(dbConnection);
+                }
+                else
+                {
+                    startTime = lastDatabasePropertyInfo.StartTime;
+                    createtTime = lastDatabasePropertyInfo.CreatetTime;
+                }
+
+                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
+                    connectCount, concurrentConnectCount, startTime, createtTime);
+            }
+        }
+
+        /// <summary>
+        /// 获取内存占用大小，单位/字节
+        /// </summary>
+        /// <returns>内存占用大小</returns>
+        private long PrimitiveGetMemorySize(DbConnection dbConnection)
+        {
+            return 0L;
+        }
+
+        /// <summary>
+        /// 获取磁盘空间占用大小，单位/字节
+        /// </summary>
+        /// <returns>磁盘空间占用大小</returns>
+        private long PrimitiveGetDiskSize(DbConnection dbConnection)
+        {
+            string databaseFilePath = this.PrimitiveGetDatabaseName(dbConnection);
+            var fileInfo = new FileInfo(databaseFilePath);
+            if (fileInfo.Exists)
+            {
+                return fileInfo.Length;
+            }
+            else
+            {
+                return 0L;
+            }
+        }
+
+        /// <summary>
+        /// 获取最大连接数
+        /// </summary>
+        /// <returns>最大连接数</returns>
+        private int PrimitiveGetMaxConnectCount(DbConnection dbConnection)
+        {
+            var config = base._dbAccess.Config;
+            int maxConnectCount = 0;
+            if (config.ReadConCount < 0)
+            {
+                return int.MaxValue;
+            }
+            else
+            {
+                maxConnectCount += config.ReadConCount;
+            }
+
+            if (config.WriteConCount > 0)
+            {
+                maxConnectCount += config.WriteConCount;
+            }
+
+            return maxConnectCount;
+        }
+
+        /// <summary>
+        /// 获取连接数和并发连接数
+        /// </summary>
+        /// <returns>连接数</returns>
+        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        {
+            connectCount = -1;
+            concurrentConnectCount = -1;
+        }
+
+        /// <summary>
+        /// 获取数据库启动时间
+        /// </summary>
+        /// <returns>数据库启动时间</returns>
+        private DateTime PrimitiveGetStartTime(DbConnection dbConnection)
+        {
+            return Process.GetCurrentProcess().StartTime;
+        }
+
+        /// <summary>
+        /// 获取数据库创建时间
+        /// </summary>
+        /// <returns>数据库创建时间</returns>
+        private DateTime PrimitiveGetCreatetTime(DbConnection dbConnection)
+        {
+            string databaseFilePath = this.PrimitiveGetDatabaseName(dbConnection);
+            var fileInfo = new FileInfo(databaseFilePath);
+            if (fileInfo.Exists)
+            {
+                return fileInfo.CreationTime;
+            }
+            else
+            {
+                return Process.GetCurrentProcess().StartTime;
+            }
+        }
+        #endregion
     }
 }

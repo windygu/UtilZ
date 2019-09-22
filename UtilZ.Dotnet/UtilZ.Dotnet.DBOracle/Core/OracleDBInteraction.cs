@@ -48,9 +48,11 @@ namespace UtilZ.Dotnet.DBOracle.Core
                 config.Port = 1521;
             }
 
-            return string.Format(@"User Id={0};Password={1};Data Source={2}:{3}/{4}", config.Account, config.Password, config.Host, config.Port, config.DatabaseName);
+            //注：不同版本的Oracle.ManagedDataAccess.dll，连接字符串不一定兼容,以下只启用支持的版本
+            //return string.Format(@"User Id={0};Password={1};Data Source={2}:{3}/{4}", config.Account, config.Password, config.Host, config.Port, config.DatabaseName);
             //return string.Format(@"User Id={0};Password={1};Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={2})(PORT={3})))(CONNECT_DATA=(SERVICE_NAME={4})))",
-            //config.Account, config.Password, config.Host, config.Port, config.DatabaseName);
+            //config.Account, config.Password, config.Host, config.Port, config.DatabaseName);            
+            return $@"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={config.Host})(PORT={config.Port}))(CONNECT_DATA=(SID={config.DatabaseName})));User Id={config.Account};Password={config.Password}";
         }
 
         /// <summary>

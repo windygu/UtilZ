@@ -72,14 +72,7 @@ namespace UtilZ.Dotnet.DBIBase.Connection
             DbProviderFactory dbProviderFactory = this._interaction.GetProviderFactory();
             var con = dbProviderFactory.CreateConnection();
             con.ConnectionString = conStr;
-            try
-            {
-                con.Open();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            //con.Open();
             return con;
         }
 
