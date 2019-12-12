@@ -17,7 +17,7 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
         /// </summary>
         /// <param name="partAsynUIPara">异步等待UI参数</param>
         /// <param name="asynWait">异步等待</param>
-        public static void SetAsynWait(PartAsynUIPara partAsynUIPara, IPartAsynWait asynWait)
+        public static void SetAsynWait(PartAsynWaitParaAbs partAsynUIPara, IPartAsynWait asynWait)
         {
             partAsynUIPara.AsynWait = asynWait;
         }
@@ -27,7 +27,7 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
         /// </summary>
         /// <param name="partAsynUIPara">异步等待UI参数</param>
         /// <returns>锁结果</returns>
-        public static bool Lock(PartAsynUIPara partAsynUIPara)
+        public static bool Lock(PartAsynWaitParaAbs partAsynUIPara)
         {
             return partAsynUIPara.Lock();
         }
@@ -37,7 +37,7 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
         /// </summary>
         /// <param name="partAsynUIPara">异步等待UI参数</param>
         /// <returns>解锁结果</returns>
-        public static bool UnLock(PartAsynUIPara partAsynUIPara)
+        public static bool UnLock(PartAsynWaitParaAbs partAsynUIPara)
         {
             return partAsynUIPara.UnLock();
         }

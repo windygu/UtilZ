@@ -173,17 +173,18 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V1
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Description("获取或设置动画背景色")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public Color AsynWaitBackground
+        public object ShadeBackground
         {
             get { return this.BackColor; }
             set
             {
-                if (this.BackColor == value)
+                var color = (Color)value;
+                if (this.BackColor == color)
                 {
                     return;
                 }
 
-                this.BackColor = value;
+                this.BackColor = color;
                 //this.metroRotaionIndicator.AnimalBackground = System.Windows.Media.Color.FromArgb(value.A, value.R, value.G, value.B);
             }
 

@@ -32,7 +32,9 @@ namespace UtilZ.Dotnet.WindowEx.WPF
             //bool isInDesignMode = DesignerProperties.GetIsInDesignMode(ele);
 
             //这两种方式有时会失效（具体什么情况下会失效不明）
-            return (bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue;
+            //return (bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue;
+
+            return DesignerProperties.GetIsInDesignMode(ele);
         }
 
         /// <summary>

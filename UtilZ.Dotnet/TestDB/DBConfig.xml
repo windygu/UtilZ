@@ -44,6 +44,12 @@
          Password="qwe123"
          DBFactory="UtilZ.Dotnet.DBPostgreSQL.Core.PostgreSQLDBFactory,DBPlugins\PostgreSQL\UtilZ.Dotnet.DBPostgreSQL"/>
 
+
+    <DBConfigItem DBID="6"
+         ConName="OMData"
+         DBConInfoType="0"
+         ConStr="data source=192.168.10.81;initial catalog=OMData;user id=sa;password=Lf123456"
+         DBFactory="UtilZ.Dotnet.DBSqlServer.Core.SQLServerDBFactory,DBPlugins\SQLServer\UtilZ.Dotnet.DBSqlServer"/>
     
     
     <!--<DBConfigItem Parser=""

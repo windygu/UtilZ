@@ -20,7 +20,7 @@ namespace TestE.Winform
         {
             InitializeComponent();
         }
-
+        
         private readonly List<CobITemInfo> items = new List<CobITemInfo>();
         private void FTestPartAsynWait_Load(object sender, EventArgs e)
         {
@@ -83,7 +83,7 @@ namespace TestE.Winform
                 MessageBox.Show(this, str);
             };
 
-            PartAsynWaitHelper.Wait(para, this);
+            WinformPartAsynWaitHelper.Wait(para, this);
         }
 
         private void button2_Click(object sender, EventArgs e)

@@ -397,8 +397,9 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                 long memorySize = this.PrimitiveGetMemorySize(dbConnection);
                 long diskSize = this.PrimitiveGetDiskSize(dbConnection);
                 int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
-                int connectCount, concurrentConnectCount;
-                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+                int totalConnectCount, concurrentConnectCount;
+                this.PrimitiveGetTotalConnectCountAndConcurrentConnectCount(dbConnection, out totalConnectCount, out concurrentConnectCount);
+                int activeConnectCount = concurrentConnectCount;
 
                 DateTime startTime, createtTime;
                 if (lastDatabasePropertyInfo == null)
@@ -412,8 +413,11 @@ namespace UtilZ.Dotnet.DBSQLite.Core
                     createtTime = lastDatabasePropertyInfo.CreatetTime;
                 }
 
+                List<string> allUserNameList = this.GetAllUserNameList(dbConnection);
+                float cpuRate = 0f;
+
                 return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
-                    connectCount, concurrentConnectCount, startTime, createtTime);
+                    totalConnectCount, concurrentConnectCount, activeConnectCount, allUserNameList, startTime, createtTime, cpuRate);
             }
         }
 
@@ -473,10 +477,15 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// 获取连接数和并发连接数
         /// </summary>
         /// <returns>连接数</returns>
-        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int totalConnectCount, out int concurrentConnectCount)
         {
-            connectCount = -1;
+            totalConnectCount = -1;
             concurrentConnectCount = -1;
+        }
+
+        private List<string> GetAllUserNameList(DbConnection dbConnection)
+        {
+            return new List<string>();
         }
 
         /// <summary>

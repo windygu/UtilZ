@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 using UtilZ.Dotnet.Ex.Transfer.Net;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 
@@ -38,7 +39,11 @@ namespace WinFormA
                 const int maxLogCount = 100000;
                 logControl.MaxItemCount = maxLogCount;
                 logControl.SetLogRefreshInfo(3, maxLogCount);
-                RedirectOuputCenter.Add(new RedirectOutputChannel(this.LogRedirectOuput, "RedirectToUI"));
+                var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, "RedirectToUI");
+                if (redirectAppenderToUI != null)
+                {
+                    redirectAppenderToUI.RedirectOuput += RedirectOuput;
+                }
                 this._config = new TransferConfig();
                 numParallelThreadCount.Maximum = TransferConstant.PARALLEL_THREAD_MAX_COUN;
                 checkBoxLockLog.Checked = logControl.IsLock;
@@ -60,7 +65,7 @@ namespace WinFormA
             }
         }
 
-        private void LogRedirectOuput(RedirectOuputItem e)
+        private void RedirectOuput(object sender, RedirectOuputArgs e)
         {
             try
             {

@@ -28,7 +28,8 @@ namespace UtilZ.Dotnet.DBPostgreSQL.Core
             : base()
         {
             this._dbInteraction = new PostgreSQLDBInteraction();
-            this._databaseTypeName = typeof(NpgsqlConnection).Assembly.FullName;
+            //this._databaseTypeName = typeof(NpgsqlConnection).Assembly.FullName;
+            this._databaseTypeName = "PostgreSQL";
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TContainer"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    public abstract class WinformPartAsynExcuteBase<T, TContainer, TResult> : PartAsynExcuteBase<T, TContainer, TResult> where TContainer : class
+    public abstract class WinformPartAsynExcuteBase<T, TContainer, TResult> : PartAsynExcuteAbs<T, TContainer, TResult> where TContainer : class
     {
         /// <summary>
         /// 异步等待控件类型

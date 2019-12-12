@@ -31,9 +31,9 @@ namespace UtilZ.Dotnet.Ex.AsynWait
         bool IsShowCancel { get; set; }
 
         /// <summary>
-        /// 获取或设置异步等待框背景色
+        /// 获取或设置遮罩层背景色
         /// </summary>
-        System.Drawing.Color AsynWaitBackground { get; set; }
+        object ShadeBackground { get; set; }
 
         /// <summary>
         /// 取消操作事件

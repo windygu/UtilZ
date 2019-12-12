@@ -46,7 +46,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V4
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 //断言对象类型是IAsynWait和UserControl的子类对象类型
@@ -104,7 +104,7 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V4
             WinformPartAsynExcuteHelper.DisableTab(container, this._asynModifyControls);
 
             //设置遮罩层控件
-            asynWaitPara.AsynWait.AsynWaitBackground = asynWaitPara.AsynWaitBackground;
+            asynWaitPara.AsynWait.ShadeBackground = PartAsynExcuteFactoryWinform.ConvertShadeBackground(asynWaitPara.AsynWaitBackground);
 
             //添加遮罩层控件
             var shadeControl = (Control)asynWaitPara.AsynWait;
@@ -116,17 +116,8 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V4
             container.Controls.SetChildIndex(shadeControl, 0);
             container.SizeChanged += containerControl_SizeChanged;
 
-            //取消执行委托
-            this._asynWaitPara.AsynWait.Canceled += _excuteShade_Cancell;
-
-            //启动滚动条动画
-            this._asynWaitPara.AsynWait.StartAnimation();
-
-            this._asynExcuteThreadCts = new CancellationTokenSource();
-            this._asynExcuteThread = new Thread(this.ExcuteThreadMethod);
-            this._asynExcuteThread.IsBackground = true;
-            this._asynExcuteThread.Name = "UI异步执行线程";
-            this._asynExcuteThread.Start();
+            //启动执行线程
+            base.StartAsynExcuteThread();
         }
 
         void containerControl_SizeChanged(object sender, EventArgs e)
@@ -153,90 +144,27 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V4
         }
 
         /// <summary>
-        /// 执行异步委托线程方法
-        /// </summary>
-        private void ExcuteThreadMethod()
-        {
-            TResult result = default(TResult);
-            PartAsynExcuteStatus excuteStatus;
-            Exception excuteEx = null;
-            try
-            {
-                var function = this._asynWaitPara.Function;
-                if (function != null)
-                {
-                    result = function(new PartAsynFuncPara<T>(this._asynWaitPara.Para, this._asynExcuteThreadCts.Token, this._asynWaitPara.AsynWait));
-                }
-
-                if (this._asynExcuteThreadCts.Token.IsCancellationRequested)
-                {
-                    excuteStatus = PartAsynExcuteStatus.Cancel;
-                }
-                else
-                {
-                    excuteStatus = PartAsynExcuteStatus.Completed;
-                }
-            }
-            catch (Exception ex)
-            {
-                excuteStatus = PartAsynExcuteStatus.Exception;
-                excuteEx = ex;
-            }
-
-            var asynExcuteResult = new PartAsynExcuteResult<T, TResult>(this._asynWaitPara.Para, excuteStatus, result, excuteEx);
-            //设置对象锁结束
-            PartAsynUIParaProxy.UnLock(this._asynWaitPara);
-            this.ReleseResource();
-
-            var endAction = this._asynWaitPara.Completed;
-            if (endAction != null)
-            {
-                endAction(asynExcuteResult);
-            }
-        }
-
-        /// <summary>
         /// 释放异步委托资源
         /// </summary>
-        private void ReleseResource()
+        protected override void PrimitiveReleseResource()
         {
             try
             {
                 var containerControl = this._containerControl;
                 if (containerControl.InvokeRequired)
                 {
-                    containerControl.Invoke(new Action(this.ReleseResource));
+                    containerControl.Invoke(new Action(this.PrimitiveReleseResource));
+                    return;
                 }
-                else
-                {
-                    try
-                    {
-                        WinformPartAsynExcuteHelper.EnableTab(this._asynModifyControls);
-                        containerControl.SizeChanged -= containerControl_SizeChanged;
-                        containerControl.Controls.Remove((Control)this._asynWaitPara.AsynWait);
-                        this._asynWaitPara.AsynWait.Canceled -= _excuteShade_Cancell;
-                        this._asynWaitPara.AsynWait.StopAnimation();
-                    }
-                    catch (Exception exi)
-                    {
-                        Loger.Error(exi);
-                    }
-                }
+
+                WinformPartAsynExcuteHelper.EnableTab(this._asynModifyControls);
+                containerControl.SizeChanged -= containerControl_SizeChanged;
+                containerControl.Controls.Remove((Control)this._asynWaitPara.AsynWait);
             }
             catch (Exception ex)
             {
                 Loger.Error(ex);
             }
-        }
-
-        /// <summary>
-        /// 取消执行
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _excuteShade_Cancell(object sender, EventArgs e)
-        {
-            this._asynExcuteThreadCts.Cancel();
         }
     }
 }

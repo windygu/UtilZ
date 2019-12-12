@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
+namespace UtilZ.Dotnet.WindowEx.WPF.Controls.WaitingControls
 {
     /// <summary>
     /// MetroRotaionIndicator.xaml 的交互逻辑
@@ -26,17 +26,17 @@ namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
         /// <summary>
         /// 动画圆点半径依赖属性
         /// </summary>
-        public static readonly DependencyProperty RadiusProperty = DependencyProperty.RegisterAttached("Radius", typeof(double), typeof(MetroRotaionIndicator), new PropertyMetadata(3.0d, PropertyChanged));
+        public static readonly DependencyProperty RadiusProperty = DependencyProperty.RegisterAttached(nameof(Radius), typeof(double), typeof(MetroRotaionIndicator), new PropertyMetadata(3.0d, PropertyChanged));
 
         /// <summary>
         /// 圆点颜色依赖属性
         /// </summary>
-        public static readonly DependencyProperty EllipseColorProperty = DependencyProperty.RegisterAttached("EllipseColor", typeof(Brush), typeof(MetroRotaionIndicator), new PropertyMetadata(new SolidColorBrush(System.Windows.Media.Colors.Blue), PropertyChanged));
+        public static readonly DependencyProperty EllipseColorProperty = DependencyProperty.RegisterAttached(nameof(EllipseColor), typeof(Brush), typeof(MetroRotaionIndicator), new PropertyMetadata(Brushes.Blue, PropertyChanged));
 
         /// <summary>
         /// 动画背景色依赖属性
         /// </summary>
-        public static readonly DependencyProperty AnimalBackgroundProperty = DependencyProperty.RegisterAttached("AnimalBackground", typeof(Brush), typeof(MetroRotaionIndicator), new PropertyMetadata(new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240)), PropertyChanged));
+        public static readonly DependencyProperty AnimalBackgroundProperty = DependencyProperty.RegisterAttached(nameof(AnimalBackground), typeof(Brush), typeof(MetroRotaionIndicator), new PropertyMetadata(new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240)), PropertyChanged));
 
         /// <summary>
         /// 获取或设置动画圆点半径
@@ -160,7 +160,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
         /// <param name="e">属性参数</param>
         private static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            MetroRotaionIndicator control = d as MetroRotaionIndicator;
+            var control = d as MetroRotaionIndicator;
             if (e.Property == AnimalBackgroundProperty)
             {
                 control.canvasAnimal.Background = e.NewValue as SolidColorBrush;
@@ -198,11 +198,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
         /// <summary>
         /// 旋转动画
         /// </summary>
-        private Storyboard _trans = null;
-
-        private Style _ellipseStyle = null;
-
-        private System.Windows.Media.RotateTransform _rotateTransform = null;
+        private Storyboard _storyboard = null;
 
         /// <summary>
         /// 构造函数
@@ -211,23 +207,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
         {
             InitializeComponent();
 
-            this._trans = this.Resources["Trans"] as Storyboard;
-            this._ellipseStyle = canvasAnimal.Resources["EllipseStyle"] as Style;
-            this._rotateTransform = ((System.Windows.Media.RotateTransform)((((System.Windows.Media.TransformGroup)(((System.Windows.Setter)this._ellipseStyle.Setters[3])).Value)).Children[2]));
-
-            this.SizeChanged += MetroRotaionIndicator_SizeChanged;
-
-            //this.Loaded += ((sender, e) =>
-            //{
-            //    this.StartAnimal();
-            //});
-        }
-
-        void MetroRotaionIndicator_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            double radius = e.NewSize.Height < e.NewSize.Width ? e.NewSize.Height : e.NewSize.Width;
-            //this._rotateTransform .CenterX=
-            //this._ellipseStyle.Setters.Select((s) => {s.pr });
+            this._storyboard = this.Resources["storyboard"] as Storyboard;
         }
 
         /// <summary>
@@ -259,7 +239,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
-                el.BeginStoryboard(this._trans);
+                el.BeginStoryboard(this._storyboard, HandoffBehavior.Compose, true);
             }));
         }
 
@@ -268,12 +248,12 @@ namespace UtilZ.Dotnet.WindowEx.WPF.WaitingControls
         /// </summary>
         public void StopAnimal()
         {
-            this._trans.Stop(el1);
-            this._trans.Stop(el2);
-            this._trans.Stop(el3);
-            this._trans.Stop(el4);
-            this._trans.Stop(el5);
-            this._trans.Stop(el6);
+            this._storyboard.Stop(el1);
+            this._storyboard.Stop(el2);
+            this._storyboard.Stop(el3);
+            this._storyboard.Stop(el4);
+            this._storyboard.Stop(el5);
+            this._storyboard.Stop(el6);
         }
     }
 }

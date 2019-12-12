@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 
 namespace WinFormA
@@ -29,7 +30,11 @@ namespace WinFormA
         private AsynQueue<byte[]> _proBufferQueue;
         private void FTcp_Load(object sender, EventArgs e)
         {
-            RedirectOuputCenter.Add(new RedirectOutputChannel(this.LogRedirectOuput, "RedirectToUI"));
+            var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, "RedirectToUI");
+            if (redirectAppenderToUI != null)
+            {
+                redirectAppenderToUI.RedirectOuput += RedirectOuput;
+            }
             DropdownBoxHelper.BindingEnumToComboBox<LogLevel>(comboBoxLogLevel, this._logShowLevel);
             _proBufferQueue = new AsynQueue<byte[]>(ProRevBuffer, "处理接收到数据队列", true, true);
             this.FormClosing += FTcp_FormClosing;
@@ -129,7 +134,7 @@ namespace WinFormA
             }
         }
 
-        private void LogRedirectOuput(RedirectOuputItem e)
+        private void RedirectOuput(object sender, RedirectOuputArgs e)
         {
             try
             {

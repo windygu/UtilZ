@@ -366,8 +366,9 @@ namespace UtilZ.Dotnet.DBMySql.Core
                 long memorySize = this.PrimitiveGetMemorySize(dbConnection);
                 long diskSize = this.PrimitiveGetDiskSize(dbConnection);
                 int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
-                int connectCount, concurrentConnectCount;
-                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+                int totalConnectCount, concurrentConnectCount;
+                this.PrimitiveGetTotalConnectCountAndConcurrentConnectCount(dbConnection, out totalConnectCount, out concurrentConnectCount);
+                int activeConnectCount = concurrentConnectCount;
 
                 DateTime startTime, createtTime;
                 if (lastDatabasePropertyInfo == null)
@@ -381,8 +382,10 @@ namespace UtilZ.Dotnet.DBMySql.Core
                     createtTime = lastDatabasePropertyInfo.CreatetTime;
                 }
 
+                List<string> allUserNameList = this.GetAllUserNameList(dbConnection);
+                float cpuRate = 0f;
                 return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
-                    connectCount, concurrentConnectCount, startTime, createtTime);
+                    totalConnectCount, concurrentConnectCount, activeConnectCount, allUserNameList, startTime, createtTime, cpuRate);
             }
         }
 
@@ -425,12 +428,25 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// 获取连接数和并发连接数
         /// </summary>
         /// <returns>连接数</returns>
-        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int totalConnectCount, out int concurrentConnectCount)
         {
             string sqlStr = @"show full processlist";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
-            connectCount = dt.Rows.Count;
-            concurrentConnectCount = connectCount - dt.Select("Command='Sleep'").Length;
+            totalConnectCount = dt.Rows.Count;
+            concurrentConnectCount = totalConnectCount - dt.Select("Command='Sleep'").Length;
+        }
+
+        private List<string> GetAllUserNameList(DbConnection dbConnection)
+        {
+            string sqlStr = @"select user from mysql.user";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
+            List<string> allUserNameList = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                allUserNameList.Add(row[0].ToString());
+            }
+
+            return allUserNameList;
         }
 
         /// <summary>

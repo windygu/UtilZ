@@ -427,21 +427,6 @@ namespace ConsoleApp
             return buffer;
         }
 
-        private static void SubLog_LogOutput(RedirectOuputItem e)
-        {
-            string str;
-            try
-            {
-                str = string.Format("{0} {1}", DateTime.Now, e.Item.Content);
-            }
-            catch (Exception ex)
-            {
-                str = ex.Message;
-            }
-
-            Console.WriteLine(str);
-        }
-
         private static void TestFtpUrl()
         {
             string regStr = @"^[f,F]{1}[t,T]{1}[p,P]{1}://(?<ip>" + RegexConstant.IPV4Reg + "):" + @"(?<port>" + RegexConstant.Port + ")/";

@@ -41,6 +41,7 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
         /// <returns>数据库连接字符串</returns>
         protected override string CreateDBSpliceConStr(DatabaseConfig config, DBVisitType visitType)
         {
+            //SqlConnectionStringBuilder
             if (config.Port == 0)
             {
                 config.Port = 1433;

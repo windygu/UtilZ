@@ -27,7 +27,8 @@ namespace UtilZ.Dotnet.DBMySql.Core
             : base()
         {
             this._dbInteraction = new MySqlDBInteraction();
-            this._databaseTypeName = typeof(MySqlConnection).Assembly.FullName;
+            //this._databaseTypeName = typeof(MySqlConnection).Assembly.FullName;
+            this._databaseTypeName = "MySql";
         }
 
         /// <summary>

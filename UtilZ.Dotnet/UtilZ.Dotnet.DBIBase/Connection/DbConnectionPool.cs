@@ -57,21 +57,22 @@ namespace UtilZ.Dotnet.DBIBase.Connection
             this._readConStr = this._interaction.GenerateDBConStr(config, DBVisitType.R);
             for (int i = 0; i < config.ReadConCount; i++)
             {
-                this._readConPool.Add(this.CreateConnection(this._readConStr));
+                this._readConPool.Add(this.CreateConnection(config, this._readConStr));
             }
 
             this._writeConStr = this._interaction.GenerateDBConStr(config, DBVisitType.W);
             for (int i = 0; i < config.WriteConCount; i++)
             {
-                this._writeConPool.Add(this.CreateConnection(this._writeConStr));
+                this._writeConPool.Add(this.CreateConnection(config, this._writeConStr));
             }
         }
 
-        private DbConnection CreateConnection(string conStr)
+        private DbConnection CreateConnection(DatabaseConfig config, string conStr)
         {
             DbProviderFactory dbProviderFactory = this._interaction.GetProviderFactory();
             var con = dbProviderFactory.CreateConnection();
             con.ConnectionString = conStr;
+            //con.ConnectionTimeout = config.ConnectionTimeout;,居然是只读的
             //con.Open();
             return con;
         }
@@ -89,7 +90,7 @@ namespace UtilZ.Dotnet.DBIBase.Connection
                 case DBVisitType.R:
                     if (this._config.ReadConCount < DBConstant.ReadConCount)
                     {
-                        con = this.CreateConnection(this._readConStr);
+                        con = this.CreateConnection(this._config, this._readConStr);
                     }
                     else
                     {
@@ -102,7 +103,7 @@ namespace UtilZ.Dotnet.DBIBase.Connection
                 case DBVisitType.W:
                     if (this._config.WriteConCount < DBConstant.WriteConCount)
                     {
-                        con = this.CreateConnection(this._writeConStr);
+                        con = this.CreateConnection(this._config, this._writeConStr);
                     }
                     else
                     {

@@ -78,7 +78,7 @@ namespace UtilZ.Dotnet.SHPDMSOPlugin
                     }
                 };
 
-                PartAsynWaitHelper.Wait(para, this);
+                WinformPartAsynWaitHelper.Wait(para, this);
             }
             catch (Exception ex)
             {

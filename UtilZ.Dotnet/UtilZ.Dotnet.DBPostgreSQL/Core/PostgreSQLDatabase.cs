@@ -464,8 +464,9 @@ order by
                 long memorySize = this.PrimitiveGetMemorySize(dbConnection);
                 long diskSize = this.PrimitiveGetDiskSize(dbConnection);
                 int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
-                int connectCount, concurrentConnectCount;
-                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+                int totalConnectCount, concurrentConnectCount;
+                this.PrimitiveGetTotalConnectCountAndConcurrentConnectCount(dbConnection, out totalConnectCount, out concurrentConnectCount);
+                int activeConnectCount = concurrentConnectCount;
 
                 DateTime startTime, createtTime;
                 if (lastDatabasePropertyInfo == null)
@@ -479,8 +480,11 @@ order by
                     createtTime = lastDatabasePropertyInfo.CreatetTime;
                 }
 
-                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
-                    connectCount, concurrentConnectCount, startTime, createtTime);
+                List<string> allUserNameList = this.GetAllUserNameList(dbConnection);
+                float cpuRate = 0f;
+
+                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount, totalConnectCount,
+                    concurrentConnectCount, activeConnectCount, allUserNameList, startTime, createtTime, cpuRate);
             }
         }
 
@@ -536,13 +540,27 @@ order by
         /// 获取连接数和并发连接数
         /// </summary>
         /// <returns>连接数</returns>
-        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int totalConnectCount, out int concurrentConnectCount)
         {
             string databaeName = this.PrimitiveGetDatabaseName(dbConnection);
             string sqlStr = $@"select STATE from pg_stat_activity where datname='{databaeName}'";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
-            connectCount = dt.Rows.Count;
+            totalConnectCount = dt.Rows.Count;
             concurrentConnectCount = dt.Select("STATE='active'").Length;
+        }
+
+        private List<string> GetAllUserNameList(DbConnection dbConnection)
+        {
+            //select user
+            string sqlStr = @"\du";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
+            List<string> allUserNameList = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                allUserNameList.Add(row[0].ToString());
+            }
+
+            return allUserNameList;
         }
 
         /// <summary>

@@ -43,6 +43,7 @@ namespace UtilZ.Dotnet.DBOracle.Core
         /// <returns>数据库连接字符串</returns>
         protected override string CreateDBSpliceConStr(DatabaseConfig config, DBVisitType visitType)
         {
+            //OracleConnectionStringBuilder
             if (config.Port == 0)
             {
                 config.Port = 1521;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.WPFEx.BaseControl.Common.PartAsynWait.Excute.WPF
+namespace UtilZ.Dotnet.WindowEx.WPF.Controls.PartAsynWait
 {
     /// <summary>
     /// WPF异步执行对象创建类型定义类

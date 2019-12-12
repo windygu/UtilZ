@@ -11,6 +11,7 @@ using UtilZ.Dotnet.SHPAgentBLL;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.SHPBase.Monitor;
 using UtilZ.Dotnet.Ex.Base;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace UtilZ.Dotnet.SHPAgent
 {
@@ -111,7 +112,11 @@ namespace UtilZ.Dotnet.SHPAgent
 
             try
             {
-                RedirectOuputCenter.Add(new RedirectOutputChannel(this.LogOutputToUI, System.Configuration.ConfigurationManager.AppSettings[AppConfigKeys.REDIRECT_TO_UI_APPENDER_NAME]));
+                var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, System.Configuration.ConfigurationManager.AppSettings[AppConfigKeys.REDIRECT_TO_UI_APPENDER_NAME]);
+                if (redirectAppenderToUI != null)
+                {
+                    redirectAppenderToUI.RedirectOuput += RedirectOuput;
+                }
                 checkBoxLockLog.Checked = logControl.IsLock;
                 this._timer.Start();
                 dgvAppMonitor.ShowData(this._bll.AppMonitorItemManager.AppMonitorList.DataSource, null);
@@ -128,7 +133,7 @@ namespace UtilZ.Dotnet.SHPAgent
         /// 日志输出到UI
         /// </summary>
         /// <param name="e"></param>
-        private void LogOutputToUI(RedirectOuputItem e)
+        private void RedirectOuput(object sender, RedirectOuputArgs e)
         {
             try
             {

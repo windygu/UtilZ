@@ -61,7 +61,12 @@ namespace UtilZ.Dotnet.DBIBase.Config
         public string Password { get; set; } = null;
 
         /// <summary>
-        /// SQL语句执行超时时间,DBConstant.CommandTimeout为默认值
+        /// 连接超时时长,单位/毫秒.DBConstant.CommandTimeout为默认值
+        /// </summary>
+        public int ConnectionTimeout { get; set; } = DBConstant.CommandTimeout;
+
+        /// <summary>
+        /// SQL语句执行超时时长,单位/毫秒.DBConstant.CommandTimeout为默认值
         /// </summary>
         public int CommandTimeout { get; set; } = DBConstant.CommandTimeout;
 

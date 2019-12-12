@@ -429,8 +429,9 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
                 long memorySize = this.PrimitiveGetMemorySize(dbConnection);
                 long diskSize = this.PrimitiveGetDiskSize(dbConnection);
                 int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
-                int connectCount, concurrentConnectCount;
-                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+                int totalConnectCount = this.PrimitiveGetTotalConnectCount(dbConnection);
+                int concurrentConnectCount, activeConnectCount;
+                this.PrimitiveGetTotalConnectCountAndConcurrentConnectCount(dbConnection, out concurrentConnectCount, out activeConnectCount);
 
                 DateTime startTime, createtTime;
                 if (lastDatabasePropertyInfo == null)
@@ -444,8 +445,11 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
                     createtTime = lastDatabasePropertyInfo.CreatetTime;
                 }
 
-                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
-                    connectCount, concurrentConnectCount, startTime, createtTime);
+                List<string> allUserNameList = this.GetAllUserNameList(dbConnection);
+                float cpuRate = 0f;
+
+                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount, totalConnectCount,
+                    concurrentConnectCount, activeConnectCount, allUserNameList, startTime, createtTime, cpuRate);
             }
         }
 
@@ -485,15 +489,39 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         }
 
         /// <summary>
+        /// 获取总连接数
+        /// </summary>
+        /// <returns>总连接数</returns>
+        private int PrimitiveGetTotalConnectCount(DbConnection dbConnection)
+        {
+            string sqlStr = @"select count(*) from v$process";
+            object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
+            return DBAccessEx.ConvertObject<int>(obj);
+        }
+
+        /// <summary>
         /// 获取连接数和并发连接数
         /// </summary>
         /// <returns>连接数</returns>
-        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int concurrentConnectCount, out int activeConnectCount)
         {
             string sqlStr = @"SELECT STATUS FROM v$session";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
-            connectCount = dt.Rows.Count;
-            concurrentConnectCount = dt.Select("STATUS='ACTIVE'").Length;
+            concurrentConnectCount = dt.Rows.Count;
+            activeConnectCount = dt.Select("STATUS='ACTIVE'").Length;
+        }
+
+        private List<string> GetAllUserNameList(DbConnection dbConnection)
+        {
+            string sqlStr = @"select USERNAME from all_users";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
+            List<string> allUserNameList = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                allUserNameList.Add(row[0].ToString());
+            }
+
+            return allUserNameList;
         }
 
         /// <summary>

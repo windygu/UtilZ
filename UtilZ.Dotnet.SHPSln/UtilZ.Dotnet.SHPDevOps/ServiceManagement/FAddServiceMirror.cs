@@ -127,7 +127,7 @@ namespace UtilZ.Dotnet.SHPDevOps.ServiceManagement
                 }
             };
 
-            PartAsynWaitHelper.Wait(para, this);
+            WinformPartAsynWaitHelper.Wait(para, this);
         }
 
         private ServiceMirrorInfo GetValue()

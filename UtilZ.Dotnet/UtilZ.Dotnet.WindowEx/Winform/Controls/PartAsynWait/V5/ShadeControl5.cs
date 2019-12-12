@@ -187,18 +187,19 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V5
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Description("获取或设置动画背景色")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public Color AsynWaitBackground
+        public object ShadeBackground
         {
             get { return _asynWaitBackground; }
             set
             {
-                if (_asynWaitBackground == value)
+                var color = (Color)value;
+                if (_asynWaitBackground == color)
                 {
                     return;
                 }
 
-                _asynWaitBackground = value;
-                this._asynWaitBackgroundBrush = new SolidBrush(value);
+                _asynWaitBackground = color;
+                this._asynWaitBackgroundBrush = new SolidBrush(color);
                 this.Invalidate(this._asynReg);
             }
         }

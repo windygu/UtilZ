@@ -64,7 +64,7 @@ namespace UtilZ.Dotnet.SHPDevOps.HostManamement
                 }
             };
 
-            PartAsynWaitHelper.Wait(para, this);
+            WinformPartAsynWaitHelper.Wait(para, this);
         }
 
         private void RefreashHostInfo(HostInfo hostInfo)
@@ -94,7 +94,7 @@ namespace UtilZ.Dotnet.SHPDevOps.HostManamement
                 }
             };
 
-            PartAsynWaitHelper.Wait(para, this);
+            WinformPartAsynWaitHelper.Wait(para, this);
         }
 
         private void PrimitiveRefreashHostInfo(HostInfo hostInfo, HostHardInfo hostHardInfo, HostStatusInfo[] hostStatusInfos)

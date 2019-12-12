@@ -30,7 +30,8 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             base()
         {
             this._dbInteraction = new SQLiteDBInteraction();
-            this._databaseTypeName = typeof(System.Data.SQLite.SQLiteConnection).Assembly.FullName;
+            //this._databaseTypeName = typeof(System.Data.SQLite.SQLiteConnection).Assembly.FullName;
+            this._databaseTypeName = "SQLite";
         }
 
         /// <summary>

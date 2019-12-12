@@ -28,7 +28,8 @@ namespace UtilZ.Dotnet.DBOracle.Core
             base()
         {
             this._dbInteraction = new OracleDBInteraction();
-            this._databaseTypeName = typeof(OracleConnection).Assembly.FullName;
+            //this._databaseTypeName = typeof(OracleConnection).Assembly.FullName;
+            this._databaseTypeName = "Oracle";
         }
 
         /// <summary>

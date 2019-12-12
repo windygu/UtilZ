@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace SHPTestService1
 {
@@ -21,7 +22,11 @@ namespace SHPTestService1
         {
             try
             {
-                RedirectOuputCenter.Add(new RedirectOutputChannel(this.LogOutputToUI, System.Configuration.ConfigurationManager.AppSettings["redirectToUIAppendName"]));
+                var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, System.Configuration.ConfigurationManager.AppSettings["redirectToUIAppendName"]);
+                if (redirectAppenderToUI != null)
+                {
+                    redirectAppenderToUI.RedirectOuput += RedirectOuput;
+                }
                 this.button1_Click(sender, e);
             }
             catch (Exception ex)
@@ -34,7 +39,7 @@ namespace SHPTestService1
         /// 日志输出到UI
         /// </summary>
         /// <param name="e"></param>
-        private void LogOutputToUI(RedirectOuputItem e)
+        private void RedirectOuput(object sender, RedirectOuputArgs e)
         {
             try
             {

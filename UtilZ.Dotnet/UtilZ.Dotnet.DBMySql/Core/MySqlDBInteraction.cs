@@ -42,6 +42,8 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <returns>数据库连接字符串</returns>
         protected override string CreateDBSpliceConStr(DatabaseConfig config, DBVisitType visitType)
         {
+            //MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+
             if (config.Port == 0)
             {
                 config.Port = 3306;

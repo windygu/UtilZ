@@ -60,6 +60,8 @@
     <Compile Include="Base\BindingCollection\ComparerResultType.cs" />
     <Compile Include="Base\BindingCollection\ICollectionOwner.cs" />
     <Compile Include="Base\BlockingCollectionEx.cs" />
+    <Compile Include="Base\DebugEx.cs" />
+    <Compile Include="Base\DictionaryEx.cs" />
     <Compile Include="Base\EnvironmentEx.cs" />
     <Compile Include="Base\GUIDEx.cs" />
     <Compile Include="Base\TimeEx.cs" />
@@ -79,6 +81,13 @@
     <Compile Include="Base\TTLV\TTLVSerializeConverter.cs" />
     <Compile Include="Base\TTLV\TTLVType.cs" />
     <Compile Include="Base\TTLV\TTLVStructNode.cs" />
+    <Compile Include="Base\ValueNameMap\CustomerValueNameAbs.cs" />
+    <Compile Include="Base\ValueNameMap\DefaultCustomerValueName.cs" />
+    <Compile Include="Base\ValueNameMap\ICustomerValueName.cs" />
+    <Compile Include="Base\ValueNameMap\ValueNameDictionary.cs" />
+    <Compile Include="Base\ValueNameMap\ValueNameMapManager.cs" />
+    <Compile Include="Base\ValueNameMap\ValueNameMapFieldAttribute.cs" />
+    <Compile Include="Base\ValueNameMap\ValueNameMapTypeAttribute.cs" />
     <Compile Include="DataStruct\Array64.cs" />
     <Compile Include="Base\ArrayEx.cs" />
     <Compile Include="Base\AssemblyEx.cs" />

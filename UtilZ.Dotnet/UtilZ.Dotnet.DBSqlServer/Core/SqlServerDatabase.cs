@@ -454,8 +454,9 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
                 long memorySize = this.PrimitiveGetMemorySize(dbConnection);
                 long diskSize = this.PrimitiveGetDiskSize(dbConnection);
                 int maxConnectCount = this.PrimitiveGetMaxConnectCount(dbConnection);
-                int connectCount, concurrentConnectCount;
-                this.PrimitiveGetConnectAndConcurrentConnectCount(dbConnection, out connectCount, out concurrentConnectCount);
+                int totalConnectCount, concurrentConnectCount;
+                this.PrimitiveGetTotalConnectCountAndConcurrentConnectCount(dbConnection, out totalConnectCount, out concurrentConnectCount);
+                int activeConnectCount = concurrentConnectCount;
 
                 DateTime startTime, createtTime;
                 if (lastDatabasePropertyInfo == null)
@@ -469,8 +470,11 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
                     createtTime = lastDatabasePropertyInfo.CreatetTime;
                 }
 
-                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount,
-                    connectCount, concurrentConnectCount, startTime, createtTime);
+                List<string> allUserNameList = this.GetAllUserNameList(dbConnection);
+                float cpuRate = 0f;
+
+                return new DatabasePropertyInfo(memorySize, diskSize, maxConnectCount, totalConnectCount,
+                    concurrentConnectCount, activeConnectCount, allUserNameList, startTime, createtTime, cpuRate);
             }
         }
 
@@ -482,7 +486,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         {
             string sqlStr = @"SELECT physical_memory_in_use_kb FROM sys.dm_os_process_memory";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
-            return DBAccessEx.ConvertObject<long>(obj);
+            return DBAccessEx.ConvertObject<long>(obj) * 1024;
         }
 
         /// <summary>
@@ -494,7 +498,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
             long size;
             string sqlStr = @"Exec sp_spaceused";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
-            object obj = dt.Rows[0][2];
+            object obj = dt.Rows[0][1];
             string mbSizeStr = obj.ToString();
             int index = mbSizeStr.IndexOf(' ');
             if (index > 0)
@@ -526,16 +530,30 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         }
 
         /// <summary>
-        /// 获取连接数和并发连接数
+        /// 获取总连接数和并发连接数
         /// </summary>
         /// <returns>连接数</returns>
-        private void PrimitiveGetConnectAndConcurrentConnectCount(DbConnection dbConnection, out int connectCount, out int concurrentConnectCount)
+        private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int totalConnectCount, out int concurrentConnectCount)
         {
             string databaseName = this.PrimitiveGetDatabaseName(dbConnection);
             string sqlStr = $@"SELECT status FROM [Master].[dbo].[SYSPROCESSES] WHERE [DBID] IN (SELECT  [DBID] FROM [Master].[dbo].[SYSDATABASES] WHERE NAME='{databaseName}')";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
-            connectCount = dt.Rows.Count;
-            concurrentConnectCount = connectCount - dt.Select("status='runnable'").Length;
+            totalConnectCount = dt.Rows.Count;
+            concurrentConnectCount = totalConnectCount - dt.Select("status='runnable'").Length;
+        }
+
+
+        private List<string> GetAllUserNameList(DbConnection dbConnection)
+        {
+            string sqlStr = @"select name from sysusers";
+            DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
+            List<string> allUserNameList = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                allUserNameList.Add(row[0].ToString());
+            }
+
+            return allUserNameList;
         }
 
         /// <summary>

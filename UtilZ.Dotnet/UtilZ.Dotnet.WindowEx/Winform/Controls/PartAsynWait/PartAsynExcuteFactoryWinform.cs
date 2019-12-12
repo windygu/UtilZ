@@ -6,6 +6,7 @@ using UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute;
 using UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Interface;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute;
+using System.Drawing;
 
 namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait
 {
@@ -19,13 +20,14 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait
         /// </summary>
         static PartAsynExcuteFactoryWinform()
         {
-            _winformPartAsynExcuteType = WinformPartAsynExcuteTypeDefine.OpacityShadeDisableTab;
+            _partAsynExcuteType = WinformPartAsynExcuteTypeDefine.OpacityShadeDisableTab;
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public PartAsynExcuteFactoryWinform() : base()
+        public PartAsynExcuteFactoryWinform()
+            : base()
         {
 
         }
@@ -33,15 +35,32 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait
         /// <summary>
         /// Winfrom异步执行对象创建类型
         /// </summary>
-        private static int _winformPartAsynExcuteType;
+        private static int _partAsynExcuteType;
 
         /// <summary>
         /// 获取或设置Winfrom异步执行对象创建类型
         /// </summary>
-        public static int WinformPartAsynExcuteType
+        public static int PartAsynExcuteType
         {
-            get { return _winformPartAsynExcuteType; }
-            set { _winformPartAsynExcuteType = value; }
+            get { return _partAsynExcuteType; }
+            set { _partAsynExcuteType = value; }
+        }
+
+        /// <summary>
+        /// 转换遮罩层背景色
+        /// </summary>
+        /// <param name="shadeBackground">遮罩层背景色对象</param>
+        /// <returns>遮罩层背景色</returns>
+        public static Color ConvertShadeBackground(object shadeBackground)
+        {
+            if (shadeBackground == null)
+            {
+                return System.Drawing.Color.White;
+            }
+            else
+            {
+                return (Color)shadeBackground;
+            }
         }
 
         /// <summary>
@@ -53,31 +72,31 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait
         /// <returns>异步执行对象</returns>
         public override IAsynExcute<T, TContainer, TResult> CreateExcute<T, TContainer, TResult>()
         {
-            int type = _winformPartAsynExcuteType;
+            int partAsynExcuteType = _partAsynExcuteType;
             IAsynExcute<T, TContainer, TResult> asynExcute;
-            if (type == WinformPartAsynExcuteTypeDefine.ShadeDisableControl)
+            if (partAsynExcuteType == WinformPartAsynExcuteTypeDefine.ShadeDisableControl)
             {
                 asynExcute = new UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V1.WinformPartAsynExcuteV1<T, TContainer, TResult>();
             }
-            else if (type == WinformPartAsynExcuteTypeDefine.OpacityDisableTab)
+            else if (partAsynExcuteType == WinformPartAsynExcuteTypeDefine.OpacityDisableTab)
             {
                 asynExcute = new UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V2.WinformPartAsynExcute2<T, TContainer, TResult>();
             }
-            else if (type == WinformPartAsynExcuteTypeDefine.OpacityShadeDisableTab)
+            else if (partAsynExcuteType == WinformPartAsynExcuteTypeDefine.OpacityShadeDisableTab)
             {
                 asynExcute = new UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V3.WinformPartAsynExcute3<T, TContainer, TResult>();
             }
-            else if (type == WinformPartAsynExcuteTypeDefine.ScreenshotImgBackgrounDisableTab)
+            else if (partAsynExcuteType == WinformPartAsynExcuteTypeDefine.ScreenshotImgBackgrounDisableTab)
             {
                 asynExcute = new UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V4.WinformPartAsynExcute4<T, TContainer, TResult>();
             }
-            else if (type == WinformPartAsynExcuteTypeDefine.OpacityCustomerDisableTab)
+            else if (partAsynExcuteType == WinformPartAsynExcuteTypeDefine.OpacityCustomerDisableTab)
             {
                 asynExcute = new UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait.Excute.Winform.V5.WinformPartAsynExcute5<T, TContainer, TResult>();
             }
             else
             {
-                throw new NotSupportedException(string.Format("不支持的异步执行对象创建类型{0}", type));
+                throw new NotSupportedException(string.Format("不支持的异步执行对象创建类型{0}", partAsynExcuteType));
             }
 
             return asynExcute;

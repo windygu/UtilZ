@@ -13,7 +13,7 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
     /// <typeparam name="T">异步执行参数类型</typeparam>
     /// <typeparam name="TResult">异步执行返回值类型</typeparam>
     [Serializable]
-    public class PartAsynWaitPara<T, TResult> : PartAsynUIPara
+    public class PartAsynWaitPara<T, TResult> : PartAsynWaitParaAbs
     {
         /// <summary>
         /// 构造函数
@@ -28,12 +28,13 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
         /// 异步等待框背景色
         /// </summary>
         //private System.Drawing.Color _asynWaitBackground = System.Drawing.SystemColors.Control;
-        private System.Drawing.Color _asynWaitBackground = System.Drawing.Color.White;
+        //private System.Drawing.Color _asynWaitBackground = System.Drawing.Color.White;
+        private object _asynWaitBackground = null;
 
         /// <summary>
         /// 获取或设置异步等待框背景色
         /// </summary>
-        public System.Drawing.Color AsynWaitBackground
+        public object AsynWaitBackground
         {
             get { return this._asynWaitBackground; }
             set

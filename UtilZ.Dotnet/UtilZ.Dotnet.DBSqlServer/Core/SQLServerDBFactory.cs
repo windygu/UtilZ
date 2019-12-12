@@ -25,7 +25,8 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
             base()
         {
             this._dbInteraction = new SQLServerDBInteraction();
-            this._databaseTypeName = typeof(SqlConnection).Assembly.FullName;
+            //this._databaseTypeName = typeof(SqlConnection).Assembly.FullName;
+            this._databaseTypeName = "SQLServer";
         }
 
         /// <summary>

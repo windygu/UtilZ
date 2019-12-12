@@ -46,6 +46,7 @@ namespace UtilZ.Dotnet.DBPostgreSQL.Core
         /// <returns>数据库连接字符串</returns>
         protected override string CreateDBSpliceConStr(DatabaseConfig config, DBVisitType visitType)
         {
+            //NpgsqlConnectionStringBuilder
             if (config.Port == 0)
             {
                 config.Port = 5432;

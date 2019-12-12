@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
+using UtilZ.Dotnet.Ex.Log.Appender;
 using UtilZ.Dotnet.SHPBase.Common;
 using UtilZ.Dotnet.SHPBase.Plugin.PluginDBase;
 using UtilZ.Dotnet.SHPDevOpsBLL;
@@ -98,7 +99,11 @@ namespace UtilZ.Dotnet.SHPDevOps
 
             try
             {
-                RedirectOuputCenter.Add(new RedirectOutputChannel(this.LogOutputToUI, null));
+                var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, null);
+                if (redirectAppenderToUI != null)
+                {
+                    redirectAppenderToUI.RedirectOuput += RedirectOuput;
+                }
                 checkBoxLockLog.Checked = logControl.IsLock;
                 this._timer.Start();
                 this._bll.Start();
@@ -170,7 +175,7 @@ namespace UtilZ.Dotnet.SHPDevOps
         /// 日志输出到UI
         /// </summary>
         /// <param name="e"></param>
-        private void LogOutputToUI(RedirectOuputItem e)
+        private void RedirectOuput(object sender, RedirectOuputArgs e)
         {
             try
             {

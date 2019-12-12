@@ -51,16 +51,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ILogControl.cs" />
-    <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteBase.cs" />
+    <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteAbs.cs" />
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
     <Compile Include="Base\PartAsynWait\Interface\IPartAsynExcute.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynExcuteResult.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynExcuteStatus.cs" />
-    <Compile Include="Base\PartAsynWait\Model\PartAsynUIPara.cs" />
+    <Compile Include="Base\PartAsynWait\Model\PartAsynWaitParaAbs.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynUIParaProxy.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynWaitPara.cs" />
     <Compile Include="Base\PartAsynWait\PartAsynWaitHelperBase.cs" />
     <Compile Include="Base\ScreenHelper.cs" />
+    <Compile Include="Base\UITextHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -135,7 +136,7 @@
     </Compile>
     <Compile Include="Winform\Controls\PartAsynWait\Interface\IPartAsynWaitWinform.cs" />
     <Compile Include="Winform\Controls\PartAsynWait\PartAsynExcuteFactoryWinform.cs" />
-    <Compile Include="Winform\Controls\PartAsynWait\PartAsynWaitHelper.cs" />
+    <Compile Include="Winform\Controls\PartAsynWait\WinformPartAsynWaitHelper.cs" />
     <Compile Include="Winform\Controls\PartAsynWait\V1\MetroShadeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -220,6 +221,38 @@
     <Compile Include="Winform\Interface\IUIAction.cs" />
     <Compile Include="WPF\Base\ChromeWindowHelper.cs" />
     <Compile Include="WPF\Base\ElementExtend.cs" />
+    <Compile Include="WPF\Base\TextBlockEx.cs" />
+    <Compile Include="WPF\Base\TextBoxEx.cs" />
+    <Compile Include="WPF\Controls\Chart\Axis\AxesCollection.cs" />
+    <Compile Include="WPF\Controls\Chart\Axis\AxisAbs.cs" />
+    <Compile Include="WPF\Controls\Chart\Base\AxisDockOrientation.cs" />
+    <Compile Include="WPF\Controls\Chart\Base\AxisFreezeInfo.cs" />
+    <Compile Include="WPF\Controls\Chart\Base\AxisFreezeType.cs" />
+    <Compile Include="WPF\Controls\Chart\Base\AxisType.cs" />
+    <Compile Include="WPF\Controls\Chart\Base\LabelAxisItem.cs" />
+    <Compile Include="WPF\Controls\Chart\Base\SeriesOrientation.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartColumnItem.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartDateTimeItem.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartItemAbs.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartNumberItem.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartColumnItem.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartDateTimeItem.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartItem.cs" />
+    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartNumberItem.cs" />
+    <Compile Include="WPF\Controls\Chart\Legend\IChartLegend.cs" />
+    <Compile Include="WPF\Controls\Chart\Legend\SeriesLegendItem.cs" />
+    <Compile Include="WPF\Controls\Chart\Series\ISeries.cs" />
+    <Compile Include="WPF\Controls\Chart\View\ChartControl.cs" />
+    <Compile Include="WPF\Controls\Chart\View\ChartSeries.cs" />
+    <Compile Include="WPF\Controls\Chart\View\HorizontalChartLegend.xaml.cs">
+      <DependentUpon>HorizontalChartLegend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\Controls\Chart\View\StytleContainerControl.xaml.cs">
+      <DependentUpon>StytleContainerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\Controls\Chart\View\VerticalChartLegend.xaml.cs">
+      <DependentUpon>VerticalChartLegend.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Controls\GifImage\GifAnimation.cs" />
     <Compile Include="WPF\Controls\GifImage\GifFrame.cs" />
     <Compile Include="WPF\Controls\GifImage\GifImage.xaml.cs">
@@ -233,8 +266,12 @@
     <Compile Include="WPF\Controls\NumericTextBox.xaml.cs">
       <DependentUpon>NumericTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Controls\PartAsynWait\ContainerControlType.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\PartAsynExcuteFactoryWPF.cs" />
-    <Compile Include="WPF\Controls\PartAsynWait\PartAsynWaitHelper.cs" />
+    <Compile Include="WPF\Controls\PartAsynWait\V1\UCShadeControl1.xaml.cs">
+      <DependentUpon>UCShadeControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynWaitHelper.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\V1\WPFPartAsynExcuteV1.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteBase.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteTypeDefine.cs" />
@@ -252,6 +289,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\Controls\Chart\ResourceDictionary\ChartResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\Controls\Chart\View\HorizontalChartLegend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\Controls\Chart\View\StytleContainerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Controls\Chart\View\VerticalChartLegend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\Controls\GifImage\GifImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -263,6 +316,10 @@
     <Page Include="WPF\Controls\NumericTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\Controls\PartAsynWait\V1\UCShadeControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\Controls\WaitingControls\MetroLRWaitIndicator.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -323,6 +380,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\prepage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WPF\Controls\Chart\Helper\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

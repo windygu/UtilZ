@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute;
 
-namespace UtilZ.Dotnet.WPFEx.BaseControl.Common.PartAsynWait.Excute.WPF
+namespace UtilZ.Dotnet.WindowEx.WPF.Controls.PartAsynWait
 {
     /// <summary>
     /// WPF异步执行基类
@@ -12,7 +12,7 @@ namespace UtilZ.Dotnet.WPFEx.BaseControl.Common.PartAsynWait.Excute.WPF
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TContainer"></typeparam>
     /// <typeparam name="TResult"></typeparam>
-    public abstract class WPFPartAsynExcuteBase<T, TContainer, TResult> : PartAsynExcuteBase<T, TContainer, TResult> where TContainer : System.Windows.Controls.Panel
+    public abstract class WPFPartAsynExcuteBase<T, TContainer, TResult> : PartAsynExcuteAbs<T, TContainer, TResult> where TContainer : System.Windows.Controls.Panel
     {
         /// <summary>
         /// 异步等待控件类型

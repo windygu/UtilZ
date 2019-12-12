@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Interface;
 
-namespace UtilZ.Dotnet.WindowEx.WPF.PartAsynWait
+namespace UtilZ.Dotnet.WindowEx.WPF.Controls.PartAsynWait
 {
     /// <summary>
     /// WPF异步执行对象创建工厂类
@@ -15,7 +16,16 @@ namespace UtilZ.Dotnet.WindowEx.WPF.PartAsynWait
         /// <summary>
         /// 构造函数
         /// </summary>
-        public PartAsynExcuteFactoryWPF() : base()
+        static PartAsynExcuteFactoryWPF()
+        {
+            _partAsynExcuteType = WPFPartAsynExcuteTypeDefine.Type1;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PartAsynExcuteFactoryWPF()
+            : base()
         {
 
         }
@@ -23,15 +33,32 @@ namespace UtilZ.Dotnet.WindowEx.WPF.PartAsynWait
         /// <summary>
         /// WPF异步执行对象创建类型
         /// </summary>
-        private static int _WPFPartAsynExcuteType;
+        private static int _partAsynExcuteType;
 
         /// <summary>
         /// 获取或设置WPF异步执行对象创建类型
         /// </summary>
-        public static int WPFPartAsynExcuteType
+        public static int PartAsynExcuteType
         {
-            get { return _WPFPartAsynExcuteType; }
-            set { _WPFPartAsynExcuteType = value; }
+            get { return _partAsynExcuteType; }
+            set { _partAsynExcuteType = value; }
+        }
+
+        /// <summary>
+        /// 转换遮罩层背景色
+        /// </summary>
+        /// <param name="shadeBackground">遮罩层背景色对象</param>
+        /// <returns>遮罩层背景色</returns>
+        public static Brush ConvertShadeBackground(object shadeBackground)
+        {
+            if (shadeBackground == null)
+            {
+                return Brushes.White;
+            }
+            else
+            {
+                return (Brush)shadeBackground;
+            }
         }
 
         /// <summary>
@@ -43,7 +70,18 @@ namespace UtilZ.Dotnet.WindowEx.WPF.PartAsynWait
         /// <returns>异步执行对象</returns>
         public override IAsynExcute<T, TContainer, TResult> CreateExcute<T, TContainer, TResult>()
         {
-            throw new NotImplementedException();
+            int partAsynExcuteType = _partAsynExcuteType;
+            IAsynExcute<T, TContainer, TResult> asynExcute;
+            if (partAsynExcuteType == WPFPartAsynExcuteTypeDefine.Type1)
+            {
+                asynExcute = new V1.WPFPartAsynExcuteV1<T, TContainer, TResult>();
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("不支持的异步执行对象创建类型{0}", partAsynExcuteType));
+            }
+
+            return asynExcute;
         }
     }
 }

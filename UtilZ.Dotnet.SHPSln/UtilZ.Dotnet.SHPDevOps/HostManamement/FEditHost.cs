@@ -148,7 +148,7 @@ namespace UtilZ.Dotnet.SHPDevOps.HostManamement
                 }
             };
 
-            PartAsynWaitHelper.Wait(para, this);
+            WinformPartAsynWaitHelper.Wait(para, this);
         }
 
         private void GetValue(HostInfo hostInfo)

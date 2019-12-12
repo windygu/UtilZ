@@ -169,7 +169,7 @@ namespace UtilZ.Dotnet.SHPDevOps.ServiceManagement
                     }
                 };
 
-                PartAsynWaitHelper.Wait(para, this);
+                WinformPartAsynWaitHelper.Wait(para, this);
             }
             catch (Exception ex)
             {

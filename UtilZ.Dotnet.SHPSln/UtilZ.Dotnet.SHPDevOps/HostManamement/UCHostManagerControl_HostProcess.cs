@@ -56,7 +56,7 @@ namespace UtilZ.Dotnet.SHPDevOps.HostManamement
                     }
                 };
 
-                PartAsynWaitHelper.Wait(para, this);
+                WinformPartAsynWaitHelper.Wait(para, this);
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace UtilZ.Dotnet.SHPDevOps.HostManamement
                     }
                 };
 
-                PartAsynWaitHelper.Wait(para, this);
+                WinformPartAsynWaitHelper.Wait(para, this);
             }
             catch (Exception ex)
             {
@@ -154,7 +154,7 @@ namespace UtilZ.Dotnet.SHPDevOps.HostManamement
                     }
                 };
 
-                PartAsynWaitHelper.Wait(para, this);
+                WinformPartAsynWaitHelper.Wait(para, this);
             }
             catch (Exception ex)
             {
