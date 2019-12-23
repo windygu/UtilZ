@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wex="clr-namespace:UtilZ.Dotnet.WindowEx.WPF.Controls;assembly=UtilZ.Dotnet.WindowEx"
+        xmlns:utilz="clr-namespace:UtilZ.Dotnet.WindowEx.WPF.Controls;assembly=UtilZ.Dotnet.WindowEx"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -49,21 +49,25 @@
                     <GradientStop Color="#BEE6FD" Offset=".5"/>
                     <GradientStop Color="#A7D9F5" Offset="1"/>
                 </LinearGradientBrush>
-                
+
                 <SolidColorBrush x:Key="TabItemSelectedBackground" Color="#F9F9F9"/>
                 <SolidColorBrush x:Key="TabItemHotBorderBrush" Color="#3C7FB1"/>
-                
+
                 <SolidColorBrush x:Key="TabItemDisabledBackground" Color="#F4F4F4"/>
                 <SolidColorBrush x:Key="TabItemDisabledBorderBrush" Color="#FFC9C7BA"/>
             </Grid.Resources>
             <TabControl BorderThickness="0" Padding="0">
                 <TabItem Header="监控">
-                    
+                    <StackPanel Orientation="Vertical">
+                        <utilz:UCDateTimeControl x:Name="dateTimeControl"/>
+
+                        <TextBlock Text="{Binding ElementName=dateTimeControl,Path=Value}"/>
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="日志">
-                    <wex:LogControl x:Name="logControl" MaxItemCount="10"/>
+                    <utilz:LogControl x:Name="logControl" MaxItemCount="10"/>
                 </TabItem>
-                
+
             </TabControl>
 
         </Grid>
