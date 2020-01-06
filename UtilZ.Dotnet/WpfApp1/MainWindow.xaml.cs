@@ -25,7 +25,6 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-
         private int _index = 1;
         private void Button_Click(object sender, RoutedEventArgs e)
         {

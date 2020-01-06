@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base;
@@ -128,6 +129,8 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             this.StartRefreshLogThread();
         }
 
+
+
         /// <summary>
         /// 添加默认样式
         /// </summary>
@@ -169,6 +172,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             this.StartRefreshLogThread();
         }
 
+        private ApplicationExitNotify _applicationExitNotify = null;
         /// <summary>
         /// 启动刷新日志线程
         /// </summary>
@@ -183,6 +187,21 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 }
 
                 this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, this._refreshCount, 10, "日志显示线程", true, true, this._cacheCapcity);
+
+                if (this._applicationExitNotify == null)
+                {
+                    this._applicationExitNotify = new ApplicationExitNotify(this.ApplicationExitNotifyCallback);
+                    ApplicationHelper.RegesterExitNotify(this._applicationExitNotify);
+                }
+            }
+        }
+
+        private void ApplicationExitNotifyCallback()
+        {
+            if (this._logShowQueue != null)
+            {
+                this._logShowQueue.Stop();
+                this._logShowQueue.Dispose();
             }
         }
 
@@ -362,6 +381,9 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             this.content.Inlines.Clear();
             this._lines.Clear();
         }
+
+
+
 
         /// <summary>
         /// 显示的日志项

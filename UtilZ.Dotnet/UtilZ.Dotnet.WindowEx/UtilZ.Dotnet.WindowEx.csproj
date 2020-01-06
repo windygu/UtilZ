@@ -223,31 +223,6 @@
     <Compile Include="WPF\Base\ElementExtend.cs" />
     <Compile Include="WPF\Base\TextBlockEx.cs" />
     <Compile Include="WPF\Base\TextBoxEx.cs" />
-    <Compile Include="WPF\Controls\Cabinet\CabinetDeviceUnit.cs" />
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetCalibrationControl.xaml.cs">
-      <DependentUpon>UCCabinetCalibrationControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetControl.xaml.cs">
-      <DependentUpon>UCCabinetControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetDeviceControl.xaml.cs">
-      <DependentUpon>UCCabinetDeviceControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetDeviceUControl.xaml.cs">
-      <DependentUpon>UCCabinetDeviceUControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetEmptyUCalibrationControl.xaml.cs">
-      <DependentUpon>UCCabinetEmptyUCalibrationControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetEmptyUControl.xaml.cs">
-      <DependentUpon>UCCabinetEmptyUControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCCabinetRowControl.xaml.cs">
-      <DependentUpon>UCCabinetRowControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Cabinet\UCSingleCabinetControl.xaml.cs">
-      <DependentUpon>UCSingleCabinetControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WPF\Controls\Chart\Axis\AxesCollection.cs" />
     <Compile Include="WPF\Controls\Chart\Axis\AxisAbs.cs" />
     <Compile Include="WPF\Controls\Chart\Base\AxisDockOrientation.cs" />
@@ -288,7 +263,9 @@
     <Compile Include="WPF\Controls\LogControl.xaml.cs">
       <DependentUpon>LogControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\Controls\NumberControl.cs" />
+    <Compile Include="WPF\Controls\NumericTextBox.xaml.cs">
+      <DependentUpon>NumericTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Controls\PartAsynWait\ContainerControlType.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\PartAsynExcuteFactoryWPF.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\V1\UCShadeControl1.xaml.cs">
@@ -298,16 +275,6 @@
     <Compile Include="WPF\Controls\PartAsynWait\V1\WPFPartAsynExcuteV1.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteBase.cs" />
     <Compile Include="WPF\Controls\PartAsynWait\WPFPartAsynExcuteTypeDefine.cs" />
-    <Compile Include="WPF\Controls\PopupEx.cs" />
-    <Compile Include="WPF\Controls\UCDateTimeControl.xaml.cs">
-      <DependentUpon>UCDateTimeControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\UCPagingControl.xaml.cs">
-      <DependentUpon>UCPagingControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\UCZoomTranslateContainerControl.xaml.cs">
-      <DependentUpon>UCZoomTranslateContainerControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WPF\Controls\WaitingControls\MetroLRWaitIndicator.xaml.cs">
       <DependentUpon>MetroLRWaitIndicator.xaml</DependentUpon>
     </Compile>
@@ -322,42 +289,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetCalibrationControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetDeviceControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetDeviceUControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetEmptyUCalibrationControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetEmptyUControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetRowControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCCabinetUResourceDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Cabinet\UCSingleCabinetControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="WPF\Controls\Chart\ResourceDictionary\ChartResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -382,21 +313,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPF\Controls\NumericTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\Controls\PartAsynWait\V1\UCShadeControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WPF\Controls\UCDateTimeControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\UCPagingControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\UCZoomTranslateContainerControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Controls\WaitingControls\MetroLRWaitIndicator.xaml">
       <Generator>MSBuild:Compile</Generator>

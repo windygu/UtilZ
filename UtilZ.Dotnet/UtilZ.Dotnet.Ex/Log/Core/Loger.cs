@@ -25,14 +25,29 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <summary>
         /// [key:LogerName;Value:Loger]
         /// </summary>
-        private static readonly Hashtable _htLoger = Hashtable.Synchronized(new Hashtable());
+        private static readonly Dictionary<string, ILoger> _logerDic = new Dictionary<string, ILoger>();
+        private static readonly object _logerDicLock = new object();
 
         /// <summary>
         /// 静态构造函数(初始化默认日志追加器)
         /// </summary>
         static Loger()
         {
+            Base.ApplicationHelper.RegesterExitNotify(new Base.ApplicationExitNotify(ApplicationExitNotifyCallback));
             StaticStructLoadLogConfig();
+        }
+
+        private static void ApplicationExitNotifyCallback()
+        {
+            if (_defaultLoger != null)
+            {
+                _defaultLoger.Dispose();
+            }
+
+            foreach (var loger in _logerDic.Values)
+            {
+                loger.Dispose();
+            }
         }
 
         private static void StaticStructLoadLogConfig()
@@ -93,9 +108,9 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         public static void Clear()
         {
-            lock (_htLoger.SyncRoot)
+            lock (_logerDicLock)
             {
-                foreach (ILoger loger in _htLoger.Values)
+                foreach (ILoger loger in _logerDic.Values)
                 {
                     loger.Dispose();
                 }
@@ -106,7 +121,7 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
 
                 _defaultLoger = _emptyLoger;
-                _htLoger.Clear();
+                _logerDic.Clear();
             }
         }
 
@@ -209,14 +224,14 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
                 else
                 {
-                    lock (_htLoger.SyncRoot)
+                    lock (_logerDicLock)
                     {
-                        if (_htLoger.ContainsKey(name))
+                        if (_logerDic.ContainsKey(name))
                         {
-                            ((ILoger)_htLoger[name]).Dispose();
+                            ((ILoger)_logerDic[name]).Dispose();
                         }
 
-                        _htLoger[name] = loger;
+                        _logerDic[name] = loger;
                     }
                 }
             }
@@ -352,9 +367,9 @@ namespace UtilZ.Dotnet.Ex.Log
             }
             else
             {
-                lock (_htLoger.SyncRoot)
+                lock (_logerDicLock)
                 {
-                    loger = _htLoger[logerName] as ILoger;
+                    loger = _logerDic[logerName] as ILoger;
                 }
             }
 
@@ -389,14 +404,14 @@ namespace UtilZ.Dotnet.Ex.Log
             }
             else
             {
-                lock (_htLoger.SyncRoot)
+                lock (_logerDicLock)
                 {
-                    if (_htLoger.ContainsKey(logerName))
+                    if (_logerDic.ContainsKey(logerName))
                     {
-                        ((ILoger)_htLoger[logerName]).Dispose();
+                        ((ILoger)_logerDic[logerName]).Dispose();
                     }
 
-                    _htLoger[logerName] = loger;
+                    _logerDic[logerName] = loger;
                 }
             }
         }
@@ -408,7 +423,8 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         private readonly LogAsynQueue<LogItem> _logDispatcherQueue;
 
-        private Loger() : base()
+        private Loger()
+            : base()
         {
             this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLogCallback, "日志分发线程");
         }

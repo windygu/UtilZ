@@ -138,6 +138,13 @@ namespace UtilZ.Dotnet.Ex.Base
         /// 执行线程
         /// </summary>
         private Thread _thread = null;
+        /// <summary>
+        /// 获取内部线程
+        /// </summary>
+        public Thread OwnerThread
+        {
+            get { return _thread; }
+        }
 
         /// <summary>
         /// 向应该被取消的 System.Threading.CancellationToken 发送信号对象
@@ -456,19 +463,19 @@ namespace UtilZ.Dotnet.Ex.Base
             {
                 lock (this._lock)
                 {
-                    try
-                    {
-                        if (!this._isDisposed)
-                        {
-                            this._syncStopAutoResetEvent.Set();
-                        }
-                    }
-                    catch (ObjectDisposedException)
-                    { }
-
                     this._isRuning = false;
                     DecreaseExcuteThreadCount();
                 }
+
+                try
+                {
+                    if (!this._isDisposed)
+                    {
+                        this._syncStopAutoResetEvent.Set();
+                    }
+                }
+                catch (ObjectDisposedException)
+                { }
             }
         }
 
@@ -481,43 +488,63 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             lock (this._lock)
             {
-                if (this._isDisposed)
-                {
-                    return;
-                }
-
-                if (this._isReqAbort ||
-                this._cts == null ||
-                this._cts.Token.IsCancellationRequested ||
-                this._thread == null ||
-                this._thread.ThreadState == System.Threading.ThreadState.Aborted ||
-                this._thread.ThreadState == System.Threading.ThreadState.AbortRequested ||
-                this._thread.ThreadState == System.Threading.ThreadState.StopRequested ||
-                this._thread.ThreadState == System.Threading.ThreadState.Stopped)
-                {
-                    return;
-                }
-
-                if (this._cts != null && !this._cts.IsCancellationRequested)
-                {
-                    this._cts.Cancel();
-                    this._cts.Dispose();
-                    this._cts = null;
-                }
-
-                this._isReqAbort = true;
-                this._thread = null;
+                this.PrimitiveStop(isSycn, synMillisecondsTimeout);
             }
+        }
+
+        private void PrimitiveStop(bool isSycn = false, int synMillisecondsTimeout = -1)
+        {
+            if (this._isDisposed)
+            {
+                return;
+            }
+
+            if (this._isReqAbort ||
+            this._cts == null ||
+            this._cts.Token.IsCancellationRequested ||
+            this._thread == null ||
+            this._thread.ThreadState == System.Threading.ThreadState.Aborted ||
+            this._thread.ThreadState == System.Threading.ThreadState.AbortRequested ||
+            this._thread.ThreadState == System.Threading.ThreadState.StopRequested ||
+            this._thread.ThreadState == System.Threading.ThreadState.Stopped)
+            {
+                return;
+            }
+
+            if (this._cts != null && !this._cts.IsCancellationRequested)
+            {
+                this._cts.Cancel();
+                this._cts.Dispose();
+                this._cts = null;
+            }
+
+            this._thread = null;
 
             if (isSycn)
             {
                 try
                 {
-                    this._syncStopAutoResetEvent.WaitOne(synMillisecondsTimeout);
+                    if (!this._syncStopAutoResetEvent.WaitOne(synMillisecondsTimeout))
+                    {
+                        //超时终止
+                        this.PrimitiveAbort();
+                    }
                 }
                 catch (ObjectDisposedException)
                 { }
             }
+        }
+
+        private void PrimitiveAbort()
+        {
+            if (this._isReqAbort || this._thread == null)
+            {
+                return;
+            }
+
+            this._thread.Abort();
+            this._isReqAbort = true;
+            this._thread = null;
         }
 
         /// <summary>
@@ -527,14 +554,7 @@ namespace UtilZ.Dotnet.Ex.Base
         {
             lock (this._lock)
             {
-                if (this._isReqAbort || this._thread == null)
-                {
-                    return;
-                }
-
-                this._thread.Abort();
-                this._isReqAbort = true;
-                this._thread = null;
+                this.PrimitiveAbort();
             }
         }
         #endregion
@@ -561,7 +581,8 @@ namespace UtilZ.Dotnet.Ex.Base
                     return;
                 }
 
-                this.Stop(true);
+                this.PrimitiveStop(true, 1000);
+
                 this._isDisposed = true;
                 try
                 {
@@ -593,6 +614,11 @@ namespace UtilZ.Dotnet.Ex.Base
     /// </summary>
     public interface IThreadEx : IDisposable
     {
+        /// <summary>
+        /// 获取内部线程
+        /// </summary>
+        Thread OwnerThread { get; }
+
         /// <summary>
         /// 启动线程
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -22,6 +23,7 @@ namespace UtilZ.Dotnet.Ex.Base
         private const int _DEFAULT_TIMEOUT = 10;
         private readonly AutoResetEvent _queueChangedEventHandle = new AutoResetEvent(false);
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+        private bool _isDisposabled = false;
 
         /// <summary>
         /// 构造函数
@@ -29,6 +31,20 @@ namespace UtilZ.Dotnet.Ex.Base
         public BlockingCollectionEx()
         {
 
+        }
+
+        /// <summary>
+        /// 获取项数
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                lock (this._queueLock)
+                {
+                    return this._queue.Count;
+                }
+            }
         }
 
         /// <summary>
@@ -40,7 +56,17 @@ namespace UtilZ.Dotnet.Ex.Base
             lock (this._queueLock)
             {
                 this._queue.Enqueue(item);
-                this._queueChangedEventHandle.Set();
+                try
+                {
+                    if (this._isDisposabled)
+                    {
+                        return;
+                    }
+
+                    this._queueChangedEventHandle.Set();
+                }
+                catch (ObjectDisposedException)
+                { }
             }
         }
 
@@ -70,7 +96,19 @@ namespace UtilZ.Dotnet.Ex.Base
                     }
                 }
 
-                this._queueChangedEventHandle.WaitOne(_DEFAULT_TIMEOUT);
+                if (this._isDisposabled)
+                {
+                    break;
+                }
+
+                try
+                {
+                    this._queueChangedEventHandle.WaitOne(_DEFAULT_TIMEOUT);
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
             }
 
             throw new OperationCanceledException();
@@ -126,10 +164,15 @@ namespace UtilZ.Dotnet.Ex.Base
                         }
                     }
 
-                    if (!this._queueChangedEventHandle.WaitOne(timeout))
+                    try
                     {
-                        break;
+                        if (this._isDisposabled || !this._queueChangedEventHandle.WaitOne(timeout))
+                        {
+                            break;
+                        }
                     }
+                    catch (ObjectDisposedException)
+                    { }
                 }
 
                 if (token.IsCancellationRequested)
@@ -144,6 +187,8 @@ namespace UtilZ.Dotnet.Ex.Base
                 watch.Stop();
             }
         }
+
+
 
         /// <summary>
         /// 在观察取消标记时，尝试在指定的时间内从集合中移除某个项
@@ -236,7 +281,14 @@ namespace UtilZ.Dotnet.Ex.Base
                         }
                     }
 
-                    if (!this._queueChangedEventHandle.WaitOne(timeout))
+                    try
+                    {
+                        if (this._isDisposabled || !this._queueChangedEventHandle.WaitOne(timeout))
+                        {
+                            break;
+                        }
+                    }
+                    catch (ObjectDisposedException)
                     {
                         break;
                     }
@@ -250,6 +302,8 @@ namespace UtilZ.Dotnet.Ex.Base
                 watch.Stop();
             }
         }
+
+
 
         /// <summary>
         /// 将项从集合中实例复制到新数组中
@@ -268,15 +322,25 @@ namespace UtilZ.Dotnet.Ex.Base
         /// </summary>
         public void Dispose()
         {
-            try
+            lock (this._queueLock)
             {
-                this._cts.Cancel();
-                this._cts.Dispose();
-                this._queueChangedEventHandle.Dispose();
-            }
-            catch (Exception ex)
-            {
-                Loger.Error(ex, "Dispose异常");
+                try
+                {
+                    if (this._isDisposabled)
+                    {
+                        return;
+                    }
+
+                    this._cts.Cancel();
+                    this._cts.Dispose();
+                    this._queueChangedEventHandle.Dispose();
+                    this._isDisposabled = true;
+
+                }
+                catch (Exception ex)
+                {
+                    Loger.Error(ex, "Dispose异常");
+                }
             }
         }
     }

@@ -11,7 +11,7 @@ namespace UtilZ.Dotnet.Ex.Log
     /// 日志志属异步队列
     /// </summary>
     /// <typeparam name="T">数据类型</typeparam>
-    public class LogAsynQueue<T> : IDisposable
+    public class LogAsynQueue<T>
     {
         /// <summary>
         /// 异步队列线程
@@ -42,6 +42,9 @@ namespace UtilZ.Dotnet.Ex.Log
         /// 是否已释放过资源[true:已释放过;false:未释放过]
         /// </summary>
         private bool _isDispose = false;
+
+
+
 
         /// <summary>
         /// 构造函数
