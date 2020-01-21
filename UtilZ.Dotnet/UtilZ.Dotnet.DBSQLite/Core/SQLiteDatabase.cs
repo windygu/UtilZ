@@ -41,7 +41,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
             //paras.Add("TABLENAME", tableName);
             //object value = this.ExecuteScalar(sqlStr, paras);
             //return Convert.ToInt32(value) > 0;
-            string sqlStr = @"select tbl_name,'' from sqlite_master where type='table'";
+            const string sqlStr = @"select tbl_name,'' from sqlite_master where type='table'";
             DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
             string dbTableName;
             foreach (DataRow row in dt.Rows)
@@ -145,7 +145,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <returns>当前用户有权限的所有表集合</returns>
         protected override List<DBTableInfo> PrimitiveGetTableInfoList(IDbConnection con, bool getFieldInfo)
         {
-            string queryTableNameSqlStr = @"select name from sqlite_master where type = 'table'";
+            const string queryTableNameSqlStr = @"select name from sqlite_master where type = 'table'";
             DataTable dt = base.PrimitiveQueryDataToDataTable(con, queryTableNameSqlStr);
 
             if (getFieldInfo)
@@ -223,7 +223,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <returns>表信息</returns>
         protected override DBTableInfo PrimitiveGetTableInfoByName(IDbConnection con, string tableName, bool getFieldInfo, DBIndexInfoCollection indexInfoCollection)
         {
-            string sqlStr = @"select tbl_name from sqlite_master where type='table'";
+            const string sqlStr = @"select tbl_name from sqlite_master where type='table'";
             DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
             if (dt == null || dt.Rows.Count == 0)
             {
@@ -326,7 +326,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <returns>数据库版本信息</returns>
         protected override DataBaseVersionInfo PrimitiveGetDataBaseVersion(IDbConnection con)
         {
-            string sqlStr = @"select sqlite_version()";
+            const string sqlStr = @"select sqlite_version()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);//dataBaseVersion:3.8.2
             string verStr = dataBaseVersion.Substring(0, dataBaseVersion.IndexOf('.'));
@@ -346,7 +346,7 @@ namespace UtilZ.Dotnet.DBSQLite.Core
         /// <returns>数据库系统时间</returns>
         protected override DateTime PrimitiveGetDataBaseSysTime(IDbConnection con)
         {
-            string sqlStr = @"select datetime('now','localtime')";
+            const string sqlStr = @"select datetime('now','localtime')";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             return DBAccessEx.ConvertObject<DateTime>(value);
         }

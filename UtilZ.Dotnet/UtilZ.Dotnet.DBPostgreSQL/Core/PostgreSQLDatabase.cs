@@ -178,7 +178,7 @@ pg_class.relname = '{tableName}' and pg_constraint.contype='p'";
         /// <returns>当前用户有权限的所有表集合</returns>
         protected override List<DBTableInfo> PrimitiveGetTableInfoList(IDbConnection con, bool getFieldInfo)
         {
-            string sqlStr = @"select a.relname as name, b.description as value from pg_class a 
+            const string sqlStr = @"select a.relname as name, b.description as value from pg_class a 
 left join (select * from pg_description where objsubid =0 ) b on a.oid = b.objoid
 where a.relname in (select tablename from pg_tables where schemaname = 'public')
 order by a.relname asc";
@@ -373,7 +373,7 @@ order by
         {
             //select VERSION();
             //show server_version_num
-            string sqlStr = @"select version()";
+            const string sqlStr = @"select version()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);//PostgreSQL 10.7, compiled by Visual C++ build 1800, 64-bit
 
@@ -399,7 +399,7 @@ order by
             //select CURRENT_TIME;
             //select CURRENT_TIMESTAMP;
             //select now();
-            string sqlStr = @"select CURRENT_TIMESTAMP";
+            const string sqlStr = @"select CURRENT_TIMESTAMP";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             return DBAccessEx.ConvertObject<DateTime>(value);
         }
@@ -414,7 +414,7 @@ order by
             string userName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.Account))
             {
-                string sqlStr = @"select * from current_user";
+                const string sqlStr = @"select * from current_user";
                 object obj = base.PrimitiveExecuteScalar(con, sqlStr);
                 userName = obj.ToString();
                 base._dbAccess.Config.Account = userName;
@@ -437,7 +437,7 @@ order by
             string databaseName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.DatabaseName))
             {
-                string queryDatabaseNameSqlStr = @"SELECT current_database()";
+                const string queryDatabaseNameSqlStr = @"SELECT current_database()";
                 object obj = base.PrimitiveExecuteScalar(con, queryDatabaseNameSqlStr);
                 databaseName = obj.ToString();
                 base._dbAccess.Config.DatabaseName = databaseName;
@@ -531,7 +531,7 @@ order by
         /// <returns>最大连接数</returns>
         private int PrimitiveGetMaxConnectCount(DbConnection dbConnection)
         {
-            string sqlStr = @"show max_connections";
+            const string sqlStr = @"show max_connections";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             return DBAccessEx.ConvertObject<int>(obj);
         }
@@ -552,7 +552,7 @@ order by
         private List<string> GetAllUserNameList(DbConnection dbConnection)
         {
             //select user
-            string sqlStr = @"\du";
+            const string sqlStr = @"\du";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             List<string> allUserNameList = new List<string>();
             foreach (DataRow row in dt.Rows)
@@ -569,7 +569,7 @@ order by
         /// <returns>数据库启动时间</returns>
         private DateTime PrimitiveGetStartTime(DbConnection dbConnection)
         {
-            string sqlStr = @"select pg_postmaster_start_time()";
+            const string sqlStr = @"select pg_postmaster_start_time()";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             DateTime startTime = DBAccessEx.ConvertObject<DateTime>(obj);
             return startTime;

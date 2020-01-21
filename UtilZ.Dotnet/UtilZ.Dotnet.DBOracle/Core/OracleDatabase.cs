@@ -74,43 +74,43 @@ namespace UtilZ.Dotnet.DBOracle.Core
             }
 
             sqlStr = $@"select t.COLUMN_NAME,t.DATA_TYPE,t.NULLABLE,t.DATA_DEFAULT,c.COMMENTS from user_tab_columns t,user_col_comments c where t.table_name = c.table_name and t.column_name = c.column_name and t.table_name = '{tableName}'";
-            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con, sqlStr);
-
-            List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
-            object value;
-            string fieldName;
-            string dbTypeName;
-            bool allowNull;
-            object defaultValue;
-            string comments;
-            Type type;
-            DBFieldType fieldType;
-
-            using (IDataReader reader = cmd.ExecuteReader())
+            using (IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con, sqlStr))
             {
-                while (reader.Read())
+                List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
+                object value;
+                string fieldName;
+                string dbTypeName;
+                bool allowNull;
+                object defaultValue;
+                string comments;
+                Type type;
+                DBFieldType fieldType;
+
+                using (IDataReader reader = cmd.ExecuteReader())
                 {
-                    fieldName = reader.GetString(0);
-                    dbTypeName = reader.GetString(1);
-                    allowNull = reader.GetString(2).ToUpper().Equals("Y") ? true : false;
-                    defaultValue = reader.GetValue(3);
-                    value = reader[4];
-                    if (value != null)
+                    while (reader.Read())
                     {
-                        comments = value.ToString();
-                    }
-                    else
-                    {
-                        comments = string.Empty;
-                    }
+                        fieldName = reader.GetString(0);
+                        dbTypeName = reader.GetString(1);
+                        allowNull = reader.GetString(2).ToUpper().Equals("Y") ? true : false;
+                        defaultValue = reader.GetValue(3);
+                        value = reader[4];
+                        if (value != null)
+                        {
+                            comments = value.ToString();
+                        }
+                        else
+                        {
+                            comments = string.Empty;
+                        }
 
-                    type = colDBType[fieldName];
-                    fieldType = dicFieldDbClrFieldType[fieldName];
-                    colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
+                        type = colDBType[fieldName];
+                        fieldType = dicFieldDbClrFieldType[fieldName];
+                        colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
+                    }
                 }
+                return colInfos;
             }
-
-            return colInfos;
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
              * TNS for 64-bit Windows:                  11.2.0.1.0  Production
              ***********************************************************************************/
 
-            string sqlStr = @"SELECT * FROM product_component_version";
+            const string sqlStr = @"SELECT * FROM product_component_version";
             DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
 
             string dataBaseVersion = dt.Rows[0][1].ToString();//11.2.0.1.0
@@ -364,7 +364,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         /// <returns>数据库系统时间</returns>
         protected override DateTime PrimitiveGetDataBaseSysTime(IDbConnection con)
         {
-            string sqlStr = @"select current_date from dual";
+            const string sqlStr = @"select current_date from dual";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             return DBAccessEx.ConvertObject<DateTime>(value);
         }
@@ -379,7 +379,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
             string userName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.Account))
             {
-                string sqlStr = @"select user from dual";
+                const string sqlStr = @"select user from dual";
                 object obj = base.PrimitiveExecuteScalar(con, sqlStr);
                 userName = obj.ToString();
                 base._dbAccess.Config.Account = userName;
@@ -402,7 +402,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
             string databaseName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.DatabaseName))
             {
-                string queryDatabaseNameSqlStr = @"select instance_name from  V$instance";
+                const string queryDatabaseNameSqlStr = @"select instance_name from  V$instance";
                 object obj = base.PrimitiveExecuteScalar(con, queryDatabaseNameSqlStr);
                 databaseName = obj.ToString();
                 base._dbAccess.Config.DatabaseName = databaseName;
@@ -459,7 +459,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         /// <returns>内存占用大小</returns>
         private long PrimitiveGetMemorySize(DbConnection dbConnection)
         {
-            string sqlStr = @"select sum(value) from v$sga";
+            const string sqlStr = @"select sum(value) from v$sga";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             return DBAccessEx.ConvertObject<long>(obj);
         }
@@ -483,7 +483,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         /// <returns>最大连接数</returns>
         private int PrimitiveGetMaxConnectCount(DbConnection dbConnection)
         {
-            string sqlStr = @"select value from v$parameter where name ='processes'";
+            const string sqlStr = @"select value from v$parameter where name ='processes'";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             return DBAccessEx.ConvertObject<int>(obj);
         }
@@ -494,7 +494,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         /// <returns>总连接数</returns>
         private int PrimitiveGetTotalConnectCount(DbConnection dbConnection)
         {
-            string sqlStr = @"select count(*) from v$process";
+            const string sqlStr = @"select count(*) from v$process";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             return DBAccessEx.ConvertObject<int>(obj);
         }
@@ -505,7 +505,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         /// <returns>连接数</returns>
         private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int concurrentConnectCount, out int activeConnectCount)
         {
-            string sqlStr = @"SELECT STATUS FROM v$session";
+            const string sqlStr = @"SELECT STATUS FROM v$session";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             concurrentConnectCount = dt.Rows.Count;
             activeConnectCount = dt.Select("STATUS='ACTIVE'").Length;
@@ -513,7 +513,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
 
         private List<string> GetAllUserNameList(DbConnection dbConnection)
         {
-            string sqlStr = @"select USERNAME from all_users";
+            const string sqlStr = @"select USERNAME from all_users";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             List<string> allUserNameList = new List<string>();
             foreach (DataRow row in dt.Rows)
@@ -544,7 +544,7 @@ FROM user_indexes A inner join user_ind_columns B on A.INDEX_NAME=B.INDEX_NAME W
         /// <returns>数据库创建时间</returns>
         private DateTime PrimitiveGetCreatetTime(DbConnection dbConnection)
         {
-            string sqlStr = @"SELECT MIN(CREATED) FROM user_objects";
+            const string sqlStr = @"SELECT MIN(CREATED) FROM user_objects";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             DateTime createtTime = DBAccessEx.ConvertObject<DateTime>(obj);
             return createtTime;

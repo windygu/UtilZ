@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnQuery = new System.Windows.Forms.Button();
+            this.btnDataBaseName = new System.Windows.Forms.Button();
+            this.btnUserName = new System.Windows.Forms.Button();
             this.btnDatabasePropertyInfo = new System.Windows.Forms.Button();
             this.btnEF = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
@@ -51,8 +54,6 @@
             this.comboBoxDB = new System.Windows.Forms.ComboBox();
             this.btnDataBaseSysTime = new System.Windows.Forms.Button();
             this.logControl = new UtilZ.Dotnet.WindowEx.Winform.Controls.LogControlF();
-            this.btnUserName = new System.Windows.Forms.Button();
-            this.btnDataBaseName = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -69,6 +70,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnQuery);
             this.splitContainer1.Panel1.Controls.Add(this.btnDataBaseName);
             this.splitContainer1.Panel1.Controls.Add(this.btnUserName);
             this.splitContainer1.Panel1.Controls.Add(this.btnDatabasePropertyInfo);
@@ -96,9 +98,39 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.logControl);
-            this.splitContainer1.Size = new System.Drawing.Size(900, 650);
+            this.splitContainer1.Size = new System.Drawing.Size(1265, 788);
             this.splitContainer1.SplitterDistance = 202;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // btnQuery
+            // 
+            this.btnQuery.Location = new System.Drawing.Point(470, 102);
+            this.btnQuery.Name = "btnQuery";
+            this.btnQuery.Size = new System.Drawing.Size(75, 23);
+            this.btnQuery.TabIndex = 23;
+            this.btnQuery.Text = "Query";
+            this.btnQuery.UseVisualStyleBackColor = true;
+            this.btnQuery.Click += new System.EventHandler(this.btnQuery_Click);
+            // 
+            // btnDataBaseName
+            // 
+            this.btnDataBaseName.Location = new System.Drawing.Point(95, 131);
+            this.btnDataBaseName.Name = "btnDataBaseName";
+            this.btnDataBaseName.Size = new System.Drawing.Size(93, 23);
+            this.btnDataBaseName.TabIndex = 22;
+            this.btnDataBaseName.Text = "DataBaseName";
+            this.btnDataBaseName.UseVisualStyleBackColor = true;
+            this.btnDataBaseName.Click += new System.EventHandler(this.btnDataBaseName_Click);
+            // 
+            // btnUserName
+            // 
+            this.btnUserName.Location = new System.Drawing.Point(13, 131);
+            this.btnUserName.Name = "btnUserName";
+            this.btnUserName.Size = new System.Drawing.Size(75, 23);
+            this.btnUserName.TabIndex = 21;
+            this.btnUserName.Text = "UserName";
+            this.btnUserName.UseVisualStyleBackColor = true;
+            this.btnUserName.Click += new System.EventHandler(this.btnUserName_Click);
             // 
             // btnDatabasePropertyInfo
             // 
@@ -199,7 +231,7 @@
             this.dgv.Name = "dgv";
             this.dgv.PageSizeMaximum = 100;
             this.dgv.PageSizeMinimum = 1;
-            this.dgv.Size = new System.Drawing.Size(346, 196);
+            this.dgv.Size = new System.Drawing.Size(711, 196);
             this.dgv.TabIndex = 13;
             this.dgv.QueryData += new System.EventHandler<UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.QueryDataArgs>(this.dgv_QueryData);
             this.dgv.PageSizeChanged += new System.EventHandler<UtilZ.Dotnet.WindowEx.Winform.Controls.PageGrid.PageSizeChangedArgs>(this.dgv_PageSizeChanged);
@@ -324,34 +356,14 @@
             this.logControl.Location = new System.Drawing.Point(0, 0);
             this.logControl.MaxItemCount = 100;
             this.logControl.Name = "logControl";
-            this.logControl.Size = new System.Drawing.Size(900, 444);
+            this.logControl.Size = new System.Drawing.Size(1265, 582);
             this.logControl.TabIndex = 0;
-            // 
-            // btnUserName
-            // 
-            this.btnUserName.Location = new System.Drawing.Point(13, 131);
-            this.btnUserName.Name = "btnUserName";
-            this.btnUserName.Size = new System.Drawing.Size(75, 23);
-            this.btnUserName.TabIndex = 21;
-            this.btnUserName.Text = "UserName";
-            this.btnUserName.UseVisualStyleBackColor = true;
-            this.btnUserName.Click += new System.EventHandler(this.btnUserName_Click);
-            // 
-            // btnDataBaseName
-            // 
-            this.btnDataBaseName.Location = new System.Drawing.Point(95, 131);
-            this.btnDataBaseName.Name = "btnDataBaseName";
-            this.btnDataBaseName.Size = new System.Drawing.Size(93, 23);
-            this.btnDataBaseName.TabIndex = 22;
-            this.btnDataBaseName.Text = "DataBaseName";
-            this.btnDataBaseName.UseVisualStyleBackColor = true;
-            this.btnDataBaseName.Click += new System.EventHandler(this.btnDataBaseName_Click);
             // 
             // FTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 650);
+            this.ClientSize = new System.Drawing.Size(1265, 788);
             this.Controls.Add(this.splitContainer1);
             this.Name = "FTest";
             this.Text = "Test";
@@ -393,6 +405,7 @@
         private System.Windows.Forms.Button btnDatabasePropertyInfo;
         private System.Windows.Forms.Button btnDataBaseName;
         private System.Windows.Forms.Button btnUserName;
+        private System.Windows.Forms.Button btnQuery;
     }
 }
 

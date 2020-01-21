@@ -19,12 +19,12 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 获取当前时间的时间戳
         /// </summary>
-        /// <param name="isUseUtcTime">是否使用utc时间[true:utc时间;false:本机时间]</param>
+        /// <param name="utc">是否使用utc时间[true:utc时间;false:本机时间]</param>
         /// <returns>当前时间的时间戳</returns>
-        public static long GetTimestamp(bool isUseUtcTime = true)
+        public static long GetTimestamp(bool utc = true)
         {
             TimeSpan ts;
-            if (isUseUtcTime)
+            if (utc)
             {
                 ts = DateTime.UtcNow - _refTime;
             }

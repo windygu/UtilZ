@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\UtilZ.Dotnet.DBIBase.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -59,7 +60,7 @@
     <Compile Include="Core\DBAccessAbs_Query.cs" />
     <Compile Include="Core\DBAccessAbs_Update.cs" />
     <Compile Include="Core\DBAccessEx.cs" />
-    <Compile Include="Core\DBAccessHelper.cs" />
+    <Compile Include="Core\DBConverter.cs" />
     <Compile Include="EF\EFConnectionFactory.cs" />
     <Compile Include="EF\EFDbConfiguration.cs" />
     <Compile Include="EF\EFDbContext.cs" />

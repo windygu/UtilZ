@@ -74,37 +74,38 @@ namespace UtilZ.Dotnet.DBMySql.Core
                 colDBType.Add(col.ColumnName, col.DataType);
             }
 
-
-            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con);
-            cmd.CommandText = $@"SHOW FULL FIELDS FROM {tableName}";
-            List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
-
-            using (IDataReader reader = cmd.ExecuteReader())
+            using (IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con))
             {
-                object value;
-                string fieldName;
-                string dbTypeName;
-                bool allowNull;
-                object defaultValue;
-                string comments;
-                Type type;
-                DBFieldType fieldType;
+                cmd.CommandText = $@"SHOW FULL FIELDS FROM {tableName}";
+                List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
 
-                while (reader.Read())
+                using (IDataReader reader = cmd.ExecuteReader())
                 {
-                    fieldName = reader["Field"].ToString();
-                    dbTypeName = reader["Type"].ToString();
-                    allowNull = reader["Null"].ToString().ToUpper().Equals("NO") ? false : true;
-                    value = reader["Default"];
-                    defaultValue = DBNull.Value.Equals(value) ? null : value;
-                    comments = reader["Comment"].ToString();
-                    type = colDBType[fieldName];
-                    fieldType = dicFieldDbClrFieldType[fieldName];
-                    colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
-                }
-            }
+                    object value;
+                    string fieldName;
+                    string dbTypeName;
+                    bool allowNull;
+                    object defaultValue;
+                    string comments;
+                    Type type;
+                    DBFieldType fieldType;
 
-            return colInfos;
+                    while (reader.Read())
+                    {
+                        fieldName = reader["Field"].ToString();
+                        dbTypeName = reader["Type"].ToString();
+                        allowNull = reader["Null"].ToString().ToUpper().Equals("NO") ? false : true;
+                        value = reader["Default"];
+                        defaultValue = DBNull.Value.Equals(value) ? null : value;
+                        comments = reader["Comment"].ToString();
+                        type = colDBType[fieldName];
+                        fieldType = dicFieldDbClrFieldType[fieldName];
+                        colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
+                    }
+                }
+
+                return colInfos;
+            }
         }
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         protected override List<DBTableInfo> PrimitiveGetTableInfoList(IDbConnection con, bool getFieldInfo)
         {
             //string sqlStr = $@"select TABLE_NAME,TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='{con.Database}'";
-            string sqlStr = @"SHOW TABLES";
+            const string sqlStr = @"SHOW TABLES";
             DataTable dt = base.PrimitiveQueryDataToDataTable(con, sqlStr);
 
             var tableInfoList = new List<DBTableInfo>();
@@ -275,7 +276,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <returns>数据库版本信息</returns>
         protected override DataBaseVersionInfo PrimitiveGetDataBaseVersion(IDbConnection con)
         {
-            string sqlStr = @"select version()";
+            const string sqlStr = @"select version()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);//5.6.25-log
             string verStr = dataBaseVersion.Substring(0, dataBaseVersion.IndexOf('.'));
@@ -295,7 +296,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <returns>数据库系统时间</returns>
         protected override DateTime PrimitiveGetDataBaseSysTime(IDbConnection con)
         {
-            string sqlStr = @"select CURRENT_TIMESTAMP()";
+            const string sqlStr = @"select CURRENT_TIMESTAMP()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             return DBAccessEx.ConvertObject<DateTime>(value);
         }
@@ -310,7 +311,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
             string userName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.Account))
             {
-                string sqlStr = @"select user()";
+                const string sqlStr = @"select user()";
                 object obj = base.PrimitiveExecuteScalar(con, sqlStr);
                 userName = obj.ToString();
                 int index = userName.IndexOf('@');
@@ -339,7 +340,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
             string databaseName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.DatabaseName))
             {
-                string queryDatabaseNameSqlStr = @"select database()";
+                const string queryDatabaseNameSqlStr = @"select database()";
                 object obj = base.PrimitiveExecuteScalar(con, queryDatabaseNameSqlStr);
                 databaseName = obj.ToString();
                 base._dbAccess.Config.DatabaseName = databaseName;
@@ -395,7 +396,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <returns>内存占用大小</returns>
         private long PrimitiveGetMemorySize(DbConnection dbConnection)
         {
-            string sqlStr = @"SELECT (@@key_buffer_size + @@innodb_buffer_pool_size + @@query_cache_size + @@tmp_table_size) AS result";
+            const string sqlStr = @"SELECT (@@key_buffer_size + @@innodb_buffer_pool_size + @@query_cache_size + @@tmp_table_size) AS result";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             return DBAccessEx.ConvertObject<long>(obj);
         }
@@ -418,7 +419,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <returns>最大连接数</returns>
         private int PrimitiveGetMaxConnectCount(DbConnection dbConnection)
         {
-            string sqlStr = @"show variables like 'max_connections'";
+            const string sqlStr = @"show variables like 'max_connections'";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             object obj = dt.Rows[0][1];
             return DBAccessEx.ConvertObject<int>(obj);
@@ -430,7 +431,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         /// <returns>连接数</returns>
         private void PrimitiveGetTotalConnectCountAndConcurrentConnectCount(DbConnection dbConnection, out int totalConnectCount, out int concurrentConnectCount)
         {
-            string sqlStr = @"show full processlist";
+            const string sqlStr = @"show full processlist";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             totalConnectCount = dt.Rows.Count;
             concurrentConnectCount = totalConnectCount - dt.Select("Command='Sleep'").Length;
@@ -438,7 +439,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
 
         private List<string> GetAllUserNameList(DbConnection dbConnection)
         {
-            string sqlStr = @"select user from mysql.user";
+            const string sqlStr = @"select user from mysql.user";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             List<string> allUserNameList = new List<string>();
             foreach (DataRow row in dt.Rows)
@@ -456,7 +457,7 @@ namespace UtilZ.Dotnet.DBMySql.Core
         private DateTime PrimitiveGetStartTime(DbConnection dbConnection)
         {
             //原理:当前时间减去数据库运行时长,则得到数据库启动时间
-            string queryRunDurationSqlStr = @"show global status like 'uptime'";
+            const string queryRunDurationSqlStr = @"show global status like 'uptime'";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, queryRunDurationSqlStr);
             object obj = dt.Rows[0][1];
             double duration = DBAccessEx.ConvertObject<double>(obj);//数据库启动后运行时长，单位为秒            

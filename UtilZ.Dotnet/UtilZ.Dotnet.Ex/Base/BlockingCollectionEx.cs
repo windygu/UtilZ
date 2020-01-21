@@ -18,7 +18,7 @@ namespace UtilZ.Dotnet.Ex.Base
     [ComVisible(false)]
     public class BlockingCollectionEx<T> : IDisposable
     {
-        private readonly Queue<T> _queue = new Queue<T>();
+        private Queue<T> _queue = new Queue<T>();
         private readonly object _queueLock = new object();
         private const int _DEFAULT_TIMEOUT = 10;
         private readonly AutoResetEvent _queueChangedEventHandle = new AutoResetEvent(false);
@@ -316,6 +316,21 @@ namespace UtilZ.Dotnet.Ex.Base
                 return this._queue.ToArray();
             }
         }
+
+        /// <summary>
+        /// 清空集合
+        /// </summary>
+        public void Clear()
+        {
+            lock (this._queueLock)
+            {
+                if (this._queue.Count > 0)
+                {
+                    this._queue = new Queue<T>();
+                }
+            }
+        }
+
 
         /// <summary>
         /// IDisposable

@@ -13,7 +13,19 @@ namespace UtilZ.Dotnet.Ex.Base
     /// <typeparam name="T"></typeparam>
     public class BlockingCollectionExThread<T> : IDisposable
     {
-        private readonly BlockingCollectionEx<T> _blockingCollection = new BlockingCollectionEx<T>();
+        /// <summary>
+        /// 默认添加处理线程阈值条件
+        /// </summary>
+        private const int ADD_PROCESS_THREAD_THRESHOLD = 100;
+
+        //private readonly BlockingCollectionEx<T> _blockingCollection = new BlockingCollectionEx<T>();
+        private System.Collections.Concurrent.BlockingCollection<T> _blockingCollection = new System.Collections.Concurrent.BlockingCollection<T>();
+        private readonly object _blockingCollectionLock = new object();
+        /// <summary>
+        /// 添加处理线程条件类型[true:外部条件;false:线程数]
+        /// </summary>
+        private bool _addProcessThreadConditionType;
+        private readonly Func<int, bool> _addProcessThreadFunc;
         private readonly int _maxThreadCount;
         private readonly string _threadNamePre;
         private readonly Action<T> _process;
@@ -24,13 +36,52 @@ namespace UtilZ.Dotnet.Ex.Base
         private bool _isDisposed = false;
 
         /// <summary>
+        /// 获取项数
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return this._blockingCollection.Count;
+            }
+        }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="maxThreadCount">最大并发处理线程数,小于1无限制</param>
+        /// <param name="addProcessThreadFunc">添加线程条件,参数为当前处理的线程数,返回值true表示可增加线程处理;false表示不再增加线程处理</param>
         /// <param name="threadNamePre">线程名前续</param>
         /// <param name="process">处理回调</param>
         /// <param name="addProcessThreadThreshold">新添加处理线程阈值条件,当未处理集合中的项数超过此值时会新添加一个处理线程</param>
-        public BlockingCollectionExThread(int maxThreadCount, string threadNamePre, Action<T> process, int addProcessThreadThreshold = 100)
+        public BlockingCollectionExThread(Func<int, bool> addProcessThreadFunc, string threadNamePre, Action<T> process, int addProcessThreadThreshold = ADD_PROCESS_THREAD_THRESHOLD)
+            : this(threadNamePre, process, addProcessThreadThreshold, true)
+        {
+            this._addProcessThreadFunc = addProcessThreadFunc;
+            this.CreateProcessThread();
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="maxThreadCount">最大并发处理线程数,小于1无限制,最多为CPU核心数</param>
+        /// <param name="threadNamePre">线程名前续</param>
+        /// <param name="process">处理回调</param>
+        /// <param name="addProcessThreadThreshold">新添加处理线程阈值条件,当未处理集合中的项数超过此值时会新添加一个处理线程</param>
+        public BlockingCollectionExThread(int maxThreadCount, string threadNamePre, Action<T> process, int addProcessThreadThreshold = ADD_PROCESS_THREAD_THRESHOLD)
+            : this(threadNamePre, process, addProcessThreadThreshold, false)
+        {
+            this._maxThreadCount = maxThreadCount;
+            this.CreateProcessThread();
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="threadNamePre">线程名前续</param>
+        /// <param name="process">处理回调</param>
+        /// <param name="addProcessThreadThreshold">新添加处理线程阈值条件,当未处理集合中的项数超过此值时会新添加一个处理线程</param>
+        /// <param name="addProcessThreadConditionType">添加处理线程条件类型[true:外部条件;false:线程数]</param>
+        private BlockingCollectionExThread(string threadNamePre, Action<T> process, int addProcessThreadThreshold, bool addProcessThreadConditionType)
         {
             if (process == null)
             {
@@ -39,14 +90,13 @@ namespace UtilZ.Dotnet.Ex.Base
 
             if (addProcessThreadThreshold < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(addProcessThreadThreshold), "新添加处理线程阈值条件不能小于1");
+                throw new ArgumentOutOfRangeException(nameof(addProcessThreadThreshold), "新添加处理线程阈值不能小于1");
             }
 
-            this._maxThreadCount = maxThreadCount;
             this._threadNamePre = threadNamePre;
             this._process = process;
             this._addProcessThreadThreshold = addProcessThreadThreshold;
-            this.CreateProcessThread();
+            this._addProcessThreadConditionType = addProcessThreadConditionType;
         }
 
         private void CreateProcessThread()
@@ -69,11 +119,27 @@ namespace UtilZ.Dotnet.Ex.Base
                     return;
                 }
 
-                if (this._threadList.Count >= Environment.ProcessorCount ||
-                    this._maxThreadCount > 0 && this._threadList.Count >= this._maxThreadCount)
+                if (this._threadList.Count >= Environment.ProcessorCount)
                 {
                     this._allowAddThread = false;
                     return;
+                }
+
+                if (this._addProcessThreadConditionType)
+                {
+                    if (!this._addProcessThreadFunc(this._threadList.Count))
+                    {
+                        this._allowAddThread = false;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (this._maxThreadCount > 0 && this._threadList.Count >= this._maxThreadCount)
+                    {
+                        this._allowAddThread = false;
+                        return;
+                    }
                 }
 
                 string threadName = $"{this._threadNamePre}{this._threadList.Count}";
@@ -94,9 +160,24 @@ namespace UtilZ.Dotnet.Ex.Base
                 {
                     try
                     {
-                        if (!this._blockingCollection.TryTake(out item, millisecondsTimeout, token))
+                        try
+                        {
+                            if (!this._blockingCollection.TryTake(out item, millisecondsTimeout, token))
+                            {
+                                continue;
+                            }
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            break;
+                        }
+                        catch (ArgumentNullException)
                         {
                             continue;
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            break;
                         }
 
                         this.AddNewProcessThread();
@@ -131,9 +212,53 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <param name="item"></param>
         public void Add(T item)
         {
-            this._blockingCollection.Add(item);
+            if (this._isDisposed)
+            {
+                return;
+            }
+
+            lock (this._blockingCollectionLock)
+            {
+                this._blockingCollection.Add(item);
+            }
         }
 
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public void Reset()
+        {
+            lock (this._threadLock)
+            {
+                this.ClearThread();
+
+                lock (this._blockingCollectionLock)
+                {
+                    this._blockingCollection.Dispose();
+                    this._blockingCollection = new System.Collections.Concurrent.BlockingCollection<T>();
+                }
+
+                //this._blockingCollection.Clear();
+                this._allowAddThread = true;
+                this.CreateProcessThread();
+            }
+        }
+
+        private void ClearThread()
+        {
+            if (this._threadList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var thread in this._threadList)
+            {
+                thread.Stop();
+                thread.Dispose();
+            }
+
+            this._threadList.Clear();
+        }
 
         /// <summary>
         /// IDisposable
@@ -150,13 +275,12 @@ namespace UtilZ.Dotnet.Ex.Base
                     }
                     this._isDisposed = true;
 
-                    foreach (var thread in this._threadList)
-                    {
-                        thread.Stop();
-                        thread.Dispose();
-                    }
+                    this.ClearThread();
 
-                    this._threadList.Clear();
+                    lock (this._blockingCollectionLock)
+                    {
+                        this._blockingCollection.Dispose();
+                    }
                 }
             }
             catch (Exception ex)

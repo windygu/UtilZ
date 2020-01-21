@@ -54,5 +54,10 @@ namespace UtilZ.Dotnet.DBIBase.Model
         /// 日期时间格式
         /// </summary>
         public const string DATA_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+        /// <summary>
+        /// 浮点数转换默认精度
+        /// </summary>
+        public const int DIGITS = -1;
     }
 }

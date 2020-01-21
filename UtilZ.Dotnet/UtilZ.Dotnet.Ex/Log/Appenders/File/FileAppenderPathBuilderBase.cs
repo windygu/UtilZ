@@ -154,7 +154,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 return;
             }
 
-            var delFileInfos = fileInfos.OrderBy(t => { return t.CreationTime; }).Take(delCount).ToArray();
+            var delFileInfos = fileInfos.OrderBy(t => { return t.LastWriteTime; }).Take(delCount).ToArray();
             foreach (var delFileInfo in delFileInfos)
             {
                 try
@@ -188,7 +188,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 TimeSpan tsDuration;
                 foreach (var fileInfo in fileInfos.ToArray())
                 {
-                    tsDuration = currentClearTime - fileInfo.CreationTime;
+                    tsDuration = currentClearTime - fileInfo.LastWriteTime;
                     if (tsDuration.TotalDays - days > 0)
                     {
                         try

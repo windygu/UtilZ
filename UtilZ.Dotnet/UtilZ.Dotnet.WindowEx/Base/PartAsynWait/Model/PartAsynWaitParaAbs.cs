@@ -183,6 +183,11 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model
         }
 
         /// <summary>
+        /// 获取或设置包含有关控件的数据的对象
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         public PartAsynWaitParaAbs()

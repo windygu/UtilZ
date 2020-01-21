@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\UtilZ.Dotnet.WindowEx.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -53,6 +54,8 @@
     <Compile Include="Base\ILogControl.cs" />
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteAbs.cs" />
     <Compile Include="Base\PartAsynWait\Excute\PartAsynExcuteFactoryBase.cs" />
+    <Compile Include="Base\PartAsynWait\Excute\AsynExcuteCancellHelper.cs" />
+    <Compile Include="Base\PartAsynWait\Interface\IAsynExcuteCancell.cs" />
     <Compile Include="Base\PartAsynWait\Interface\IPartAsynExcute.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynExcuteResult.cs" />
     <Compile Include="Base\PartAsynWait\Model\PartAsynExcuteStatus.cs" />

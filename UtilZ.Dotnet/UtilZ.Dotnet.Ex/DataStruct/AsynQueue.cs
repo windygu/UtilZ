@@ -283,6 +283,7 @@ namespace UtilZ.Dotnet.Ex.DataStruct
             {
                 return;
             }
+            this._status = false;
 
             var cts = this._cts;
             if (cts != null)
@@ -437,13 +438,8 @@ namespace UtilZ.Dotnet.Ex.DataStruct
         {
             lock (this._threadMonitor)
             {
-                if (this._status == false)
-                {
-                    return;
-                }
-
                 this._thread = null;
-                this._status = false;
+
                 try
                 {
                     if (!this._isDisposed)

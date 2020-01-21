@@ -74,9 +74,11 @@ namespace UtilZ.Dotnet.DBIBase.Core
 
             using (var conInfo = new DbConnectionInfo(this._dbid, DBVisitType.W))
             {
-                IDbCommand cmd = this.CreateCommand(conInfo.DbConnection);
-                cmd.CommandText = this.GenerateSqlUpdate(tableName, priKeyColValues, colValues, cmd);
-                return cmd.ExecuteNonQuery();
+                using (IDbCommand cmd = this.CreateCommand(conInfo.DbConnection))
+                {
+                    cmd.CommandText = this.GenerateSqlUpdate(tableName, priKeyColValues, colValues, cmd);
+                    return cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -88,7 +90,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="valuesDic">列名值字典</param>
         /// <param name="cmd">IDbCommand</param>
         /// <returns>SQL更新语句</returns>
-        private string GenerateSqlUpdate(string tableName, Dictionary<string, object> priKeyValueDic, 
+        private string GenerateSqlUpdate(string tableName, Dictionary<string, object> priKeyValueDic,
             Dictionary<string, object> valuesDic, IDbCommand cmd)
         {
             StringBuilder sbSql = new StringBuilder();

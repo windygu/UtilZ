@@ -73,8 +73,9 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
                 colDBType.Add(col.ColumnName, col.DataType);
             }
 
-            IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con);
-            cmd.CommandText = string.Format(@"SELECT  C.name as [字段名]
+            using (IDbCommand cmd = DBAccessEx.CreateCommand(base._dbAccess, con))
+            {
+                cmd.CommandText = string.Format(@"SELECT  C.name as [字段名]
 	                                                    ,T.name as [字段类型]
                                                         ,convert(bit,C.IsNullable)  as [可否为空]
                                                         ,convert(bit,case when exists(SELECT 1 FROM sysobjects where xtype='PK' and parent_obj=c.id and name in (
@@ -94,31 +95,32 @@ namespace UtilZ.Dotnet.DBSqlServer.Core
                                                 left join syscomments CM on C.cdefault=CM.id
                                                 WHERE C.id = object_id('{0}')", tableName);
 
-            List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
-            using (IDataReader reader = cmd.ExecuteReader())
-            {
-                string fieldName;
-                string dbTypeName;
-                bool allowNull;
-                object defaultValue;
-                string comments;
-                Type type;
-                DBFieldType fieldType;
-
-                while (reader.Read())
+                List<DBFieldInfo> colInfos = new List<DBFieldInfo>();
+                using (IDataReader reader = cmd.ExecuteReader())
                 {
-                    fieldName = reader.GetString(0);
-                    dbTypeName = reader.GetString(1);
-                    allowNull = reader.GetBoolean(2);
-                    defaultValue = reader.GetValue(8);
-                    comments = reader.GetString(9);
-                    type = colDBType[fieldName];
-                    fieldType = dicFieldDbClrFieldType[fieldName];
-                    colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
-                }
-            }
+                    string fieldName;
+                    string dbTypeName;
+                    bool allowNull;
+                    object defaultValue;
+                    string comments;
+                    Type type;
+                    DBFieldType fieldType;
 
-            return colInfos;
+                    while (reader.Read())
+                    {
+                        fieldName = reader.GetString(0);
+                        dbTypeName = reader.GetString(1);
+                        allowNull = reader.GetBoolean(2);
+                        defaultValue = reader.GetValue(8);
+                        comments = reader.GetString(9);
+                        type = colDBType[fieldName];
+                        fieldType = dicFieldDbClrFieldType[fieldName];
+                        colInfos.Add(new DBFieldInfo(tableName, fieldName, dbTypeName, type, comments, defaultValue, allowNull, fieldType, priKeyCols.Contains(fieldName)));
+                    }
+                }
+
+                return colInfos;
+            }
         }
 
         /// <summary>
@@ -359,7 +361,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         /// <returns>数据库版本信息</returns>
         protected override DataBaseVersionInfo PrimitiveGetDataBaseVersion(IDbConnection con)
         {
-            string sqlStr = @"select @@version";
+            const string sqlStr = @"select @@version";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             string dataBaseVersion = DBAccessEx.ConvertObject<string>(value);
 
@@ -389,7 +391,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         /// <returns>数据库系统时间</returns>
         protected override DateTime PrimitiveGetDataBaseSysTime(IDbConnection con)
         {
-            string sqlStr = @"select GETDATE()";
+            const string sqlStr = @"select GETDATE()";
             object value = base.PrimitiveExecuteScalar(con, sqlStr);
             return DBAccessEx.ConvertObject<DateTime>(value);
         }
@@ -404,7 +406,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
             string userName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.Account))
             {
-                string sqlStr = @"SELECT SUSER_SNAME()";
+                const string sqlStr = @"SELECT SUSER_SNAME()";
                 object obj = base.PrimitiveExecuteScalar(con, sqlStr);
                 userName = obj.ToString();
                 base._dbAccess.Config.Account = userName;
@@ -427,7 +429,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
             string databaseName;
             if (string.IsNullOrWhiteSpace(base._dbAccess.Config.DatabaseName))
             {
-                string queryDatabaseNameSqlStr = @"Select Name From Master..SysDataBases Where DbId=(Select Dbid From Master..SysProcesses Where Spid = @@spid)";
+                const string queryDatabaseNameSqlStr = @"Select Name From Master..SysDataBases Where DbId=(Select Dbid From Master..SysProcesses Where Spid = @@spid)";
                 object obj = base.PrimitiveExecuteScalar(con, queryDatabaseNameSqlStr);
                 databaseName = obj.ToString();
                 base._dbAccess.Config.DatabaseName = databaseName;
@@ -484,7 +486,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         /// <returns>内存占用大小</returns>
         private long PrimitiveGetMemorySize(DbConnection dbConnection)
         {
-            string sqlStr = @"SELECT physical_memory_in_use_kb FROM sys.dm_os_process_memory";
+            const string sqlStr = @"SELECT physical_memory_in_use_kb FROM sys.dm_os_process_memory";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             return DBAccessEx.ConvertObject<long>(obj) * 1024;
         }
@@ -496,7 +498,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         private long PrimitiveGetDiskSize(DbConnection dbConnection)
         {
             long size;
-            string sqlStr = @"Exec sp_spaceused";
+            const string sqlStr = @"Exec sp_spaceused";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             object obj = dt.Rows[0][1];
             string mbSizeStr = obj.ToString();
@@ -522,7 +524,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         /// <returns>最大连接数</returns>
         private int PrimitiveGetMaxConnectCount(DbConnection dbConnection)
         {
-            string sqlStr = @"select @@max_connections";
+            const string sqlStr = @"select @@max_connections";
             //select value from master.dbo.sysconfigures where [config] = 103--0 表示不限制,最大值是32767
             //select* from master.dbo.sysconfigures(高级配置 - 比如数据库最大使用内存大小等通过修改此表中的值达到目的)
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
@@ -545,7 +547,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
 
         private List<string> GetAllUserNameList(DbConnection dbConnection)
         {
-            string sqlStr = @"select name from sysusers";
+            const string sqlStr = @"select name from sysusers";
             DataTable dt = base.PrimitiveQueryDataToDataTable(dbConnection, sqlStr);
             List<string> allUserNameList = new List<string>();
             foreach (DataRow row in dt.Rows)
@@ -562,7 +564,7 @@ order by o.[name],i.[name],ic.is_included_column,ic.key_ordinal";
         /// <returns>数据库启动时间</returns>
         private DateTime PrimitiveGetStartTime(DbConnection dbConnection)
         {
-            string sqlStr = @"SELECT sqlserver_start_time FROM sys.dm_os_sys_info";
+            const string sqlStr = @"SELECT sqlserver_start_time FROM sys.dm_os_sys_info";
             object obj = base.PrimitiveExecuteScalar(dbConnection, sqlStr);
             DateTime startTime = DBAccessEx.ConvertObject<DateTime>(obj);
             return startTime;

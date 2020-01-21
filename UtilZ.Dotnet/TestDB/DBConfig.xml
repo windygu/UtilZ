@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DBConfig>
   <DBConfigItems>
-    <DBConfigItem Parser=""
+    <!--<DBConfigItem Parser=""
                   DBID="1"
            ConName="SQLiteDB"
            DBConInfoType="1"
            DatabaseName="F:\Code\Git\UtilZ\UtilZ.Dotnet\WebApplication1\DB\DB2.sqlite"
            DBFactory="UtilZ.Dotnet.DBSQLite.Core.SQLiteDBFactory,DBPlugins\SQLite\UtilZ.Dotnet.DBSQLite">
-    </DBConfigItem>
+    </DBConfigItem>-->
 
     <DBConfigItem DBID="2"
          ConName="SqlServer"
          DBConInfoType="0"
-         ConStr="data source=192.168.0.106;initial catalog=NTestDB;user id=sa;password=xtaITXwwx982+-"
+         ConStr="data source=192.168.10.11;initial catalog=SaveData;user id=sa;password=qweQWE123"
          DBFactory="UtilZ.Dotnet.DBSqlServer.Core.SQLServerDBFactory,DBPlugins\SQLServer\UtilZ.Dotnet.DBSqlServer"/>
 
-    <DBConfigItem DBID="3"
+    <!--<DBConfigItem DBID="3"
          ConName="OracleDB"
          DBConInfoType="1"
          Host="192.168.0.106"
@@ -49,7 +49,7 @@
          ConName="OMData"
          DBConInfoType="0"
          ConStr="data source=192.168.10.81;initial catalog=OMData;user id=sa;password=Lf123456"
-         DBFactory="UtilZ.Dotnet.DBSqlServer.Core.SQLServerDBFactory,DBPlugins\SQLServer\UtilZ.Dotnet.DBSqlServer"/>
+         DBFactory="UtilZ.Dotnet.DBSqlServer.Core.SQLServerDBFactory,DBPlugins\SQLServer\UtilZ.Dotnet.DBSqlServer"/>-->
     
     
     <!--<DBConfigItem Parser=""

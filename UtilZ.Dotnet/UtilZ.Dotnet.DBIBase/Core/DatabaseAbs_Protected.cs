@@ -33,16 +33,21 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>返回执行结果</returns>
         protected DataTable PrimitiveQueryDataToDataTable(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = DBAccessEx.CreateCommand(this._dbAccess, con, sqlStr, parameterNameValueDic);
-            var da = this._dbAccess.CreateDbDataAdapter();
-            da.SelectCommand = cmd;
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            if (ds.Tables.Count > 0)
+            using (var cmd = DBAccessEx.CreateCommand(this._dbAccess, con, sqlStr, parameterNameValueDic))
             {
-                return ds.Tables[0];
+                var da = this._dbAccess.CreateDbDataAdapter();
+                da.SelectCommand = cmd;
+                using (DataSet ds = new DataSet())
+                {
+                    da.Fill(ds);
+                    if (ds.Tables.Count > 0)
+                    {
+                        DataTable dt = ds.Tables[0];
+                        dt.Dispose();
+                        return dt;
+                    }
+                }
             }
-
             return null;
         }
 
@@ -69,8 +74,10 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>返回执行结果</returns>
         protected object PrimitiveExecuteScalar(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = DBAccessEx.CreateCommand(this._dbAccess, con, sqlStr, parameterNameValueDic);
-            return cmd.ExecuteScalar();
+            using (var cmd = DBAccessEx.CreateCommand(this._dbAccess, con, sqlStr, parameterNameValueDic))
+            {
+                return cmd.ExecuteScalar();
+            }
         }
         #endregion
     }

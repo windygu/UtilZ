@@ -16,7 +16,7 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
     /// <typeparam name="T">异步执行参数类型</typeparam>
     /// <typeparam name="TContainer">容器控件类型</typeparam>
     /// <typeparam name="TResult">异步执行返回值类型</typeparam>
-    public abstract class PartAsynExcuteAbs<T, TContainer, TResult> : IAsynExcute<T, TContainer, TResult> where TContainer : class
+    public abstract class PartAsynExcuteAbs<T, TContainer, TResult> : IAsynExcute<T, TContainer, TResult>, IAsynExcuteCancell where TContainer : class
     {
         /// <summary>
         /// 异步执行线程
@@ -32,6 +32,26 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
         /// 异步等待执行参数
         /// </summary>
         protected PartAsynWaitPara<T, TResult> _asynWaitPara = null;
+
+        /// <summary>
+        /// 是否已执行完成
+        /// </summary>
+        private bool _excuteCompleted = false;
+        private readonly object _excuteCompletedLock = new object();
+
+        /// <summary>
+        /// 获取包含有关控件的数据的对象
+        /// </summary>
+        public object Tag
+        {
+            get
+            {
+                var asynWaitPara = _asynWaitPara;
+                return asynWaitPara == null ? null : asynWaitPara.Tag;
+            }
+        }
+
+
 
         /// <summary>
         /// 构造函数
@@ -97,37 +117,43 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
         /// </summary>
         protected void StartAsynExcuteThread()
         {
-            //取消执行委托
-            this._asynWaitPara.AsynWait.Canceled += _excuteShade_Cancell;
+            lock (this._excuteCompletedLock)
+            {
+                AsynExcuteCancellHelper.AddAsynExcuteCancell(this);
+                this._excuteCompleted = false;
 
-            //启动滚动条动画
-            this._asynWaitPara.AsynWait.StartAnimation();
+                //取消执行委托
+                this._asynWaitPara.AsynWait.Canceled += CancellExcute;
 
-            this._asynExcuteThreadCts = new CancellationTokenSource();
-            this._asynExcuteThread = new Thread(this.ExcuteThreadMethod);
-            this._asynExcuteThread.IsBackground = true;
-            this._asynExcuteThread.Name = "UI异步执行线程";
-            this._asynExcuteThread.Start();
+                //启动滚动条动画
+                this._asynWaitPara.AsynWait.StartAnimation();
+
+                this._asynExcuteThreadCts = new CancellationTokenSource();
+                this._asynExcuteThread = new Thread(this.AsynExcuteThreadMethod);
+                this._asynExcuteThread.IsBackground = true;
+                this._asynExcuteThread.Name = "UI异步执行线程";
+                this._asynExcuteThread.Start();
+            }
         }
 
         /// <summary>
         /// UI异步执行线程方法
         /// </summary>
-        private void ExcuteThreadMethod()
+        private void AsynExcuteThreadMethod()
         {
             TResult result = default(TResult);
             PartAsynExcuteStatus excuteStatus;
             Exception excuteEx = null;
             try
             {
-
+                var token = this._asynExcuteThreadCts.Token;
                 var function = this._asynWaitPara.Function;
                 if (function != null)
                 {
-                    result = function(new PartAsynFuncPara<T>(this._asynWaitPara.Para, this._asynExcuteThreadCts.Token, this._asynWaitPara.AsynWait));
+                    result = function(new PartAsynFuncPara<T>(this._asynWaitPara.Para, token, this._asynWaitPara.AsynWait));
                 }
 
-                if (this._asynExcuteThreadCts.Token.IsCancellationRequested)
+                if (token.IsCancellationRequested)
                 {
                     excuteStatus = PartAsynExcuteStatus.Cancel;
                 }
@@ -138,8 +164,6 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
             }
             catch (ThreadAbortException)
             {
-                excuteStatus = PartAsynExcuteStatus.Cancel;
-                this.ExcuteCompleted(result, excuteStatus, excuteEx);
                 return;
             }
             catch (Exception ex)
@@ -148,16 +172,22 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
                 excuteEx = ex;
             }
 
-            this.ExcuteCompleted(result, excuteStatus, excuteEx);
+            lock (this._excuteCompletedLock)
+            {
+                if (this._excuteCompleted)
+                {
+                    return;
+                }
+                this._excuteCompleted = true;
+
+                this.ExcuteCompleted(result, excuteStatus, excuteEx);
+            }
         }
 
         private void ExcuteCompleted(TResult result, PartAsynExcuteStatus excuteStatus, Exception excuteEx)
         {
+            this.ReleaseResource();
             var asynExcuteResult = new PartAsynExcuteResult<T, TResult>(this._asynWaitPara.Para, excuteStatus, result, excuteEx);
-            //设置对象锁结束
-            PartAsynUIParaProxy.UnLock(this._asynWaitPara);
-            this.ReleseResource();
-
             this.OnRaiseCompleted(asynExcuteResult);
         }
 
@@ -180,31 +210,83 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
             }
         }
 
+
+
+
         /// <summary>
         /// 取消执行
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void _excuteShade_Cancell(object sender, EventArgs e)
+        protected void CancellExcute(object sender, EventArgs e)
         {
-            this._asynExcuteThreadCts.Cancel();
+            this.PrimitiveCancell(this._asynWaitPara.CancelAbort);
+        }
 
-            if (this._asynWaitPara.CancelAbort)
+        /// <summary>
+        /// 取消执行
+        /// </summary>
+        public void Cancell()
+        {
+            this.PrimitiveCancell(true);
+        }
+
+        /// <summary>
+        /// 取消执行
+        /// </summary>
+        /// <param name="abortThread"></param>
+        private void PrimitiveCancell(bool abortThread)
+        {
+            lock (this._excuteCompletedLock)
             {
-                this._asynExcuteThread.Abort();
+                if (abortThread)
+                {
+                    if (this._excuteCompleted)
+                    {
+                        return;
+                    }
+                    this._excuteCompleted = true;
+                }
+
+                try
+                {
+                    var cts = this._asynExcuteThreadCts;
+                    if (cts != null && cts.Token.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                    return;
+                }
+
+                var asynExcuteThread = this._asynExcuteThread;
+                if (abortThread && asynExcuteThread != null)
+                {
+                    asynExcuteThread.Abort();
+                    this._asynExcuteThread = null;
+                    this.ExcuteCompleted(default(TResult), PartAsynExcuteStatus.Cancel, null);
+                }
             }
         }
+
+
 
         /// <summary>
         /// 释放异步委托资源
         /// </summary>
-        private void ReleseResource()
+        private void ReleaseResource()
         {
             try
             {
-                this._asynWaitPara.AsynWait.Canceled -= _excuteShade_Cancell;
+                PartAsynUIParaProxy.UnLock(this._asynWaitPara);
+                this._asynWaitPara.AsynWait.Canceled -= CancellExcute;
                 this._asynWaitPara.AsynWait.StopAnimation();
-
+                AsynExcuteCancellHelper.RemoveAsynExcuteCancell(this);
+                this._asynExcuteThreadCts.Dispose();
+                this._asynExcuteThreadCts = null;
                 this.PrimitiveReleseResource();
             }
             catch (Exception ex)
@@ -216,7 +298,10 @@ namespace UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Excute
         /// <summary>
         /// 释放异步委托资源
         /// </summary>
-        protected abstract void PrimitiveReleseResource();
+        protected virtual void PrimitiveReleseResource()
+        {
+
+        }
 
 
 

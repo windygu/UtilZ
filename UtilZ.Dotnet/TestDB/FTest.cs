@@ -800,5 +800,21 @@ namespace TestDB
                 Loger.Error(ex);
             }
         }
+
+        private void btnQuery_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var config = DropdownBoxHelper.GetGenericFromComboBox<DatabaseConfig>(comboBoxDB);
+                IDBAccess dbAccess = DBAccessManager.GetDBAccessInstance(config.DBID);
+                string sql = @"SELECT  ID,SensNo,SensLocation,SensType,AddTime FROM Sensors";
+                DataTable dt = dbAccess.QueryDataToDataTable(sql);
+                dgv.ShowData(dt);
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
+        }
     }
 }

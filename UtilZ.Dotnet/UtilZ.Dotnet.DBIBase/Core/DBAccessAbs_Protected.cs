@@ -38,8 +38,10 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>返回执行结果</returns>
         protected int PrimitiveExecuteNonQuery(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic);
-            return cmd.ExecuteNonQuery();
+            using (var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic))
+            {
+                return cmd.ExecuteNonQuery();
+            }
         }
 
         /// <summary>
@@ -66,8 +68,10 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>返回执行结果</returns>
         protected object PrimitiveExecuteScalar(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic);
-            return cmd.ExecuteScalar();
+            using (var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic))
+            {
+                return cmd.ExecuteScalar();
+            }
         }
 
         /// <summary>
@@ -102,16 +106,21 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <returns>返回执行结果</returns>
         protected DataTable PrimitiveQueryDataToDataTable(IDbConnection con, string sqlStr, Dictionary<string, object> parameterNameValueDic = null)
         {
-            var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic);
-            var da = this.PrimitiveCreateDbDataAdapter();
-            da.SelectCommand = cmd;
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            if (ds.Tables.Count > 0)
+            using (var cmd = this.CreateCommand(con, sqlStr, parameterNameValueDic))
             {
-                return ds.Tables[0];
+                var da = this.PrimitiveCreateDbDataAdapter();
+                da.SelectCommand = cmd;
+                using (DataSet ds = new DataSet())
+                {
+                    da.Fill(ds);
+                    if (ds.Tables.Count > 0)
+                    {
+                        DataTable dt = ds.Tables[0];
+                        dt.Dispose();
+                        return dt;
+                    }
+                }
             }
-
             return null;
         }
 
