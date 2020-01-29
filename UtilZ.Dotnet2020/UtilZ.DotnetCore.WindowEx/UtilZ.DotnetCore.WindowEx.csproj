@@ -11,4 +11,8 @@
     <Folder Include="WPF\Base\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.csproj" />
+  </ItemGroup>
+
 </Project>

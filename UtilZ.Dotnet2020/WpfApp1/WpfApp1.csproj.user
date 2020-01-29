@@ -7,7 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="TestAsynQueue.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="TestLogControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="TestLoger.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TestAsynQueue.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TestLogControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TestLoger.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

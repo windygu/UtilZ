@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UtilZ.DotnetStandard.Ex.Base;
+using UtilZ.DotnetStd.Ex.Base;
 
 namespace WpfApp1
 {
@@ -33,8 +33,8 @@ namespace WpfApp1
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            object key = "123";
-            object value = MemoryCacheEx.Get(key);
+            //object key = "123";
+            //object value = MemoryCacheEx.Get(key);
         }
 
         private void btnSet_Click(object sender, RoutedEventArgs e)

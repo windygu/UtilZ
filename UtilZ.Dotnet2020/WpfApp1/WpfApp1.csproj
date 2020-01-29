@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UtilZ.DotnetCore.WindowEx\UtilZ.DotnetCore.WindowEx.csproj" />
+    <ProjectReference Include="..\UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="logConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

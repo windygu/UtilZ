@@ -115,6 +115,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// </summary>
         private readonly Dictionary<int, LogShowStyle> _styleDic = new Dictionary<int, LogShowStyle>();
         private readonly LogShowStyle _defaultStyle;
+        private readonly Delegate _primitiveShowLogDelegate;
 
         /// <summary>
         /// 构造函数
@@ -122,6 +123,8 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         public LogControl()
         {
             InitializeComponent();
+
+            this._primitiveShowLogDelegate = new Action<List<ShowLogItem>>(this.PrimitiveShowLog);
 
             this._defaultStyle = new LogShowStyle(0, Colors.Gray);
             this._defaultStyle.Name = "默认样式";
@@ -214,8 +217,8 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     return;
                 }
 
-                this.Dispatcher.Invoke(new Action(() => { this.ShowLog((object)items); }));
-                Thread.Sleep(15);
+                DispatcherOperation dispatcherOperation = this.Dispatcher.BeginInvoke(DispatcherPriority.Normal, this._primitiveShowLogDelegate, items);
+                dispatcherOperation.Wait();
             }
             catch (Exception ex)
             {
@@ -223,11 +226,10 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             }
         }
 
-        private void ShowLog(object state)
+        private void PrimitiveShowLog(List<ShowLogItem> items)
         {
             try
             {
-                List<ShowLogItem> items = (List<ShowLogItem>)state;
                 FontFamily fontFamily;
                 foreach (var item in items)
                 {

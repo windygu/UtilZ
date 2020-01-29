@@ -9,7 +9,7 @@ namespace UtilZ.DotnetStd.Ex.Base
     /// <summary>
     /// 线程扩展类
     /// </summary>
-    public class ThreadEx : IThreadEx
+    public sealed class ThreadEx : IThreadEx
     {
         /// <summary>
         /// 线程要执行的委托,无参数
@@ -24,17 +24,17 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// <summary>
         /// true:无参数;false:带参数
         /// </summary>
-        private bool _flag;
+        private readonly bool _flag;
 
         /// <summary>
         /// 线程名称
         /// </summary>
-        private string _name;
+        private readonly string _name;
 
         /// <summary>
         /// 是否后台运行[true:后台线程;false:前台线程]
         /// </summary>
-        private bool _isBackground;
+        private readonly bool _isBackground;
 
         /// <summary>
         /// 外部调用线程锁
@@ -86,12 +86,7 @@ namespace UtilZ.DotnetStd.Ex.Base
         public ThreadEx(Action<CancellationToken> action, string name = null, bool isBackground = true)
             : this(true, name, isBackground)
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-
-            this._action = action;
+            this._action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
         /// <summary>
@@ -103,12 +98,7 @@ namespace UtilZ.DotnetStd.Ex.Base
         public ThreadEx(Action<CancellationToken, object> action, string name = null, bool isBackground = true)
             : this(false, name, isBackground)
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-
-            }
-            this._actionObj = action;
+            this._actionObj = action ?? throw new ArgumentNullException(nameof(action));
         }
 
 
@@ -128,10 +118,7 @@ namespace UtilZ.DotnetStd.Ex.Base
         private void OnRaiseCompleted(ThreadExCompletedType type, Exception ex = null)
         {
             var handler = this.Completed;
-            if (handler != null)
-            {
-                handler(this, new ThreadExCompletedArgs(type, ex));
-            }
+            handler?.Invoke(this, new ThreadExCompletedArgs(type, ex));
         }
 
         /// <summary>
@@ -447,17 +434,12 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// <param name="isBackground">true:后台线程;false:前台线程</param>
         public static void SetThreadIsBackground(Thread thread, bool isBackground)
         {
-            try
+            if (thread == null)
             {
-                if (thread == null)
-                {
-                    return;
-                }
-
-                thread.IsBackground = isBackground;
+                return;
             }
-            catch
-            { }
+
+            thread.IsBackground = isBackground;
         }
         #endregion
     }
@@ -471,7 +453,7 @@ namespace UtilZ.DotnetStd.Ex.Base
 
 
 
-    public class ThreadStartPara : IDisposable
+    public sealed class ThreadStartPara : IDisposable
     {
         public object Obj { get; private set; }
 

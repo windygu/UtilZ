@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Threading;
 using UtilZ.DotnetCore.WindowEx.Base;
-using UtilZ.DotnetStandard.Ex.Base;
-using UtilZ.DotnetStandard.Ex.Log;
+using UtilZ.DotnetStd.Ex.Base;
+using UtilZ.DotnetStd.Ex.Log;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
-    public class LogControl : RichTextBox, IDisposable
+    /// <summary>
+    /// 日志显示控件
+    /// </summary>
+    public sealed class LogControl : RichTextBox, IDisposable
     {
         /// <summary>
         /// 最多显示项数依赖属性
@@ -86,6 +91,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private AsynQueue<ShowLogItem> _logShowQueue = null;
+        /// <summary>
+        /// 单次最大刷新日志条数
+        /// </summary>
+        private int _refreshCount = 5;
         private readonly object _logLock = new object();
 
         /// <summary>
@@ -104,15 +113,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private readonly Paragraph content;
+        private readonly Delegate _primitiveShowLogDelegate;
         public LogControl()
             : base()
         {
+            this.IsReadOnly = true;
+            this.Background = Brushes.Black;
             this.content = new Paragraph();
+            base.Document.Blocks.Clear();
             base.Document.Blocks.Add(this.content);
 
+            this._primitiveShowLogDelegate = new Action<List<ShowLogItem>>(this.PrimitiveShowLog);
 
-            this._defaultStyle = new LogShowStyle(0, Colors.Gray);
-            this._defaultStyle.Name = "默认样式";
+            this._defaultStyle = new LogShowStyle(0, Colors.Gray) { Name = "默认样式" };
             this.AddDefaultStyle();
             this.StartRefreshLogThread();
         }
@@ -134,16 +147,27 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// </summary>
         /// <param name="refreshCount">单次最大刷新日志条数</param>
         /// <param name="cacheCapcity">日志缓存容量,建议等于日志最大项数</param>
-        public void SetLogRefreshInfo(int cacheCapcity)
+        public void SetLogRefreshInfo(int refreshCount, int cacheCapcity)
         {
-            if (this._cacheCapcity == cacheCapcity)
+            if (refreshCount < 1)
             {
-                //参数相同,忽略
-                return;
+                throw new ArgumentException(string.Format("单次最大刷新日志条数参数值:{0}无效,该值不能小于1", refreshCount), "refreshCount");
+            }
+
+            if (cacheCapcity < refreshCount)
+            {
+                throw new ArgumentException(string.Format("日志缓存容量参数值:{0}无效,该值不能小于单次最大刷新日志条数参数值:{1}", cacheCapcity, refreshCount), "cacheCapcity");
             }
 
             lock (this._logLock)
             {
+                if (this._refreshCount == refreshCount && this._cacheCapcity == cacheCapcity)
+                {
+                    //参数相同,忽略
+                    return;
+                }
+
+                this._refreshCount = refreshCount;
                 this._cacheCapcity = cacheCapcity;
                 this.StartRefreshLogThread();
             }
@@ -164,7 +188,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     this._logShowQueue = null;
                 }
 
-                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, "日志显示线程", true, true, this._cacheCapcity);
+                this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, this._refreshCount, 10, "日志显示线程", true, true, this._cacheCapcity);
 
                 if (this._applicationExitNotify == null)
                 {
@@ -174,19 +198,38 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        private void ShowLog(object state)
+        private void ShowLog(List<ShowLogItem> items)
         {
             try
             {
-                List<ShowLogItem> items = (List<ShowLogItem>)state;
+                if (items == null || items.Count == 0)
+                {
+                    return;
+                }
+
+                DispatcherOperation dispatcherOperation = this.Dispatcher.BeginInvoke(DispatcherPriority.Normal, this._primitiveShowLogDelegate, items);
+                dispatcherOperation.Wait();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void PrimitiveShowLog(List<ShowLogItem> items)
+        {
+            try
+            {
                 FontFamily fontFamily;
                 foreach (var item in items)
                 {
                     LogShowStyle style = this.GetStyleById(item.StyleID);
-                    var run = new Run();
-                    run.Text = item.LogText;
-                    run.Foreground = style.ForegroundBrush;
-                    run.FontSize = style.FontSize;
+                    var run = new Run()
+                    {
+                        Text = item.LogText,
+                        Foreground = style.ForegroundBrush,
+                        FontSize = style.FontSize,
+                    };
                     fontFamily = style.FontFamily;
                     if (fontFamily != null)
                     {
@@ -351,7 +394,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     return;
                 }
 
-                this._logShowQueue.Enqueue(item, 1);
+                this._logShowQueue.Enqueue(item);
             }
         }
 
@@ -384,26 +427,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// <summary>
     /// 显示的日志项
     /// </summary>
-    [Serializable]
     internal class ShowLogItem
     {
-        private int _styleId;
         /// <summary>
         /// 样式标识ID
         /// </summary>
-        public int StyleID
-        {
-            get { return _styleId; }
-        }
+        public int StyleID { get; private set; }
 
-        private string _logText;
         /// <summary>
         /// 文本内容
         /// </summary>
-        public string LogText
-        {
-            get { return _logText; }
-        }
+        public string LogText { get; private set; }
 
         private const string _newLine = "\r\n";
 
@@ -427,8 +461,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             //    }
             //}
 
-            this._logText = logText;
-            this._styleId = styleId;
+            this.LogText = logText;
+            this.StyleID = styleId;
         }
 
         /// <summary>
@@ -445,44 +479,27 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// <summary>
     /// 日志控件显示样式类
     /// </summary>
-    [Serializable]
     public class LogShowStyle
     {
-        private readonly int _id;
         /// <summary>
         /// 样式标识ID
         /// </summary>
-        public int ID
-        {
-            get { return _id; }
-        }
+        public int ID { get; private set; }
 
-        private readonly System.Windows.Media.Brush _foregroundBrush;
         /// <summary>
         /// 文本前景色Brush
         /// </summary>
-        internal System.Windows.Media.Brush ForegroundBrush
-        {
-            get { return _foregroundBrush; }
-        }
+        public System.Windows.Media.Brush ForegroundBrush { get; private set; }
 
-        private readonly double _fontSize;
         /// <summary>
         /// 文本大小
         /// </summary>
-        public double FontSize
-        {
-            get { return _fontSize; }
-        }
+        public double FontSize { get; private set; }
 
-        private readonly System.Windows.Media.FontFamily _fontFamily;
         /// <summary>
         /// 字体
         /// </summary>
-        public System.Windows.Media.FontFamily FontFamily
-        {
-            get { return _fontFamily; }
-        }
+        public System.Windows.Media.FontFamily FontFamily { get; private set; }
 
         /// <summary>
         /// 样式名称
@@ -503,17 +520,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <param name="fontSize">文本大小</param>
         public LogShowStyle(int id, System.Windows.Media.Brush foregroundBrush, System.Windows.Media.FontFamily fontFamily, double fontSize)
         {
-            this._id = id;
-            this._foregroundBrush = foregroundBrush;
-            this._fontFamily = fontFamily;
-            if (fontSize > 0)
-            {
-                this._fontSize = fontSize;
-            }
-            else
+            if (fontSize <= 0)
             {
                 throw new ArgumentException("字体大小值无效", nameof(fontSize));
             }
+
+            this.ID = id;
+            this.ForegroundBrush = foregroundBrush;
+            this.FontFamily = fontFamily;
+            this.FontSize = fontSize;
         }
 
         /// <summary>
