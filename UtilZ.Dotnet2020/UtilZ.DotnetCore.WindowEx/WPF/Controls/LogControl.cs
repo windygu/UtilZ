@@ -20,6 +20,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// </summary>
     public sealed class LogControl : RichTextBox, IDisposable
     {
+        #region 依赖属性
         /// <summary>
         /// 最多显示项数依赖属性
         /// </summary>
@@ -89,6 +90,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.SetValue(LogControl.IsLockProperty, value);
             }
         }
+        #endregion
+
+
+
 
         private AsynQueue<ShowLogItem> _logShowQueue = null;
         /// <summary>

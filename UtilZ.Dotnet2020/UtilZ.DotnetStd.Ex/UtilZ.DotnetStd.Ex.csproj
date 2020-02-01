@@ -12,7 +12,6 @@
     <Folder Include="FileTransfer\" />
     <Folder Include="LMQ\" />
     <Folder Include="LRPC\" />
-    <Folder Include="Model\" />
     <Folder Include="Transfer\" />
   </ItemGroup>
 

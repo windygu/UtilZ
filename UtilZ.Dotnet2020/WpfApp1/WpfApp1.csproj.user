@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup>
+    <ShowAllFiles>false</ShowAllFiles>
+  </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="TestAsynQueue.xaml.cs">
+    <Compile Update="TestChart.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="TestLogControl.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="TestLoger.xaml.cs">
+    <Compile Update="TestChartCollection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -24,10 +23,19 @@
     <Page Update="TestAsynQueue.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="TestChart.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TestChartCollection.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="TestLogControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="TestLoger.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TestZoomTranslateContainerControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
