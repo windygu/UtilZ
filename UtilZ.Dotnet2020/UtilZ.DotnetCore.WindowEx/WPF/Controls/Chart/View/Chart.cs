@@ -105,8 +105,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         private readonly Grid _chartGrid;
         private readonly Canvas _chartCanvas;
-        private Rect _chartArea;
-        private bool _fullUpdateCharted = false;
+        //private Rect _chartArea;
+        //private bool _fullUpdateCharted = false;
 
         public Chart()
             : base()
@@ -114,17 +114,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             this.MinHeight = 100d;
             this.MinWidth = 100d;
 
-            var grid = new Grid();
-            grid.ShowGridLines = true;
-            grid.Background = Brushes.Transparent;
-            //grid.Margin = new Thickness(10d);
-            this._chartGrid = grid;
-
-            var canvas = new Canvas();
-            canvas.Background = Brushes.Transparent;
-            //Canvas.SetZIndex(canvas, 10);
-            this._chartCanvas = canvas;
-
+            this._chartGrid = new Grid() { Background = Brushes.Transparent, ShowGridLines = true };
+            this._chartCanvas = new Canvas() { Background = Brushes.Transparent };
             this.Loaded += ChartControl_Loaded;
         }
 
@@ -402,7 +393,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
                             series.PropertyChanged -= Series_PropertyChanged;
                             series.ValuesCollectionChanged -= Series_ValuesCollectionChanged;
-                            series.Clear();
+                            series.Remove();
                         }
                     }
                     break;
@@ -433,7 +424,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
                             series.PropertyChanged -= Series_PropertyChanged;
                             series.ValuesCollectionChanged -= Series_ValuesCollectionChanged;
-                            series.Clear();
+                            series.Remove();
                         }
                     }
                     break;
@@ -465,13 +456,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             ChartCollection<AxisAbs> axes = this.Axes;
             ChartCollection<ISeries> series = this.Series;
             IChartLegend legend = this.Legend;
-            Canvas chartCanvas = this._chartCanvas;
             Grid chartGrid = this._chartGrid;
-
+            Canvas chartCanvas = this._chartCanvas;
 
             this.Content = null;
-            chartCanvas.Children.Clear();
             chartGrid.Children.Clear();
+            chartCanvas.Children.Clear();
             chartGrid.RowDefinitions.Clear();
             chartGrid.ColumnDefinitions.Clear();
 

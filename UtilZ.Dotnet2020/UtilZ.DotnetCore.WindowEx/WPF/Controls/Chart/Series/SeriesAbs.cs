@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using UtilZ.DotnetStd.Ex.Model;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Series
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 {
     public abstract class SeriesAbs : BaseModelAbs, ISeries
     {
@@ -89,9 +89,43 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Series
             get { return _style; }
             set
             {
+                if (_style == value)
+                {
+                    return;
+                }
+
                 _style = value;
-                base.OnRaisePropertyChanged(nameof(Style));
+                this.StyleChanged(_style);
             }
+        }
+
+        protected virtual void StyleChanged(Style style)
+        {
+
+        }
+
+        private bool _enableTooltip = false;
+        /// <summary>
+        /// true:启用Tooltip;false:禁用Tooltip
+        /// </summary>
+        public bool EnableTooltip
+        {
+            get { return _enableTooltip; }
+            set
+            {
+                if (_enableTooltip == value)
+                {
+                    return;
+                }
+
+                _enableTooltip = value;
+                this.EnableTooltipChanged(_enableTooltip);
+            }
+        }
+
+        protected virtual void EnableTooltipChanged(bool enableTooltip)
+        {
+
         }
 
         private string _title = null;
@@ -109,21 +143,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Series
         }
 
 
+
         protected Canvas _canvas;
         protected Rect _chartArea;
-        public void Draw(Canvas canvas, Rect chartArea)
+        public void Add(Canvas canvas, Rect chartArea)
         {
             this._canvas = canvas;
             this._chartArea = chartArea;
-            this.PrimitiveDraw(canvas, chartArea);
+            this.PrimitiveAdd(canvas, chartArea);
         }
-        protected abstract void PrimitiveDraw(Canvas canvas, Rect chartArea);
+        protected abstract void PrimitiveAdd(Canvas canvas, Rect chartArea);
 
-        public void Clear()
+        public void Remove()
         {
-            this.PrimitiveClear();
+            this.PrimitiveRemove(this._canvas);
         }
-        protected abstract void PrimitiveClear();
+        protected abstract void PrimitiveRemove(Canvas canvas);
 
 
         public void Update()
@@ -133,8 +168,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Series
 
         protected virtual void PrimitiveUpdate()
         {
-            this.PrimitiveClear();
-            this.PrimitiveDraw(this._canvas, this._chartArea);
+            this.PrimitiveRemove(this._canvas);
+            this.PrimitiveAdd(this._canvas, this._chartArea);
         }
 
 

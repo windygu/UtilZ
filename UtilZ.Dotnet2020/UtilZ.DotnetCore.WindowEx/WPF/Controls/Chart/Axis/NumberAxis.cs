@@ -52,8 +52,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         }
 
 
+        protected double _area = double.NaN;
+
 
         public Func<double, string> CustomAxisTextFormatCunc;
+
+
+
+
 
         public NumberAxis()
             : base()
@@ -134,9 +140,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             if (AxisHelper.DoubleHasValue(this._minValue) || !AxisHelper.DoubleHasValue(this._maxValue))
             {
+                this._area = this._maxValue - this._minValue;
                 return true;
             }
 
+            this._area = double.NaN;
             return false;
         }
 
@@ -147,17 +155,120 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         private List<double> DrawYAxisTopToBottom(Canvas axisCanvas, double minValue, double maxValue)
         {
-            throw new NotImplementedException();
+            List<double> yList = new List<double>();
+            double axisHeight = axisCanvas.Height;
+            double labelStep = this.CalculateLabelStep(this._area, axisHeight);
+            int separatorCount = AxisHelper.CalSeparatorCount(this._area, axisHeight, labelStep);
+            double separatorSize = AxisHelper.CalSeparatorSize(this._area, axisHeight, labelStep);
+
+            double top = AxisConstant.ZERO_D, top2;
+            double tmp = minValue;
+            double endValue = maxValue + labelStep - base._PRE;
+            double slidSeparatorSize = separatorSize;
+            double y = AxisConstant.ZERO_D;
+            TextBlock label;
+            Rect labelSize;
+            double labelWidth = AxisConstant.ZERO_D;
+            AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
+            bool addLabelControl;
+            double lastLabelY = axisHeight;
+
+            while (true)
+            {
+                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(tmp));
+                labelSize = UITextHelper.MeasureTextSize(label);
+                if (labelSize.Width - labelWidth > base._PRE)
+                {
+                    labelWidth = labelSize.Width;
+                }
+
+                if (axisHeight > labelSize.Height)
+                {
+                    addLabelControl = false;
+                    switch (labelTextLocation)
+                    {
+                        case AxisLabelTextLocation.First:
+                            axisCanvas.Children.Add(label);
+                            addLabelControl = true;
+                            Canvas.SetTop(label, top);
+                            lastLabelY = axisHeight - labelSize.Height;
+                            labelTextLocation = AxisLabelTextLocation.Middle;
+                            break;
+                        case AxisLabelTextLocation.Middle:
+                            top2 = top - labelSize.Height / 2;
+                            if (top2 <= axisHeight)
+                            {
+                                axisCanvas.Children.Add(label);
+                                addLabelControl = true;
+                                Canvas.SetTop(label, top2);
+                                lastLabelY = top2 + labelSize.Height;
+                            }
+                            break;
+                        case AxisLabelTextLocation.Last:
+                            if (lastLabelY + labelSize.Height < axisHeight)
+                            {
+                                axisCanvas.Children.Add(label);
+                                addLabelControl = true;
+                                Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                            }
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    if (addLabelControl)
+                    {
+                        if (base.IsAxisYLeft())
+                        {
+                            Canvas.SetLeft(label, AxisConstant.ZERO_D);
+                        }
+                        else
+                        {
+                            Canvas.SetRight(label, AxisConstant.ZERO_D);
+                        }
+                    }
+                }
+
+                yList.Add(y);
+                if (labelTextLocation == AxisLabelTextLocation.Last)
+                {
+                    break;
+                }
+
+                tmp += labelStep;
+                if (tmp >= maxValue)
+                //if (tmp - maxValue > _PRE)
+                {
+                    slidSeparatorSize = (labelStep - (tmp - maxValue)) * separatorSize / labelStep;
+                    double labelHeight = AxisHelper.MeasureScaleTextSize(this, maxValue.ToString()).Height + 10d;
+                    if (slidSeparatorSize < labelHeight)
+                    {
+                        break;
+                    }
+
+                    tmp = maxValue;
+                    y = axisHeight;
+                    labelTextLocation = AxisLabelTextLocation.Last;
+                }
+                else
+                {
+                    y += slidSeparatorSize;
+                }
+
+                top += slidSeparatorSize;
+            }
+
+            axisCanvas.Width = base.CalculateAxisSize(labelWidth);
+            return yList;
         }
 
         private List<double> DrawYAxisBottomToTop(Canvas axisCanvas, double minValue, double maxValue)
         {
             List<double> yList = new List<double>();
-            double area = maxValue - minValue;
             double axisHeight = axisCanvas.Height;
-            double labelStep = this.CalculateLabelStep(area, axisHeight);
-            int separatorCount = AxisHelper.CalSeparatorCount(area, axisHeight, labelStep);
-            double separatorSize = AxisHelper.CalSeparatorSize(area, axisHeight, labelStep);
+            double labelStep = this.CalculateLabelStep(this._area, axisHeight);
+            int separatorCount = AxisHelper.CalSeparatorCount(this._area, axisHeight, labelStep);
+            double separatorSize = AxisHelper.CalSeparatorSize(this._area, axisHeight, labelStep);
 
             double bottom = AxisConstant.ZERO_D, bottom2;
             double tmp = minValue;
@@ -264,17 +375,116 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         private List<double> DrawXAxisRightToLeft(Canvas axisCanvas, double minValue, double maxValue)
         {
-            throw new NotImplementedException();
+            List<double> xList = new List<double>();
+            double axisWidth = axisCanvas.Width;
+            double labelStep = this.CalculateLabelStep(this._area, axisWidth);
+            int separatorCount = AxisHelper.CalSeparatorCount(this._area, axisWidth, labelStep);
+            double separatorSize = AxisHelper.CalSeparatorSize(this._area, axisWidth, labelStep);
+
+            double right = AxisConstant.ZERO_D;
+            double lastLabelX = axisWidth;
+            double x = axisWidth;
+            double tmp = minValue;
+            double endValue = maxValue + labelStep - base._PRE;
+            TextBlock label;
+            Rect labelSize;
+            AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
+            bool addLabelControl;
+            double offset;
+
+            while (true)
+            {
+                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(tmp));
+                labelSize = UITextHelper.MeasureTextSize(label);
+                if (axisWidth - labelSize.Width > AxisConstant.LABEL_TEXT_INTERVAL)
+                {
+                    addLabelControl = false;
+                    switch (labelTextLocation)
+                    {
+                        case AxisLabelTextLocation.First:
+                            axisCanvas.Children.Add(label);
+                            addLabelControl = true;
+                            Canvas.SetRight(label, right);
+                            lastLabelX = right + labelSize.Width;
+                            labelTextLocation = AxisLabelTextLocation.Middle;
+                            break;
+                        case AxisLabelTextLocation.Middle:
+                            right += separatorSize;
+                            offset = right - labelSize.Width / 2 - lastLabelX;
+                            if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
+                            {
+                                axisCanvas.Children.Add(label);
+                                addLabelControl = true;
+
+                                Canvas.SetRight(label, right - labelSize.Width / 2);
+                                lastLabelX = right + labelSize.Width;
+                            }
+                            else if (offset > 0)
+                            {
+                                axisCanvas.Children.Add(label);
+                                addLabelControl = true;
+
+                                Canvas.SetRight(label, right - labelSize.Width / 2 + offset);
+                                lastLabelX = right + labelSize.Width + offset;
+                            }
+                            break;
+                        case AxisLabelTextLocation.Last:
+                            if (lastLabelX + labelSize.Width + AxisConstant.LABEL_TEXT_INTERVAL <= axisWidth)
+                            {
+                                axisCanvas.Children.Add(label);
+                                addLabelControl = true;
+                                Canvas.SetLeft(label, AxisConstant.ZERO_D);
+                                lastLabelX = axisWidth;
+                            }
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    if (addLabelControl)
+                    {
+                        if (base.IsAxisXBottom())
+                        {
+                            Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                        }
+                        else
+                        {
+                            Canvas.SetTop(label, AxisConstant.ZERO_D);
+                        }
+                    }
+                }
+
+                xList.Add(x);
+                if (labelTextLocation == AxisLabelTextLocation.Last)
+                {
+                    break;
+                }
+
+                tmp += labelStep;
+
+                if (tmp >= maxValue)
+                //if (tmp - maxValue > _PRE)
+                {
+                    tmp = maxValue;
+                    x = AxisConstant.ZERO_D;
+                    labelTextLocation = AxisLabelTextLocation.Last;
+                }
+                else
+                {
+                    x -= separatorSize;
+                }
+            }
+
+            return xList;
         }
 
         private List<double> DrawXAxisLeftToRight(Canvas axisCanvas, double minValue, double maxValue)
         {
             List<double> xList = new List<double>();
-            double area = maxValue - minValue;
             double axisWidth = axisCanvas.Width;
-            double labelStep = this.CalculateLabelStep(area, axisWidth);
-            int separatorCount = AxisHelper.CalSeparatorCount(area, axisWidth, labelStep);
-            double separatorSize = AxisHelper.CalSeparatorSize(area, axisWidth, labelStep);
+            double labelStep = this.CalculateLabelStep(this._area, axisWidth);
+            int separatorCount = AxisHelper.CalSeparatorCount(this._area, axisWidth, labelStep);
+            double separatorSize = AxisHelper.CalSeparatorSize(this._area, axisWidth, labelStep);
 
             double left = AxisConstant.ZERO_D;
             double lastLabelX = AxisConstant.ZERO_D;
@@ -535,6 +745,44 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+
+
+
+
+        protected override double PrimitiveGetX(IChartItem chartItem)
+        {
+            var chartNumberItem = chartItem as IChartNumberItem;
+            if (!AxisHelper.DoubleHasValue(this._area) || chartNumberItem == null)
+            {
+                return double.NaN;
+            }
+
+            //默认AxisOrientation.LeftToRight
+            double result = base._axisCanvas.Width * (chartNumberItem.AxisXValue - this._minValue) / this._area;
+            if (base.Orientation == AxisOrientation.RightToLeft)
+            {
+                result = base._axisCanvas.Width - result;
+            }
+
+            return result;
+        }
+
+        protected override double PrimitiveGetY(IChartItem chartItem)
+        {
+            if (!AxisHelper.DoubleHasValue(this._area) || chartItem == null)
+            {
+                return double.NaN;
+            }
+
+            double result = base._axisCanvas.Height * (chartItem.Value - this._minValue) / this._area;
+            if (base.Orientation == AxisOrientation.BottomToTop)
+            {
+                result = base._axisCanvas.Height - result;
+            }
+
+            return result;
         }
     }
 }

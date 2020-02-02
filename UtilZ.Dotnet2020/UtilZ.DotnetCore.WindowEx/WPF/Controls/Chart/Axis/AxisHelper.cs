@@ -224,5 +224,43 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             return UITextHelper.MeasureTextSize(measureTextLabel);
         }
+
+
+
+
+
+
+
+
+
+        public static void GetAxisMinAndMax(AxisAbs axis, ChartCollection<IChartItem> values, out double min, out double max)
+        {
+            min = double.NaN;
+            max = double.NaN;
+
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
+            double pre = double.IsNaN(axis.PRE) ? 0d : axis.PRE;
+            foreach (var value in values)
+            {
+                if (double.IsNaN(value.Value))
+                {
+                    continue;
+                }
+
+                if (double.IsNaN(min) || value.Value - min < pre)
+                {
+                    min = value.Value;
+                }
+
+                if (double.IsNaN(max) || value.Value - max > pre)
+                {
+                    max = value.Value;
+                }
+            }
+        }
     }
 }

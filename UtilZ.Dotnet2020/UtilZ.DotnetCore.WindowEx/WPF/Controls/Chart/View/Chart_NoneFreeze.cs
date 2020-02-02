@@ -22,6 +22,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
              * 4.根据Y轴高度计算刻度值中最大宽度的刻度值,以求出单个Y轴宽度和所有Y轴宽度(为了解决Y轴刻度显示不完或空白过多)
              * 5.绘制X轴
              * 6.根据2和3计算图表区域宽度
+             * 7.绘图
              ************************************************************************************************************/
 
             chartCanvas.Width = axisFreezeInfo.Width;
@@ -195,15 +196,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             var chartArea = new Rect(chartAreaX, chartAreaY, chartAreaWidth, chartAreaHeight);
 
 
+            //第七步
+            if (seriesCollection != null && seriesCollection.Count > 0)
+            {
+                foreach (ISeries series in seriesCollection)
+                {
+                    series.Add(chartCanvas, chartArea);
+                }
+            }
 
-            //todo..Test
-            Rectangle reg = new Rectangle();
-            reg.Width = chartArea.Width;
-            reg.Height = chartArea.Height;
-            reg.Fill = Brushes.Green;
-            chartCanvas.Children.Add(reg);
-            Canvas.SetLeft(reg, chartArea.X);
-            Canvas.SetTop(reg, chartArea.Y);
+            ////todo..Test
+            //Rectangle reg = new Rectangle();
+            //reg.Width = chartArea.Width;
+            //reg.Height = chartArea.Height;
+            //reg.Fill = Brushes.Green;
+            //chartCanvas.Children.Add(reg);
+            //Canvas.SetLeft(reg, chartArea.X);
+            //Canvas.SetTop(reg, chartArea.Y);
         }
 
 

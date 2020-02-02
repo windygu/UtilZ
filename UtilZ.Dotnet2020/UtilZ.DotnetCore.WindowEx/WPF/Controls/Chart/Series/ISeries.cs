@@ -25,9 +25,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         string Title { get; set; }
 
-        void Draw(Canvas canvas, Rect chartArea);
+        void Add(Canvas canvas, Rect chartArea);
 
-        void Clear();
+        void Remove();
 
         void Update();
 

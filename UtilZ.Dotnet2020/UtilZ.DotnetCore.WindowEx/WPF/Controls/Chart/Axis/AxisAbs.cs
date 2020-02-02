@@ -167,7 +167,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         }
 
 
-        private readonly Canvas _axisCanvas = new Canvas();
+        protected readonly Canvas _axisCanvas = new Canvas();
         public AxisAbs()
             : base()
         {
@@ -435,5 +435,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     throw new NotImplementedException(this._axisType.ToString());
             }
         }
+
+
+
+
+        internal double GetX(IChartItem chartItem)
+        {
+            return this.PrimitiveGetX(chartItem);
+        }
+        protected abstract double PrimitiveGetX(IChartItem chartItem);
+
+        internal double GetY(IChartItem chartItem)
+        {
+            return this.PrimitiveGetY(chartItem);
+        }
+        protected abstract double PrimitiveGetY(IChartItem chartItem);
     }
 }
