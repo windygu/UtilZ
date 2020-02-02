@@ -116,10 +116,42 @@ namespace WpfApp1
         public void Test()
         {
             var axes = new ChartCollection<AxisAbs>();
-            axes.Add(new NumberAxis() { AxisType = AxisType.Y, DockOrientation = ChartDockOrientation.Left, MinValue = 0, MaxValue = 100, LabelStep = 20 });
-            axes.Add(new NumberAxis() { AxisType = AxisType.Y, DockOrientation = ChartDockOrientation.Right, MinValue = -100, MaxValue = 100, LabelStep = double.NaN });
-            axes.Add(new NumberAxis() { AxisType = AxisType.X, DockOrientation = ChartDockOrientation.Bottom, MinValue = 0, MaxValue = 1000, LabelStep = 200 });
-            axes.Add(new NumberAxis() { AxisType = AxisType.X, DockOrientation = ChartDockOrientation.Top, MinValue = -1000, MaxValue = 1000, LabelStep = double.NaN });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = 0,
+                MaxValue = 100,
+                LabelStep = 20
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = -100,
+                MaxValue = 100,
+                LabelStep = double.NaN
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = 0,
+                MaxValue = 1000,
+                LabelStep = 200
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = -1000,
+                MaxValue = 1000,
+                LabelStep = double.NaN
+            });
             this.Axes = axes;
         }
     }

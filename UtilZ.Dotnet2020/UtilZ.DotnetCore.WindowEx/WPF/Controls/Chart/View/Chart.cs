@@ -192,10 +192,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             {
                 axis.UpdateLabelStyle();
             }
-            else if (string.Equals(e.PropertyName, nameof(AxisAbs.LabelSize)))
-            {
-                axis.UpdateTickMark();
-            }
             else if (string.Equals(e.PropertyName, nameof(AxisAbs.AxisLine)))
             {
                 axis.UpdateAxisLine();
@@ -215,7 +211,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     return;
                 }
 
-                //全部重绘
+                //全部重绘                
+                //string.Equals(e.PropertyName, nameof(AxisAbs.LabelSize)) ||
                 //string.Equals(e.PropertyName, nameof(AxisAbs.AxisDockOrientation)) ||
                 //string.Equals(e.PropertyName, nameof(AxisAbs.AxisType)) ||
                 //string.Equals(e.PropertyName, nameof(AxisAbs.Orientation)) ||

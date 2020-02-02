@@ -75,7 +75,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
 
-        public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, List<Point> axisPointList)
+        public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> xList)
         {
             if (!axis.AxisLine)
             {
@@ -85,23 +85,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             GeometryGroup geometryGroup = new GeometryGroup();
             Point point1, point2;
 
-            foreach (var axisPoint in axisPointList)
+            foreach (var x in xList)
             {
-                switch (axis.DockOrientation)
+                if (axis.IsAxisXBottom())
                 {
-                    case ChartDockOrientation.Top:
-                        point1 = new Point(axisPoint.X, axisPoint.Y - axis.LabelSize);
-                        point2 = new Point(axisPoint.X, axisPoint.Y);
-                        break;
-                    case ChartDockOrientation.Bottom:
-                        point1 = new Point(axisPoint.X, axisPoint.Y);
-                        point2 = new Point(axisPoint.X, axisPoint.Y + axis.LabelSize);
-                        break;
-                    case ChartDockOrientation.Left:
-                    case ChartDockOrientation.Right:
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    point1 = new Point(x, AxisConstant.ZERO_D);
+                    point2 = new Point(x, axis.LabelSize);
+                }
+                else
+                {
+                    point1 = new Point(x, canvas.Height - axis.LabelSize);
+                    point2 = new Point(x, canvas.Height);
                 }
 
                 PathFigure pathFigure = new PathFigure();
@@ -114,17 +108,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 geometryGroup.Children.Add(pathGeometry);
             }
 
-            var separatorPath = new Path();
-            separatorPath.Data = geometryGroup;
-            separatorPath.Style = axis.AxisLineStyle;
-            if (separatorPath.Style == null)
+            var labelLinePath = new Path();
+            labelLinePath.Data = geometryGroup;
+            labelLinePath.Style = axis.AxisLineStyle;
+            if (labelLinePath.Style == null)
             {
-                ChartStyleHelper.CreateAxisSeparatorStyle();
+                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
             }
-            canvas.Children.Add(separatorPath);
+            canvas.Children.Add(labelLinePath);
         }
 
-        public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, List<Point> axisPointList)
+        public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> yList)
         {
             if (!axis.AxisLine)
             {
@@ -134,22 +128,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             GeometryGroup geometryGroup = new GeometryGroup();
             Point point1, point2;
 
-            foreach (var axisPoint in axisPointList)
+            foreach (var y in yList)
             {
-                switch (axis.DockOrientation)
+                if (axis.IsAxisYLeft())
                 {
-                    case ChartDockOrientation.Left:
-                        point1 = new Point(axisPoint.X - axis.LabelSize, axisPoint.Y);
-                        point2 = new Point(axisPoint.X, axisPoint.Y);
-                        break;
-                    case ChartDockOrientation.Right:
-                        point1 = new Point(axisPoint.X, axisPoint.Y);
-                        point2 = new Point(axisPoint.X + axis.LabelSize, axisPoint.Y);
-                        break;
-                    case ChartDockOrientation.Top:
-                    case ChartDockOrientation.Bottom:
-                    default:
-                        throw new NotImplementedException();
+                    point1 = new Point(canvas.Width - axis.LabelSize, y);
+                    point2 = new Point(canvas.Width, y);
+                }
+                else
+                {
+                    point1 = new Point(AxisConstant.ZERO_D, y);
+                    point2 = new Point(axis.LabelSize, y);
                 }
 
                 PathFigure pathFigure = new PathFigure();
@@ -162,14 +151,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 geometryGroup.Children.Add(pathGeometry);
             }
 
-            var separatorPath = new Path();
-            separatorPath.Data = geometryGroup;
-            separatorPath.Style = axis.AxisLineStyle;
-            if (separatorPath.Style == null)
+            var labelLinePath = new Path();
+            labelLinePath.Data = geometryGroup;
+            labelLinePath.Style = axis.AxisLineStyle;
+            if (labelLinePath.Style == null)
             {
-                ChartStyleHelper.CreateAxisSeparatorStyle();
+                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
             }
-            canvas.Children.Add(separatorPath);
+            canvas.Children.Add(labelLinePath);
         }
 
 

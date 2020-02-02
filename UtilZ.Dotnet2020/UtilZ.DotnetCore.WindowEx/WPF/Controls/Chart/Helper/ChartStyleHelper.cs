@@ -12,19 +12,30 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 {
     public class ChartStyleHelper
     {
-        public static Style CreateAxisSeparatorStyle()
+        private static Style _axisLabelLineStyle = null;
+        public static Style CreateAxisLabelLineStyle()
         {
-            var style = new Style();
-            style.TargetType = typeof(System.Windows.Shapes.Path);
-            style.Setters.Add(new Setter(Path.StrokeProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4F4F4"))));
-            //style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.Gray));
-            style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 1.0d));
-            return style;
+            if (_axisLabelLineStyle == null)
+            {
+                var style = new Style();
+                style.TargetType = typeof(System.Windows.Shapes.Path);
+                //style.Setters.Add(new Setter(Path.StrokeProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4F4F4"))));
+                style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.White));
+                style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 1.0d));
+                _axisLabelLineStyle = style;
+            }
+
+            return _axisLabelLineStyle;
         }
 
-        private static Dictionary<ChartDockOrientation, Style> _axisLabelDefaultStyleDic = new System.Collections.Generic.Dictionary<ChartDockOrientation, Style>();
+        private static Dictionary<ChartDockOrientation, Style> _axisLabelDefaultStyleDic = null;
         public static Style GetAxisLabelStyle(ChartDockOrientation axisDockOrientation)
         {
+            if (_axisLabelDefaultStyleDic == null)
+            {
+                _axisLabelDefaultStyleDic = new Dictionary<ChartDockOrientation, Style>();
+            }
+
             Style defaultLabelStyle;
             if (_axisLabelDefaultStyleDic.TryGetValue(axisDockOrientation, out defaultLabelStyle))
             {
@@ -62,9 +73,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             return defaultLabelStyle;
         }
 
+        private static Dictionary<ChartDockOrientation, Style> _axisTitleStyleDic = null;
         public static Style CreateAxisTitleStyle(ChartDockOrientation axisDockOrientation)
         {
-            var defaultTitleStyle = new Style();
+            if (_axisTitleStyleDic == null)
+            {
+                _axisTitleStyleDic = new Dictionary<ChartDockOrientation, Style>();
+            }
+
+            Style defaultTitleStyle;
+            if (_axisLabelDefaultStyleDic.TryGetValue(axisDockOrientation, out defaultTitleStyle))
+            {
+                return defaultTitleStyle;
+            }
+
+            defaultTitleStyle = new Style();
             defaultTitleStyle.TargetType = typeof(TextBlock);
             defaultTitleStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty, Brushes.Gray));
             defaultTitleStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, 14d));
@@ -89,24 +112,31 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     throw new NotImplementedException();
             }
             defaultTitleStyle.Setters.Add(new Setter(TextBlock.MarginProperty, margin));
+            _axisTitleStyleDic.Add(axisDockOrientation, defaultTitleStyle);
 
             return defaultTitleStyle;
         }
 
-        public static Style CreateLineStyle()
+        private static Style _lineDefaultStyle = null;
+        public static Style CreateLineDefaultStyle()
         {
-            var style = new Style();
-            style.TargetType = typeof(Path);
-            style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.Gray));
-            style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 2d));
-            //style.Setters.Add(new Setter(Path.FillProperty, Brushes.White));
+            if (_lineDefaultStyle == null)
+            {
+                var style = new Style();
+                style.TargetType = typeof(Path);
+                style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.Gray));
+                style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 2d));
+                //style.Setters.Add(new Setter(Path.FillProperty, Brushes.White));
 
-            var trigger = new Trigger();
-            trigger.Property = Path.IsMouseOverProperty;
-            trigger.Value = true;
-            trigger.Setters.Add(new Setter(Path.StrokeThicknessProperty, 3d));
-            style.Triggers.Add(trigger);
-            return style;
+                var trigger = new Trigger();
+                trigger.Property = Path.IsMouseOverProperty;
+                trigger.Value = true;
+                trigger.Setters.Add(new Setter(Path.StrokeThicknessProperty, 3d));
+                style.Triggers.Add(trigger);
+                _lineDefaultStyle = style;
+            }
+
+            return _lineDefaultStyle;
         }
 
 

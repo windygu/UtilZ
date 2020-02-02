@@ -12,7 +12,7 @@
     <Window.DataContext>
         <local:TestChartVM/>
     </Window.DataContext>
-    <Grid>
+    <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
