@@ -83,7 +83,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             }
         }
 
-
+        private double _labelMinInterval = double.NaN;
+        /// <summary>
+        /// 两个刻度值间最小间隔, 为double.NaN使用默认值,单位:像素
+        /// </summary>
+        public double LabelMinInterval
+        {
+            get { return _labelMinInterval; }
+            set
+            {
+                _labelMinInterval = value;
+                base.OnRaisePropertyChanged(nameof(LabelMinInterval));
+            }
+        }
 
 
 
@@ -225,6 +237,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             return axisSize;
         }
+
 
 
         internal void DrawX(ChartCollection<ISeries> seriesCollection, double axisWidth)

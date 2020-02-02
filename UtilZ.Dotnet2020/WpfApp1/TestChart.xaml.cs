@@ -146,6 +146,25 @@ namespace WpfApp1
                 MaxValue = 1000,
                 LabelStep = double.NaN
             });
+
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.TopToBottom,
+                MinValue = -100000,
+                MaxValue = 100000,
+                LabelStep = double.NaN
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.RightToLeft,
+                MinValue = -100000,
+                MaxValue = 100000,
+                LabelStep = double.NaN
+            });
             this.Axes = axes;
 
 
