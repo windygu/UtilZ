@@ -203,7 +203,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         {
             this._axisCanvas.Background = Brushes.Transparent;
             //test
-            this._axisCanvas.Background = ColorBrushHelper.GetNextColor();
+            //this._axisCanvas.Background = ColorBrushHelper.GetNextColor();
         }
 
 

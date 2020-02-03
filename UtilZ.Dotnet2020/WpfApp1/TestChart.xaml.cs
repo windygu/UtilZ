@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart;
 using UtilZ.DotnetStd.Ex.Model;
+using WpfApp1.Model;
 
 namespace WpfApp1
 {
@@ -118,10 +119,10 @@ namespace WpfApp1
         {
             //TestNumAxis1();
             //TestNumAxis2();
-            TestDateTimeAxis();
+            //TestDateTimeAxis();
 
 
-            //TestLineSeries();
+            TestLineSeries();
         }
 
 

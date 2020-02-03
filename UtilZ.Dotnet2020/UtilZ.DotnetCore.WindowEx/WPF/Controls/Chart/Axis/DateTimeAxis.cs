@@ -827,14 +827,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         protected override double PrimitiveGetX(IChartItem chartItem)
         {
-            var chartDateTimeItem = chartItem as IChartDateTimeItem;
-            if (this._axisData == null || chartDateTimeItem == null)
+            if (this._axisData == null || chartItem == null)
+            {
+                return double.NaN;
+            }
+
+            object obj = chartItem.GetXValue();
+            DateTime? value = AxisHelper.ConvertToDateTime(obj);
+            if (value == null)
             {
                 return double.NaN;
             }
 
             //默认AxisOrientation.LeftToRight
-            double result = base._axisCanvas.Width * (chartDateTimeItem.Time - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
+            double result = base._axisCanvas.Width * (value.Value - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
             if (base.Orientation == AxisOrientation.RightToLeft)
             {
                 result = base._axisCanvas.Width - result;
@@ -845,13 +851,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         protected override double PrimitiveGetY(IChartItem chartItem)
         {
-            var chartDateTimeItem = chartItem as IChartDateTimeItem;
-            if (this._axisData == null || chartDateTimeItem == null)
+            if (this._axisData == null || chartItem == null)
             {
                 return double.NaN;
             }
 
-            double result = base._axisCanvas.Height * (chartDateTimeItem.Time - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
+            object obj = chartItem.GetYValue();
+            DateTime? value = AxisHelper.ConvertToDateTime(obj);
+            if (value == null)
+            {
+                return double.NaN;
+            }
+
+            double result = base._axisCanvas.Height * (value.Value - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
             if (base.Orientation == AxisOrientation.BottomToTop)
             {
                 result = base._axisCanvas.Height - result;

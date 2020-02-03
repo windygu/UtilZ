@@ -40,5 +40,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         {
 
         }
+
+        public override object GetXValue()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object GetYValue()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

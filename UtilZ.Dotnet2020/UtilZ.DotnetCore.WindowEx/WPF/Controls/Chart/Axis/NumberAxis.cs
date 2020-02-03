@@ -729,14 +729,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         protected override double PrimitiveGetX(IChartItem chartItem)
         {
-            var chartNumberItem = chartItem as IChartNumberItem;
-            if (this._axisData == null || chartNumberItem == null)
+            if (this._axisData == null || chartItem == null)
+            {
+                return double.NaN;
+            }
+
+            object obj = chartItem.GetXValue();
+            double value = AxisHelper.ConvertToDouble(obj);
+            if (!AxisHelper.DoubleHasValue(value))
             {
                 return double.NaN;
             }
 
             //默认AxisOrientation.LeftToRight
-            double result = base._axisCanvas.Width * (chartNumberItem.AxisXValue - this._minValue) / this._axisData.Area;
+            double result = base._axisCanvas.Width * (value - this._minValue) / this._axisData.Area;
             if (base.Orientation == AxisOrientation.RightToLeft)
             {
                 result = base._axisCanvas.Width - result;
@@ -752,7 +758,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 return double.NaN;
             }
 
-            double result = base._axisCanvas.Height * (chartItem.Value - this._minValue) / this._axisData.Area;
+            object obj = chartItem.GetYValue();
+            double value = AxisHelper.ConvertToDouble(obj);
+            if (!AxisHelper.DoubleHasValue(value))
+            {
+                return double.NaN;
+            }
+
+            double result = base._axisCanvas.Height * (value - this._minValue) / this._axisData.Area;
             if (base.Orientation == AxisOrientation.BottomToTop)
             {
                 result = base._axisCanvas.Height - result;

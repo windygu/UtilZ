@@ -313,24 +313,101 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 return;
             }
 
-            double pre = double.IsNaN(axis.PRE) ? 0d : axis.PRE;
+            double pre = double.IsNaN(axis.PRE) ? AxisConstant.ZERO_D : axis.PRE;
+            object obj;
+            double tmp;
             foreach (var value in values)
             {
-                if (double.IsNaN(value.Value))
+                if (value == null)
                 {
                     continue;
                 }
 
-                if (double.IsNaN(min) || value.Value - min < pre)
+                switch (axis.AxisType)
                 {
-                    min = value.Value;
+                    case AxisType.X:
+                        obj = value.GetXValue();
+                        break;
+                    case AxisType.Y:
+                        obj = value.GetYValue();
+                        break;
+                    default:
+                        throw new NotImplementedException(axis.AxisType.ToString());
                 }
 
-                if (double.IsNaN(max) || value.Value - max > pre)
+                tmp = ConvertToDouble(obj);
+                if (!DoubleHasValue(tmp))
                 {
-                    max = value.Value;
+                    continue;
+                }
+
+                if (double.IsNaN(min) || tmp - min < pre)
+                {
+                    min = tmp;
+                }
+
+                if (double.IsNaN(max) || tmp - max > pre)
+                {
+                    max = tmp;
                 }
             }
+        }
+
+
+
+        public static double ConvertToDouble(object obj)
+        {
+            if (obj == null)
+            {
+                return double.NaN;
+            }
+
+            double value;
+            if (obj is double)
+            {
+                value = (double)obj;
+            }
+            else
+            {
+                try
+                {
+                    value = Convert.ToDouble(obj);
+                }
+                catch
+                {
+                    value = double.NaN;
+                }
+            }
+
+            return value;
+        }
+
+
+        public static DateTime? ConvertToDateTime(object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+
+            DateTime? value;
+            if (obj is DateTime)
+            {
+                value = (DateTime)obj;
+            }
+            else
+            {
+                try
+                {
+                    value = Convert.ToDateTime(obj);
+                }
+                catch
+                {
+                    value = null;
+                }
+            }
+
+            return value;
         }
     }
 }

@@ -194,12 +194,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             foreach (var item in base._values)
             {
-                if (double.IsNaN(item.Value))
-                {
-                    pointList = null;
-                    continue;
-                }
-
                 x = this.AxisX.GetX(item);
                 if (!AxisHelper.DoubleHasValue(x))
                 {

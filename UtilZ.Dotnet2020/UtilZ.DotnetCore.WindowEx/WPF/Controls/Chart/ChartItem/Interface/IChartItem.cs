@@ -8,10 +8,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 {
     public interface IChartItem
     {
-        double Value { get; }
+        string TooltipText { get; }
 
-        string TooltipText { get; set; }
+        object Tag { get; }
 
-        object Tag { get; set; }
+        object GetXValue();
+        object GetYValue();
     }
 }
