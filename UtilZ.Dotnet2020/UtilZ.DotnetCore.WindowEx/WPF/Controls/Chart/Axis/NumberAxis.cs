@@ -83,7 +83,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         protected override double PrimitiveGetXAxisHeight()
         {
             string labelText = this.CreateAxisText(123d);
-            double axisHeight = AxisHelper.MeasureScaleTextSize(this, labelText).Height;
+            double axisHeight = AxisHelper.MeasureLabelTextSize(this, labelText).Height;
             return base.CalculateAxisSize(axisHeight);
         }
 
@@ -275,7 +275,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             double labelStep = this.CalculateLabelStep(axisData.Area, axisHeight);
             double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisHeight, labelStep);
             double top = AxisConstant.ZERO_D, top2;
-            double tmp = axisData.MinValue;
+            double value = axisData.MinValue;
             double y = AxisConstant.ZERO_D;
             TextBlock label;
             Rect labelSize;
@@ -286,7 +286,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             while (true)
             {
-                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(tmp));
+                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(value));
                 labelSize = UITextHelper.MeasureTextSize(label);
                 if (labelSize.Width - labelWidth > base._PRE)
                 {
@@ -350,18 +350,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 yList.Add(y);
 
-                tmp += labelStep;
-                if (tmp >= axisData.MaxValue)
+                value += labelStep;
+                if (value >= axisData.MaxValue)
                 //if (tmp - maxValue > _PRE)
                 {
-                    labelStepSize = (labelStep - (tmp - axisData.MaxValue)) * labelStepSize / labelStep;
-                    double labelHeight = AxisHelper.MeasureScaleTextSize(this, axisData.MaxValue.ToString()).Height + 10d;
+                    labelStepSize = (labelStep - (value - axisData.MaxValue)) * labelStepSize / labelStep;
+                    double labelHeight = AxisHelper.MeasureLabelTextSize(this, axisData.MaxValue.ToString()).Height + 10d;
                     if (labelStepSize < labelHeight)
                     {
                         break;
                     }
 
-                    tmp = axisData.MaxValue;
+                    value = axisData.MaxValue;
                     y = axisHeight;
                     labelTextLocation = AxisLabelTextLocation.Last;
                 }
@@ -384,7 +384,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             double labelStep = this.CalculateLabelStep(axisData.Area, axisHeight);
             double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisHeight, labelStep);
             double bottom = AxisConstant.ZERO_D, bottom2;
-            double tmp = axisData.MinValue;
+            double value = axisData.MinValue;
             double y = axisHeight;
             TextBlock label;
             Rect labelSize;
@@ -395,7 +395,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             while (true)
             {
-                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(tmp));
+                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(value));
                 labelSize = UITextHelper.MeasureTextSize(label);
                 if (labelSize.Width - labelWidth > base._PRE)
                 {
@@ -459,17 +459,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 yList.Add(y);
 
-                tmp += labelStep;
-                if (tmp >= axisData.MaxValue)
+                value += labelStep;
+                if (value >= axisData.MaxValue)
                 {
-                    labelStepSize = (labelStep - (tmp - axisData.MaxValue)) * labelStepSize / labelStep;
-                    double labelHeight = AxisHelper.MeasureScaleTextSize(this, axisData.MaxValue.ToString()).Height + 10d;
+                    labelStepSize = (labelStep - (value - axisData.MaxValue)) * labelStepSize / labelStep;
+                    double labelHeight = AxisHelper.MeasureLabelTextSize(this, axisData.MaxValue.ToString()).Height + 10d;
                     if (labelStepSize < labelHeight)
                     {
                         break;
                     }
 
-                    tmp = axisData.MaxValue;
+                    value = axisData.MaxValue;
                     y = AxisConstant.ZERO_D;
                     labelTextLocation = AxisLabelTextLocation.Last;
                 }
@@ -520,7 +520,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             double right = AxisConstant.ZERO_D;
             double lastLabelX = axisWidth;
             double x = axisWidth;
-            double tmp = axisData.MinValue;
+            double value = axisData.MinValue;
             TextBlock label;
             Rect labelSize;
             AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
@@ -529,7 +529,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             while (true)
             {
-                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(tmp));
+                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(value));
                 labelSize = UITextHelper.MeasureTextSize(label);
                 if (axisWidth - labelSize.Width > AxisConstant.LABEL_TEXT_INTERVAL)
                 {
@@ -599,12 +599,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 xList.Add(x);
 
-                tmp += labelStep;
+                value += labelStep;
 
-                if (tmp >= axisData.MaxValue)
+                if (value >= axisData.MaxValue)
                 //if (tmp - axisData.MaxValue > _PRE)
                 {
-                    tmp = axisData.MaxValue;
+                    value = axisData.MaxValue;
                     x = AxisConstant.ZERO_D;
                     labelTextLocation = AxisLabelTextLocation.Last;
                 }
@@ -626,7 +626,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             double left = AxisConstant.ZERO_D;
             double lastLabelX = AxisConstant.ZERO_D;
             double x = AxisConstant.ZERO_D;
-            double tmp = axisData.MinValue;
+            double value = axisData.MinValue;
             TextBlock label;
             Rect labelSize;
             AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
@@ -635,7 +635,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
             while (true)
             {
-                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(tmp));
+                label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(value));
                 labelSize = UITextHelper.MeasureTextSize(label);
                 if (axisWidth - labelSize.Width > AxisConstant.LABEL_TEXT_INTERVAL)
                 {
@@ -705,12 +705,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 xList.Add(x);
 
-                tmp += labelStep;
+                value += labelStep;
 
-                if (tmp >= axisData.MaxValue)
+                if (value >= axisData.MaxValue)
                 //if (tmp - axisData.MaxValue > _PRE)
                 {
-                    tmp = axisData.MaxValue;
+                    value = axisData.MaxValue;
                     x = axisWidth;
                     labelTextLocation = AxisLabelTextLocation.Last;
                 }

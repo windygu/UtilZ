@@ -118,10 +118,10 @@ namespace WpfApp1
         {
             //TestNumAxis1();
             //TestNumAxis2();
-            //TestDateTimeAxis();
+            TestDateTimeAxis();
 
 
-            TestLineSeries();
+            //TestLineSeries();
         }
 
 
@@ -271,32 +271,44 @@ namespace WpfApp1
 
         private void TestDateTimeAxis()
         {
+            DateTime min = DateTime.Parse("2010-01-01 00:00:00");
+            DateTime max = DateTime.Parse("2010-12-31 23:23:59");
+
             var axes = new ChartCollection<AxisAbs>();
-            axes.Add(new NumberAxis()
-            {
-                AxisType = AxisType.Y,
-                DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
-                MinValue = -100,
-                MaxValue = 100,
-                LabelStep = double.NaN
-            });
-            axes.Add(new NumberAxis()
-            {
-                AxisType = AxisType.Y,
-                DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.TopToBottom,
-                MinValue = -100000,
-                MaxValue = 100000,
-                LabelStep = double.NaN
-            });
             axes.Add(new DateTimeAxis()
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
                 Orientation = AxisOrientation.LeftToRight,
-                MinValue = DateTime.Parse("2010-01-01 00:00:00"),
-                MaxValue = DateTime.Parse("2012-01-01 00:00:00"),
+                MinValue = min,
+                MaxValue = max,
+                LabelStep = null
+            });
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.RightToLeft,
+                MinValue = min,
+                MaxValue = max,
+                LabelStep = null
+            });
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = min,
+                MaxValue = max,
+                LabelStep = null
+            });
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.TopToBottom,
+                MinValue = min,
+                MaxValue = max,
                 LabelStep = null
             });
             this.Axes = axes;

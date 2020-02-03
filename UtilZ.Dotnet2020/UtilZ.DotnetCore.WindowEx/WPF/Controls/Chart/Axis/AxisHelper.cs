@@ -274,7 +274,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
         private static TextBlock _measureTextLabel = null;
-        public static Rect MeasureScaleTextSize(AxisAbs axis, string labelText)
+        public static Rect MeasureLabelTextSize(AxisAbs axis, string labelText)
         {
             if (_measureTextLabel == null)
             {
