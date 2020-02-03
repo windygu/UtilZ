@@ -295,7 +295,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                             axisCanvas.Children.Add(label);
                             addLabelControl = true;
                             Canvas.SetTop(label, top);
-                            lastLabelY = axisHeight - labelSize.Height;
+                            lastLabelY = top + labelSize.Height;
                             labelTextLocation = AxisLabelTextLocation.Middle;
                             break;
                         case AxisLabelTextLocation.Middle:
@@ -557,7 +557,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                             }
                             break;
                         case AxisLabelTextLocation.Last:
-                            if (lastLabelX + labelSize.Width + AxisConstant.LABEL_TEXT_INTERVAL <= axisWidth)
+                            if (right>AxisConstant.ZERO_D&& labelSize.Width + AxisConstant.LABEL_TEXT_INTERVAL <= lastLabelX)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
