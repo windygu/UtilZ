@@ -164,7 +164,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
 
-        public static int CalSeparatorCount(double area, double axisSize, double labelStep)
+        public static int CalculateLabelCount(double area, double axisSize, double labelStep)
         {
             int separatorCount;
             separatorCount = (int)(area / labelStep);
@@ -176,7 +176,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             return separatorCount;
         }
 
-        public static double CalSeparatorSize(double area, double axisSize, double labelStep)
+        public static double CalculateLabelStepSize(double area, double axisSize, double labelStep)
         {
             return labelStep * axisSize / area;
         }

@@ -163,6 +163,28 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
 
+        private double CalculateLabelStep(DateTimeAxisData axisData)
+        {
+            double labelStepMilliseconds = this._labelStep != null ? this._labelStep.Value.TotalMilliseconds : double.NaN;
+            if (double.IsNaN(labelStepMilliseconds))
+            {
+                const double INTERVAL = 20d;
+                double labelTextSpace = INTERVAL + this._labelTextSize.Width;
+                int count = (int)(this._axisCanvas.Width / labelTextSpace);
+                if (count == 0)
+                {
+                    labelStepMilliseconds = axisData.Area.TotalMilliseconds;
+                }
+                else
+                {
+                    TimeSpan intervalTimeLength = TimeSpan.FromMilliseconds(axisData.Area.TotalMilliseconds / count);//一个刻度内时长
+                    labelStepMilliseconds = this.AdjustIntervalTimeLength(intervalTimeLength);
+                }
+            }
+
+            return labelStepMilliseconds;
+        }
+
         private double AdjustIntervalTimeLength(TimeSpan intervalTimeLength)
         {
             double stepMilliseconds;
@@ -286,23 +308,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             return stepMilliseconds;
         }
 
-        //private double CalculateLabelStep()
-        //{
-        //    double stepMilliseconds = this._labelStep != null ? this._labelStep.Value.TotalMilliseconds : double.NaN;
-        //    if (double.IsNaN(stepMilliseconds))
-        //    {
-        //        double labelMinInterval = base.GetLabelMinInterval(this._labelTextSize.Width);
-        //        int count = (int)(this._axisCanvas.Width / labelMinInterval);
-        //        if (count == 0)
-        //        {
-        //            this.UpdateAxisXLeftToRight(this._beginDateTime.Value, this._endDateTime.Value, this._area.TotalMilliseconds, width, labelSize.Width);
-        //            return;
-        //        }
-
-        //        TimeSpan intervalTimeLength = TimeSpan.FromMilliseconds(this._axisData.Area.TotalMilliseconds / count);//一个刻度内时长
-        //        stepMilliseconds = this.AdjustIntervalTimeLength(intervalTimeLength);
-        //    }
-        //}
+        
 
         //private int CalculateAxisLabelCount(double labelTextSize, double axisSize)
         //{
@@ -335,6 +341,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             {
                 return;
             }
+
+            double labelStepMilliseconds = CalculateLabelStep(this._axisData);
 
             List<double> xList;
             switch (base.Orientation)

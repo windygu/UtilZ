@@ -262,13 +262,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             List<double> yList = new List<double>();
             double axisHeight = axisCanvas.Height;
             double labelStep = this.CalculateLabelStep(axisData.Area, axisHeight);
-            int separatorCount = AxisHelper.CalSeparatorCount(axisData.Area, axisHeight, labelStep);
-            double separatorSize = AxisHelper.CalSeparatorSize(axisData.Area, axisHeight, labelStep);
-
+            double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisHeight, labelStep);
             double top = AxisConstant.ZERO_D, top2;
             double tmp = axisData.MinValue;
-            double endValue = axisData.MaxValue + labelStep - base._PRE;
-            double slidSeparatorSize = separatorSize;
             double y = AxisConstant.ZERO_D;
             TextBlock label;
             Rect labelSize;
@@ -343,9 +339,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 if (tmp >= axisData.MaxValue)
                 //if (tmp - maxValue > _PRE)
                 {
-                    slidSeparatorSize = (labelStep - (tmp - axisData.MaxValue)) * separatorSize / labelStep;
+                    labelStepSize = (labelStep - (tmp - axisData.MaxValue)) * labelStepSize / labelStep;
                     double labelHeight = AxisHelper.MeasureScaleTextSize(this, axisData.MaxValue.ToString()).Height + 10d;
-                    if (slidSeparatorSize < labelHeight)
+                    if (labelStepSize < labelHeight)
                     {
                         break;
                     }
@@ -356,10 +352,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 else
                 {
-                    y += slidSeparatorSize;
+                    y += labelStepSize;
                 }
 
-                top += slidSeparatorSize;
+                top += labelStepSize;
             }
 
             axisCanvas.Width = base.CalculateAxisSize(labelWidth);
@@ -371,13 +367,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             List<double> yList = new List<double>();
             double axisHeight = axisCanvas.Height;
             double labelStep = this.CalculateLabelStep(axisData.Area, axisHeight);
-            int separatorCount = AxisHelper.CalSeparatorCount(axisData.Area, axisHeight, labelStep);
-            double separatorSize = AxisHelper.CalSeparatorSize(axisData.Area, axisHeight, labelStep);
-
+            double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisHeight, labelStep);
             double bottom = AxisConstant.ZERO_D, bottom2;
             double tmp = axisData.MinValue;
-            double endValue = axisData.MaxValue + labelStep - base._PRE;
-            double slidSeparatorSize = separatorSize;
             double y = axisHeight;
             TextBlock label;
             Rect labelSize;
@@ -450,11 +442,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
                 tmp += labelStep;
                 if (tmp >= axisData.MaxValue)
-                //if (tmp - maxValue > _PRE)
                 {
-                    slidSeparatorSize = (labelStep - (tmp - axisData.MaxValue)) * separatorSize / labelStep;
+                    labelStepSize = (labelStep - (tmp - axisData.MaxValue)) * labelStepSize / labelStep;
                     double labelHeight = AxisHelper.MeasureScaleTextSize(this, axisData.MaxValue.ToString()).Height + 10d;
-                    if (slidSeparatorSize < labelHeight)
+                    if (labelStepSize < labelHeight)
                     {
                         break;
                     }
@@ -465,10 +456,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 else
                 {
-                    y -= slidSeparatorSize;
+                    y -= labelStepSize;
                 }
 
-                bottom += slidSeparatorSize;
+                bottom += labelStepSize;
             }
 
             axisCanvas.Width = base.CalculateAxisSize(labelWidth);
@@ -506,14 +497,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             List<double> xList = new List<double>();
             double axisWidth = axisCanvas.Width;
             double labelStep = this.CalculateLabelStep(axisData.Area, axisWidth);
-            int separatorCount = AxisHelper.CalSeparatorCount(axisData.Area, axisWidth, labelStep);
-            double separatorSize = AxisHelper.CalSeparatorSize(axisData.Area, axisWidth, labelStep);
-
+            double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisWidth, labelStep);
             double right = AxisConstant.ZERO_D;
             double lastLabelX = axisWidth;
             double x = axisWidth;
             double tmp = axisData.MinValue;
-            double endValue = axisData.MaxValue + labelStep - base._PRE;
             TextBlock label;
             Rect labelSize;
             AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
@@ -537,7 +525,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                             labelTextLocation = AxisLabelTextLocation.Middle;
                             break;
                         case AxisLabelTextLocation.Middle:
-                            right += separatorSize;
+                            right += labelStepSize;
                             offset = right - labelSize.Width / 2 - lastLabelX;
                             if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
                             {
@@ -557,7 +545,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                             }
                             break;
                         case AxisLabelTextLocation.Last:
-                            if (right>AxisConstant.ZERO_D&& labelSize.Width + AxisConstant.LABEL_TEXT_INTERVAL <= lastLabelX)
+                            if (right > AxisConstant.ZERO_D && labelSize.Width + AxisConstant.LABEL_TEXT_INTERVAL <= lastLabelX)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
@@ -599,7 +587,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 else
                 {
-                    x -= separatorSize;
+                    x -= labelStepSize;
                 }
             }
 
@@ -611,14 +599,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             List<double> xList = new List<double>();
             double axisWidth = axisCanvas.Width;
             double labelStep = this.CalculateLabelStep(axisData.Area, axisWidth);
-            int separatorCount = AxisHelper.CalSeparatorCount(axisData.Area, axisWidth, labelStep);
-            double separatorSize = AxisHelper.CalSeparatorSize(axisData.Area, axisWidth, labelStep);
-
+            double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisWidth, labelStep);
             double left = AxisConstant.ZERO_D;
             double lastLabelX = AxisConstant.ZERO_D;
             double x = AxisConstant.ZERO_D;
             double tmp = axisData.MinValue;
-            double endValue = axisData.MaxValue + labelStep - base._PRE;
             TextBlock label;
             Rect labelSize;
             AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
@@ -642,7 +627,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                             labelTextLocation = AxisLabelTextLocation.Middle;
                             break;
                         case AxisLabelTextLocation.Middle:
-                            left += separatorSize;
+                            left += labelStepSize;
                             offset = left - labelSize.Width / 2 - lastLabelX;
                             if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
                             {
@@ -704,7 +689,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
                 else
                 {
-                    x += separatorSize;
+                    x += labelStepSize;
                 }
             }
 

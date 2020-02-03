@@ -218,15 +218,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
 
-
-
-        internal double GetXAxisHeight()
-        {
-            this._axisCanvas.Height = this.PrimitiveGetXAxisHeight();
-            return this._axisCanvas.Height;
-        }
-        protected abstract double PrimitiveGetXAxisHeight();
-
         protected double CalculateAxisSize(double labelTextSize)
         {
             double axisSize = labelTextSize;
@@ -240,6 +231,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
 
+
+        internal double GetXAxisHeight()
+        {
+            this._axisCanvas.Height = this.PrimitiveGetXAxisHeight();
+            return this._axisCanvas.Height;
+        }
+        protected abstract double PrimitiveGetXAxisHeight();
+
         internal void DrawX(ChartCollection<ISeries> seriesCollection, double axisWidth)
         {
             this._axisCanvas.Children.Clear();
@@ -248,6 +247,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             this.PrimitiveDrawX(this._axisCanvas, seriesCollection, axisWidth);
         }
         protected abstract void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection, double axisWidth);
+
+
 
 
         internal double DrawY(ChartCollection<ISeries> seriesCollection, double axisHeight)
