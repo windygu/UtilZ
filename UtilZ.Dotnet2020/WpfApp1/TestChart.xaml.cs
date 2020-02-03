@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart;
+using UtilZ.DotnetStd.Ex.Log;
+using UtilZ.DotnetStd.Ex.Log.Appender;
 using UtilZ.DotnetStd.Ex.Model;
 using WpfApp1.Model;
 
@@ -30,6 +32,27 @@ namespace WpfApp1
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this._vm = (TestChartVM)this.DataContext;
+
+            var redirectAppenderToUI = (RedirectAppender)Loger.GetAppenderByName(null, "RedirectToUI");
+            if (redirectAppenderToUI != null)
+            {
+                redirectAppenderToUI.RedirectOuput += RedirectLogOutput;
+            }
+        }
+
+        private void RedirectLogOutput(object sender, RedirectOuputArgs e)
+        {
+            string str;
+            try
+            {
+                str = string.Format("{0} {1}", DateTime.Now, e.Item.Content);
+            }
+            catch (Exception ex)
+            {
+                str = ex.Message;
+            }
+
+            logControl.AddLog(str, e.Item.Level);
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
@@ -40,6 +63,7 @@ namespace WpfApp1
 
     internal class TestChartVM : BaseModelAbs
     {
+        #region define
         private ChartCollection<ISeries> _series = null;
         public ChartCollection<ISeries> Series
         {
@@ -106,7 +130,7 @@ namespace WpfApp1
                 base.OnRaisePropertyChanged();
             }
         }
-
+        #endregion
 
         private readonly Random _rnd = new Random();
         public TestChartVM()
@@ -278,7 +302,7 @@ namespace WpfApp1
             ellipse.Width = 5d;
             ellipse.Height = 5d;
             ellipse.Margin = new Thickness(-2.5d, -2.5d, 0d, 0d);
-            ellipse.ToolTip = pointInfo.Item.ToString();
+            ellipse.ToolTip = $"X:{pointInfo.Point.X}     Y:{pointInfo.Point.Y}       {pointInfo.Item.ToString()}";
             return ellipse;
         }
 

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using UtilZ.DotnetStd.Ex.Log;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 {
@@ -75,6 +76,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             }
 
             var point = e.GetPosition((FrameworkElement)path.Parent);
+            Loger.Info($"X:{point.X}        Y:{point.Y}");
             const double PRE = 5d;
 
             List<Tuple<double, PointInfo>> list = null;

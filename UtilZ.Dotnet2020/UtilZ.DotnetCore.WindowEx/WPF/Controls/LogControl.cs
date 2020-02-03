@@ -124,6 +124,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             this.IsReadOnly = true;
             this.Background = Brushes.Black;
+            this.BorderThickness = new Thickness(0d);
             this.content = new Paragraph();
             base.Document.Blocks.Clear();
             base.Document.Blocks.Add(this.content);
