@@ -203,13 +203,14 @@ namespace WpfApp1
                 LineSeriesType = LineSeriesType.Bezier,
                 EnableTooltip = true,
                 Title = "DateTimeLineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Green)
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Green),
+                CreatePointFunc = this.CreatePointFunc
             });
             series.Add(new StepLineSeries()
             {
                 AxisX = axes[2],
                 AxisY = axes[0],
-                EnableTooltip = false,
+                EnableTooltip = true,
                 Title = "DateTimeStepLineSeries",
                 Style = ChartStyleHelper.CreateLineStyle(Brushes.Red)
             });
@@ -222,10 +223,10 @@ namespace WpfApp1
             while (axisXValue < maxX)
             {
                 value = _rnd.Next(minY, maxY);
-                values.Add(new ChartNumberItem(axisXValue, value, null));
+                values.Add(new ChartNumberItem(axisXValue, value, $"{axisXValue}_{value}"));
                 axisXValue += axisXValueStep;
             }
-            series[0].Values = values;
+            //series[0].Values = values;
 
 
 
@@ -236,7 +237,7 @@ namespace WpfApp1
             while (time < maxTime)
             {
                 value = _rnd.Next(minY, maxY);
-                values2.Add(new ChartDateTimeItem(time, value, null));
+                values2.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
                 time = time.AddMilliseconds(stepTotalMilliseconds);
             }
             series[1].Values = values2;
@@ -249,11 +250,11 @@ namespace WpfApp1
             while (time < maxTime)
             {
                 value = _rnd.Next(minY, maxY) * 10;
-                values3.Add(new ChartDateTimeItem(time, value, null));
+                values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
                 ts = maxTime - time;
                 time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));
             }
-            series[2].Values = values3;
+            //series[2].Values = values3;
 
 
 
@@ -268,6 +269,18 @@ namespace WpfApp1
             this.ManaulComit = false;
         }
 
+
+        private FrameworkElement CreatePointFunc(PointInfo pointInfo)
+        {
+            Ellipse ellipse = new Ellipse();
+            ellipse.Fill = Brushes.Red;
+            ellipse.StrokeThickness = 0d;
+            ellipse.Width = 5d;
+            ellipse.Height = 5d;
+            ellipse.Margin = new Thickness(-2.5d, -2.5d, 0d, 0d);
+            ellipse.ToolTip = pointInfo.Item.ToString();
+            return ellipse;
+        }
 
 
         private void TestDateTimeAxis()

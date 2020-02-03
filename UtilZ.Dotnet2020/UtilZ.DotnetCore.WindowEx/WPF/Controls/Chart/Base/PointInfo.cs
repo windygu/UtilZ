@@ -16,5 +16,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             this.Point = point;
             this.Item = item;
         }
+
+        public override string ToString()
+        {
+            return $"{this.Point.X},{this.Point.Y}";
+        }
     }
 }

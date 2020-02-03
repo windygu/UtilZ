@@ -140,11 +140,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             }
 
             this.DrawPointGeometry(canvas, chartArea.X, chartArea.Y, this._pointInfoList);
-
-            foreach (var pointInfoList in pointInfoListCollection)
-            {
-                this._pointInfoList.AddRange(pointInfoList);
-            }
         }
 
         private void DrawPointGeometry(Canvas canvas, double left, double top, List<PointInfo> pointInfoList)
@@ -220,6 +215,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 }
 
                 pointList.Add(new PointInfo(new Point(x, y), item));
+                this._pointInfoList.Add(pointList.Last());
             }
 
             return pointInfoListCollection;

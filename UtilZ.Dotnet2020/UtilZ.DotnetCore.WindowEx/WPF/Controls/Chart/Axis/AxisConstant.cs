@@ -11,6 +11,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         public const double LABEL_TEXT_INTERVAL = 5d;
         public const int DEFAULT_STEP_SIZE = 100;
         public const double AXIS_DEFAULT_SIZE = 30d;
-
+        public const double TOOLTIP_PRE = 5d;
     }
 }
