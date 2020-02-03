@@ -140,6 +140,27 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         }
 
 
+        public static Style CreateLineStyle(Brush stroke, double strokeThickness = 2d, double mouseOverStrokeThickness = 3d)
+        {
+            var style = new Style();
+            style.TargetType = typeof(Path);
+            style.Setters.Add(new Setter(Path.StrokeProperty, stroke));
+            style.Setters.Add(new Setter(Path.StrokeThicknessProperty, strokeThickness));
+            //style.Setters.Add(new Setter(Path.FillProperty, Brushes.White));
+
+            if (AxisHelper.DoubleHasValue(mouseOverStrokeThickness) && mouseOverStrokeThickness > AxisConstant.ZERO_D)
+            {
+                var trigger = new Trigger();
+                trigger.Property = Path.IsMouseOverProperty;
+                trigger.Value = true;
+                trigger.Setters.Add(new Setter(Path.StrokeThicknessProperty, mouseOverStrokeThickness));
+                style.Triggers.Add(trigger);
+            }
+
+            return style;
+        }
+
+
         //public static Style CreateStepLineStyle()
         //{
         //    var style = new Style();

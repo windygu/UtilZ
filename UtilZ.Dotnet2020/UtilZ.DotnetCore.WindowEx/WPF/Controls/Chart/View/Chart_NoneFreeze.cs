@@ -23,6 +23,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
              * 5.绘制X轴
              * 6.根据2和3计算图表区域宽度
              * 7.绘图
+             * 8.填充legend
              ************************************************************************************************************/
 
             chartCanvas.Width = axisFreezeInfo.Width;
@@ -34,6 +35,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             double left = 0d, top = 0d, right = 0d, bottom = 0d;
 
             //第一步
+            bool hasLegend = false;
             if (legend != null)
             {
                 FrameworkElement legendControl = legend.GetChartLegendControl();
@@ -44,14 +46,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     {
                         legendControl.HorizontalAlignment = legend.HorizontalAlignment;
                         legendControl.VerticalAlignment = legend.VerticalAlignment;
-                        if (legend.Margin != null)
-                        {
-                            legendControl.Margin = legend.Margin.Value;
-                        }
                         chartGrid.Children.Add(legendControl);//使用Grid包装,主是为了居中对齐好布局,Canvas中水平垂直方向太麻烦
                         chartCanvas.Children.Add(chartGrid);
+                        hasLegend = true;
 
-                        switch (legend.Orientation)
+                        switch (legend.DockOrientation)
                         {
                             case ChartDockOrientation.Left:
                                 left += legendSize;
@@ -82,7 +81,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                                 Canvas.SetBottom(chartGrid, 0);
                                 break;
                             default:
-                                throw new NotImplementedException(legend.Orientation.ToString());
+                                throw new NotImplementedException(legend.DockOrientation.ToString());
                         }
                     }
                 }
@@ -203,6 +202,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                 {
                     series.Add(chartCanvas, chartArea);
                 }
+            }
+
+            //第八步
+            if (hasLegend)
+            {
+                var legendBrushList = new List<SeriesLegendItem>();
+                if (seriesCollection != null && seriesCollection.Count > 0)
+                {
+                    foreach (ISeries series in seriesCollection)
+                    {
+                        series.FillLegendItemToList(legendBrushList);
+                    }
+                }
+
+                legend.UpdateLegend(legendBrushList);
             }
 
             ////todo..Test

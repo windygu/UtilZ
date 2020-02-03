@@ -77,16 +77,37 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
         public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> xList)
         {
-            if (!axis.AxisLine)
+            if (!axis.AxisLine || xList == null || xList.Count == 0)
             {
                 return;
             }
 
+            var labelLinePath = new Path();
+            labelLinePath.Style = axis.AxisLineStyle;
+            if (labelLinePath.Style == null)
+            {
+                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+            }
+
             GeometryGroup geometryGroup = new GeometryGroup();
             Point point1, point2;
+            double x;
+            int lastIndex = xList.Count - 1;
 
-            foreach (var x in xList)
+            for (int i = 0; i < xList.Count; i++)
             {
+                x = xList[i];
+                //if (axis.Orientation == AxisOrientation.RightToLeft && i == 0)
+                //{
+                //    //刻度从右向左,所以最右侧的要向左偏移labelLinePath.StrokeThickness
+                //    x = x - labelLinePath.StrokeThickness;
+                //}
+                //else if (axis.Orientation == AxisOrientation.LeftToRight && i == lastIndex)
+                //{
+                //    //刻度从左向右,所以最右侧的要向左偏移labelLinePath.StrokeThickness
+                //    x = x - labelLinePath.StrokeThickness;
+                //}
+
                 if (axis.IsAxisXBottom())
                 {
                     point1 = new Point(x, AxisConstant.ZERO_D);
@@ -98,38 +119,73 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     point2 = new Point(x, canvas.Height);
                 }
 
-                PathFigure pathFigure = new PathFigure();
-                pathFigure.StartPoint = point1;
-                LineSegment lineSegment = new LineSegment(point2, true);
-                pathFigure.Segments.Add(lineSegment);
-
-                PathGeometry pathGeometry = new PathGeometry();
-                pathGeometry.Figures = new PathFigureCollection(new PathFigure[] { pathFigure });
-                geometryGroup.Children.Add(pathGeometry);
+                PathFigure labelPathFigure = new PathFigure();
+                labelPathFigure.StartPoint = point1;
+                labelPathFigure.Segments.Add(new LineSegment(point2, true));
+                geometryGroup.Children.Add(new PathGeometry()
+                {
+                    Figures = new PathFigureCollection(new PathFigure[] { labelPathFigure })
+                });
             }
 
-            var labelLinePath = new Path();
-            labelLinePath.Data = geometryGroup;
-            labelLinePath.Style = axis.AxisLineStyle;
-            if (labelLinePath.Style == null)
+
+            //坐标轴
+            if (axis.IsAxisXBottom())
             {
-                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+                point1 = new Point(xList.First(), AxisConstant.ZERO_D);
+                point2 = new Point(xList.Last(), AxisConstant.ZERO_D);
             }
+            else
+            {
+                point1 = new Point(xList.First(), canvas.Height);
+                point2 = new Point(xList.Last(), canvas.Height);
+            }
+            PathFigure axisPathFigure = new PathFigure();
+            axisPathFigure.StartPoint = point1;
+            axisPathFigure.Segments.Add(new LineSegment(point2, true));
+            geometryGroup.Children.Add(new PathGeometry()
+            {
+                Figures = new PathFigureCollection(new PathFigure[] { axisPathFigure })
+            });
+
+
+            labelLinePath.Data = geometryGroup;
             canvas.Children.Add(labelLinePath);
         }
 
         public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> yList)
         {
-            if (!axis.AxisLine)
+            if (!axis.AxisLine || yList == null || yList.Count == 0)
             {
                 return;
             }
 
+            var labelLinePath = new Path();
+            labelLinePath.Style = axis.AxisLineStyle;
+            if (labelLinePath.Style == null)
+            {
+                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+            }
+
             GeometryGroup geometryGroup = new GeometryGroup();
             Point point1, point2;
+            double y;
+            int lastIndex = yList.Count - 1;
 
-            foreach (var y in yList)
+            for (int i = 0; i < yList.Count; i++)
             {
+                y = yList[i];
+                //if (axis.Orientation == AxisOrientation.BottomToTop && i == 0)
+                //{
+                //    //刻度从下向上,所以最右侧的要向左偏移labelLinePath.StrokeThickness
+                //    y = y - labelLinePath.StrokeThickness;
+                //}
+                //else if (axis.Orientation == AxisOrientation.TopToBottom && i == lastIndex)
+                //{
+                //    //刻度从上向下,所以最右侧的要向左偏移labelLinePath.StrokeThickness
+                //    y = y - labelLinePath.StrokeThickness;
+                //}
+
                 if (axis.IsAxisYLeft())
                 {
                     point1 = new Point(canvas.Width - axis.LabelSize, y);
@@ -141,23 +197,37 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     point2 = new Point(axis.LabelSize, y);
                 }
 
-                PathFigure pathFigure = new PathFigure();
-                pathFigure.StartPoint = point1;
-                LineSegment lineSegment = new LineSegment(point2, true);
-                pathFigure.Segments.Add(lineSegment);
-
-                PathGeometry pathGeometry = new PathGeometry();
-                pathGeometry.Figures = new PathFigureCollection(new PathFigure[] { pathFigure });
-                geometryGroup.Children.Add(pathGeometry);
+                PathFigure labelPathFigure = new PathFigure();
+                labelPathFigure.StartPoint = point1;
+                labelPathFigure.Segments.Add(new LineSegment(point2, true));
+                geometryGroup.Children.Add(new PathGeometry()
+                {
+                    Figures = new PathFigureCollection(new PathFigure[] { labelPathFigure })
+                });
             }
 
-            var labelLinePath = new Path();
-            labelLinePath.Data = geometryGroup;
-            labelLinePath.Style = axis.AxisLineStyle;
-            if (labelLinePath.Style == null)
+
+            //坐标轴
+            if (axis.IsAxisYLeft())
             {
-                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+                point1 = new Point(canvas.Width, yList.First());
+                point2 = new Point(canvas.Width, yList.Last());
             }
+            else
+            {
+                point1 = new Point(AxisConstant.ZERO_D, yList.First());
+                point2 = new Point(AxisConstant.ZERO_D, yList.Last());
+            }
+            PathFigure axisPathFigure = new PathFigure();
+            axisPathFigure.StartPoint = point1;
+            axisPathFigure.Segments.Add(new LineSegment(point2, true));
+            geometryGroup.Children.Add(new PathGeometry()
+            {
+                Figures = new PathFigureCollection(new PathFigure[] { axisPathFigure })
+            });
+
+
+            labelLinePath.Data = geometryGroup;
             canvas.Children.Add(labelLinePath);
         }
 

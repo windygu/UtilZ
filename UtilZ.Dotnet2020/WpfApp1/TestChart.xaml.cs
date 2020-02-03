@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -117,6 +118,8 @@ namespace WpfApp1
         {
             //TestNumAxis1();
             //TestNumAxis2();
+            //TestDateTimeAxis();
+
 
             TestLineSeries();
         }
@@ -125,6 +128,9 @@ namespace WpfApp1
         private void TestLineSeries()
         {
             int minY = -100, maxY = 100;
+            double minX = -1000, maxX = 1000;
+            DateTime minTime = DateTime.Parse("2010-01-01 00:00:00");
+            DateTime maxTime = DateTime.Parse("2012-01-01 00:00:00");
 
             this.ManaulComit = true;
             var axes = new ChartCollection<AxisAbs>();
@@ -142,10 +148,21 @@ namespace WpfApp1
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
                 Orientation = AxisOrientation.LeftToRight,
-                MinValue = -1000,
-                MaxValue = 1000,
+                MinValue = minX,
+                MaxValue = maxX,
                 LabelStep = double.NaN
             });
+
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = minTime,
+                MaxValue = maxTime,
+                LabelStep = null
+            });
+
 
             axes.Add(new NumberAxis()
             {
@@ -169,12 +186,39 @@ namespace WpfApp1
 
 
             var series = new ChartCollection<ISeries>();
-            series.Add(new LineSeries() { AxisX = axes[1], AxisY = axes[0], LineSeriesType = LineSeriesType.Bezier, EnableTooltip = true, Title = "LineSeries" });
-            series.Add(new StepLineSeries() { AxisX = axes[1], AxisY = axes[0], EnableTooltip = false, Title = "StepLineSeries" });
+            series.Add(new LineSeries()
+            {
+                AxisX = axes[1],
+                AxisY = axes[0],
+                LineSeriesType = LineSeriesType.Bezier,
+                EnableTooltip = true,
+                Title = "LineSeries",
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Gray)
+            });
+            series.Add(new LineSeries()
+            {
+                AxisX = axes[2],
+                AxisY = axes[0],
+                LineSeriesType = LineSeriesType.Bezier,
+                EnableTooltip = true,
+                Title = "DateTimeLineSeries",
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Green)
+            });
+            series.Add(new StepLineSeries()
+            {
+                AxisX = axes[2],
+                AxisY = axes[0],
+                EnableTooltip = false,
+                Title = "DateTimeStepLineSeries",
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Red)
+            });
 
-            double axisXValue = ((NumberAxis)axes[1]).MinValue, value, axisXValueStep = 10;
+
+            double value;
+            double axisXValueStep = 10;
+            double axisXValue = minX;
             ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
-            while (axisXValue < ((NumberAxis)axes[1]).MaxValue)
+            while (axisXValue < maxX)
             {
                 value = _rnd.Next(minY, maxY);
                 values.Add(new ChartNumberItem(axisXValue, value, null));
@@ -182,8 +226,80 @@ namespace WpfApp1
             }
             series[0].Values = values;
 
+
+
+            DateTime time = minTime;
+            TimeSpan ts = maxTime - time;
+            ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
+            double stepTotalMilliseconds = ts.TotalMilliseconds / ((maxY - minY) / axisXValueStep);
+            while (time < maxTime)
+            {
+                value = _rnd.Next(minY, maxY);
+                values2.Add(new ChartDateTimeItem(time, value, null));
+                time = time.AddMilliseconds(stepTotalMilliseconds);
+            }
+            series[1].Values = values2;
+
+
+            ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
+            minY = minY / 10;
+            maxY = maxY / 10;
+            time = minTime;
+            while (time < maxTime)
+            {
+                value = _rnd.Next(minY, maxY) * 10;
+                values3.Add(new ChartDateTimeItem(time, value, null));
+                ts = maxTime - time;
+                time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));
+            }
+            series[2].Values = values3;
+
+
+
             this.Series = series;
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
             this.ManaulComit = false;
+        }
+
+
+
+        private void TestDateTimeAxis()
+        {
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = -100,
+                MaxValue = 100,
+                LabelStep = double.NaN
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.TopToBottom,
+                MinValue = -100000,
+                MaxValue = 100000,
+                LabelStep = double.NaN
+            });
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = DateTime.Parse("2010-01-01 00:00:00"),
+                MaxValue = DateTime.Parse("2012-01-01 00:00:00"),
+                LabelStep = null
+            });
+            this.Axes = axes;
         }
 
         private void TestNumAxis2()

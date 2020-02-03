@@ -179,11 +179,31 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         }
 
 
+
+        /// <summary>
+        /// 获取或设置坐标样式
+        /// </summary>
+        public Brush Background
+        {
+            get
+            {
+                return this._axisCanvas.Background;
+            }
+            set
+            {
+                this._axisCanvas.Background = value;
+            }
+        }
+
+
+
         protected readonly Canvas _axisCanvas = new Canvas();
         public AxisAbs()
             : base()
         {
-            this._axisCanvas.Background = ColorBrushHelper.GetNextColor();
+            this._axisCanvas.Background = Brushes.Transparent;
+            //test
+            //this._axisCanvas.Background = ColorBrushHelper.GetNextColor();
         }
 
 
@@ -244,9 +264,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Width = axisWidth;
             this.AddAxisXTitle(this._axisCanvas);
-            this.PrimitiveDrawX(this._axisCanvas, seriesCollection, axisWidth);
+            this.PrimitiveDrawX(this._axisCanvas, seriesCollection);
         }
-        protected abstract void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection, double axisWidth);
+        protected abstract void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
 
@@ -256,7 +276,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Height = axisHeight;
             this.AddAxisYTitle(this._axisCanvas);
-            return this.PrimitiveDrawY(this._axisCanvas, seriesCollection, axisHeight);
+            return this.PrimitiveDrawY(this._axisCanvas, seriesCollection);
         }
 
         /// <summary>
@@ -266,7 +286,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         /// <param name="seriesCollection"></param>
         /// <param name="axisHeight"></param>
         /// <returns>Y轴宽度</returns>
-        protected abstract double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection, double axisHeight);
+        protected abstract double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
 

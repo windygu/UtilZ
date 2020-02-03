@@ -24,7 +24,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             }
         }
 
-
         private double _minValue = double.NaN;
         /// <summary>
         /// 坐标轴刻度最小值,为double.NaN时自动计算
@@ -48,6 +47,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
             set
             {
                 _maxValue = value;
+            }
+        }
+
+
+        private bool _showLastLabel = true;
+        public bool ShowLastLabel
+        {
+            get { return _showLastLabel; }
+            set
+            {
+                _showLastLabel = value;
+                base.OnRaisePropertyChanged(nameof(ShowLastLabel));
             }
         }
 
@@ -234,7 +245,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
         /// <param name="seriesCollection"></param>
         /// <param name="axisHeight"></param>
         /// <returns>Y轴宽度</returns>
-        protected override double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection, double axisHeight)
+        protected override double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
@@ -329,11 +340,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     }
                 }
 
-                yList.Add(y);
                 if (labelTextLocation == AxisLabelTextLocation.Last)
                 {
+                    if (this._showLastLabel)
+                    {
+                        yList.Add(y);
+                    }
                     break;
                 }
+                yList.Add(y);
 
                 tmp += labelStep;
                 if (tmp >= axisData.MaxValue)
@@ -434,11 +449,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     }
                 }
 
-                yList.Add(y);
                 if (labelTextLocation == AxisLabelTextLocation.Last)
                 {
+                    if (this._showLastLabel)
+                    {
+                        yList.Add(y);
+                    }
                     break;
                 }
+                yList.Add(y);
 
                 tmp += labelStep;
                 if (tmp >= axisData.MaxValue)
@@ -469,7 +488,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
 
 
 
-        protected override void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection, double axisWidth)
+        protected override void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
@@ -570,11 +589,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     }
                 }
 
-                xList.Add(x);
                 if (labelTextLocation == AxisLabelTextLocation.Last)
                 {
+                    if (this._showLastLabel)
+                    {
+                        xList.Add(x);
+                    }
                     break;
                 }
+                xList.Add(x);
 
                 tmp += labelStep;
 
@@ -672,11 +695,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
                     }
                 }
 
-                xList.Add(x);
                 if (labelTextLocation == AxisLabelTextLocation.Last)
                 {
+                    if (this._showLastLabel)
+                    {
+                        xList.Add(x);
+                    }
                     break;
                 }
+                xList.Add(x);
 
                 tmp += labelStep;
 

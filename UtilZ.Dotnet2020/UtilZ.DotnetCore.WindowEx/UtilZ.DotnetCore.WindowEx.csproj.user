@@ -4,6 +4,9 @@
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="WPF\Controls\Chart\View\HorizontalChartLegend.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="WPF\Controls\DateTimePicker.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -13,6 +16,12 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="UserControl1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Chart\View\ChartResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Chart\View\HorizontalChartLegend.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="WPF\Controls\DateTimePicker.xaml">
