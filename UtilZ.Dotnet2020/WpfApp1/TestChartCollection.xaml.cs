@@ -10,7 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.WPF.Controls;
-using UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart;
 using WpfApp1.Model;
 
 namespace WpfApp1

@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public class DateTimeAxis : AxisAbs
     {

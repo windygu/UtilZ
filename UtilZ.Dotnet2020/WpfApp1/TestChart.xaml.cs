@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart;
+using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 using UtilZ.DotnetStd.Ex.Log;
 using UtilZ.DotnetStd.Ex.Log.Appender;
 using UtilZ.DotnetStd.Ex.Model;

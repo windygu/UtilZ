@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using UtilZ.DotnetCore.WindowEx.WPF.Base;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public class VisibilityBoolConverter : ValueConverterAbs
     {

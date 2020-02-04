@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-                    xmlns:local="clr-namespace:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart">
+                    xmlns:local="clr-namespace:UtilZ.DotnetCore.WindowEx.WPF.Controls">
     <local:VisibilityBoolConverter x:Key="visibilityBoolConverter"/>
 
     <Style x:Key="allowCheckLegendItemsControlStyle" TargetType="ItemsControl">

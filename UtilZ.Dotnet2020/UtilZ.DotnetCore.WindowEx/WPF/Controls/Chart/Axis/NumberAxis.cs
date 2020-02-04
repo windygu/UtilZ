@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using UtilZ.DotnetCore.WindowEx.Base;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public class NumberAxis : AxisAbs
     {

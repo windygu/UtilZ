@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public interface IChartCollection<T> : IList<T>, INotifyPropertyChanged, INotifyCollectionChanged
     {

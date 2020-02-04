@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
-        xmlns:utilzChart="clr-namespace:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart;assembly=UtilZ.DotnetCore.WindowEx"
         xmlns:utilz="clr-namespace:UtilZ.DotnetCore.WindowEx.WPF.Controls;assembly=UtilZ.DotnetCore.WindowEx"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -32,7 +31,7 @@
             <Button Content="Test" x:Name="btnTest" Click="btnTest_Click"/>
         </StackPanel>
 
-        <utilzChart:Chart Grid.Row="1" 
+        <utilz:Chart Grid.Row="1" 
                      Series="{Binding Path=Series}"
                      ChartHeight="{Binding ChartHeight}"
                      ChartWidth="{Binding Path=ChartWidth}"

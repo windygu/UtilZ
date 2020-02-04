@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.Base;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public class AxisHelper
     {

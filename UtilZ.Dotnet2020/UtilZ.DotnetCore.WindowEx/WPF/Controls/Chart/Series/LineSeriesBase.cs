@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using UtilZ.DotnetStd.Ex.Log;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public abstract class LineSeriesBase : SeriesAbs
     {

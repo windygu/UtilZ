@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using UtilZ.DotnetStd.Ex.Model;
 
-namespace UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart
+namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public abstract class SeriesAbs : BaseModelAbs, ISeries
     {
