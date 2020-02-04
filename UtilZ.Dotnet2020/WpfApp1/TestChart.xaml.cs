@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -146,9 +147,134 @@ namespace WpfApp1
             //TestDateTimeAxis();
 
 
-            TestLineSeries();
+            //TestLineSeries();
+            TestVerStepLineSeries();
         }
 
+
+        private void TestVerStepLineSeries()
+        {
+            int minY = -100, maxY = 100;
+            double minX = -1000, maxX = 1000;
+            DateTime minTime = DateTime.Parse("2010-01-01 00:00:00");
+            DateTime maxTime = DateTime.Parse("2012-01-01 00:00:00");
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.TopToBottom,
+                MinValue = minTime,
+                MaxValue = maxTime,
+                LabelStep = null
+            });
+
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = minX,
+                MaxValue = maxX,
+                LabelStep = double.NaN
+            });
+
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = minY,
+                MaxValue = maxY,
+                LabelStep = double.NaN
+            });
+
+
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.TopToBottom,
+                MinValue = -100000,
+                MaxValue = 100000,
+                LabelStep = double.NaN
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.RightToLeft,
+                MinValue = -100000,
+                MaxValue = 100000,
+                LabelStep = double.NaN
+            });
+            this.Axes = axes;
+
+
+            var series = new ChartCollection<ISeries>();
+            series.Add(new LineSeries()
+            {
+                AxisX = axes[1],
+                AxisY = axes[0],
+                LineSeriesType = LineSeriesType.Bezier,
+                EnableTooltip = true,
+                Title = "LineSeries",
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Gray)
+            });
+            series.Add(new LineSeries()
+            {
+                AxisX = axes[2],
+                AxisY = axes[0],
+                LineSeriesType = LineSeriesType.Bezier,
+                EnableTooltip = true,
+                Title = "DateTimeLineSeries",
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Green),
+                //CreatePointFunc = this.CreatePointFunc
+            });
+            series.Add(new StepLineSeries()
+            {
+                AxisX = axes[2],
+                AxisY = axes[0],
+                EnableTooltip = true,
+                Title = "DateTimeStepLineSeries",
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Red),
+                Orientation = StepLineOrientation.Vertical
+            });
+
+
+            double value;
+            DateTime time;
+            const string fileName = "StepLineSeriesValues.txt";
+            ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string line = sr.ReadLine();
+                string[] strArr;
+                while (line != null)
+                {
+                    strArr = line.Split('_', 2, StringSplitOptions.RemoveEmptyEntries);
+                    time = DateTime.Parse(strArr[0]);
+                    value = double.Parse(strArr[1]);
+                    values3.Add(new ChartDateTimeItem2(time, value, $"{time.ToString()}_{value}"));
+                    line = sr.ReadLine();
+                }
+            }
+            series[2].Values = values3;
+
+
+
+            this.Series = series;
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            this.ManaulComit = false;
+        }
 
         private void TestLineSeries()
         {
@@ -236,7 +362,8 @@ namespace WpfApp1
                 AxisY = axes[0],
                 EnableTooltip = true,
                 Title = "DateTimeStepLineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Red)
+                Style = ChartStyleHelper.CreateLineStyle(Brushes.Red),
+                Orientation = StepLineOrientation.Horizontal
             });
 
 
@@ -244,12 +371,12 @@ namespace WpfApp1
             double axisXValueStep = 10;
             double axisXValue = minX;
             ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
-            while (axisXValue < maxX)
-            {
-                value = _rnd.Next(minY, maxY);
-                values.Add(new ChartNumberItem(axisXValue, value, $"{axisXValue}_{value}"));
-                axisXValue += axisXValueStep;
-            }
+            //while (axisXValue < maxX)
+            //{
+            //    value = _rnd.Next(minY, maxY);
+            //    values.Add(new ChartNumberItem(axisXValue, value, $"{axisXValue}_{value}"));
+            //    axisXValue += axisXValueStep;
+            //}
             //series[0].Values = values;
 
 
@@ -258,27 +385,44 @@ namespace WpfApp1
             TimeSpan ts = maxTime - time;
             ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
             double stepTotalMilliseconds = ts.TotalMilliseconds / ((maxY - minY) / axisXValueStep);
-            while (time < maxTime)
-            {
-                value = _rnd.Next(minY, maxY);
-                values2.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
-                time = time.AddMilliseconds(stepTotalMilliseconds);
-            }
-            series[1].Values = values2;
+            //while (time < maxTime)
+            //{
+            //    value = _rnd.Next(minY, maxY);
+            //    values2.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+            //    time = time.AddMilliseconds(stepTotalMilliseconds);
+            //}
+            //series[1].Values = values2;
 
 
+            const string fileName = "StepLineSeriesValues.txt";
+            //StringBuilder sb = new StringBuilder();
             ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
-            minY = minY / 10;
-            maxY = maxY / 10;
-            time = minTime;
-            while (time < maxTime)
+            //minY = minY / 10;
+            //maxY = maxY / 10;
+            //time = minTime;
+            //while (time < maxTime)
+            //{
+            //    value = _rnd.Next(minY, maxY) * 10;
+            //    values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+            //    sb.AppendLine($"{time.ToString("yyyy-MM-dd HH:mm:ss")}_{value}");
+            //    ts = maxTime - time;
+            //    time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));
+            //}
+            //File.WriteAllText(fileName, sb.ToString());
+            using (StreamReader sr = new StreamReader(fileName))
             {
-                value = _rnd.Next(minY, maxY) * 10;
-                values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
-                ts = maxTime - time;
-                time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));
+                string line = sr.ReadLine();
+                string[] strArr;
+                while (line != null)
+                {
+                    strArr = line.Split('_', 2, StringSplitOptions.RemoveEmptyEntries);
+                    time = DateTime.Parse(strArr[0]);
+                    value = double.Parse(strArr[1]);
+                    values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+                    line = sr.ReadLine();
+                }
             }
-            //series[2].Values = values3;
+            series[2].Values = values3;
 
 
 
