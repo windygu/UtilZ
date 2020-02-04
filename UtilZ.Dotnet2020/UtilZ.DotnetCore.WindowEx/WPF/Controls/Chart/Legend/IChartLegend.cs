@@ -20,7 +20,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         HorizontalAlignment HorizontalAlignment { get; set; }
         VerticalAlignment VerticalAlignment { get; set; }
         Thickness Margin { get; set; }
-        FrameworkElement GetChartLegendControl();
+        FrameworkElement LegendControl { get; }
 
         void UpdateLegend(List<SeriesLegendItem> legendBrushList);
 

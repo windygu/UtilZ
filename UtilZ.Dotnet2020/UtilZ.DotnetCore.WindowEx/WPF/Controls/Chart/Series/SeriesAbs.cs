@@ -128,6 +128,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         }
 
+        private double _tooltipArea = AxisConstant.TOOLTIP_PRE;
+        /// <summary>
+        /// 鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+        /// </summary>
+        public double TooltipArea
+        {
+            get { return _tooltipArea; }
+            set
+            {
+                if (value < AxisConstant.ZERO_D)
+                {
+                    value = AxisConstant.TOOLTIP_PRE;
+                }
+                _tooltipArea = value;
+            }
+        }
+
         private string _title = null;
         /// <summary>
         /// 标题
@@ -145,14 +162,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         protected Canvas _canvas;
-        protected Rect _chartArea;
-        public void Add(Canvas canvas, Rect chartArea)
+        public void Add(Canvas canvas)
         {
             this._canvas = canvas;
-            this._chartArea = chartArea;
-            this.PrimitiveAdd(canvas, chartArea);
+            this.PrimitiveAdd(canvas);
         }
-        protected abstract void PrimitiveAdd(Canvas canvas, Rect chartArea);
+        protected abstract void PrimitiveAdd(Canvas canvas);
 
         public void Remove()
         {
@@ -169,7 +184,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         protected virtual void PrimitiveUpdate()
         {
             this.PrimitiveRemove(this._canvas);
-            this.PrimitiveAdd(this._canvas, this._chartArea);
+            this.PrimitiveAdd(this._canvas);
         }
 
 

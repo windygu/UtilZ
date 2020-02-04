@@ -228,7 +228,7 @@ namespace WpfApp1
                 EnableTooltip = true,
                 Title = "DateTimeLineSeries",
                 Style = ChartStyleHelper.CreateLineStyle(Brushes.Green),
-                CreatePointFunc = this.CreatePointFunc
+                //CreatePointFunc = this.CreatePointFunc
             });
             series.Add(new StepLineSeries()
             {

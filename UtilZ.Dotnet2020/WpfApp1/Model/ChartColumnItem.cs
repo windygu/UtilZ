@@ -14,7 +14,7 @@ namespace WpfApp1.Model
         public double Y { get; set; }
 
 
-        public ColumnSeriesItem[] Values { get; set; }
+        //public ColumnSeriesItem[] Values { get; set; }
 
         public ChartColumnItem()
         {

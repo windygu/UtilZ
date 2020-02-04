@@ -29,8 +29,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public double Size
         {
-            get { return this.Height; }
-            set { this.Height = value; }
+            get
+            {
+                return this.Height;
+            }
+            set
+            {
+                this.Height = value;
+            }
         }
 
 
@@ -64,9 +70,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        public FrameworkElement GetChartLegendControl()
+        public FrameworkElement LegendControl
         {
-            return this;
+            get { return this; }
         }
 
         public void UpdateLegend(List<SeriesLegendItem> legendBrushList)

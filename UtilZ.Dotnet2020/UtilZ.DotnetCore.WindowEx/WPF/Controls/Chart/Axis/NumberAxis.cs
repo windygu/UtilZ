@@ -245,12 +245,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <param name="seriesCollection"></param>
         /// <param name="axisHeight"></param>
         /// <returns>Y轴宽度</returns>
-        protected override double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
             {
-                return AxisConstant.AXIS_DEFAULT_SIZE;
+                axisCanvas.Width = AxisConstant.AXIS_DEFAULT_SIZE;
             }
 
             List<double> yList;
@@ -266,7 +266,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     throw new ArgumentException($"未知的{base.Orientation.ToString()}");
             }
             AxisHelper.DrawYAxisLabelLine(this, axisCanvas, yList);
-            return axisCanvas.Width;
         }
         private List<double> DrawYAxisTopToBottom(Canvas axisCanvas, NumberAxisData axisData)
         {

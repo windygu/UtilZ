@@ -25,7 +25,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         string Title { get; set; }
 
-        void Add(Canvas canvas, Rect chartArea);
+        void Add(Canvas canvas);
 
         void Remove();
 

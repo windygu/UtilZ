@@ -144,8 +144,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private (DateTime? MinTime, DateTime? MaxTime) GetMinAndMaxValue(ChartCollection<ISeries> seriesCollection)
         {
             DateTime? min = null, max = null;
-            IChartDateTimeItem chartDateTimeItem;
-
+            object obj;
+            DateTime? time;
             foreach (var series in seriesCollection)
             {
                 if (series.AxisX != this && series.AxisY != this ||
@@ -157,20 +157,37 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                 foreach (var value in series.Values)
                 {
-                    chartDateTimeItem = (IChartDateTimeItem)value;
-                    if (chartDateTimeItem == null)
+                    if (value == null)
                     {
                         continue;
                     }
 
-                    if (min == null || chartDateTimeItem.Time < min.Value)
+                    switch (this.AxisType)
                     {
-                        min = chartDateTimeItem.Time;
+                        case AxisType.X:
+                            obj = value.GetXValue();
+                            break;
+                        case AxisType.Y:
+                            obj = value.GetYValue();
+                            break;
+                        default:
+                            throw new NotImplementedException(this.AxisType.ToString());
                     }
 
-                    if (max == null || chartDateTimeItem.Time > max.Value)
+                    time = AxisHelper.ConvertToDateTime(obj);
+                    if (time == null)
                     {
-                        max = chartDateTimeItem.Time;
+                        continue;
+                    }
+
+                    if (min == null || time.Value < min.Value)
+                    {
+                        min = time.Value;
+                    }
+
+                    if (max == null || time.Value > max.Value)
+                    {
+                        max = time.Value;
                     }
                 }
             }
@@ -358,16 +375,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
+            this._labelTextSize = this.MeasureLabelTextSize();
+            axisCanvas.Width = base.CalculateAxisSize(this._labelTextSize.Width);
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
             {
-                return AxisConstant.AXIS_DEFAULT_SIZE;
+                return;
             }
 
-            this._labelTextSize = this.MeasureLabelTextSize();
-            axisCanvas.Width = base.CalculateAxisSize(this._labelTextSize.Width);
             double labelStepMilliseconds = this.CalculateYLabelStep(this._axisData);
             double labelStepSize = AxisHelper.CalculateLabelStepSize(this._axisData.Area.TotalMilliseconds, axisCanvas.Height, labelStepMilliseconds);
             List<double> yList;
@@ -384,7 +401,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             AxisHelper.DrawYAxisLabelLine(this, axisCanvas, yList);
-            return axisCanvas.Width;
         }
 
         private List<double> DrawXAxisTopToBottom(Canvas axisCanvas, DateTimeAxisData axisData, double labelStepMilliseconds, double labelStepSize)

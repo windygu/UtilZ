@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using UtilZ.DotnetStd.Ex.Log;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
@@ -76,8 +75,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             var point = e.GetPosition((FrameworkElement)path.Parent);
-            Loger.Info($"X:{point.X}        Y:{point.Y}");
-            const double PRE = 5d;
+            //DotnetStd.Ex.Log.Loger.Info($"X:{point.X}        Y:{point.Y}");
+
 
             List<Tuple<double, PointInfo>> list = null;
             double x, y, distance;
@@ -85,7 +84,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 x = point.X - pointInfo.Point.X;
                 y = point.Y - pointInfo.Point.Y;
-                if (Math.Abs(x) < PRE && Math.Abs(y) < PRE)
+                if (Math.Abs(x) < base.TooltipArea && Math.Abs(y) < base.TooltipArea)
                 {
                     distance = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     if (list == null)
@@ -122,7 +121,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-        protected override void PrimitiveAdd(Canvas canvas, Rect chartArea)
+        protected override void PrimitiveAdd(Canvas canvas)
         {
             this._pointInfoList.Clear();
             this._pointGeometryList.Clear();
@@ -137,14 +136,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             if (!canvas.Children.Contains(this._pathLine))
             {
                 canvas.Children.Add(this._pathLine);
-                Canvas.SetLeft(this._pathLine, chartArea.X);
-                Canvas.SetTop(this._pathLine, chartArea.Y);
             }
 
-            this.DrawPointGeometry(canvas, chartArea.X, chartArea.Y, this._pointInfoList);
+            this.DrawPointGeometry(canvas, this._pointInfoList);
         }
 
-        private void DrawPointGeometry(Canvas canvas, double left, double top, List<PointInfo> pointInfoList)
+        private void DrawPointGeometry(Canvas canvas, List<PointInfo> pointInfoList)
         {
             var createPointFunc = base.CreatePointFunc;
             if (createPointFunc == null)
@@ -168,8 +165,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 var leftOffset = pointGeometry.Width / 2;
                 var topOffset = pointGeometry.Height / 2;
                 canvas.Children.Add(pointGeometry);
-                Canvas.SetLeft(pointGeometry, pointInfo.Point.X - leftOffset + left);
-                Canvas.SetTop(pointGeometry, pointInfo.Point.Y - topOffset + top);
+                Canvas.SetLeft(pointGeometry, pointInfo.Point.X - leftOffset);
+                Canvas.SetTop(pointGeometry, pointInfo.Point.Y - topOffset);
 
                 this._pointGeometryList.Add(pointGeometry);
             }

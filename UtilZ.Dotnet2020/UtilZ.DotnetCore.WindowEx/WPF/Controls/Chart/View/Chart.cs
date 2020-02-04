@@ -114,7 +114,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.MinHeight = 100d;
             this.MinWidth = 100d;
 
-            this._chartGrid = new Grid() { Background = Brushes.Transparent, ShowGridLines = true };
+            this._chartGrid = new Grid() { Background = Brushes.Transparent };
             this._chartCanvas = new Canvas() { Background = Brushes.Transparent };
             this.Loaded += ChartControl_Loaded;
         }

@@ -196,6 +196,26 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 获取坐标轴宽度
+        /// </summary>
+        internal double Width
+        {
+            get { return this._axisCanvas.Width; }
+        }
+
+        /// <summary>
+        /// 获取坐标轴高度
+        /// </summary>
+        internal double Height
+        {
+            get { return this._axisCanvas.Height; }
+        }
+
+
+
+
+
 
         protected readonly Canvas _axisCanvas = new Canvas();
         public AxisAbs()
@@ -205,6 +225,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             //test
             //this._axisCanvas.Background = ColorBrushHelper.GetNextColor();
         }
+
+
 
 
         internal void UpdateLabelStyle()
@@ -271,12 +293,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        internal double DrawY(ChartCollection<ISeries> seriesCollection, double axisHeight)
+
+
+        internal void DrawY(ChartCollection<ISeries> seriesCollection, double axisHeight)
         {
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Height = axisHeight;
             this.AddAxisYTitle(this._axisCanvas);
-            return this.PrimitiveDrawY(this._axisCanvas, seriesCollection);
+            this.PrimitiveDrawY(this._axisCanvas, seriesCollection);
         }
 
         /// <summary>
@@ -286,7 +310,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <param name="seriesCollection"></param>
         /// <param name="axisHeight"></param>
         /// <returns>Y轴宽度</returns>
-        protected abstract double PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
+        protected abstract void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
 
@@ -295,14 +319,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        public FrameworkElement GetAxisControl()
+        public FrameworkElement AxisControl
         {
-            return this.PrimitiveGetAxisControl();
+            get
+            {
+                return this._axisCanvas;
+            }
         }
-        protected virtual FrameworkElement PrimitiveGetAxisControl()
-        {
-            return this._axisCanvas;
-        }
+
 
 
 
