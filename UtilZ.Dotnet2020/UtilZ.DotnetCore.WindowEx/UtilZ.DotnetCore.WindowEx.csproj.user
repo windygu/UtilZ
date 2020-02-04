@@ -7,6 +7,9 @@
     <Compile Update="WPF\Controls\Chart\Legend\HorizontalChartLegend.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="WPF\Controls\Chart\Legend\VerticalChartLegend.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="WPF\Controls\DateTimePicker.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -22,6 +25,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="WPF\Controls\Chart\Legend\HorizontalChartLegend.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Chart\Legend\VerticalChartLegend.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="WPF\Controls\DateTimePicker.xaml">

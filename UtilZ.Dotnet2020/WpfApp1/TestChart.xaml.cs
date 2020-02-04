@@ -147,11 +147,12 @@ namespace WpfApp1
             //TestDateTimeAxis();
 
 
-            //TestLineSeries();
-            TestVerStepLineSeries();
+            TestLineSeries();
+            //TestVerStepLineSeries();
         }
 
 
+        private const string fileName = "StepLineSeriesValues.txt";
         private void TestVerStepLineSeries()
         {
             int minY = -100, maxY = 100;
@@ -246,7 +247,6 @@ namespace WpfApp1
 
             double value;
             DateTime time;
-            const string fileName = "StepLineSeriesValues.txt";
             ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
             using (StreamReader sr = new StreamReader(fileName))
             {
@@ -371,13 +371,13 @@ namespace WpfApp1
             double axisXValueStep = 10;
             double axisXValue = minX;
             ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
-            //while (axisXValue < maxX)
-            //{
-            //    value = _rnd.Next(minY, maxY);
-            //    values.Add(new ChartNumberItem(axisXValue, value, $"{axisXValue}_{value}"));
-            //    axisXValue += axisXValueStep;
-            //}
-            //series[0].Values = values;
+            while (axisXValue < maxX)
+            {
+                value = _rnd.Next(minY, maxY);
+                values.Add(new ChartNumberItem(axisXValue, value, $"{axisXValue}_{value}"));
+                axisXValue += axisXValueStep;
+            }
+            series[0].Values = values;
 
 
 
@@ -385,55 +385,48 @@ namespace WpfApp1
             TimeSpan ts = maxTime - time;
             ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
             double stepTotalMilliseconds = ts.TotalMilliseconds / ((maxY - minY) / axisXValueStep);
-            //while (time < maxTime)
-            //{
-            //    value = _rnd.Next(minY, maxY);
-            //    values2.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
-            //    time = time.AddMilliseconds(stepTotalMilliseconds);
-            //}
-            //series[1].Values = values2;
+            while (time < maxTime)
+            {
+                value = _rnd.Next(minY, maxY);
+                values2.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+                time = time.AddMilliseconds(stepTotalMilliseconds);
+            }
+            series[1].Values = values2;
 
 
-            const string fileName = "StepLineSeriesValues.txt";
             //StringBuilder sb = new StringBuilder();
             ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
-            //minY = minY / 10;
-            //maxY = maxY / 10;
-            //time = minTime;
-            //while (time < maxTime)
-            //{
-            //    value = _rnd.Next(minY, maxY) * 10;
-            //    values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
-            //    sb.AppendLine($"{time.ToString("yyyy-MM-dd HH:mm:ss")}_{value}");
-            //    ts = maxTime - time;
-            //    time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));
-            //}
-            //File.WriteAllText(fileName, sb.ToString());
-            using (StreamReader sr = new StreamReader(fileName))
+            minY = minY / 10;
+            maxY = maxY / 10;
+            time = minTime;
+            while (time < maxTime)
             {
-                string line = sr.ReadLine();
-                string[] strArr;
-                while (line != null)
-                {
-                    strArr = line.Split('_', 2, StringSplitOptions.RemoveEmptyEntries);
-                    time = DateTime.Parse(strArr[0]);
-                    value = double.Parse(strArr[1]);
-                    values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
-                    line = sr.ReadLine();
-                }
+                value = _rnd.Next(minY, maxY) * 10;
+                values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+                //sb.AppendLine($"{time.ToString("yyyy-MM-dd HH:mm:ss")}_{value}");
+                ts = maxTime - time;
+                time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));
             }
+            //File.WriteAllText(fileName, sb.ToString());
             series[2].Values = values3;
 
 
 
             this.Series = series;
-            this.Legend = new HorizontalChartLegend()
+            this.Legend = new VerticalChartLegend()
             {
-                DockOrientation = ChartDockOrientation.Bottom,
+                DockOrientation = ChartDockOrientation.Right,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Background = Brushes.Transparent
             };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
             this.ManaulComit = false;
         }
 
