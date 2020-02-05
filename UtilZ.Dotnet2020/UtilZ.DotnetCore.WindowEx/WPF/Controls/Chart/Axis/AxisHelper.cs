@@ -73,7 +73,41 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, double x1, double x2)
+        {
+            if (!axis.AxisLine || !DoubleHasValue(x1) || !DoubleHasValue(x2))
+            {
+                return;
+            }
 
+            var labelLinePath = new Path();
+            labelLinePath.Style = axis.AxisLineStyle;
+            if (labelLinePath.Style == null)
+            {
+                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+            }
+
+            Point point1, point2;
+            if (axis.IsAxisXBottom())
+            {
+                point1 = new Point(AxisConstant.ZERO_D, AxisConstant.ZERO_D);
+                point2 = new Point(canvas.Width, AxisConstant.ZERO_D);
+            }
+            else
+            {
+                point1 = new Point(AxisConstant.ZERO_D, canvas.Height);
+                point2 = new Point(canvas.Width, canvas.Height);
+            }
+
+            PathFigure labelPathFigure = new PathFigure();
+            labelPathFigure.StartPoint = point1;
+            labelPathFigure.Segments.Add(new LineSegment(point2, true));
+            labelLinePath.Data = new PathGeometry()
+            {
+                Figures = new PathFigureCollection(new PathFigure[] { labelPathFigure })
+            };
+            canvas.Children.Add(labelLinePath);
+        }
 
         public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> xList)
         {
@@ -97,17 +131,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             for (int i = 0; i < xList.Count; i++)
             {
                 x = xList[i];
-                //if (axis.Orientation == AxisOrientation.RightToLeft && i == 0)
-                //{
-                //    //刻度从右向左,所以最右侧的要向左偏移labelLinePath.StrokeThickness
-                //    x = x - labelLinePath.StrokeThickness;
-                //}
-                //else if (axis.Orientation == AxisOrientation.LeftToRight && i == lastIndex)
-                //{
-                //    //刻度从左向右,所以最右侧的要向左偏移labelLinePath.StrokeThickness
-                //    x = x - labelLinePath.StrokeThickness;
-                //}
-
                 if (axis.IsAxisXBottom())
                 {
                     point1 = new Point(x, AxisConstant.ZERO_D);
@@ -153,6 +176,42 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             canvas.Children.Add(labelLinePath);
         }
 
+        public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, double y1, double y2)
+        {
+            if (!axis.AxisLine || !DoubleHasValue(y1) || !DoubleHasValue(y2))
+            {
+                return;
+            }
+
+            var labelLinePath = new Path();
+            labelLinePath.Style = axis.AxisLineStyle;
+            if (labelLinePath.Style == null)
+            {
+                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+            }
+
+            Point point1, point2;
+            if (axis.IsAxisYLeft())
+            {
+                point1 = new Point(canvas.Width, y1);
+                point2 = new Point(canvas.Width, y2);
+            }
+            else
+            {
+                point1 = new Point(AxisConstant.ZERO_D, y1);
+                point2 = new Point(AxisConstant.ZERO_D, y2);
+            }
+
+            PathFigure labelPathFigure = new PathFigure();
+            labelPathFigure.StartPoint = point1;
+            labelPathFigure.Segments.Add(new LineSegment(point2, true));
+            labelLinePath.Data = new PathGeometry()
+            {
+                Figures = new PathFigureCollection(new PathFigure[] { labelPathFigure })
+            };
+            canvas.Children.Add(labelLinePath);
+        }
+
         public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> yList)
         {
             if (!axis.AxisLine || yList == null || yList.Count == 0)
@@ -175,17 +234,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             for (int i = 0; i < yList.Count; i++)
             {
                 y = yList[i];
-                //if (axis.Orientation == AxisOrientation.BottomToTop && i == 0)
-                //{
-                //    //刻度从下向上,所以最右侧的要向左偏移labelLinePath.StrokeThickness
-                //    y = y - labelLinePath.StrokeThickness;
-                //}
-                //else if (axis.Orientation == AxisOrientation.TopToBottom && i == lastIndex)
-                //{
-                //    //刻度从上向下,所以最右侧的要向左偏移labelLinePath.StrokeThickness
-                //    y = y - labelLinePath.StrokeThickness;
-                //}
-
                 if (axis.IsAxisYLeft())
                 {
                     point1 = new Point(canvas.Width - axis.LabelSize, y);
@@ -205,7 +253,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     Figures = new PathFigureCollection(new PathFigure[] { labelPathFigure })
                 });
             }
-
 
             //坐标轴
             if (axis.IsAxisYLeft())
@@ -274,7 +321,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static TextBlock _measureTextLabel = null;
-        public static Rect MeasureLabelTextSize(AxisAbs axis, string labelText)
+        public static Size MeasureLabelTextSize(AxisAbs axis, string labelText)
         {
             if (_measureTextLabel == null)
             {
@@ -292,7 +339,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 measureTextLabel.Style = axis.LabelStyle;
             }
 
-            return UITextHelper.MeasureTextSize(measureTextLabel);
+            var size = UITextHelper.MeasureTextSize(measureTextLabel);
+            measureTextLabel.Style = null;
+            return size;
         }
 
 

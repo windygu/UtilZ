@@ -80,7 +80,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             this.PrimitiveGetAxisValueArea(axis, out min, out max);
         }
-        protected abstract void PrimitiveGetAxisValueArea(AxisAbs axis, out double min, out double max);
+        protected virtual void PrimitiveGetAxisValueArea(AxisAbs axis, out double min, out double max)
+        {
+            AxisHelper.GetAxisMinAndMax(axis, this.Values, out min, out max);
+        }
 
 
         private Style _style = null;
@@ -160,6 +163,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        private readonly List<SeriesLegendItem> _currentSeriesLegendItemList = new List<SeriesLegendItem>();
+        private List<SeriesLegendItem> _chartSeriesLegendItemList = null;
+        public SeriesAbs()
+        {
+
+        }
+
+
+       
+
+
+
 
         protected Canvas _canvas;
         public void Add(Canvas canvas)
@@ -169,19 +184,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
         protected abstract void PrimitiveAdd(Canvas canvas);
 
+
+
+
+
         public void Remove()
         {
             this.PrimitiveRemove(this._canvas);
+            this.RemoveLegendItem();
         }
         protected abstract void PrimitiveRemove(Canvas canvas);
 
 
-        public void Update()
-        {
-            this.PrimitiveUpdate();
-        }
 
-        protected virtual void PrimitiveUpdate()
+
+
+        public void Update()
         {
             this.PrimitiveRemove(this._canvas);
             this.PrimitiveAdd(this._canvas);
@@ -189,12 +207,34 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+
         public void FillLegendItemToList(List<SeriesLegendItem> legendBrushList)
         {
-            this.PrimitiveFillLegendItemToList(legendBrushList);
+            legendBrushList.AddRange(this._currentSeriesLegendItemList);
         }
 
-        protected abstract void PrimitiveFillLegendItemToList(List<SeriesLegendItem> legendBrushList);
+        protected void AddOrReplaceLegendItem(SeriesLegendItem legendItem)
+        {
+            this._currentSeriesLegendItemList.RemoveAll(t => t.Series == this);
+            this._currentSeriesLegendItemList.Add(legendItem);
+        }
+
+        private void RemoveLegendItem()
+        {
+            if (this._chartSeriesLegendItemList != null)
+            {
+                foreach (var legendItem in this._currentSeriesLegendItemList)
+                {
+                    this._currentSeriesLegendItemList.Remove(legendItem);
+                }
+                this._currentSeriesLegendItemList.Clear();
+            }
+            this._chartSeriesLegendItemList = null;
+        }
+
+
+
+
 
 
         private Visibility _visibility = Visibility.Visible;
@@ -214,10 +254,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        protected virtual void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility)
-        {
-
-        }
+        protected abstract void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility);
 
 
         public object Tag { get; set; }

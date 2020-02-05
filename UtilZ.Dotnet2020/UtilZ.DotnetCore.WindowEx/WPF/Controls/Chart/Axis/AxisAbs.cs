@@ -304,12 +304,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         /// <summary>
-        /// 子类重写此函数时,必须设置Y轴宽度以及返回Y轴宽度
+        /// 子类重写此函数时,必须设置Y轴宽度
         /// </summary>
         /// <param name="axisCanvas"></param>
         /// <param name="seriesCollection"></param>
-        /// <param name="axisHeight"></param>
-        /// <returns>Y轴宽度</returns>
         protected abstract void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 

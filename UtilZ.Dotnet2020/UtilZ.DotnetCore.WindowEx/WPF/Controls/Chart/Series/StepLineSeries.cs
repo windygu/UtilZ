@@ -6,10 +6,13 @@ using System.Windows.Media;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 步进线形图
+    /// </summary>
     public class StepLineSeries : LineSeriesBase
     {
-        private StepLineOrientation _orientation = StepLineOrientation.Horizontal;
-        public StepLineOrientation Orientation
+        private SeriesOrientation _orientation = SeriesOrientation.Horizontal;
+        public SeriesOrientation Orientation
         {
             get { return _orientation; }
             set
@@ -35,10 +38,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             PathFigureCollection pfc;
             switch (this._orientation)
             {
-                case StepLineOrientation.Horizontal:
+                case SeriesOrientation.Horizontal:
                     pfc = this.CreateHorizontalPathFigureCollection(pointInfoListCollection);
                     break;
-                case StepLineOrientation.Vertical:
+                case SeriesOrientation.Vertical:
                     pfc = this.CreateVerticalPathFigureCollection(pointInfoListCollection);
                     break;
                 default:
@@ -136,12 +139,5 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             return pfc;
         }
-    }
-
-    public enum StepLineOrientation
-    {
-        Horizontal,
-
-        Vertical
     }
 }

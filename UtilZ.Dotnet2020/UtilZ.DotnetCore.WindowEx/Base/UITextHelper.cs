@@ -20,7 +20,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="textBlock">TextBlock</param>
         /// <param name="flowDirection">测量方向</param>
         /// <returns>符串长度</returns>
-        public static Rect MeasureTextSize(TextBlock textBlock, FlowDirection flowDirection = FlowDirection.LeftToRight)
+        public static Size MeasureTextSize(TextBlock textBlock, FlowDirection flowDirection = FlowDirection.LeftToRight)
         {
             var formattedText = new FormattedText(textBlock.Text, CultureInfo.InvariantCulture, flowDirection,
                 new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch),
@@ -34,7 +34,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="textBox">TextBox</param>
         /// <param name="flowDirection">测量方向</param>
         /// <returns>符串长度</returns>
-        public static Rect MeasureTextSize(TextBox textBox, FlowDirection flowDirection = FlowDirection.LeftToRight)
+        public static Size MeasureTextSize(TextBox textBox, FlowDirection flowDirection = FlowDirection.LeftToRight)
         {
             var formattedText = new FormattedText(textBox.Text, CultureInfo.InvariantCulture, flowDirection,
                 new Typeface(textBox.FontFamily, textBox.FontStyle, textBox.FontWeight, textBox.FontStretch),
@@ -48,7 +48,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="label">label</param>
         /// <param name="flowDirection">测量方向</param>
         /// <returns>符串长度</returns>
-        public static Rect MeasureTextSize(Label label, FlowDirection flowDirection = FlowDirection.LeftToRight)
+        public static Size MeasureTextSize(Label label, FlowDirection flowDirection = FlowDirection.LeftToRight)
         {
             string text;
             if (label.Content == null)
@@ -74,7 +74,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="fontSize">字体大小</param>
         /// <param name="foreground">字体Brush</param>
         /// <returns>符串长度</returns>
-        public static Rect MeasureTextSize(string text, Typeface typeface, double fontSize, Brush foreground)
+        public static Size MeasureTextSize(string text, Typeface typeface, double fontSize, Brush foreground)
         {
             var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface, fontSize, foreground);
             return GetTextSize(formattedText);
@@ -92,7 +92,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="numberSubstitution">要应用于文本的数字替换行为</param>
         /// <param name="textFormattingMode">要应用于文本的 System.Windows.Media.TextFormattingMode</param>
         /// <returns>符串长度</returns>
-        public static Rect MeasureTextSize(string text, CultureInfo cultureInfo, Typeface typeface, FlowDirection flowDirection,
+        public static Size MeasureTextSize(string text, CultureInfo cultureInfo, Typeface typeface, FlowDirection flowDirection,
             double fontSize, Brush foreground, NumberSubstitution numberSubstitution, TextFormattingMode textFormattingMode)
         {
             var formattedText = new FormattedText(text, cultureInfo, flowDirection,
@@ -100,9 +100,9 @@ namespace UtilZ.DotnetCore.WindowEx.Base
             return GetTextSize(formattedText);
         }
 
-        private static Rect GetTextSize(FormattedText formattedText)
+        private static Size GetTextSize(FormattedText formattedText)
         {
-            return new Rect(0, 0, formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
+            return new Size(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
         }
 
 
@@ -114,7 +114,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="sizeInEm">The size.</param>
         /// <param name="text">The text.</param>
         /// <returns>The text size.</returns>
-        public static Rect MeasureTextSize(GlyphTypeface glyphTypeface, double sizeInEm, string text)
+        public static Size MeasureTextSize(GlyphTypeface glyphTypeface, double sizeInEm, string text)
         {
             double width = 0;
             double lineWidth = 0;
@@ -147,7 +147,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
                 width = lineWidth;
             }
 
-            return new Rect(0d, 0d, Math.Round(width * sizeInEm, 2), Math.Round(lines * glyphTypeface.Height * sizeInEm, 2));
+            return new Size(Math.Round(width * sizeInEm, 2), Math.Round(lines * glyphTypeface.Height * sizeInEm, 2));
         }
     }
 }

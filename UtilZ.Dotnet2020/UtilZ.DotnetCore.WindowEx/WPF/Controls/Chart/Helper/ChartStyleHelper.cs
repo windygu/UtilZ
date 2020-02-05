@@ -117,10 +117,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return defaultTitleStyle;
         }
 
-        private static Style _lineDefaultStyle = null;
-        public static Style CreateLineDefaultStyle()
+        private static Style _lineSeriesDefaultStyle = null;
+        public static Style CreateLineSeriesDefaultStyle()
         {
-            if (_lineDefaultStyle == null)
+            if (_lineSeriesDefaultStyle == null)
             {
                 var style = new Style();
                 style.TargetType = typeof(Path);
@@ -133,14 +133,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 trigger.Value = true;
                 trigger.Setters.Add(new Setter(Path.StrokeThicknessProperty, 3d));
                 style.Triggers.Add(trigger);
-                _lineDefaultStyle = style;
+                _lineSeriesDefaultStyle = style;
             }
 
-            return _lineDefaultStyle;
+            return _lineSeriesDefaultStyle;
         }
 
 
-        public static Style CreateLineStyle(Brush stroke, double strokeThickness = 2d, double mouseOverStrokeThickness = 3d)
+        public static Style CreateLineSeriesStyle(Brush stroke, double strokeThickness = 2d, double mouseOverStrokeThickness = 3d)
         {
             var style = new Style();
             style.TargetType = typeof(Path);
@@ -154,6 +154,47 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 trigger.Property = Path.IsMouseOverProperty;
                 trigger.Value = true;
                 trigger.Setters.Add(new Setter(Path.StrokeThicknessProperty, mouseOverStrokeThickness));
+                style.Triggers.Add(trigger);
+            }
+
+            return style;
+        }
+
+
+        public static Style CreateColumnSeriesStyle(Brush fill, Brush stroke, double strokeThickness, double mouseOverStrokeThickness = 1d)
+        {
+            var style = new Style();
+            style.TargetType = typeof(Rectangle);
+            style.Setters.Add(new Setter(Rectangle.FillProperty, fill));
+            style.Setters.Add(new Setter(Rectangle.StrokeProperty, stroke));
+            style.Setters.Add(new Setter(Rectangle.StrokeThicknessProperty, strokeThickness));
+
+            if (AxisHelper.DoubleHasValue(mouseOverStrokeThickness) && mouseOverStrokeThickness > AxisConstant.ZERO_D)
+            {
+                var trigger = new Trigger();
+                trigger.Property = Rectangle.IsMouseOverProperty;
+                trigger.Value = true;
+                trigger.Setters.Add(new Setter(Rectangle.StrokeThicknessProperty, mouseOverStrokeThickness));
+                style.Triggers.Add(trigger);
+            }
+
+            return style;
+        }
+
+
+        public static Style CreateColumnSeriesStyle(Brush fill, double mouseOverOpacity = 0.8d)
+        {
+            var style = new Style();
+            style.TargetType = typeof(Rectangle);
+            style.Setters.Add(new Setter(Rectangle.FillProperty, fill));
+            style.Setters.Add(new Setter(Rectangle.StrokeThicknessProperty, AxisConstant.ZERO_D));
+
+            if (AxisHelper.DoubleHasValue(mouseOverOpacity) && mouseOverOpacity > AxisConstant.ZERO_D)
+            {
+                var trigger = new Trigger();
+                trigger.Property = Rectangle.IsMouseOverProperty;
+                trigger.Value = true;
+                trigger.Setters.Add(new Setter(Rectangle.OpacityProperty, mouseOverOpacity));
                 style.Triggers.Add(trigger);
             }
 

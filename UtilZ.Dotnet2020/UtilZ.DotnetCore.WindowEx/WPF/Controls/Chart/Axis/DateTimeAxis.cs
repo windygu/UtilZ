@@ -81,7 +81,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-        private Rect _labelTextSize;
+        private Size _labelTextSize;
 
         protected override double PrimitiveGetXAxisHeight()
         {
@@ -89,7 +89,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return base.CalculateAxisSize(this._labelTextSize.Height);
         }
 
-        private Rect MeasureLabelTextSize()
+        private Size MeasureLabelTextSize()
         {
             string labelText = this.CreateAxisText(DateTime.Parse("2020-12-12 22:22:22"));
             return AxisHelper.MeasureLabelTextSize(this, labelText);
@@ -374,7 +374,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 子类重写此函数时,必须设置Y轴宽度
+        /// </summary>
+        /// <param name="axisCanvas"></param>
+        /// <param name="seriesCollection"></param>
         protected override void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._labelTextSize = this.MeasureLabelTextSize();
@@ -411,9 +415,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             DateTime time = axisData.MinValue;
             double y = AxisConstant.ZERO_D;
             TextBlock label;
-            Rect labelSize = this._labelTextSize;
+            Size labelSize = this._labelTextSize;
             double heightHalf = labelSize.Height / 2;
-            AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
+            AxisLabelLocation labelTextLocation = AxisLabelLocation.First;
             bool addLabelControl;
             double lastLabelY = axisHeight;
 
@@ -426,14 +430,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     addLabelControl = false;
                     switch (labelTextLocation)
                     {
-                        case AxisLabelTextLocation.First:
+                        case AxisLabelLocation.First:
                             axisCanvas.Children.Add(label);
                             addLabelControl = true;
                             Canvas.SetTop(label, top);
                             lastLabelY = top + labelSize.Height;
-                            labelTextLocation = AxisLabelTextLocation.Middle;
+                            labelTextLocation = AxisLabelLocation.Middle;
                             break;
-                        case AxisLabelTextLocation.Middle:
+                        case AxisLabelLocation.Middle:
                             top2 = top - heightHalf;
                             if (top2 <= axisHeight)
                             {
@@ -443,7 +447,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                                 lastLabelY = top2 + labelSize.Height;
                             }
                             break;
-                        case AxisLabelTextLocation.Last:
+                        case AxisLabelLocation.Last:
                             if (lastLabelY + labelSize.Height < axisHeight)
                             {
                                 axisCanvas.Children.Add(label);
@@ -468,7 +472,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     }
                 }
 
-                if (labelTextLocation == AxisLabelTextLocation.Last)
+                if (labelTextLocation == AxisLabelLocation.Last)
                 {
                     if (this._showLastLabel)
                     {
@@ -491,7 +495,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                     time = axisData.MaxValue;
                     y = axisHeight;
-                    labelTextLocation = AxisLabelTextLocation.Last;
+                    labelTextLocation = AxisLabelLocation.Last;
                 }
                 else
                 {
@@ -512,9 +516,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             DateTime time = axisData.MinValue;
             double y = axisHeight;
             TextBlock label;
-            Rect labelSize = this._labelTextSize;
+            Size labelSize = this._labelTextSize;
             double heightHalf = labelSize.Height / 2;
-            AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
+            AxisLabelLocation labelLocation = AxisLabelLocation.First;
             bool addLabelControl;
             double lastLabelY = axisHeight;
 
@@ -525,16 +529,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (axisHeight > labelSize.Height)
                 {
                     addLabelControl = false;
-                    switch (labelTextLocation)
+                    switch (labelLocation)
                     {
-                        case AxisLabelTextLocation.First:
+                        case AxisLabelLocation.First:
                             axisCanvas.Children.Add(label);
                             addLabelControl = true;
                             Canvas.SetBottom(label, bottom);
                             lastLabelY = axisHeight - labelSize.Height;
-                            labelTextLocation = AxisLabelTextLocation.Middle;
+                            labelLocation = AxisLabelLocation.Middle;
                             break;
-                        case AxisLabelTextLocation.Middle:
+                        case AxisLabelLocation.Middle:
                             bottom2 = bottom - heightHalf;
                             if (bottom2 > AxisConstant.ZERO_D)
                             {
@@ -544,7 +548,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                                 lastLabelY = bottom2 - labelSize.Height;
                             }
                             break;
-                        case AxisLabelTextLocation.Last:
+                        case AxisLabelLocation.Last:
                             if (lastLabelY - labelSize.Height > AxisConstant.ZERO_D)
                             {
                                 axisCanvas.Children.Add(label);
@@ -553,7 +557,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             }
                             break;
                         default:
-                            throw new NotImplementedException();
+                            throw new NotImplementedException(labelLocation.ToString());
                     }
 
                     if (addLabelControl)
@@ -569,7 +573,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     }
                 }
 
-                if (labelTextLocation == AxisLabelTextLocation.Last)
+                if (labelLocation == AxisLabelLocation.Last)
                 {
                     if (this._showLastLabel)
                     {
@@ -591,7 +595,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                     time = axisData.MaxValue;
                     y = AxisConstant.ZERO_D;
-                    labelTextLocation = AxisLabelTextLocation.Last;
+                    labelLocation = AxisLabelLocation.Last;
                 }
                 else
                 {
@@ -636,7 +640,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double right = AxisConstant.ZERO_D;
             double lastLabelX = axisWidth;
             DateTime time = axisData.MinValue;
-            AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
+            AxisLabelLocation labelTextLocation = AxisLabelLocation.First;
             double labelTextWidth = this._labelTextSize.Width;
             double labelTextWidthHalf = labelTextWidth / 2;
             double offset = labelTextWidth / 2;
@@ -654,14 +658,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                     switch (labelTextLocation)
                     {
-                        case AxisLabelTextLocation.First:
+                        case AxisLabelLocation.First:
                             this._axisCanvas.Children.Add(label);
                             addLabelControl = true;
                             Canvas.SetRight(label, right);
                             lastLabelX = right + labelTextWidth;
-                            labelTextLocation = AxisLabelTextLocation.Middle;
+                            labelTextLocation = AxisLabelLocation.Middle;
                             break;
-                        case AxisLabelTextLocation.Middle:
+                        case AxisLabelLocation.Middle:
                             right += labelStepSize;
                             offset = right - labelTextWidthHalf - lastLabelX;
                             if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
@@ -681,7 +685,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                                 lastLabelX = right + labelTextWidth + offset;
                             }
                             break;
-                        case AxisLabelTextLocation.Last:
+                        case AxisLabelLocation.Last:
                             if (right > AxisConstant.ZERO_D && labelTextWidth + AxisConstant.LABEL_TEXT_INTERVAL <= lastLabelX)
                             {
                                 axisCanvas.Children.Add(label);
@@ -707,7 +711,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     }
                 }
 
-                if (labelTextLocation == AxisLabelTextLocation.Last)
+                if (labelTextLocation == AxisLabelLocation.Last)
                 {
                     if (this._showLastLabel)
                     {
@@ -722,7 +726,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 {
                     x = AxisConstant.ZERO_D;
                     time = axisData.MaxValue;
-                    labelTextLocation = AxisLabelTextLocation.Last;
+                    labelTextLocation = AxisLabelLocation.Last;
                 }
                 else
                 {
@@ -740,7 +744,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double left = AxisConstant.ZERO_D;
             double lastLabelX = AxisConstant.ZERO_D;
             DateTime time = axisData.MinValue;
-            AxisLabelTextLocation labelTextLocation = AxisLabelTextLocation.First;
+            AxisLabelLocation labelTextLocation = AxisLabelLocation.First;
             double labelTextWidth = this._labelTextSize.Width;
             double labelTextWidthHalf = labelTextWidth / 2;
             double offset = labelTextWidth / 2;
@@ -758,14 +762,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                     switch (labelTextLocation)
                     {
-                        case AxisLabelTextLocation.First:
+                        case AxisLabelLocation.First:
                             this._axisCanvas.Children.Add(label);
                             addLabelControl = true;
                             Canvas.SetLeft(label, left);
                             lastLabelX = left + labelTextWidth;
-                            labelTextLocation = AxisLabelTextLocation.Middle;
+                            labelTextLocation = AxisLabelLocation.Middle;
                             break;
-                        case AxisLabelTextLocation.Middle:
+                        case AxisLabelLocation.Middle:
                             left += labelStepSize;
                             offset = left - labelTextWidthHalf - lastLabelX;
                             if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
@@ -785,7 +789,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                                 lastLabelX = left + labelTextWidth + offset;
                             }
                             break;
-                        case AxisLabelTextLocation.Last:
+                        case AxisLabelLocation.Last:
                             if (lastLabelX + labelTextWidth + AxisConstant.LABEL_TEXT_INTERVAL <= axisWidth)
                             {
                                 axisCanvas.Children.Add(label);
@@ -811,7 +815,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     }
                 }
 
-                if (labelTextLocation == AxisLabelTextLocation.Last)
+                if (labelTextLocation == AxisLabelLocation.Last)
                 {
                     if (this._showLastLabel)
                     {
@@ -826,7 +830,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 {
                     x = this._axisCanvas.Width;
                     time = axisData.MaxValue;
-                    labelTextLocation = AxisLabelTextLocation.Last;
+                    labelTextLocation = AxisLabelLocation.Last;
                 }
                 else
                 {

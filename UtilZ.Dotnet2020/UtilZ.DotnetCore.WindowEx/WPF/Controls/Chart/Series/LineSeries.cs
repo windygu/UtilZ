@@ -7,6 +7,9 @@ using System.Windows.Media;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 线形图
+    /// </summary>
     public class LineSeries : LineSeriesBase
     {
         private LineSeriesType _lineSeriesType = LineSeriesType.Bezier;

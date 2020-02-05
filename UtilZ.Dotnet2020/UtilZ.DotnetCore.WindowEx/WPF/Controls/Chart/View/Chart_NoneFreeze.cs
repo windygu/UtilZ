@@ -385,6 +385,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
             //第六步
+            chartCanvas.Width = xAxisWidth;
+            chartCanvas.Height = yAxisHeight;
             chartGrid.Children.Add(chartCanvas);
             if (seriesCollection != null && seriesCollection.Count > AxisConstant.ZERO_I)
             {

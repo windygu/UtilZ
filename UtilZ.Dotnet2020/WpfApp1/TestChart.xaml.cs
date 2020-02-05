@@ -147,8 +147,154 @@ namespace WpfApp1
             //TestDateTimeAxis();
 
 
-            TestLineSeries();
+            //TestLineSeries();
             //TestVerStepLineSeries();
+
+            TestColumnSeriesHorizontal();
+            //TestColumnSeriesVertical();
+        }
+
+
+        private void TestColumnSeriesVertical()
+        {
+            int min = -100, max = 100;
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new LabelAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.LeftToRight,
+                AxisSize = 20d
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = min,
+                MaxValue = max,
+                LabelStep = double.NaN
+            });
+            this.Axes = axes;
+
+
+
+
+            var series = new ChartCollection<ISeries>();
+            series.Add(new ColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                Title = "ColumnSeries2",
+                Style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor())
+            }); ;
+
+
+            var time = DateTime.Parse("2010-01-01 00:00:00");
+            double value;
+            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
+            for (int i = 0; i < 5; i++)
+            {
+                value = _rnd.Next(min, max);
+                values.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+                time = time.AddMonths(1);
+            }
+            series[0].Values = values;
+
+
+
+
+            this.Series = series;
+
+            //this.Legend = new VerticalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Right,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            this.ManaulComit = false;
+        }
+
+        private void TestColumnSeriesHorizontal()
+        {
+            int min = -100, max = 100;
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new LabelAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.TopToBottom
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = min,
+                MaxValue = max,
+                LabelStep = double.NaN
+            });
+            this.Axes = axes;
+
+
+
+
+            var series = new ChartCollection<ISeries>();
+            series.Add(new ColumnSeries()
+            {
+                AxisX = axes[1],
+                AxisY = axes[0],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Horizontal,
+                Title = "ColumnSeries1",
+                Style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor())
+            });
+
+
+            var time = DateTime.Parse("2010-01-01 00:00:00");
+            double value;
+            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
+            for (int i = 0; i < 5; i++)
+            {
+                value = _rnd.Next(min, max);
+                values.Add(new ChartColumnItemHorizontal(time, value, $"{value}"));
+                time = time.AddMonths(1);
+            }
+            series[0].Values = values;
+
+
+
+
+            this.Series = series;
+            this.Legend = new VerticalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Right,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
+            this.ManaulComit = false;
         }
 
 
@@ -222,7 +368,7 @@ namespace WpfApp1
                 LineSeriesType = LineSeriesType.Bezier,
                 EnableTooltip = true,
                 Title = "LineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Gray)
+                Style = ChartStyleHelper.CreateLineSeriesStyle(Brushes.Gray)
             });
             series.Add(new LineSeries()
             {
@@ -231,7 +377,7 @@ namespace WpfApp1
                 LineSeriesType = LineSeriesType.Bezier,
                 EnableTooltip = true,
                 Title = "DateTimeLineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Green),
+                Style = ChartStyleHelper.CreateLineSeriesStyle(Brushes.Green),
                 //CreatePointFunc = this.CreatePointFunc
             });
             series.Add(new StepLineSeries()
@@ -240,8 +386,8 @@ namespace WpfApp1
                 AxisY = axes[0],
                 EnableTooltip = true,
                 Title = "DateTimeStepLineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Red),
-                Orientation = StepLineOrientation.Vertical
+                Style = ChartStyleHelper.CreateLineSeriesStyle(Brushes.Red),
+                Orientation = SeriesOrientation.Vertical
             });
 
 
@@ -344,7 +490,7 @@ namespace WpfApp1
                 LineSeriesType = LineSeriesType.Bezier,
                 EnableTooltip = true,
                 Title = "LineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Gray)
+                Style = ChartStyleHelper.CreateLineSeriesStyle(Brushes.Gray)
             });
             series.Add(new LineSeries()
             {
@@ -353,7 +499,7 @@ namespace WpfApp1
                 LineSeriesType = LineSeriesType.Bezier,
                 EnableTooltip = true,
                 Title = "DateTimeLineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Green),
+                Style = ChartStyleHelper.CreateLineSeriesStyle(Brushes.Green),
                 //CreatePointFunc = this.CreatePointFunc
             });
             series.Add(new StepLineSeries()
@@ -362,8 +508,8 @@ namespace WpfApp1
                 AxisY = axes[0],
                 EnableTooltip = true,
                 Title = "DateTimeStepLineSeries",
-                Style = ChartStyleHelper.CreateLineStyle(Brushes.Red),
-                Orientation = StepLineOrientation.Horizontal
+                Style = ChartStyleHelper.CreateLineSeriesStyle(Brushes.Red),
+                Orientation = SeriesOrientation.Horizontal
             });
 
 
@@ -413,20 +559,20 @@ namespace WpfApp1
 
 
             this.Series = series;
-            this.Legend = new VerticalChartLegend()
-            {
-                DockOrientation = ChartDockOrientation.Right,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Background = Brushes.Transparent
-            };
-            //this.Legend = new HorizontalChartLegend()
+            //this.Legend = new VerticalChartLegend()
             //{
-            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    DockOrientation = ChartDockOrientation.Right,
             //    HorizontalAlignment = HorizontalAlignment.Center,
             //    VerticalAlignment = VerticalAlignment.Center,
             //    Background = Brushes.Transparent
             //};
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
             this.ManaulComit = false;
         }
 

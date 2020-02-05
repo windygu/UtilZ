@@ -4,12 +4,10 @@ using System.Text;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
-    internal enum AxisLabelTextLocation
+    public enum SeriesOrientation
     {
-        First,
+        Horizontal,
 
-        Middle,
-
-        Last
+        Vertical
     }
 }

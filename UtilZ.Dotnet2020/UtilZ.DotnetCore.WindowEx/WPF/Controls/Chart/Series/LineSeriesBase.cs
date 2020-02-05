@@ -16,13 +16,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private readonly List<FrameworkElement> _pointGeometryList = new List<FrameworkElement>();
 
         public LineSeriesBase()
+            : base()
         {
             var style = base.Style;
             if (style == null)
             {
-                style = ChartStyleHelper.CreateLineDefaultStyle();
+                style = ChartStyleHelper.CreateLineSeriesDefaultStyle();
             }
-            this._pathLine.Style = style;
+            this.StyleChanged(style);
             this.EnableTooltipChanged(base.EnableTooltip);
             this.VisibilityChanged(Visibility.Visible, base.Visibility);
         }
@@ -30,6 +31,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         protected override void StyleChanged(Style style)
         {
             this._pathLine.Style = style;
+            base.AddOrReplaceLegendItem(new SeriesLegendItem(this._pathLine.Stroke, base.Title, this));
         }
 
         #region Tooltip
@@ -115,10 +117,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override void PrimitiveGetAxisValueArea(AxisAbs axis, out double min, out double max)
-        {
-            AxisHelper.GetAxisMinAndMax(axis, this.Values, out min, out max);
-        }
 
 
         protected override void PrimitiveAdd(Canvas canvas)
@@ -242,10 +240,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override void PrimitiveFillLegendItemToList(List<SeriesLegendItem> legendBrushList)
-        {
-            legendBrushList.Add(new SeriesLegendItem(this._pathLine.Stroke, base.Title, this));
-        }
+
 
 
         protected override void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility)
