@@ -36,6 +36,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             set { _size = value; }
         }
 
+        public Style GetStyle()
+        {
+            return base.Style;
+        }
 
 
         private readonly List<Rectangle> _columnElementList = new List<Rectangle>();
@@ -51,8 +55,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._columnElementList.Clear();
-            Brush legendBrush = AxisHelper.CreateColumn(this, null).Fill.Clone();
+            Brush legendBrush = AxisHelper.CreateColumn(this).Fill.Clone();
             base.AddOrReplaceLegendItem(new SeriesLegendItem(legendBrush, base.Title, this));
+
+            if (base._values == null || base._values.Count == 0)
+            {
+                return;
+            }
 
             switch (this._orientation)
             {
@@ -70,11 +79,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private void PrimitiveAddHorizontal(Canvas canvas)
         {
-            if (base._values == null || base._values.Count == 0)
-            {
-                return;
-            }
-
             double x, y;
             Rectangle columnElement;
             foreach (var item in base._values)
@@ -91,7 +95,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     continue;
                 }
 
-                columnElement = AxisHelper.CreateColumn(this, item);
+                columnElement = AxisHelper.CreateColumn(this);
+                if (item != null)
+                {
+                    AxisHelper.SetColumnTooltipText(this, item.TooltipText, columnElement);
+                }
+
                 if (AxisHelper.DoubleHasValue(this._size))
                 {
                     columnElement.Height = this._size;
@@ -121,11 +130,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private void PrimitiveAddVertical(Canvas canvas)
         {
-            if (base._values == null || base._values.Count == 0)
-            {
-                return;
-            }
-
             double x, y;
             Rectangle columnElement;
             foreach (var item in base._values)
@@ -142,7 +146,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     continue;
                 }
 
-                columnElement = AxisHelper.CreateColumn(this, item);
+                columnElement = AxisHelper.CreateColumn(this);
+                if (item != null)
+                {
+                    AxisHelper.SetColumnTooltipText(this, item.TooltipText, columnElement);
+                }
+
                 if (AxisHelper.DoubleHasValue(this._size))
                 {
                     columnElement.Width = this._size;
@@ -172,6 +181,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         protected override bool PrimitiveRemove(Canvas canvas)
         {
+            //条形力移除后需要完整的重新绘制
             //foreach (var columnElement in this._columnElementList)
             //{
             //    base._canvas.Children.Remove(columnElement);

@@ -76,18 +76,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        public void GetAxisValueArea(AxisAbs axis, out double min, out double max)
-        {
-            this.PrimitiveGetAxisValueArea(axis, out min, out max);
-        }
-        protected virtual void PrimitiveGetAxisValueArea(AxisAbs axis, out double min, out double max)
-        {
-            AxisHelper.GetAxisMinAndMax(axis, this.Values, out min, out max);
-        }
 
 
         private Style _style = null;
-        public Style Style
+        public virtual Style Style
         {
             get { return _style; }
             set

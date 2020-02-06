@@ -243,7 +243,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         public double PRE
         {
             get { return _PRE; }
-            set { _PRE = value; }
+            set
+            {
+                if (!AxisHelper.DoubleHasValue(value))
+                {
+                    throw new ArgumentException("精度值无效");
+                }
+
+                _PRE = value;
+            }
         }
 
 

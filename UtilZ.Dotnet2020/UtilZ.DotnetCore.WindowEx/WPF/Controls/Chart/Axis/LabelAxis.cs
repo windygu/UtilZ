@@ -212,7 +212,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
 
                 columnSeries.Size = double.NaN;
-                templateColumn = AxisHelper.CreateColumn(columnSeries, null);
+                templateColumn = AxisHelper.CreateColumn(columnSeries);
                 seriesSize = double.NaN;
                 if (series.AxisX == this)
                 {

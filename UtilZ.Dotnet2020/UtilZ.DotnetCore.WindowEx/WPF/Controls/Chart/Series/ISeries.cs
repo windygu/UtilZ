@@ -19,8 +19,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         event NotifyCollectionChangedEventHandler ValuesCollectionChanged;
         ChartCollection<IChartItem> Values { get; set; }
 
-        void GetAxisValueArea(AxisAbs axis, out double min, out double max);
-
         Style Style { get; set; }
 
         bool EnableTooltip { get; set; }

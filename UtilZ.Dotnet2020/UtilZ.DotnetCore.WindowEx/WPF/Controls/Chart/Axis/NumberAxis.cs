@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -108,22 +109,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private NumberAxisData CreateAxisData(ChartCollection<ISeries> seriesCollection)
         {
-            var result = this.GetMinAndMaxValue(seriesCollection);
+            NumberAxisValueArea result = this.GetMinAndMaxValue(seriesCollection);
             long minMuilt, maxMuilt;
             if (AxisHelper.DoubleHasValue(this._minValue))
             {
-                result.MinValue = this._minValue;
+                result.Min = this._minValue;
 
                 if (AxisHelper.DoubleHasValue(this._maxValue))
                 {
-                    result.MaxValue = this._maxValue;
+                    result.Max = this._maxValue;
                 }
                 else
                 {
-                    if (AxisHelper.DoubleHasValue(result.MaxValue))
+                    if (AxisHelper.DoubleHasValue(result.Max))
                     {
-                        maxMuilt = AxisHelper.CalDoubleToIntegerMuilt(result.MaxValue);
-                        result.MaxValue = AxisHelper.DoubleToCeilingInteger(result.MaxValue, maxMuilt);
+                        maxMuilt = AxisHelper.CalDoubleToIntegerMuilt(result.Max);
+                        result.Max = AxisHelper.DoubleToCeilingInteger(result.Max, maxMuilt);
                     }
                     else
                     {
@@ -133,22 +134,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
             else
             {
-                if (AxisHelper.DoubleHasValue(result.MinValue))
+                if (AxisHelper.DoubleHasValue(result.Min))
                 {
-                    minMuilt = AxisHelper.CalDoubleToIntegerMuilt(result.MinValue);
+                    minMuilt = AxisHelper.CalDoubleToIntegerMuilt(result.Min);
                     if (AxisHelper.DoubleHasValue(this._maxValue))
                     {
-                        result.MinValue = AxisHelper.DoubleToFloorInteger(result.MinValue, minMuilt);
-                        result.MaxValue = this._maxValue;
+                        result.Min = AxisHelper.DoubleToFloorInteger(result.Min, minMuilt);
+                        result.Max = this._maxValue;
                     }
                     else
                     {
-                        if (AxisHelper.DoubleHasValue(result.MaxValue))
+                        if (AxisHelper.DoubleHasValue(result.Max))
                         {
-                            maxMuilt = AxisHelper.CalDoubleToIntegerMuilt(result.MaxValue);
+                            maxMuilt = AxisHelper.CalDoubleToIntegerMuilt(result.Max);
                             long muilt = minMuilt > maxMuilt ? minMuilt : maxMuilt;
-                            result.MinValue = AxisHelper.DoubleToFloorInteger(result.MinValue, muilt);
-                            result.MaxValue = AxisHelper.DoubleToCeilingInteger(result.MaxValue, muilt);
+                            result.Min = AxisHelper.DoubleToFloorInteger(result.Min, muilt);
+                            result.Max = AxisHelper.DoubleToCeilingInteger(result.Max, muilt);
                         }
                         else
                         {
@@ -162,20 +163,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
             }
 
-            if (result.MaxValue - result.MinValue <= base._PRE)
+            if (result.Max - result.Min <= base._PRE)
             {
                 return null;
             }
 
-            return new NumberAxisData(result.MinValue, result.MaxValue);
+            return new NumberAxisData(result.Min, result.Max);
         }
 
-        private (double MinValue, double MaxValue) GetMinAndMaxValue(ChartCollection<ISeries> seriesCollection)
+        private NumberAxisValueArea GetMinAndMaxValue(ChartCollection<ISeries> seriesCollection)
         {
             double min = double.NaN, max = double.NaN;
             if (seriesCollection == null || seriesCollection.Count == AxisConstant.ZERO_I)
             {
-                return (min, max);
+                return new NumberAxisValueArea(min, max);
             }
 
             double tmpMin, tmpMax;
@@ -186,7 +187,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     continue;
                 }
 
-                series.GetAxisValueArea(this, out tmpMin, out tmpMax);
+                this.PrimitiveGetMinAndMaxValue(this, series.Values, out tmpMin, out tmpMax);
                 if (double.IsNaN(min) || tmpMin - min < base._PRE)
                 {
                     min = tmpMin;
@@ -198,8 +199,99 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
             }
 
-            return (min, max);
+            return new NumberAxisValueArea(min, max);
         }
+
+        private void PrimitiveGetMinAndMaxValue(AxisAbs axis, ChartCollection<IChartItem> values, out double min, out double max)
+        {
+            min = double.NaN;
+            max = double.NaN;
+
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
+            double pre = double.IsNaN(axis.PRE) ? AxisConstant.ZERO_D : axis.PRE;
+            object obj;
+            IEnumerable enumerable;
+            double tmp;
+
+            foreach (var value in values)
+            {
+                if (value == null)
+                {
+                    continue;
+                }
+
+                switch (axis.AxisType)
+                {
+                    case AxisType.X:
+                        obj = value.GetXValue();
+                        break;
+                    case AxisType.Y:
+                        obj = value.GetYValue();
+                        break;
+                    default:
+                        throw new NotImplementedException(axis.AxisType.ToString());
+                }
+
+                if (obj == null)
+                {
+                    continue;
+                }
+
+                if (obj is IEnumerable)
+                {
+                    enumerable = (IEnumerable)obj;
+                    foreach (var item in enumerable)
+                    {
+                        if (item == null || !(item is IChartChildItem))
+                        {
+                            continue;
+                        }
+
+                        tmp = AxisHelper.ConvertToDouble(((IChartChildItem)item).GetValue());
+                        if (!AxisHelper.DoubleHasValue(tmp))
+                        {
+                            continue;
+                        }
+
+                        if (double.IsNaN(min) || tmp - min < pre)
+                        {
+                            min = tmp;
+                        }
+
+                        if (double.IsNaN(max) || tmp - max > pre)
+                        {
+                            max = tmp;
+                        }
+                    }
+                }
+                else
+                {
+                    tmp = AxisHelper.ConvertToDouble(obj);
+                    if (!AxisHelper.DoubleHasValue(tmp))
+                    {
+                        continue;
+                    }
+
+                    if (double.IsNaN(min) || tmp - min < pre)
+                    {
+                        min = tmp;
+                    }
+
+                    if (double.IsNaN(max) || tmp - max > pre)
+                    {
+                        max = tmp;
+                    }
+                }
+            }
+        }
+
+
+
+
 
         private double CalculateLabelStep(double valueArea, double axisSize)
         {
@@ -771,6 +863,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             return result;
+        }
+    }
+
+    internal class NumberAxisValueArea
+    {
+        public double Min { get; set; }
+        public double Max { get; set; }
+
+        public NumberAxisValueArea(double min, double max)
+        {
+            this.Min = min;
+            this.Max = max;
         }
     }
 

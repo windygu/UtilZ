@@ -49,11 +49,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return _colorBrushList[_colorBrushIndex++];
         }
 
-        public static Brush GetColorByIndex(ref int index)
+        public static Brush GetNextColorByIndex(ref int index)
         {
             if (index >= _colorBrushList.Count)
             {
                 index = 0;
+            }
+
+            return _colorBrushList[index];
+        }
+
+        public static Brush GetColorByIndex(int index)
+        {
+            if (index >= _colorBrushList.Count)
+            {
+                index = index % _colorBrushList.Count;
             }
 
             return _colorBrushList[index];

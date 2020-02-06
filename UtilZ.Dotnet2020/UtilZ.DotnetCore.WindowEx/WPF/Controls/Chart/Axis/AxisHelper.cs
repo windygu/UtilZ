@@ -352,72 +352,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        public static void GetAxisMinAndMax(AxisAbs axis, ChartCollection<IChartItem> values, out double min, out double max)
-        {
-            min = double.NaN;
-            max = double.NaN;
+       
 
-            if (values == null || values.Count == 0)
-            {
-                return;
-            }
-
-            double pre = double.IsNaN(axis.PRE) ? AxisConstant.ZERO_D : axis.PRE;
-            object obj;
-            double tmp;
-            foreach (var value in values)
-            {
-                if (value == null)
-                {
-                    continue;
-                }
-
-                switch (axis.AxisType)
-                {
-                    case AxisType.X:
-                        obj = value.GetXValue();
-                        break;
-                    case AxisType.Y:
-                        obj = value.GetYValue();
-                        break;
-                    default:
-                        throw new NotImplementedException(axis.AxisType.ToString());
-                }
-
-                tmp = ConvertToDouble(obj);
-                if (!DoubleHasValue(tmp))
-                {
-                    continue;
-                }
-
-                if (double.IsNaN(min) || tmp - min < pre)
-                {
-                    min = tmp;
-                }
-
-                if (double.IsNaN(max) || tmp - max > pre)
-                {
-                    max = tmp;
-                }
-            }
-        }
-
-
-
-        public static Rectangle CreateColumn(ISeries series, IChartItem chartItem)
+        internal static Rectangle CreateColumn(IColumnSeries series)
         {
             var column = new Rectangle();
-            column.Style = series.Style;
-            if (series.EnableTooltip &&
-                chartItem != null &&
-                !string.IsNullOrWhiteSpace(chartItem.TooltipText))
-            {
-                column.ToolTip = chartItem.TooltipText;
-            }
-
+            column.Style = series.GetStyle();
             return column;
         }
 
+        internal static void SetColumnTooltipText(IColumnSeries series, string tooltipText, FrameworkElement column)
+        {
+            if (series.EnableTooltip &&
+                !string.IsNullOrWhiteSpace(tooltipText))
+            {
+                column.ToolTip = tooltipText;
+            }
+        }
 
 
         public static double ConvertToDouble(object obj)
