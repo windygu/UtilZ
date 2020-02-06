@@ -172,6 +172,7 @@ namespace WpfApp1
                 AxisSize = 200d,
                 //CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
                 //Angle = 330  //1:310;2:220;3:130;4:50
+                Angle=double.NaN
             });
             axes.Add(new NumberAxis()
             {

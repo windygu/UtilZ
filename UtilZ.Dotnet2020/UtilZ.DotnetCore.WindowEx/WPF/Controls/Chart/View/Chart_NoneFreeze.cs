@@ -315,7 +315,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //第三步 根据X轴总高度计算图表区域高度高度(等于Y轴高度)
             double yAxisHeight = axisFreezeInfo.Height - topAxisTotalHeight - bottomAxisTotalHeight - top - bottom;
-
+            if (yAxisHeight < AxisConstant.ZERO_D)
+            {
+                yAxisHeight = AxisConstant.ZERO_D;
+            }
 
 
             //第四步 根据Y轴高度绘制Y轴,并计算Y轴宽度
@@ -367,6 +370,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             //第五步 根据Y轴宽度计算X轴宽度并绘制X轴
             Dictionary<AxisAbs, List<double>> axisXLabelDic = null;
             double xAxisWidth = axisFreezeInfo.Width - leftAxisTotalWidth - rightAxisTotalWidth - left - right;
+            if (xAxisWidth < AxisConstant.ZERO_D)
+            {
+                xAxisWidth = AxisConstant.ZERO_D;
+            }
+
             if (hasAxis)
             {
                 FrameworkElement axisXControl;
