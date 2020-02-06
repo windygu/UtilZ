@@ -84,7 +84,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             labelLinePath.Style = axis.AxisLineStyle;
             if (labelLinePath.Style == null)
             {
-                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+                labelLinePath.Style = ChartStyleHelper.GetDefaultAxisLabelLineStyle();
             }
 
             Point point1, point2;
@@ -120,7 +120,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             labelLinePath.Style = axis.AxisLineStyle;
             if (labelLinePath.Style == null)
             {
-                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+                labelLinePath.Style = ChartStyleHelper.GetDefaultAxisLabelLineStyle();
             }
 
             GeometryGroup geometryGroup = new GeometryGroup();
@@ -187,7 +187,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             labelLinePath.Style = axis.AxisLineStyle;
             if (labelLinePath.Style == null)
             {
-                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+                labelLinePath.Style = ChartStyleHelper.GetDefaultAxisLabelLineStyle();
             }
 
             Point point1, point2;
@@ -223,7 +223,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             labelLinePath.Style = axis.AxisLineStyle;
             if (labelLinePath.Style == null)
             {
-                labelLinePath.Style = ChartStyleHelper.CreateAxisLabelLineStyle();
+                labelLinePath.Style = ChartStyleHelper.GetDefaultAxisLabelLineStyle();
             }
 
             GeometryGroup geometryGroup = new GeometryGroup();

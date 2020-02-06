@@ -21,7 +21,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             var style = base.Style;
             if (style == null)
             {
-                style = ChartStyleHelper.CreateLineSeriesDefaultStyle();
+                style = ChartStyleHelper.GetLineSeriesDefaultStyle();
             }
             this.StyleChanged(style);
             this.EnableTooltipChanged(base.EnableTooltip);

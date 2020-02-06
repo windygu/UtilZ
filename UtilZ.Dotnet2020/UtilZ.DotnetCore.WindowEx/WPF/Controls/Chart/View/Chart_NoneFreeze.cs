@@ -230,12 +230,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
              * 步骤:
              * 1.添加legend,并计算出发四周所占高度或宽度
              * 2.计算X轴总高度
-             * 3.根据X轴总高度计算Y轴高度(图表区域高度)
-             * 4.根据Y轴高度计算刻度值中最大宽度的刻度值,以求出单个Y轴宽度和所有Y轴宽度(为了解决Y轴刻度显示不完或空白过多)
-             * 5.绘制X轴
-             * 6.绘各种图
-             * 7.填充legend
-             * 8.调整grid中控件布局
+             * 3.根据X轴总高度计算图表区域高度高度(等于Y轴高度)
+             * 4.根据Y轴高度绘制Y轴,并计算Y轴宽度
+             * 5.根据Y轴宽度计算X轴宽度并绘制X轴
+             * 6.绘制坐标背景标记线
+             * 7.绘各Series
+             * 8.填充legend
+             * 9.布局UI
              ************************************************************************************************************/
 
             chartGrid.Width = axisFreezeInfo.Width;
@@ -314,12 +315,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //第三步 根据X轴总高度计算图表区域高度高度(等于Y轴高度)
             double yAxisHeight = axisFreezeInfo.Height - topAxisTotalHeight - bottomAxisTotalHeight - top - bottom;
+
+
+
+            //第四步 根据Y轴高度绘制Y轴,并计算Y轴宽度
             double leftAxisTotalWidth = AxisConstant.ZERO_D, rightAxisTotalWidth = AxisConstant.ZERO_D;
+            Dictionary<AxisAbs, List<double>> axisYLabelDic = null;
             if (hasAxis)
             {
                 FrameworkElement axisYControl;
                 double axisLeft = AxisConstant.ZERO_D, axisRight = AxisConstant.ZERO_D;
-
+                List<double> yList;
                 foreach (var axis in axisCollection)
                 {
                     if (axis.AxisType != AxisType.Y)
@@ -327,7 +333,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                         continue;
                     }
 
-                    axis.DrawY(seriesCollection, yAxisHeight);
+                    yList = axis.DrawY(seriesCollection, yAxisHeight);
+                    if (axis.EnableBackgroundLabelLine && yList != null)
+                    {
+                        if (axisYLabelDic == null)
+                        {
+                            axisYLabelDic = new Dictionary<AxisAbs, List<double>>();
+                        }
+                        axisYLabelDic.Add(axis, yList);
+                    }
+
                     axisYControl = axis.AxisControl;
                     chartGrid.Children.Add(axisYControl);
 
@@ -349,14 +364,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
 
-            //第四步
+            //第五步 根据Y轴宽度计算X轴宽度并绘制X轴
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = null;
             double xAxisWidth = axisFreezeInfo.Width - leftAxisTotalWidth - rightAxisTotalWidth - left - right;
-
-            //第五步
             if (hasAxis)
             {
                 FrameworkElement axisXControl;
                 double axisTop = AxisConstant.ZERO_D, axisBottom = AxisConstant.ZERO_D;
+                List<double> xList;
 
                 foreach (var axis in axisCollection)
                 {
@@ -365,7 +380,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                         continue;
                     }
 
-                    axis.DrawX(seriesCollection, xAxisWidth);
+                    xList = axis.DrawX(seriesCollection, xAxisWidth);
+                    if (axis.EnableBackgroundLabelLine && xList != null)
+                    {
+                        if (axisXLabelDic == null)
+                        {
+                            axisXLabelDic = new Dictionary<AxisAbs, List<double>>();
+                        }
+                        axisXLabelDic.Add(axis, xList);
+                    }
+
                     axisXControl = axis.AxisControl;
                     chartGrid.Children.Add(axisXControl);
                     if (axis.IsAxisXBottom())
@@ -383,8 +407,53 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
             }
 
+            //第六步 绘制坐标背景标记线
+            Path backgroundLabelLine;
+            List<BackgroundLabelLineSegment> labelLineSegments = null;
+            if (axisYLabelDic != null)
+            {
+                labelLineSegments = new List<BackgroundLabelLineSegment>();
+                foreach (var kv in axisYLabelDic)
+                {
+                    labelLineSegments.Clear();
+                    foreach (var y in kv.Value)
+                    {
+                        labelLineSegments.Add(new BackgroundLabelLineSegment(new Point(AxisConstant.ZERO_D, y), new Point(xAxisWidth, y)));
+                    }
+                    backgroundLabelLine = kv.Key.CreateBackgroundLabelLine(labelLineSegments);
+                    if (backgroundLabelLine != null)
+                    {
+                        chartCanvas.Children.Add(backgroundLabelLine);
+                    }
+                }
+            }
 
-            //第六步
+            if (axisXLabelDic != null)
+            {
+                if (labelLineSegments == null)
+                {
+                    labelLineSegments = new List<BackgroundLabelLineSegment>();
+                }
+
+                foreach (var kv in axisXLabelDic)
+                {
+                    labelLineSegments.Clear();
+                    foreach (var x in kv.Value)
+                    {
+                        labelLineSegments.Add(new BackgroundLabelLineSegment(new Point(x, AxisConstant.ZERO_D), new Point(x, yAxisHeight)));
+                    }
+                    backgroundLabelLine = kv.Key.CreateBackgroundLabelLine(labelLineSegments);
+                    if (backgroundLabelLine != null)
+                    {
+                        chartCanvas.Children.Add(backgroundLabelLine);
+                    }
+                }
+            }
+
+
+
+
+            //第七步 绘各Series
             chartCanvas.Width = xAxisWidth;
             chartCanvas.Height = yAxisHeight;
             chartGrid.Children.Add(chartCanvas);
@@ -396,7 +465,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
             }
 
-            //第七步
+
+
+            //第八步 填充legend
             if (hasLegend)
             {
                 var legendBrushList = new List<SeriesLegendItem>();
@@ -412,7 +483,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
 
-            //第八步
+
+            //第九步 布局UI
             var chartGridRowColumnDefinition = new ChartGridRowColumnDefinition(hasLegend, legend, chartGrid,
                 leftAxisTotalWidth, rightAxisTotalWidth, topAxisTotalHeight, bottomAxisTotalHeight);
             if (hasLegend)

@@ -243,7 +243,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// </summary>
         /// <param name="axisCanvas"></param>
         /// <param name="seriesCollection"></param>
-        protected override void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
@@ -264,6 +264,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     throw new ArgumentException($"未知的{base.Orientation.ToString()}");
             }
             AxisHelper.DrawYAxisLabelLine(this, axisCanvas, yList);
+            return yList;
         }
         private List<double> DrawYAxisTopToBottom(Canvas axisCanvas, NumberAxisData axisData)
         {
@@ -485,12 +486,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
             {
-                return;
+                return null;
             }
 
             List<double> xList;
@@ -506,6 +507,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     throw new ArgumentException($"未知的{base.Orientation.ToString()}");
             }
             AxisHelper.DrawXAxisLabelLine(this, axisCanvas, xList);
+            return xList;
         }
 
         private List<double> DrawXAxisRightToLeft(Canvas axisCanvas, NumberAxisData axisData)

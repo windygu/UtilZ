@@ -12,21 +12,39 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     public class ChartStyleHelper
     {
-        private static Style _axisLabelLineStyle = null;
-        public static Style CreateAxisLabelLineStyle()
+        private static Style _defaultAxisLabelLineStyle = null;
+        public static Style GetDefaultAxisLabelLineStyle()
         {
-            if (_axisLabelLineStyle == null)
+            if (_defaultAxisLabelLineStyle == null)
             {
                 var style = new Style();
                 style.TargetType = typeof(System.Windows.Shapes.Path);
                 //style.Setters.Add(new Setter(Path.StrokeProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4F4F4"))));
                 style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.White));
                 style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 1.0d));
-                _axisLabelLineStyle = style;
+                _defaultAxisLabelLineStyle = style;
             }
 
-            return _axisLabelLineStyle;
+            return _defaultAxisLabelLineStyle;
         }
+
+
+        private static Style _defaultBackgroundLabelLineStyle = null;
+        public static Style GetDefaultBackgroundLabelLineStyle()
+        {
+            if (_defaultBackgroundLabelLineStyle == null)
+            {
+                var style = new Style();
+                style.TargetType = typeof(System.Windows.Shapes.Path);
+                style.Setters.Add(new Setter(Path.StrokeProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4F4F4"))));
+                //style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.Gray));
+                style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 1.0d));
+                _defaultBackgroundLabelLineStyle = style;
+            }
+
+            return _defaultBackgroundLabelLineStyle;
+        }
+
 
         private static Dictionary<ChartDockOrientation, Style> _axisLabelDefaultStyleDic = null;
         public static Style GetAxisLabelStyle(ChartDockOrientation axisDockOrientation)
@@ -73,6 +91,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return defaultLabelStyle;
         }
 
+
         private static Dictionary<ChartDockOrientation, Style> _axisTitleStyleDic = null;
         public static Style CreateAxisTitleStyle(ChartDockOrientation axisDockOrientation)
         {
@@ -117,8 +136,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return defaultTitleStyle;
         }
 
+
         private static Style _lineSeriesDefaultStyle = null;
-        public static Style CreateLineSeriesDefaultStyle()
+        public static Style GetLineSeriesDefaultStyle()
         {
             if (_lineSeriesDefaultStyle == null)
             {

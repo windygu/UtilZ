@@ -31,6 +31,25 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        private int _autoSizeFactor = 2;
+        /// <summary>
+        /// 自动计算条形图宽度因子,越大表示自动计算出来的条形图越宽,默认值2
+        /// </summary>
+        public int AutoSizeFactor
+        {
+            get { return _autoSizeFactor; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("值不能小于0");
+                }
+
+                _autoSizeFactor = value;
+                base.OnRaisePropertyChanged(nameof(AutoSizeFactor));
+            }
+        }
+
 
 
         public Func<object, string> CustomAxisTextFormatCunc;
@@ -41,6 +60,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private readonly object _nullLabelAxisItem = new object();
 
         public LabelAxis()
+            : base()
         {
 
         }
@@ -204,10 +224,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return axisSize / labelCount;
         }
 
+
         private double CalculateSeriesSize(Dictionary<ColumnSeries, double> seriesSizeDic, double labelStepSize)
         {
             double totalSeriesSize = AxisConstant.ZERO_D;
-            double seriesAutoSizeCount = 0;
+            int seriesAutoSizeCount = 0;
             foreach (var seriesSize in seriesSizeDic.Values)
             {
                 if (AxisHelper.DoubleHasValue(seriesSize))
@@ -226,7 +247,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 double availableSpace = labelStepSize - totalSeriesSize;
                 if (availableSpace >= base._PRE)
                 {
-                    seriesAutoSize = availableSpace / (seriesAutoSizeCount + 1);
+                    seriesAutoSize = availableSpace / (seriesAutoSizeCount + this._autoSizeFactor);
+
+                    //计算固定大小的平均值
+                    int fixSeriesSizeCount = seriesSizeDic.Count - seriesAutoSizeCount;
+                    if (fixSeriesSizeCount > 0)
+                    {
+                        double avgSeriesSize = totalSeriesSize / fixSeriesSizeCount;
+                        if (avgSeriesSize - seriesAutoSize < base._PRE)
+                        {
+                            //取固定大小平均值与可用空间自动计算值中的更小的值
+                            seriesAutoSize = avgSeriesSize;
+                        }
+                    }
                 }
 
                 int index = -1;
@@ -249,12 +282,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this.CreateAxisData(seriesCollection);
             if (this._axisData.Count == 0)
             {
-                return;
+                return null;
             }
 
             Dictionary<ColumnSeries, double> seriesSizeDic = this.GetSeriesSizeDic(seriesCollection);
@@ -266,6 +299,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             AxisLabelLocation labelLocation = AxisLabelLocation.First;
             object labelObj;
             LabelSeriesItem labelItem;
+            List<double> xList = new List<double>();
+            double labelStepSizeHalf = labelStepSize / 2;
             double x;
 
             for (int i = 0; i < this._axisData.Count; i++)
@@ -281,10 +316,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (this.IsAxisXBottom())
                 {
                     Canvas.SetTop(label, AxisConstant.ZERO_D);
+                    this.RotateLabelBottom(label);
                 }
                 else
                 {
                     Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                    this.RotateLabelTop(label);
                 }
 
                 switch (labelLocation)
@@ -304,76 +341,38 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 foreach (var key in labelItem.Keys.ToArray())
                 {
                     labelItem[key] = x;
-                    x += labelItem.SeriesSize;
+                    x += labelItem.Series.Size;
                 }
 
+                xList.Add(left + labelStepSizeHalf);
                 left += labelStepSize;
             }
 
             AxisHelper.DrawXAxisLabelLine(this, axisCanvas, AxisConstant.ZERO_D, axisCanvas.Height);
-
-            //this.CreateAxisData(seriesCollection);
-            //if (this._axisData.Count == 0)
-            //{
-            //    return;
-            //}
-
-            //double labelStepSize = this.CalculateLabelStepSize(this._axisData.Count, axisCanvas.Height);
-            //double columnSeriesOffset = this.CalculateSeriesSize(seriesCollection, labelStepSize);
-            //List<double> xList = new List<double>();
-            //double labelStepSizeHalf = labelStepSize / 2;
-            //TextBlock label;
-            //double left = 0d;
-            //AxisLabelLocation labelLocation = AxisLabelLocation.First;
-            //object labelObj;
-            //List<LabelSeriesItem> labelAxisItemList;
-            //double x;
-
-            //for (int i = 0; i < this._axisData.Count; i++)
-            //{
-            //    labelObj = this._axisData.ElementAt(i).Key;
-            //    labelAxisItemList = this._axisData.ElementAt(i).Value;
-
-            //    label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(labelObj));
-            //    this.CreateLabbelTransform(label);
-            //    axisCanvas.Children.Add(label);
-            //    Canvas.SetTop(label, left + labelStepSizeHalf);
-            //    if (this.IsAxisXBottom())
-            //    {
-            //        Canvas.SetTop(label, AxisConstant.ZERO_D);
-            //    }
-            //    else
-            //    {
-            //        Canvas.SetBottom(label, AxisConstant.ZERO_D);
-            //    }
-
-            //    switch (labelLocation)
-            //    {
-            //        case AxisLabelLocation.First:
-            //            x = columnSeriesOffset;
-            //            labelLocation = AxisLabelLocation.Middle;
-            //            break;
-            //        case AxisLabelLocation.Middle:
-            //        case AxisLabelLocation.Last:
-            //            x = left + columnSeriesOffset;
-            //            break;
-            //        default:
-            //            throw new NotImplementedException(labelLocation.ToString());
-            //    }
-
-            //    foreach (LabelSeriesItem labelAxisItem in labelAxisItemList)
-            //    {
-            //        labelAxisItem.Axis = x;
-            //        x += labelAxisItem.SeriesSize;
-            //    }
-
-            //    left += labelStepSize;
-            //}
-
-            //AxisHelper.DrawXAxisLabelLine(this, axisCanvas, xList);
+            return xList;
         }
+        private void RotateLabelTop(TextBlock label)
+        {
+            //todo..未测试,可能需要修改
+            Size size = UITextHelper.MeasureTextSize(label);
+            var transformGroup = new TransformGroup();
 
-        private void CreateLabbelTransform(TextBlock label)
+            const double ANGLE = -50d;
+
+            var rotateTransform = new RotateTransform();
+            rotateTransform.CenterX = size.Width;
+            rotateTransform.CenterY = 0d;
+            rotateTransform.Angle = ANGLE;
+            transformGroup.Children.Add(rotateTransform);
+
+            var translateTransform = new TranslateTransform();
+            translateTransform.X = 0d - size.Width - size.Height / 2;
+            translateTransform.Y = 0d;
+            transformGroup.Children.Add(translateTransform);
+
+            label.RenderTransform = transformGroup;
+        }
+        private void RotateLabelBottom(TextBlock label)
         {
             Size size = UITextHelper.MeasureTextSize(label);
             var transformGroup = new TransformGroup();
@@ -403,13 +402,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// </summary>
         /// <param name="axisCanvas"></param>
         /// <param name="seriesCollection"></param>
-        protected override void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             axisCanvas.Width = this._axisSize;
             this.CreateAxisData(seriesCollection);
             if (this._axisData.Count == 0)
             {
-                return;
+                return null;
             }
 
             Dictionary<ColumnSeries, double> seriesSizeDic = this.GetSeriesSizeDic(seriesCollection);
@@ -422,6 +421,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             object labelObj;
             LabelSeriesItem labelItem;
             double y;
+            List<double> yList = new List<double>();
+            double labelStepSizeHalf = labelStepSize / 2;
 
             for (int i = 0; i < this._axisData.Count; i++)
             {
@@ -459,13 +460,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 foreach (var key in labelItem.Keys.ToArray())
                 {
                     labelItem[key] = y;
-                    y += labelItem.SeriesSize;
+                    y += labelItem.Series.Size;
                 }
 
+                yList.Add(top + labelStepSizeHalf);
                 top += labelStepSize;
             }
 
             AxisHelper.DrawYAxisLabelLine(this, axisCanvas, AxisConstant.ZERO_D, axisCanvas.Height);
+            return yList;
         }
 
 
@@ -540,8 +543,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     internal class LabelSeriesItem : Dictionary<IChartItem, double>
     {
         public ColumnSeries Series { get; private set; }
-
-        public double SeriesSize { get; set; }
 
         public LabelSeriesItem(ColumnSeries series)
         {

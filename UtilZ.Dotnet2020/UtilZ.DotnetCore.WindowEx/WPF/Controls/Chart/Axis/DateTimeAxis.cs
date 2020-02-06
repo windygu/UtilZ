@@ -379,14 +379,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// </summary>
         /// <param name="axisCanvas"></param>
         /// <param name="seriesCollection"></param>
-        protected override void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+        protected override List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._labelTextSize = this.MeasureLabelTextSize();
             axisCanvas.Width = base.CalculateAxisSize(this._labelTextSize.Width);
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
             {
-                return;
+                return null;
             }
 
             double labelStepMilliseconds = this.CalculateYLabelStep(this._axisData);
@@ -405,6 +405,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             AxisHelper.DrawYAxisLabelLine(this, axisCanvas, yList);
+            return yList;
         }
 
         private List<double> DrawXAxisTopToBottom(Canvas axisCanvas, DateTimeAxisData axisData, double labelStepMilliseconds, double labelStepSize)
@@ -608,17 +609,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return yList;
         }
 
-        protected override void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
+
+
+        protected override List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
             if (this._axisData == null)
             {
-                return;
+                return null;
             }
 
+            List<double> xList;
             double labelStepMilliseconds = this.CalculateXLabelStep(this._axisData);
             double labelStepSize = AxisHelper.CalculateLabelStepSize(this._axisData.Area.TotalMilliseconds, axisCanvas.Width, labelStepMilliseconds);
-            List<double> xList;
             switch (base.Orientation)
             {
                 case AxisOrientation.LeftToRight:
@@ -631,6 +634,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     throw new ArgumentException($"未知的{base.Orientation.ToString()}");
             }
             AxisHelper.DrawXAxisLabelLine(this, axisCanvas, xList);
+            return xList;
         }
 
         private List<double> DrawXAxisRightToLeft(Canvas axisCanvas, DateTimeAxisData axisData, double labelStepMilliseconds, double labelStepSize)

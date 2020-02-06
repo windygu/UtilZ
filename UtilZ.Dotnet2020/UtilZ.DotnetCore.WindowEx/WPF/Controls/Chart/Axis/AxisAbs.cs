@@ -133,8 +133,76 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        private bool _enableBackgroundLabelLine = false;
+        /// <summary>
+        /// 是否启用背景刻度线
+        /// </summary>
+        public bool EnableBackgroundLabelLine
+        {
+            get { return _enableBackgroundLabelLine; }
+            set
+            {
+                _enableBackgroundLabelLine = value;
+                base.OnRaisePropertyChanged(nameof(EnableBackgroundLabelLine));
+            }
+        }
 
+        private Style _backgroundLabelLineStyle = null;
+        /// <summary>
+        /// 背景刻度线样式
+        /// </summary>
+        public Style BackgroundLabelLineStyle
+        {
+            get { return _backgroundLabelLineStyle; }
+            set
+            {
+                _backgroundLabelLineStyle = value;
+                base.OnRaisePropertyChanged(nameof(BackgroundLabelLineStyle));
+            }
+        }
 
+        public Func<List<BackgroundLabelLineSegment>, Path> CreateBackgroundLabelLineFunc;
+
+        internal Path CreateBackgroundLabelLine(List<BackgroundLabelLineSegment> labelLineSegments)
+        {
+            if (!this._enableBackgroundLabelLine ||
+                labelLineSegments == null ||
+                labelLineSegments.Count == 0)
+            {
+                return null;
+            }
+
+            var handler = this.CreateBackgroundLabelLineFunc;
+            if (handler != null)
+            {
+                return handler(labelLineSegments);
+            }
+
+            Path backgroundLabelLine = new Path();
+            if (this._backgroundLabelLineStyle == null)
+            {
+                backgroundLabelLine.Style = ChartStyleHelper.GetDefaultBackgroundLabelLineStyle();
+            }
+            else
+            {
+                backgroundLabelLine.Style = this._backgroundLabelLineStyle;
+            }
+
+            GeometryGroup geometryGroup = new GeometryGroup();
+            foreach (var labelLineSegment in labelLineSegments)
+            {
+                PathFigure segmentFigure = new PathFigure();
+                segmentFigure.StartPoint = labelLineSegment.Point1;
+                segmentFigure.Segments.Add(new LineSegment(labelLineSegment.Point2, true));
+                geometryGroup.Children.Add(new PathGeometry()
+                {
+                    Figures = new PathFigureCollection(new PathFigure[] { segmentFigure })
+                });
+            }
+
+            backgroundLabelLine.Data = geometryGroup;
+            return backgroundLabelLine;
+        }
 
 
 
@@ -281,26 +349,26 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
         protected abstract double PrimitiveGetXAxisHeight();
 
-        internal void DrawX(ChartCollection<ISeries> seriesCollection, double axisWidth)
+        internal List<double> DrawX(ChartCollection<ISeries> seriesCollection, double axisWidth)
         {
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Width = axisWidth;
             this.AddAxisXTitle(this._axisCanvas);
-            this.PrimitiveDrawX(this._axisCanvas, seriesCollection);
+            return this.PrimitiveDrawX(this._axisCanvas, seriesCollection);
         }
-        protected abstract void PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
+        protected abstract List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
 
 
 
 
-        internal void DrawY(ChartCollection<ISeries> seriesCollection, double axisHeight)
+        internal List<double> DrawY(ChartCollection<ISeries> seriesCollection, double axisHeight)
         {
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Height = axisHeight;
             this.AddAxisYTitle(this._axisCanvas);
-            this.PrimitiveDrawY(this._axisCanvas, seriesCollection);
+            return this.PrimitiveDrawY(this._axisCanvas, seriesCollection);
         }
 
         /// <summary>
@@ -308,7 +376,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// </summary>
         /// <param name="axisCanvas"></param>
         /// <param name="seriesCollection"></param>
-        protected abstract void PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
+        /// <param name="labelLineSegments"></param>
+        protected abstract List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
 

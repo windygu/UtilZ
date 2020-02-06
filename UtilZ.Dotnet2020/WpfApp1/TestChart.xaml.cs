@@ -150,10 +150,102 @@ namespace WpfApp1
             //TestLineSeries();
             //TestVerStepLineSeries();
 
-            TestColumnSeriesHorizontal();
+            //TestColumnSeriesHorizontal();
             //TestColumnSeriesVertical();
+            TestMuiltColumnSeriesVertical();
         }
 
+
+
+
+        private void TestMuiltColumnSeriesVertical()
+        {
+            int min = -100, max = 100;
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new LabelAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                AxisSize = 20d
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = min,
+                MaxValue = max,
+                LabelStep = double.NaN,
+                EnableBackgroundLabelLine = true,
+                LabelSize = 0d
+            });
+            this.Axes = axes;
+
+
+
+
+            var series = new ChartCollection<ISeries>();
+            series.Add(new ColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                Title = "ColumnSeries1",
+                Style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor())
+            });
+            series.Add(new ColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                Title = "ColumnSeries2",
+                Style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor())
+            });
+
+            int count = 5;
+            var time = DateTime.Parse("2010-01-01 00:00:00");
+            double value;
+            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
+            ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
+            for (int i = 0; i < count; i++)
+            {
+                value = _rnd.Next(min, max);
+                values.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+
+                value = _rnd.Next(min, max);
+                values2.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+
+                time = time.AddMonths(1);
+            }
+            series[0].Values = values;
+            series[1].Values = values2;
+
+
+
+
+            this.Series = series;
+
+            //this.Legend = new VerticalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Right,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            this.ManaulComit = false;
+        }
 
         private void TestColumnSeriesVertical()
         {
@@ -164,7 +256,7 @@ namespace WpfApp1
             axes.Add(new LabelAxis()
             {
                 AxisType = AxisType.X,
-                DockOrientation = ChartDockOrientation.Top,
+                DockOrientation = ChartDockOrientation.Bottom,
                 Orientation = AxisOrientation.LeftToRight,
                 AxisSize = 20d
             });
