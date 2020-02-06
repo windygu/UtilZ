@@ -167,11 +167,11 @@ namespace WpfApp1
             axes.Add(new LabelAxis()
             {
                 AxisType = AxisType.X,
-                DockOrientation = ChartDockOrientation.Top,
+                DockOrientation = ChartDockOrientation.Bottom,
                 Orientation = AxisOrientation.LeftToRight,
                 AxisSize = 200d,
                 //CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
-                Angle = 310  //1:310;2:220;3:130;4:50
+                //Angle = 330  //1:310;2:220;3:130;4:50
             });
             axes.Add(new NumberAxis()
             {

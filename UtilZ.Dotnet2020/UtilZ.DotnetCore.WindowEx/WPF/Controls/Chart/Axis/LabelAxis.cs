@@ -50,7 +50,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        private double _angle = -50d;
+        private double _angle = 310d;
         public double Angle
         {
             get { return _angle; }
@@ -400,8 +400,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     break;
                 case Quadrant.Four:
                     x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians) - labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
-                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Acos(angleQuadrantInfo.Radians);
-                    translateTransform.X = x - labelTextSize.Width / 2;
+                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Cos(angleQuadrantInfo.Radians);
+                    translateTransform.X = labelTextSize.Width / 2 - x;
                     translateTransform.Y = labelTextSize.Height - y;
                     break;
                 default:
