@@ -361,6 +361,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private void Series_ChartCollectionChanged(object sender, ChartCollectionChangedEventArgs<ISeries> e)
         {
             bool update = false;
+            bool isFuillDraw = false;
             switch (e.Action)
             {
                 case ChartCollectionChangedAction.Add:
@@ -393,7 +394,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                             series.PropertyChanged -= Series_PropertyChanged;
                             series.ValuesCollectionChanged -= Series_ValuesCollectionChanged;
-                            series.Remove();
+                            isFuillDraw = series.Remove();
                         }
                     }
                     break;
@@ -424,7 +425,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                             series.PropertyChanged -= Series_PropertyChanged;
                             series.ValuesCollectionChanged -= Series_ValuesCollectionChanged;
-                            series.Remove();
+                            isFuillDraw = series.Remove();
                         }
                     }
                     break;
@@ -432,7 +433,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     throw new NotImplementedException(e.Action.ToString());
             }
 
-            if (update)
+            if (isFuillDraw)
+            {
+                this.UpdateAll();
+            }
+            else if (update)
             {
                 this.UpdateChart(e.NewItems);
             }

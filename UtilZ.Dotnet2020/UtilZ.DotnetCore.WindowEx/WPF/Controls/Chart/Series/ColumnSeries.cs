@@ -50,6 +50,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         protected override void PrimitiveAdd(Canvas canvas)
         {
+            this._columnElementList.Clear();
             Brush legendBrush = this.CreateColumn(null).Fill.Clone();
             base.AddOrReplaceLegendItem(new SeriesLegendItem(legendBrush, base.Title, this));
 
@@ -75,7 +76,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             double x, y;
-            FrameworkElement columnElement;
+            Rectangle columnElement;
             foreach (var item in base._values)
             {
                 x = this.AxisX.GetX(item);
@@ -97,6 +98,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
 
                 canvas.Children.Add(columnElement);
+                this._columnElementList.Add(columnElement);
 
                 if (this.AxisY.IsAxisYLeft())
                 {
@@ -125,7 +127,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             double x, y;
-            FrameworkElement columnElement;
+            Rectangle columnElement;
             foreach (var item in base._values)
             {
                 x = this.AxisX.GetX(item);
@@ -147,6 +149,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
 
                 canvas.Children.Add(columnElement);
+                this._columnElementList.Add(columnElement);
 
                 if (this.AxisX.IsAxisXBottom())
                 {
@@ -187,14 +190,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override void PrimitiveRemove(Canvas canvas)
+        protected override bool PrimitiveRemove(Canvas canvas)
         {
-            foreach (var columnElement in this._columnElementList)
-            {
-                base._canvas.Children.Remove(columnElement);
-            }
+            //foreach (var columnElement in this._columnElementList)
+            //{
+            //    base._canvas.Children.Remove(columnElement);
+            //}
 
-            this._columnElementList.Clear();
+            //this._columnElementList.Clear();
+            return true;
         }
 
 
@@ -206,7 +210,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             foreach (var columnElement in this._columnElementList)
             {
-                base._canvas.Children.Remove(columnElement);
+                columnElement.Visibility = newVisibility;
             }
         }
     }

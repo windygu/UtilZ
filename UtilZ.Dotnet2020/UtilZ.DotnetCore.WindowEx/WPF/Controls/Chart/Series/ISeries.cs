@@ -27,7 +27,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         void Add(Canvas canvas);
 
-        void Remove();
+        /// <summary>
+        /// 返回值:true:需要全部重绘;false:不需要重绘
+        /// </summary>
+        /// <returns></returns>
+        bool Remove();
 
         void Update();
 

@@ -171,7 +171,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-       
+
 
 
 
@@ -188,12 +188,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        public void Remove()
+        public bool Remove()
         {
-            this.PrimitiveRemove(this._canvas);
+            if (this.PrimitiveRemove(this._canvas))
+            {
+                return true;
+            }
+
             this.RemoveLegendItem();
+            return false;
         }
-        protected abstract void PrimitiveRemove(Canvas canvas);
+        protected abstract bool PrimitiveRemove(Canvas canvas);
 
 
 

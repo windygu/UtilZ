@@ -221,7 +221,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override void PrimitiveRemove(Canvas canvas)
+        protected override bool PrimitiveRemove(Canvas canvas)
         {
             this._pointInfoList.Clear();
             canvas.Children.Remove(this._pathLine);
@@ -236,6 +236,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 canvas.Children.Remove(pointGeometry);
             }
             this._pointGeometryList.Clear();
+            return false;
         }
 
 
