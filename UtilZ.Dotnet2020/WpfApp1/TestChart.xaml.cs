@@ -167,9 +167,11 @@ namespace WpfApp1
             axes.Add(new LabelAxis()
             {
                 AxisType = AxisType.X,
-                DockOrientation = ChartDockOrientation.Bottom,
+                DockOrientation = ChartDockOrientation.Top,
                 Orientation = AxisOrientation.LeftToRight,
-                AxisSize = 20d
+                AxisSize = 200d,
+                CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
+                Angle = 310  //1:310;2:220;3:130;4:50
             });
             axes.Add(new NumberAxis()
             {
@@ -209,7 +211,7 @@ namespace WpfApp1
 
             int count = 5;
             var time = DateTime.Parse("2010-01-01 00:00:00");
-            double value;
+            double value = min;
             ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
             ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
             for (int i = 0; i < count; i++)
@@ -230,20 +232,20 @@ namespace WpfApp1
 
             this.Series = series;
 
-            //this.Legend = new VerticalChartLegend()
-            //{
-            //    DockOrientation = ChartDockOrientation.Right,
-            //    HorizontalAlignment = HorizontalAlignment.Center,
-            //    VerticalAlignment = VerticalAlignment.Center,
-            //    Background = Brushes.Transparent
-            //};
-            this.Legend = new HorizontalChartLegend()
+            this.Legend = new VerticalChartLegend()
             {
-                DockOrientation = ChartDockOrientation.Bottom,
+                DockOrientation = ChartDockOrientation.Right,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Background = Brushes.Transparent
             };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
             this.ManaulComit = false;
         }
 

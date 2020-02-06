@@ -50,6 +50,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        private double _angle = -50d;
+        public double Angle
+        {
+            get { return _angle; }
+            set
+            {
+                _angle = value;
+                base.OnRaisePropertyChanged(nameof(Angle));
+            }
+        }
 
 
         public Func<object, string> CustomAxisTextFormatCunc;
@@ -294,6 +304,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double labelStepSize = this.CalculateLabelStepSize(this._axisData.Count, axisCanvas.Width);
             double columnSeriesOffset = this.CalculateSeriesSize(seriesSizeDic, labelStepSize);
             TextBlock label;
+            var angleQuadrantInfo = new AngleQuadrantInfo(this._angle, base._PRE);
             Size labelTextSize;
             double left = 0d, labelTextOffset;
             AxisLabelLocation labelLocation = AxisLabelLocation.First;
@@ -316,12 +327,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (this.IsAxisXBottom())
                 {
                     Canvas.SetTop(label, AxisConstant.ZERO_D);
-                    this.RotateLabelBottom(label);
+                    this.RotateLabelBottom(label, angleQuadrantInfo, labelTextSize);
                 }
                 else
                 {
                     Canvas.SetBottom(label, AxisConstant.ZERO_D);
-                    this.RotateLabelTop(label);
+                    this.RotateLabelTop(label, angleQuadrantInfo, labelTextSize);
                 }
 
                 switch (labelLocation)
@@ -351,45 +362,104 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             AxisHelper.DrawXAxisLabelLine(this, axisCanvas, AxisConstant.ZERO_D, axisCanvas.Height);
             return xList;
         }
-        private void RotateLabelTop(TextBlock label)
+        private void RotateLabelTop(TextBlock label, AngleQuadrantInfo angleQuadrantInfo, Size labelTextSize)
         {
-            //todo..未测试,可能需要修改
-            Size size = UITextHelper.MeasureTextSize(label);
+            if (!angleQuadrantInfo.Rotate)
+            {
+                return;
+            }
+
             var transformGroup = new TransformGroup();
 
-            const double ANGLE = -50d;
-
             var rotateTransform = new RotateTransform();
-            rotateTransform.CenterX = size.Width;
-            rotateTransform.CenterY = 0d;
-            rotateTransform.Angle = ANGLE;
+            rotateTransform.CenterX = AxisConstant.ZERO_D;
+            rotateTransform.CenterY = AxisConstant.ZERO_D;
+            rotateTransform.Angle = angleQuadrantInfo.Angle;
             transformGroup.Children.Add(rotateTransform);
 
             var translateTransform = new TranslateTransform();
-            translateTransform.X = 0d - size.Width - size.Height / 2;
-            translateTransform.Y = 0d;
-            transformGroup.Children.Add(translateTransform);
+            double x, y;
 
+            switch (angleQuadrantInfo.Quadrant)
+            {
+                case Quadrant.One:
+                    x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Height * Math.Cos(angleQuadrantInfo.ModRadians);
+                    translateTransform.X = (labelTextSize.Width - x) / 2;
+                    translateTransform.Y = labelTextSize.Height - y;
+                    break;
+                case Quadrant.Two:
+                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
+                    translateTransform.X = (labelTextSize.Width - x) / 2 + x;
+                    translateTransform.Y = labelTextSize.Height;
+                    break;
+                case Quadrant.Three:
+                    x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
+                    translateTransform.X = (labelTextSize.Width - x) / 2 + x;
+                    translateTransform.Y = labelTextSize.Height - y;
+                    break;
+                case Quadrant.Four:
+                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
+                    translateTransform.X = AxisConstant.ZERO_D;
+                    translateTransform.Y = AxisConstant.ZERO_D - y;
+                    break;
+                default:
+                    throw new NotImplementedException(angleQuadrantInfo.Quadrant.ToString());
+            }
+
+            transformGroup.Children.Add(translateTransform);
             label.RenderTransform = transformGroup;
         }
-        private void RotateLabelBottom(TextBlock label)
+
+        private void RotateLabelBottom(TextBlock label, AngleQuadrantInfo angleQuadrantInfo, Size labelTextSize)
         {
-            Size size = UITextHelper.MeasureTextSize(label);
+            if (!angleQuadrantInfo.Rotate)
+            {
+                return;
+            }
+
             var transformGroup = new TransformGroup();
 
-            const double ANGLE = -50d;
-
             var rotateTransform = new RotateTransform();
-            rotateTransform.CenterX = size.Width;
-            rotateTransform.CenterY = 0d;
-            rotateTransform.Angle = ANGLE;
+            rotateTransform.CenterX = AxisConstant.ZERO_D;
+            rotateTransform.CenterY = AxisConstant.ZERO_D;
+            rotateTransform.Angle = angleQuadrantInfo.Angle;
             transformGroup.Children.Add(rotateTransform);
 
             var translateTransform = new TranslateTransform();
-            translateTransform.X = 0d - size.Width - size.Height / 2;
-            translateTransform.Y = 0d;
-            transformGroup.Children.Add(translateTransform);
+            double x, y;
 
+            switch (angleQuadrantInfo.Quadrant)
+            {
+                case Quadrant.One:
+                    x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
+                    translateTransform.X = (labelTextSize.Width - x) / 2;
+                    translateTransform.Y = y;
+                    break;
+                case Quadrant.Two:
+                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Sin(angleQuadrantInfo.ModRadians);
+                    translateTransform.X = (labelTextSize.Width + x) / 2;
+                    translateTransform.Y = y;
+                    break;
+                case Quadrant.Three:
+                    x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Height * Math.Sin(angleQuadrantInfo.ModRadians); ;
+                    translateTransform.X = (labelTextSize.Width + x) / 2;
+                    translateTransform.Y = y;
+                    break;
+                case Quadrant.Four:
+                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
+                    translateTransform.X = x / 2;
+                    translateTransform.Y = AxisConstant.ZERO_D;
+                    break;
+                default:
+                    throw new NotImplementedException(angleQuadrantInfo.Quadrant.ToString());
+            }
+
+            transformGroup.Children.Add(translateTransform);
             label.RenderTransform = transformGroup;
         }
 
@@ -536,7 +606,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
     }
 
-
     /// <summary>
     /// [key:IChartItem;value:坐标值]
     /// </summary>
@@ -548,5 +617,136 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             this.Series = series;
         }
+    }
+
+    internal class AngleQuadrantInfo
+    {
+        private bool _rotate = false;
+        public bool Rotate
+        {
+            get { return _rotate; }
+        }
+
+        private double _angle = double.NaN;
+        public double Angle
+        {
+            get { return _angle; }
+        }
+
+        private Quadrant _quadrant = Quadrant.One;
+        public Quadrant Quadrant
+        {
+            get { return _quadrant; }
+        }
+
+        private double _radians = double.NaN;
+        /// <summary>
+        /// 角度对应的弧度
+        /// </summary>
+        public double Radians
+        {
+            get { return _radians; }
+        }
+
+        private double _modRadians = double.NaN;
+        /// <summary>
+        /// 用于计算值的余角弧度
+        /// </summary>
+        public double ModRadians
+        {
+            get { return _modRadians; }
+        }
+
+
+        private const double ANGLE_90 = 90d;
+        private const double ANGLE_180 = 180d;
+        private const double ANGLE_270 = 270d;
+        private const double ANGLE_360 = 360d;
+
+
+        public AngleQuadrantInfo(double angle, double pre)
+        {
+            this._rotate = AxisHelper.DoubleHasValue(angle);
+            if (!this._rotate)
+            {
+                return;
+            }
+
+            //将角度转换为-360到360度之间
+            angle = angle % ANGLE_360;
+            if (angle < AxisConstant.ZERO_D)
+            {
+                //将负数角度转换为正数角度
+                angle += ANGLE_360;
+            }
+            this._angle = angle;
+
+
+            //角度值无效或小于精度值,则认为不需要旋转
+            if (angle <= pre)
+            {
+                this._rotate = false;
+                return;
+            }
+
+            double mathAngle;
+            Quadrant quadrant;
+            if (angle - ANGLE_270 > AxisConstant.ZERO_D)
+            {
+                //angle:270-360°
+                quadrant = Quadrant.One;
+                mathAngle = angle - ANGLE_270;
+                this._modRadians = (ANGLE_180 - ANGLE_90 - mathAngle) * Math.PI / ANGLE_180;
+            }
+            else if (angle - ANGLE_180 > AxisConstant.ZERO_D)
+            {
+                //angle:180-270°
+                quadrant = Quadrant.Two;
+                mathAngle = angle - ANGLE_180;
+                this._modRadians = (ANGLE_360 - ANGLE_90 - angle) * Math.PI / ANGLE_180;
+            }
+            else if (angle - ANGLE_90 > AxisConstant.ZERO_D)
+            {
+                //angle:90-180°
+                quadrant = Quadrant.Three;
+                mathAngle = angle - ANGLE_90;
+                this._modRadians = (ANGLE_270 - ANGLE_90 - angle) * Math.PI / ANGLE_180;
+            }
+            else
+            {
+                //angle:0-90°
+                quadrant = Quadrant.Four;
+                mathAngle = angle;
+            }
+
+            this._radians = mathAngle * Math.PI / ANGLE_180;
+            this._quadrant = quadrant;
+        }
+    }
+
+    /// <summary>
+    /// XY坐标系象限类型枚举
+    /// </summary>
+    internal enum Quadrant
+    {
+        /// <summary>
+        /// 第一象限[270-360°]
+        /// </summary>
+        One,
+
+        /// <summary>
+        /// 第二象限[180-270°]
+        /// </summary>
+        Two,
+
+        /// <summary>
+        /// 第三象限[90-180°]
+        /// </summary>
+        Three,
+
+        /// <summary>
+        /// 第四象限[0-90°]
+        /// </summary>
+        Four
     }
 }
