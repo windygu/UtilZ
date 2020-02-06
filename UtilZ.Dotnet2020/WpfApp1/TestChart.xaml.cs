@@ -170,7 +170,7 @@ namespace WpfApp1
                 DockOrientation = ChartDockOrientation.Top,
                 Orientation = AxisOrientation.LeftToRight,
                 AxisSize = 200d,
-                CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
+                //CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
                 Angle = 310  //1:310;2:220;3:130;4:50
             });
             axes.Add(new NumberAxis()

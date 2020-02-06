@@ -383,26 +383,26 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             switch (angleQuadrantInfo.Quadrant)
             {
                 case Quadrant.One:
-                    x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
-                    y = labelTextSize.Height * Math.Cos(angleQuadrantInfo.ModRadians);
-                    translateTransform.X = (labelTextSize.Width - x) / 2;
+                    x = labelTextSize.Height * Math.Cos(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
+                    translateTransform.X = labelTextSize.Width / 2 - x;
                     translateTransform.Y = labelTextSize.Height - y;
                     break;
                 case Quadrant.Two:
-                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
-                    translateTransform.X = (labelTextSize.Width - x) / 2 + x;
+                    translateTransform.X = labelTextSize.Width / 2;
                     translateTransform.Y = labelTextSize.Height;
                     break;
                 case Quadrant.Three:
                     x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
                     y = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
-                    translateTransform.X = (labelTextSize.Width - x) / 2 + x;
+                    translateTransform.X = labelTextSize.Width / 2 + x;
                     translateTransform.Y = labelTextSize.Height - y;
                     break;
                 case Quadrant.Four:
-                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
-                    translateTransform.X = AxisConstant.ZERO_D;
-                    translateTransform.Y = AxisConstant.ZERO_D - y;
+                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians) - labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Acos(angleQuadrantInfo.Radians);
+                    translateTransform.X = x - labelTextSize.Width / 2;
+                    translateTransform.Y = labelTextSize.Height - y;
                     break;
                 default:
                     throw new NotImplementedException(angleQuadrantInfo.Quadrant.ToString());
@@ -435,24 +435,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 case Quadrant.One:
                     x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
                     y = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
-                    translateTransform.X = (labelTextSize.Width - x) / 2;
+                    translateTransform.X = labelTextSize.Width / 2 - x;
                     translateTransform.Y = y;
                     break;
                 case Quadrant.Two:
-                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
-                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Sin(angleQuadrantInfo.ModRadians);
-                    translateTransform.X = (labelTextSize.Width + x) / 2;
+                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians) - labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
+                    y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Cos(angleQuadrantInfo.ModRadians);
+                    translateTransform.X = labelTextSize.Width / 2 + x;
                     translateTransform.Y = y;
                     break;
                 case Quadrant.Three:
-                    x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
-                    y = labelTextSize.Height * Math.Sin(angleQuadrantInfo.ModRadians); ;
-                    translateTransform.X = (labelTextSize.Width + x) / 2;
+                    x = labelTextSize.Height * Math.Sin(angleQuadrantInfo.ModRadians);
+                    y = labelTextSize.Height * Math.Cos(angleQuadrantInfo.ModRadians); ;
+                    translateTransform.X = labelTextSize.Width / 2 + x;
                     translateTransform.Y = y;
                     break;
                 case Quadrant.Four:
-                    x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
-                    translateTransform.X = x / 2;
+                    translateTransform.X = labelTextSize.Width / 2;
                     translateTransform.Y = AxisConstant.ZERO_D;
                     break;
                 default:
