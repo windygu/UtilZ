@@ -404,6 +404,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        public static Rectangle CreateColumn(ISeries series, IChartItem chartItem)
+        {
+            var column = new Rectangle();
+            column.Style = series.Style;
+            if (series.EnableTooltip &&
+                chartItem != null &&
+                !string.IsNullOrWhiteSpace(chartItem.TooltipText))
+            {
+                column.ToolTip = chartItem.TooltipText;
+            }
+
+            return column;
+        }
+
+
+
         public static double ConvertToDouble(object obj)
         {
             if (obj == null)

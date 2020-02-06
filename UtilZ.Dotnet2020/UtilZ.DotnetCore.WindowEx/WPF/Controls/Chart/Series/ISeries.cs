@@ -23,6 +23,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         Style Style { get; set; }
 
+        bool EnableTooltip { get; set; }
+
+        double TooltipArea { get; set; }
+
         string Title { get; set; }
 
         void Add(Canvas canvas);

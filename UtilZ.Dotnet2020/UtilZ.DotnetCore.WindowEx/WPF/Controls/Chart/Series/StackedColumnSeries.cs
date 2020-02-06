@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
-    public class StackedColumnSeries : SeriesAbs
+    public class StackedColumnSeries : SeriesAbs, IColumnSeries
     {
         private SeriesOrientation _orientation = SeriesOrientation.Vertical;
         public SeriesOrientation Orientation
@@ -26,11 +26,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private double _size = double.NaN;
-        internal double Size
+        public double Size
         {
             get { return _size; }
             set { _size = value; }
         }
+
 
 
 

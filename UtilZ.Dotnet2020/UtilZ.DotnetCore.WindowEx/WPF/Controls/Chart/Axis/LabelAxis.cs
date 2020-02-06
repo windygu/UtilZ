@@ -131,7 +131,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             foreach (var series in seriesCollection)
             {
-                if (!(series is ColumnSeries) |
+                if (!(series is IColumnSeries) |
                     series.AxisX != this && series.AxisY != this ||
                     series.Values == null || series.Values.Count == 0)
                 {
@@ -163,7 +163,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                     if (!this._axisData.TryGetValue(axisValue, out labelAxisItem))
                     {
-                        labelAxisItem = new LabelSeriesItem((ColumnSeries)series);
+                        labelAxisItem = new LabelSeriesItem((IColumnSeries)series);
 
                         if (this._axisData.Count > 0)
                         {
@@ -191,28 +191,28 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        private Dictionary<ColumnSeries, double> GetSeriesSizeDic(ChartCollection<ISeries> seriesCollection)
+        private Dictionary<IColumnSeries, double> GetSeriesSizeDic(ChartCollection<ISeries> seriesCollection)
         {
-            Dictionary<ColumnSeries, double> seriesSizeDic = new Dictionary<ColumnSeries, double>();
-            ColumnSeries columnSeries;
+            Dictionary<IColumnSeries, double> seriesSizeDic = new Dictionary<IColumnSeries, double>();
+            IColumnSeries columnSeries;
             Rectangle templateColumn;
             double seriesSize;
             foreach (var series in seriesCollection)
             {
-                if (!(series is ColumnSeries) |
+                if (!(series is IColumnSeries) |
                    series.AxisX != this && series.AxisY != this)
                 {
                     continue;
                 }
 
-                columnSeries = (ColumnSeries)series;
+                columnSeries = (IColumnSeries)series;
                 if (seriesSizeDic.ContainsKey(columnSeries))
                 {
                     continue;
                 }
 
                 columnSeries.Size = double.NaN;
-                templateColumn = columnSeries.CreateColumn(null);
+                templateColumn = AxisHelper.CreateColumn(columnSeries, null);
                 seriesSize = double.NaN;
                 if (series.AxisX == this)
                 {
@@ -235,7 +235,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-        private double CalculateSeriesSize(Dictionary<ColumnSeries, double> seriesSizeDic, double labelStepSize)
+        private double CalculateSeriesSize(Dictionary<IColumnSeries, double> seriesSizeDic, double labelStepSize)
         {
             double totalSeriesSize = AxisConstant.ZERO_D;
             int seriesAutoSizeCount = 0;
@@ -300,7 +300,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return null;
             }
 
-            Dictionary<ColumnSeries, double> seriesSizeDic = this.GetSeriesSizeDic(seriesCollection);
+            Dictionary<IColumnSeries, double> seriesSizeDic = this.GetSeriesSizeDic(seriesCollection);
             double labelStepSize = this.CalculateLabelStepSize(this._axisData.Count, axisCanvas.Width);
             double columnSeriesOffset = this.CalculateSeriesSize(seriesSizeDic, labelStepSize);
             TextBlock label;
@@ -480,7 +480,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return null;
             }
 
-            Dictionary<ColumnSeries, double> seriesSizeDic = this.GetSeriesSizeDic(seriesCollection);
+            Dictionary<IColumnSeries, double> seriesSizeDic = this.GetSeriesSizeDic(seriesCollection);
             double labelStepSize = this.CalculateLabelStepSize(this._axisData.Count, axisCanvas.Height);
             double columnSeriesOffset = this.CalculateSeriesSize(seriesSizeDic, labelStepSize);
             TextBlock label;
@@ -610,9 +610,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// </summary>
     internal class LabelSeriesItem : Dictionary<IChartItem, double>
     {
-        public ColumnSeries Series { get; private set; }
+        public IColumnSeries Series { get; private set; }
 
-        public LabelSeriesItem(ColumnSeries series)
+        public LabelSeriesItem(IColumnSeries series)
         {
             this.Series = series;
         }

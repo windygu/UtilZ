@@ -11,7 +11,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// <summary>
     /// 条形图
     /// </summary>
-    public class ColumnSeries : SeriesAbs
+    public class ColumnSeries : SeriesAbs, IColumnSeries
     {
         private SeriesOrientation _orientation = SeriesOrientation.Vertical;
         public SeriesOrientation Orientation
@@ -30,7 +30,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private double _size = double.NaN;
-        internal double Size
+        public double Size
         {
             get { return _size; }
             set { _size = value; }
@@ -51,7 +51,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._columnElementList.Clear();
-            Brush legendBrush = this.CreateColumn(null).Fill.Clone();
+            Brush legendBrush = AxisHelper.CreateColumn(this, null).Fill.Clone();
             base.AddOrReplaceLegendItem(new SeriesLegendItem(legendBrush, base.Title, this));
 
             switch (this._orientation)
@@ -91,7 +91,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     continue;
                 }
 
-                columnElement = this.CreateColumn(item);
+                columnElement = AxisHelper.CreateColumn(this, item);
                 if (AxisHelper.DoubleHasValue(this._size))
                 {
                     columnElement.Height = this._size;
@@ -142,7 +142,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     continue;
                 }
 
-                columnElement = this.CreateColumn(item);
+                columnElement = AxisHelper.CreateColumn(this, item);
                 if (AxisHelper.DoubleHasValue(this._size))
                 {
                     columnElement.Width = this._size;
@@ -165,26 +165,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 Canvas.SetLeft(columnElement, x);
             }
         }
-
-
-
-
-
-        public Rectangle CreateColumn(IChartItem chartItem)
-        {
-            var column = new Rectangle();
-            column.Style = base.Style;
-            if (this.EnableTooltip &&
-                chartItem != null &&
-                !string.IsNullOrWhiteSpace(chartItem.TooltipText))
-            {
-                column.ToolTip = chartItem.TooltipText;
-            }
-            return column;
-        }
-
-
-
 
 
 
