@@ -353,7 +353,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double axisSize = labelTextSize + AxisConstant.LABEL_TEXT_INTERVAL * 3;
             if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > AxisConstant.ZERO_D)
             {
-                axisSize = labelTextSize + this._labelSize;
+                axisSize = axisSize + this._labelSize;
             }
 
             return axisSize;

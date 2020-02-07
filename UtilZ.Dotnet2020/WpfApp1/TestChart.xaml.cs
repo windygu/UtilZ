@@ -166,6 +166,9 @@ namespace WpfApp1
             int min = 0, max = 100;
 
             this.ManaulComit = true;
+
+            //this.ChartWidth = 1200d;
+
             var axes = new ChartCollection<AxisAbs>();
             axes.Add(new LabelAxis()
             {
@@ -182,6 +185,30 @@ namespace WpfApp1
                 LabelSize = 0d,
                 //MinValue = min,
                 //MaxValue = max,
+                LabelStep = double.NaN
+            });
+
+            DateTime minTime = DateTime.Parse("2010-01-01 00:00:00");
+            DateTime maxTime = DateTime.Parse("2010-12-31 23:23:59");
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.RightToLeft,
+                MinValue = minTime,
+                MaxValue = maxTime,
+                CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
+                LabelStep = null,
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Right,
+                Orientation = AxisOrientation.BottomToTop,
+                EnableBackgroundLabelLine = false,
+                MinValue = min,
+                MaxValue = max,
+                //CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
                 LabelStep = double.NaN
             });
             this.Axes = axes;
@@ -990,6 +1017,7 @@ namespace WpfApp1
                 Orientation = AxisOrientation.LeftToRight,
                 MinValue = min,
                 MaxValue = max,
+                CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
                 LabelStep = null
             });
             axes.Add(new DateTimeAxis()
@@ -999,6 +1027,7 @@ namespace WpfApp1
                 Orientation = AxisOrientation.RightToLeft,
                 MinValue = min,
                 MaxValue = max,
+                CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
                 LabelStep = null
             });
             axes.Add(new DateTimeAxis()
@@ -1008,6 +1037,7 @@ namespace WpfApp1
                 Orientation = AxisOrientation.BottomToTop,
                 MinValue = min,
                 MaxValue = max,
+                CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
                 LabelStep = null
             });
             axes.Add(new DateTimeAxis()
@@ -1017,9 +1047,15 @@ namespace WpfApp1
                 Orientation = AxisOrientation.TopToBottom,
                 MinValue = min,
                 MaxValue = max,
+                CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
                 LabelStep = null
             });
             this.Axes = axes;
+        }
+
+        private string DatetimeAsixCustomAxisTextFormatCunc(DateTime time)
+        {
+            return time.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         private void TestNumAxis2()

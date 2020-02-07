@@ -16,6 +16,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// </summary>
     public partial class Chart : UserControl
     {
+        private const double _SCROLL_BAR_DEFAULT_WIDTH = 10d;
+
         #region 依赖属性
         public static readonly DependencyProperty SeriesProperty =
             DependencyProperty.Register(nameof(Series), typeof(ChartCollection<ISeries>), typeof(Chart),
@@ -37,9 +39,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
            DependencyProperty.Register(nameof(Legend), typeof(IChartLegend), typeof(Chart),
                new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        public static readonly DependencyProperty ScrollBarWidthProperty =
+           DependencyProperty.Register(nameof(ScrollBarWidth), typeof(double), typeof(Chart),
+               new FrameworkPropertyMetadata(_SCROLL_BAR_DEFAULT_WIDTH, new PropertyChangedCallback(OnPropertyChangedCallback)));
+
         public static readonly DependencyProperty ManaulComitProperty =
            DependencyProperty.Register(nameof(ManaulComit), typeof(bool), typeof(Chart),
                new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnPropertyChangedCallback)));
+
+
+
 
 
         public ChartCollection<ISeries> Series
@@ -72,6 +81,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             set { SetValue(LegendProperty, value); }
         }
 
+        public double ScrollBarWidth
+        {
+            get { return (double)GetValue(ScrollBarWidthProperty); }
+            set { SetValue(ScrollBarWidthProperty, value); }
+        }
 
         public bool ManaulComit
         {
@@ -98,13 +112,25 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 selfControl.AxesChanged((ChartCollection<AxisAbs>)e.OldValue, (ChartCollection<AxisAbs>)e.NewValue);
             }
+            else if (e.Property == ScrollBarWidthProperty)
+            {
+                selfControl.UpdateScrollBarWidth((double)e.NewValue);
+                if (selfControl.GetAxisFreezeInfo().AxisFreezeType == AxisFreezeType.None)
+                {
+                    return;
+                }
+            }
 
             selfControl.UpdateAll();
         }
+
+
         #endregion
 
         private readonly Grid _chartGrid;
         private readonly Canvas _chartCanvas;
+        private readonly ScrollViewer _scrollViewer;
+        private readonly Grid _chartContentGrid;
         //private Rect _chartArea;
         //private bool _fullUpdateCharted = false;
 
@@ -116,6 +142,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             this._chartGrid = new Grid() { Background = Brushes.Transparent };
             this._chartCanvas = new Canvas() { Background = Brushes.Transparent };
+            this._chartContentGrid = new Grid() { Background = Brushes.Transparent };
+            this._scrollViewer = new ScrollViewer();
+            this.UpdateScrollBarWidth(this.ScrollBarWidth);
             this.Loaded += ChartControl_Loaded;
         }
 
@@ -151,8 +180,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        private double _scrollBarWidth;
+        private void UpdateScrollBarWidth(double scrollBarWidth)
+        {
+            if (!AxisHelper.DoubleHasValue(scrollBarWidth) || scrollBarWidth < AxisConstant.ZERO_D)
+            {
+                scrollBarWidth = _SCROLL_BAR_DEFAULT_WIDTH;
+            }
 
-
+            this._scrollViewer.Resources[SystemParameters.VerticalScrollBarWidthKey] = scrollBarWidth;
+            this._scrollViewer.Resources[SystemParameters.HorizontalScrollBarHeightKey] = scrollBarWidth;
+            this._scrollBarWidth = scrollBarWidth;
+        }
 
 
         private void AxesChanged(ChartCollection<AxisAbs> oldAxisCollection, ChartCollection<AxisAbs> newAxisCollection)
@@ -463,13 +502,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             IChartLegend legend = this.Legend;
             Grid chartGrid = this._chartGrid;
             Canvas chartCanvas = this._chartCanvas;
+            Grid chartContentGrid = this._chartContentGrid;
 
             this.Content = null;
+            this._scrollViewer.Content = null;
             chartGrid.Children.Clear();
             chartCanvas.Children.Clear();
             chartGrid.RowDefinitions.Clear();
             chartGrid.ColumnDefinitions.Clear();
-
+            chartContentGrid.Children.Clear();
+            chartContentGrid.RowDefinitions.Clear();
+            chartContentGrid.ColumnDefinitions.Clear();
 
             switch (axisFreezeInfo.AxisFreezeType)
             {
@@ -477,17 +520,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     this.UpdateNoneFreeze(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid);
                     break;
                 case AxisFreezeType.X:
+                    this.UpdateFreezeX(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid);
                     break;
                 case AxisFreezeType.Y:
+                    this.UpdateFreezeY(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, this._scrollViewer, chartContentGrid);
                     break;
                 case AxisFreezeType.All:
+                    this.UpdateFreezeAll(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid);
                     break;
                 default:
                     throw new NotImplementedException(axisFreezeInfo.AxisFreezeType.ToString());
             }
-
-
-            this.PrimitiveUpdateChart();
         }
 
 
