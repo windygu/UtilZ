@@ -155,9 +155,132 @@ namespace WpfApp1
             //TestMuiltColumnSeriesVertical();
 
             //TestStackColumnHorizontal();
-            TestStackColumnVertical();
+            //TestStackColumnVertical();
+
+            TestAllColumnVertical();
         }
 
+
+        private void TestAllColumnVertical()
+        {
+            int min = 0, max = 100;
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new LabelAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                EnableBackgroundLabelLine = true,
+                LabelSize = 0d,
+                //MinValue = min,
+                //MaxValue = max,
+                LabelStep = double.NaN
+            });
+            this.Axes = axes;
+
+
+            int columnCount = 5;
+            var series = new ChartCollection<ISeries>();
+
+            int stackCount = 3;
+            var titleStyleDic = new Dictionary<string, Style>();
+            Style style;
+            for (int i = 0; i < stackCount; i++)
+            {
+                style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor());
+                titleStyleDic.Add($"StackedColumn{i}", style);
+            }
+            series.Add(new StackedColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                TitleStyleDic = titleStyleDic
+            });
+
+
+            var time = DateTime.Parse("2010-01-01 00:00:00");
+            double value;
+            ChartCollection<IChartValue> values1 = new ChartCollection<IChartValue>();
+            for (int i = 0; i < columnCount; i++)
+            {
+                var x = new List<IChartChildValue>();
+                for (int j = 0; j < stackCount; j++)
+                {
+                    value = _rnd.Next(min, max);
+                    x.Add(new ChartStackColumnChildItem(value, $"{value}", null));
+                }
+                values1.Add(new ChartStackColumnItemVertical(time, x));
+                time = time.AddMonths(1);
+            }
+            series[0].Values = values1;
+
+
+
+
+            series.Add(new ColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                Title = "ColumnSeries1",
+                Style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor())
+            });
+            series.Add(new ColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                Title = "ColumnSeries2",
+                Style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor())
+            });
+
+            time = DateTime.Parse("2010-01-01 00:00:00");
+            value = min;
+            ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
+            ChartCollection<IChartValue> values3 = new ChartCollection<IChartValue>();
+            for (int i = 0; i < columnCount; i++)
+            {
+                value = _rnd.Next(min, max);
+                values2.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+
+                value = _rnd.Next(min, max);
+                values3.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+
+                time = time.AddMonths(1);
+            }
+            series[1].Values = values2;
+            series[2].Values = values3;
+
+
+            this.Series = series;
+            this.Legend = new VerticalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Right,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
+            this.ManaulComit = false;
+        }
 
         private void TestStackColumnVertical()
         {
