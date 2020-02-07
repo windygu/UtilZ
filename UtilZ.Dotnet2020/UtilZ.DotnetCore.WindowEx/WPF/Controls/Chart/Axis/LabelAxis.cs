@@ -326,12 +326,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 Canvas.SetLeft(label, left + labelTextOffset);
                 if (this.IsAxisXBottom())
                 {
-                    Canvas.SetTop(label, AxisConstant.ZERO_D);
+                    Canvas.SetTop(label, AxisConstant.LABEL_TEXT_INTERVAL);
                     this.RotateLabelBottom(label, angleQuadrantInfo, labelTextSize);
                 }
                 else
                 {
-                    Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                    Canvas.SetBottom(label, AxisConstant.LABEL_TEXT_INTERVAL);
                     this.RotateLabelTop(label, angleQuadrantInfo, labelTextSize);
                 }
 
@@ -505,11 +505,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 Canvas.SetTop(label, top + labelTextOffset);
                 if (this.IsAxisYLeft())
                 {
-                    Canvas.SetRight(label, AxisConstant.ZERO_D);
+                    Canvas.SetRight(label, AxisConstant.LABEL_TEXT_INTERVAL);
                 }
                 else
                 {
-                    Canvas.SetLeft(label, AxisConstant.ZERO_D);
+                    Canvas.SetLeft(label, AxisConstant.LABEL_TEXT_INTERVAL);
                 }
 
                 switch (labelLocation)

@@ -129,7 +129,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
+        //private double _minSize = double.NaN;
+        ///// <summary>
+        ///// 获取或设置最小大小,单位像素(X轴为最小高度,Y轴最小宽度),为double.NaN或小于等于0时此值无效
+        ///// </summary>
+        //public double MinSize
+        //{
+        //    get { return _minSize; }
+        //    set
+        //    {
+        //        _minSize = value;
+        //        base.OnRaisePropertyChanged(nameof(MinSize));
+        //    }
+        //}
 
 
 
@@ -338,15 +350,25 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         protected double CalculateAxisSize(double labelTextSize)
         {
-            double axisSize = labelTextSize;
+            double axisSize = labelTextSize + AxisConstant.LABEL_TEXT_INTERVAL * 3;
             if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > AxisConstant.ZERO_D)
             {
-                axisSize = labelTextSize + this._labelSize + AxisConstant.LABEL_TEXT_INTERVAL;
+                axisSize = labelTextSize + this._labelSize;
             }
 
             return axisSize;
         }
 
+        protected double GetAxisYLabelTextLineInterval()
+        {
+            double interval = AxisConstant.LABEL_TEXT_INTERVAL;
+            if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > AxisConstant.ZERO_D)
+            {
+                interval = interval + this._labelSize;
+            }
+
+            return interval;
+        }
 
 
 

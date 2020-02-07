@@ -379,6 +379,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double axisHeight = axisCanvas.Height;
             double labelStep = this.CalculateLabelStep(axisData.Area, axisHeight);
             double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisHeight, labelStep);
+            double labelTextLineInterval = base.GetAxisYLabelTextLineInterval();
             double top = AxisConstant.ZERO_D, top2;
             double value = axisData.MinValue;
             double y = AxisConstant.ZERO_D;
@@ -436,11 +437,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisYLeft())
                         {
-                            Canvas.SetLeft(label, AxisConstant.ZERO_D);
+                            Canvas.SetRight(label, labelTextLineInterval);
                         }
                         else
                         {
-                            Canvas.SetRight(label, AxisConstant.ZERO_D);
+                            Canvas.SetLeft(label, labelTextLineInterval);
                         }
                     }
                 }
@@ -488,6 +489,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double axisHeight = axisCanvas.Height;
             double labelStep = this.CalculateLabelStep(axisData.Area, axisHeight);
             double labelStepSize = AxisHelper.CalculateLabelStepSize(axisData.Area, axisHeight, labelStep);
+            double labelTextLineInterval = base.GetAxisYLabelTextLineInterval();
             double bottom = AxisConstant.ZERO_D, bottom2;
             double value = axisData.MinValue;
             double y = axisHeight;
@@ -545,11 +547,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisYLeft())
                         {
-                            Canvas.SetLeft(label, AxisConstant.ZERO_D);
+                            Canvas.SetRight(label, labelTextLineInterval);
                         }
                         else
                         {
-                            Canvas.SetRight(label, AxisConstant.ZERO_D);
+                            Canvas.SetLeft(label, labelTextLineInterval);
                         }
                     }
                 }
@@ -686,11 +688,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisXBottom())
                         {
-                            Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                            Canvas.SetBottom(label, AxisConstant.LABEL_TEXT_INTERVAL);
                         }
                         else
                         {
-                            Canvas.SetTop(label, AxisConstant.ZERO_D);
+                            Canvas.SetTop(label, AxisConstant.LABEL_TEXT_INTERVAL);
                         }
                     }
                 }
@@ -792,11 +794,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisXBottom())
                         {
-                            Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                            Canvas.SetBottom(label, AxisConstant.LABEL_TEXT_INTERVAL);
                         }
                         else
                         {
-                            Canvas.SetTop(label, AxisConstant.ZERO_D);
+                            Canvas.SetTop(label, AxisConstant.LABEL_TEXT_INTERVAL);
                         }
                     }
                 }

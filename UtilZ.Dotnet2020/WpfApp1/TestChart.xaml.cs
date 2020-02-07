@@ -176,6 +176,8 @@ namespace WpfApp1
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
                 Orientation = AxisOrientation.BottomToTop,
+                EnableBackgroundLabelLine = true,
+                LabelSize = 0d,
                 //MinValue = min,
                 //MaxValue = max,
                 LabelStep = double.NaN
