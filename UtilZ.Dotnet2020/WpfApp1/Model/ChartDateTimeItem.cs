@@ -7,7 +7,7 @@ using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 
 namespace WpfApp1.Model
 {
-    public class ChartDateTimeItem : ChartItemAbs
+    public class ChartDateTimeItem : ChartValueAbs
     {
         private DateTime _x;
         public DateTime X
@@ -42,7 +42,7 @@ namespace WpfApp1.Model
     }
 
 
-    public class ChartDateTimeItem2 : ChartItemAbs
+    public class ChartDateTimeItem2 : ChartValueAbs
     {
         public DateTime Y { get; set; }
 

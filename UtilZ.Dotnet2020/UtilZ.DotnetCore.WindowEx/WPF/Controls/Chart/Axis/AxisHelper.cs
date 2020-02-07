@@ -347,12 +347,44 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        public static object GetChartItemAxisValue(IChartItem item, bool x)
+        {
+            if (item == null)
+            {
+                return null;
+            }
+
+            object value;
+            if (item is IChartValue)
+            {
+                var chartITem = (IChartValue)item;
+                if (x)
+                {
+                    value = chartITem.GetXValue();
+                }
+                else
+                {
+                    value = chartITem.GetYValue();
+                }
+            }
+            else if (item is IChartChildValue)
+            {
+                value = ((IChartChildValue)item).GetValue();
+            }
+            else
+            {
+                throw new NotSupportedException($"类型{item.GetType().FullName}未实现{nameof(IChartValue)}或{nameof(IChartChildValue)}接口");
+            }
+
+            return value;
+        }
 
 
 
 
 
-       
+
+
 
         internal static Rectangle CreateColumn(IColumnSeries series)
         {

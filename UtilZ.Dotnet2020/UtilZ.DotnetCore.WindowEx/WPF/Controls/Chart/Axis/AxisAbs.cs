@@ -572,16 +572,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        internal double GetX(IChartItem chartItem)
+        internal double GetX(IChartItem item)
         {
-            return this.PrimitiveGetX(chartItem);
+            return this.PrimitiveGetX(item);
         }
-        protected abstract double PrimitiveGetX(IChartItem chartItem);
+        protected abstract double PrimitiveGetX(IChartItem item);
 
-        internal double GetY(IChartItem chartItem)
+        internal double GetY(IChartItem item)
         {
-            return this.PrimitiveGetY(chartItem);
+            return this.PrimitiveGetY(item);
         }
-        protected abstract double PrimitiveGetY(IChartItem chartItem);
+        protected abstract double PrimitiveGetY(IChartItem item);
     }
 }

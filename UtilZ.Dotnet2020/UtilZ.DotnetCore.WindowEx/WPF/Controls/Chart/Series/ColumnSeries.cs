@@ -52,11 +52,24 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         }
 
+
+        protected override void StyleChanged(Style style)
+        {
+            base.RemoveLegendItem();
+            Brush legendBrush = AxisHelper.CreateColumn(this).Fill.Clone();
+            base.AddLegendItem(new SeriesLegendItem(legendBrush, base.Title, this));
+
+            foreach (var columnElement in this._columnElementList)
+            {
+                columnElement.Style = style;
+            }
+        }
+
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._columnElementList.Clear();
             Brush legendBrush = AxisHelper.CreateColumn(this).Fill.Clone();
-            base.AddOrReplaceLegendItem(new SeriesLegendItem(legendBrush, base.Title, this));
+            base.AddLegendItem(new SeriesLegendItem(legendBrush, base.Title, this));
 
             if (base._values == null || base._values.Count == 0)
             {
@@ -81,24 +94,25 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             double x, y;
             Rectangle columnElement;
-            foreach (var item in base._values)
+
+            foreach (var value in base._values)
             {
-                x = this.AxisX.GetX(item);
+                x = this.AxisX.GetX(value);
                 if (!AxisHelper.DoubleHasValue(x))
                 {
                     continue;
                 }
 
-                y = this.AxisY.GetY(item);
+                y = this.AxisY.GetY(value);
                 if (!AxisHelper.DoubleHasValue(y))
                 {
                     continue;
                 }
 
                 columnElement = AxisHelper.CreateColumn(this);
-                if (item != null)
+                if (value != null)
                 {
-                    AxisHelper.SetColumnTooltipText(this, item.TooltipText, columnElement);
+                    AxisHelper.SetColumnTooltipText(this, value.TooltipText, columnElement);
                 }
 
                 if (AxisHelper.DoubleHasValue(this._size))
@@ -132,24 +146,25 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             double x, y;
             Rectangle columnElement;
-            foreach (var item in base._values)
+
+            foreach (var value in base._values)
             {
-                x = this.AxisX.GetX(item);
+                x = this.AxisX.GetX(value);
                 if (!AxisHelper.DoubleHasValue(x))
                 {
                     continue;
                 }
 
-                y = this.AxisY.GetY(item);
+                y = this.AxisY.GetY(value);
                 if (!AxisHelper.DoubleHasValue(y))
                 {
                     continue;
                 }
 
                 columnElement = AxisHelper.CreateColumn(this);
-                if (item != null)
+                if (value != null)
                 {
-                    AxisHelper.SetColumnTooltipText(this, item.TooltipText, columnElement);
+                    AxisHelper.SetColumnTooltipText(this, value.TooltipText, columnElement);
                 }
 
                 if (AxisHelper.DoubleHasValue(this._size))

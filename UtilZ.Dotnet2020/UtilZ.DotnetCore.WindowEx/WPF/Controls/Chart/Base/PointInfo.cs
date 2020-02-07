@@ -9,9 +9,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     {
         public Point Point { get; private set; }
 
-        public IChartItem Item { get; private set; }
+        public IChartValue Item { get; private set; }
 
-        public PointInfo(Point point, IChartItem item)
+        public PointInfo(Point point, IChartValue item)
         {
             this.Point = point;
             this.Item = item;

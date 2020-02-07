@@ -849,48 +849,41 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override double PrimitiveGetX(IChartItem chartItem)
+        protected override double PrimitiveGetX(IChartItem item)
         {
-            if (this._axisData == null || chartItem == null)
-            {
-                return double.NaN;
-            }
-
-            object obj = chartItem.GetXValue();
-            DateTime? value = AxisHelper.ConvertToDateTime(obj);
-            if (value == null)
-            {
-                return double.NaN;
-            }
-
-            //默认AxisOrientation.LeftToRight
-            double result = base._axisCanvas.Width * (value.Value - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
-            if (base.Orientation == AxisOrientation.RightToLeft)
-            {
-                result = base._axisCanvas.Width - result;
-            }
-
-            return result;
+            return this.GetAxis(item, true, base._axisCanvas.Width);
         }
 
-        protected override double PrimitiveGetY(IChartItem chartItem)
+        protected override double PrimitiveGetY(IChartItem item)
         {
-            if (this._axisData == null || chartItem == null)
+            return this.GetAxis(item, false, base._axisCanvas.Height);
+        }
+
+        private double GetAxis(IChartItem item, bool x, double axisSize)
+        {
+            if (this._axisData == null)
             {
                 return double.NaN;
             }
 
-            object obj = chartItem.GetYValue();
+            object obj = AxisHelper.GetChartItemAxisValue(item, x);
+            if (item == null)
+            {
+                return double.NaN;
+            }
+
             DateTime? value = AxisHelper.ConvertToDateTime(obj);
             if (value == null)
             {
                 return double.NaN;
             }
 
-            double result = base._axisCanvas.Height * (value.Value - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
-            if (base.Orientation == AxisOrientation.BottomToTop)
+            //计算AxisOrientation.LeftToRight或TopToBottom
+            double result = axisSize * (value.Value - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
+            if (base.Orientation == AxisOrientation.RightToLeft ||
+                base.Orientation == AxisOrientation.BottomToTop)
             {
-                result = base._axisCanvas.Height - result;
+                result = axisSize - result;
             }
 
             return result;

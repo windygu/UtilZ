@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
@@ -22,9 +20,5 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.TooltipText = tooltipText;
             this.Tag = tag;
         }
-
-        public abstract object GetXValue();
-
-        public abstract object GetYValue();
     }
 }

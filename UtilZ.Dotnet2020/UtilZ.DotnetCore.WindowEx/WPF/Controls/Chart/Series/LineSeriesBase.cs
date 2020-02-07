@@ -31,7 +31,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         protected override void StyleChanged(Style style)
         {
             this._pathLine.Style = style;
-            base.AddOrReplaceLegendItem(new SeriesLegendItem(this._pathLine.Stroke, base.Title, this));
+            base.RemoveLegendItem();
+            base.AddLegendItem(new SeriesLegendItem(this._pathLine.Stroke, base.Title, this));
         }
 
         #region Tooltip

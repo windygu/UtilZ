@@ -17,7 +17,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         Func<PointInfo, FrameworkElement> CreatePointFunc { get; set; }
 
         event NotifyCollectionChangedEventHandler ValuesCollectionChanged;
-        ChartCollection<IChartItem> Values { get; set; }
+        ChartCollection<IChartValue> Values { get; set; }
 
         Style Style { get; set; }
 

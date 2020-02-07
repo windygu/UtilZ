@@ -53,8 +53,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             handler?.Invoke(sender, e);
         }
 
-        protected ChartCollection<IChartItem> _values = null;
-        public ChartCollection<IChartItem> Values
+        protected ChartCollection<IChartValue> _values = null;
+        public ChartCollection<IChartValue> Values
         {
             get { return _values; }
             set
@@ -94,10 +94,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        protected virtual void StyleChanged(Style style)
-        {
-
-        }
+        protected abstract void StyleChanged(Style style);
 
         private bool _enableTooltip = false;
         /// <summary>
@@ -144,7 +141,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 标题
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get { return _title; }
             set
@@ -172,6 +169,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         public void Add(Canvas canvas)
         {
             this._canvas = canvas;
+            this._currentSeriesLegendItemList.Clear();
             this.PrimitiveAdd(canvas);
         }
         protected abstract void PrimitiveAdd(Canvas canvas);
@@ -187,7 +185,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return true;
             }
 
-            this.RemoveLegendItem();
+            if (this._chartSeriesLegendItemList != null)
+            {
+                foreach (var legendItem in this._currentSeriesLegendItemList)
+                {
+                    this._currentSeriesLegendItemList.Remove(legendItem);
+                }
+                this._currentSeriesLegendItemList.Clear();
+            }
+            this._chartSeriesLegendItemList = null;
+
             return false;
         }
         protected abstract bool PrimitiveRemove(Canvas canvas);
@@ -216,17 +223,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this._currentSeriesLegendItemList.Add(legendItem);
         }
 
-        private void RemoveLegendItem()
+        protected void AddLegendItem(SeriesLegendItem legendItem)
         {
-            if (this._chartSeriesLegendItemList != null)
-            {
-                foreach (var legendItem in this._currentSeriesLegendItemList)
-                {
-                    this._currentSeriesLegendItemList.Remove(legendItem);
-                }
-                this._currentSeriesLegendItemList.Clear();
-            }
-            this._chartSeriesLegendItemList = null;
+            this._currentSeriesLegendItemList.Add(legendItem);
+        }
+
+
+        protected void RemoveLegendItem()
+        {
+            this._currentSeriesLegendItemList.RemoveAll(t => t.Series == this);
         }
 
 

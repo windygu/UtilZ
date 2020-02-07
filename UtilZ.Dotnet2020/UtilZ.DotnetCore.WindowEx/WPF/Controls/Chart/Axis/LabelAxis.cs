@@ -548,42 +548,34 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override double PrimitiveGetX(IChartItem chartItem)
+        protected override double PrimitiveGetX(IChartItem item)
         {
-            if (chartItem == null)
-            {
-                return double.NaN;
-            }
-
-            var labelAxisItem = chartItem.GetXValue();
-            if (labelAxisItem == null)
-            {
-                labelAxisItem = this._nullLabelAxisItem;
-            }
-
-            LabelSeriesItem labelSeriesItem;
-            if (!this._axisData.TryGetValue(labelAxisItem, out labelSeriesItem))
-            {
-                return double.NaN;
-            }
-
-            double result;
-            if (labelSeriesItem.TryGetValue(chartItem, out result))
-            {
-                return result;
-            }
-
-            return double.NaN;
+            return this.GetAxis(item, true);
         }
 
-        protected override double PrimitiveGetY(IChartItem chartItem)
+        protected override double PrimitiveGetY(IChartItem item)
         {
-            if (chartItem == null)
+            return this.GetAxis(item, false);
+        }
+
+        private double GetAxis(IChartItem item, bool x)
+        {
+            if (item == null || !(item is IChartValue))
             {
                 return double.NaN;
             }
 
-            var labelAxisItem = chartItem.GetYValue();
+            IChartValue chartItem = (IChartValue)item;
+            object labelAxisItem;
+            if (x)
+            {
+                labelAxisItem = chartItem.GetXValue();
+            }
+            else
+            {
+                labelAxisItem = chartItem.GetYValue();
+            }
+
             if (labelAxisItem == null)
             {
                 labelAxisItem = this._nullLabelAxisItem;
@@ -608,7 +600,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// <summary>
     /// [key:IChartItem;value:坐标值]
     /// </summary>
-    internal class LabelSeriesItem : Dictionary<IChartItem, double>
+    internal class LabelSeriesItem : Dictionary<IChartValue, double>
     {
         public IColumnSeries Series { get; private set; }
 

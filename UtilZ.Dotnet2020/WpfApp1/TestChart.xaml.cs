@@ -152,9 +152,176 @@ namespace WpfApp1
 
             //TestColumnSeriesHorizontal();
             //TestColumnSeriesVertical();
-            TestMuiltColumnSeriesVertical();
+            //TestMuiltColumnSeriesVertical();
+
+            //TestStackColumnHorizontal();
+            TestStackColumnVertical();
         }
 
+
+        private void TestStackColumnVertical()
+        {
+            int min = 0, max = 100;
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new LabelAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                //MinValue = min,
+                //MaxValue = max,
+                LabelStep = double.NaN
+            });
+            this.Axes = axes;
+
+
+
+            var series = new ChartCollection<ISeries>();
+
+            int stackCount = 3;
+            var titleStyleDic = new Dictionary<string, Style>();
+            Style style;
+            for (int i = 0; i < stackCount; i++)
+            {
+                style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor());
+                titleStyleDic.Add($"StackedColumn{i}", style);
+            }
+            series.Add(new StackedColumnSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Vertical,
+                TitleStyleDic = titleStyleDic
+            });
+
+
+            var time = DateTime.Parse("2010-01-01 00:00:00");
+            double value;
+            ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
+            for (int i = 0; i < 5; i++)
+            {
+                var x = new List<IChartChildValue>();
+                for (int j = 0; j < stackCount; j++)
+                {
+                    value = _rnd.Next(min, max);
+                    x.Add(new ChartStackColumnChildItem(value, $"{value}", null));
+                }
+                values.Add(new ChartStackColumnItemVertical(time, x));
+                time = time.AddMonths(1);
+            }
+            series[0].Values = values;
+
+
+
+
+            this.Series = series;
+            this.Legend = new VerticalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Right,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
+            this.ManaulComit = false;
+        }
+
+        private void TestStackColumnHorizontal()
+        {
+            int min = 0, max = 100;
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new LabelAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.TopToBottom
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Top,
+                Orientation = AxisOrientation.LeftToRight,
+                //MinValue = min,
+                //MaxValue = max,
+                LabelStep = double.NaN
+            });
+            this.Axes = axes;
+
+
+
+            var series = new ChartCollection<ISeries>();
+
+            int stackCount = 3;
+            var titleStyleDic = new Dictionary<string, Style>();
+            Style style;
+            for (int i = 0; i < stackCount; i++)
+            {
+                style = ChartStyleHelper.CreateColumnSeriesStyle(ColorBrushHelper.GetNextColor());
+                titleStyleDic.Add($"StackedColumn{i}", style);
+            }
+            series.Add(new StackedColumnSeries()
+            {
+                AxisX = axes[1],
+                AxisY = axes[0],
+                EnableTooltip = true,
+                Orientation = SeriesOrientation.Horizontal,
+                TitleStyleDic = titleStyleDic
+            });
+
+
+            var time = DateTime.Parse("2010-01-01 00:00:00");
+            double value;
+            ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
+            for (int i = 0; i < 5; i++)
+            {
+                var x = new List<IChartChildValue>();
+                for (int j = 0; j < stackCount; j++)
+                {
+                    value = _rnd.Next(min, max);
+                    x.Add(new ChartStackColumnChildItem(value, $"{value}", null));
+                }
+                values.Add(new ChartStackColumnItemHorizontal(time, x));
+                time = time.AddMonths(1);
+            }
+            series[0].Values = values;
+
+
+
+
+            this.Series = series;
+            this.Legend = new VerticalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Right,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
+            this.ManaulComit = false;
+        }
 
 
 
@@ -172,7 +339,7 @@ namespace WpfApp1
                 AxisSize = 200d,
                 //CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
                 //Angle = 330  //1:310;2:220;3:130;4:50
-                Angle=double.NaN
+                Angle = double.NaN
             });
             axes.Add(new NumberAxis()
             {
@@ -213,8 +380,8 @@ namespace WpfApp1
             int count = 5;
             var time = DateTime.Parse("2010-01-01 00:00:00");
             double value = min;
-            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
-            ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
+            ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
             for (int i = 0; i < count; i++)
             {
                 value = _rnd.Next(min, max);
@@ -291,7 +458,7 @@ namespace WpfApp1
 
             var time = DateTime.Parse("2010-01-01 00:00:00");
             double value;
-            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
             for (int i = 0; i < 5; i++)
             {
                 value = _rnd.Next(min, max);
@@ -362,7 +529,7 @@ namespace WpfApp1
 
             var time = DateTime.Parse("2010-01-01 00:00:00");
             double value;
-            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
             for (int i = 0; i < 5; i++)
             {
                 value = _rnd.Next(min, max);
@@ -488,7 +655,7 @@ namespace WpfApp1
 
             double value;
             DateTime time;
-            ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values3 = new ChartCollection<IChartValue>();
             using (StreamReader sr = new StreamReader(fileName))
             {
                 string line = sr.ReadLine();
@@ -611,7 +778,7 @@ namespace WpfApp1
             double value;
             double axisXValueStep = 10;
             double axisXValue = minX;
-            ChartCollection<IChartItem> values = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
             while (axisXValue < maxX)
             {
                 value = _rnd.Next(minY, maxY);
@@ -624,7 +791,7 @@ namespace WpfApp1
 
             DateTime time = minTime;
             TimeSpan ts = maxTime - time;
-            ChartCollection<IChartItem> values2 = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
             double stepTotalMilliseconds = ts.TotalMilliseconds / ((maxY - minY) / axisXValueStep);
             while (time < maxTime)
             {
@@ -636,7 +803,7 @@ namespace WpfApp1
 
 
             //StringBuilder sb = new StringBuilder();
-            ChartCollection<IChartItem> values3 = new ChartCollection<IChartItem>();
+            ChartCollection<IChartValue> values3 = new ChartCollection<IChartValue>();
             minY = minY / 10;
             maxY = maxY / 10;
             time = minTime;

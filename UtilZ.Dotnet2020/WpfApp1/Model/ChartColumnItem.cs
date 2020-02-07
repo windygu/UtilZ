@@ -8,7 +8,7 @@ using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 
 namespace WpfApp1.Model
 {
-    public class ChartColumnItemHorizontal : ChartItemAbs
+    public class ChartColumnItemHorizontal : ChartValueAbs
     {
         public DateTime Y { get; set; }
         public double X { get; set; }
@@ -32,7 +32,7 @@ namespace WpfApp1.Model
         }
     }
 
-    public class ChartColumnItemVertical : ChartItemAbs
+    public class ChartColumnItemVertical : ChartValueAbs
     {
         public double Y { get; set; }
         public DateTime X { get; set; }
@@ -54,6 +54,78 @@ namespace WpfApp1.Model
         public override object GetYValue()
         {
             return this.Y;
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public class ChartStackColumnItemVertical : ChartValueAbs
+    {
+        public List<IChartChildValue> Y { get; set; }
+        public DateTime X { get; set; }
+
+
+
+        public ChartStackColumnItemVertical(DateTime x, List<IChartChildValue> y)
+             : base()
+        {
+            X = x;
+            Y = y;
+        }
+
+        public override object GetXValue()
+        {
+            return this.X;
+        }
+
+        public override object GetYValue()
+        {
+            return this.Y;
+        }
+    }
+
+    public class ChartStackColumnItemHorizontal : ChartValueAbs
+    {
+        public DateTime Y { get; set; }
+        public List<IChartChildValue> X { get; set; }
+
+
+        public ChartStackColumnItemHorizontal(DateTime y, List<IChartChildValue> x)
+            : base()
+        {
+            X = x;
+            Y = y;
+        }
+
+        public override object GetXValue()
+        {
+            return this.X;
+        }
+
+        public override object GetYValue()
+        {
+            return this.Y;
+        }
+    }
+
+    public class ChartStackColumnChildItem : ChartChildValueAbs
+    {
+        private double _value;
+        public ChartStackColumnChildItem(double value, string tooltipText, object tag)
+            : base(tooltipText, tag)
+        {
+            this._value = value;
+        }
+
+        public override object GetValue()
+        {
+            return this._value;
         }
     }
 }

@@ -202,7 +202,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return new NumberAxisValueArea(min, max);
         }
 
-        private void PrimitiveGetMinAndMaxValue(AxisAbs axis, ChartCollection<IChartItem> values, out double min, out double max)
+        private void PrimitiveGetMinAndMaxValue(AxisAbs axis, ChartCollection<IChartValue> values, out double min, out double max)
         {
             min = double.NaN;
             max = double.NaN;
@@ -215,7 +215,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double pre = double.IsNaN(axis.PRE) ? AxisConstant.ZERO_D : axis.PRE;
             object obj;
             IEnumerable enumerable;
-            double tmp;
+            double tmp, tmpTotalChild;
 
             foreach (var value in values)
             {
@@ -244,14 +244,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (obj is IEnumerable)
                 {
                     enumerable = (IEnumerable)obj;
+                    tmpTotalChild = double.NaN;
                     foreach (var item in enumerable)
                     {
-                        if (item == null || !(item is IChartChildItem))
+                        if (item == null || !(item is IChartChildValue))
                         {
                             continue;
                         }
 
-                        tmp = AxisHelper.ConvertToDouble(((IChartChildItem)item).GetValue());
+                        tmp = AxisHelper.ConvertToDouble(((IChartChildValue)item).GetValue());
                         if (!AxisHelper.DoubleHasValue(tmp))
                         {
                             continue;
@@ -262,10 +263,24 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             min = tmp;
                         }
 
-                        if (double.IsNaN(max) || tmp - max > pre)
+                        if (AxisHelper.DoubleHasValue(tmpTotalChild))
                         {
-                            max = tmp;
+                            tmpTotalChild += tmp;
                         }
+                        else
+                        {
+                            tmpTotalChild = tmp;
+                        }
+                    }
+
+                    if (!AxisHelper.DoubleHasValue(tmpTotalChild))
+                    {
+                        continue;
+                    }
+
+                    if (double.IsNaN(max) || tmpTotalChild - max > pre)
+                    {
+                        max = tmpTotalChild;
                     }
                 }
                 else
@@ -818,48 +833,40 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        protected override double PrimitiveGetX(IChartItem chartItem)
+        protected override double PrimitiveGetX(IChartItem item)
         {
-            if (this._axisData == null || chartItem == null)
-            {
-                return double.NaN;
-            }
-
-            object obj = chartItem.GetXValue();
-            double value = AxisHelper.ConvertToDouble(obj);
-            if (!AxisHelper.DoubleHasValue(value))
-            {
-                return double.NaN;
-            }
-
-            //默认AxisOrientation.LeftToRight
-            double result = base._axisCanvas.Width * (value - this._minValue) / this._axisData.Area;
-            if (base.Orientation == AxisOrientation.RightToLeft)
-            {
-                result = base._axisCanvas.Width - result;
-            }
-
-            return result;
+            return this.GetAxis(item, true, base._axisCanvas.Width);
         }
 
-        protected override double PrimitiveGetY(IChartItem chartItem)
+        protected override double PrimitiveGetY(IChartItem item)
         {
-            if (this._axisData == null || chartItem == null)
+            return this.GetAxis(item, false, base._axisCanvas.Height);
+        }
+
+        private double GetAxis(IChartItem item, bool x, double axisSize)
+        {
+            if (this._axisData == null)
             {
                 return double.NaN;
             }
 
-            object obj = chartItem.GetYValue();
+            object obj = AxisHelper.GetChartItemAxisValue(item, x);
+            if (item == null)
+            {
+                return double.NaN;
+            }
+
             double value = AxisHelper.ConvertToDouble(obj);
             if (!AxisHelper.DoubleHasValue(value))
             {
                 return double.NaN;
             }
 
-            double result = base._axisCanvas.Height * (value - this._minValue) / this._axisData.Area;
-            if (base.Orientation == AxisOrientation.BottomToTop)
+            double result = axisSize * (value - this._axisData.MinValue) / this._axisData.Area;
+            if (base.Orientation == AxisOrientation.BottomToTop ||
+                base.Orientation == AxisOrientation.RightToLeft)
             {
-                result = base._axisCanvas.Height - result;
+                result = axisSize - result;
             }
 
             return result;
