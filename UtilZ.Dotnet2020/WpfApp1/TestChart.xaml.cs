@@ -157,13 +157,102 @@ namespace WpfApp1
             //TestStackColumnHorizontal();
             //TestStackColumnVertical();
 
-            TestAllColumnVertical();
+            //TestAllColumnVertical();
+
+            ValidateLineSeriesBezierData();
         }
+
+
+        private void ValidateLineSeriesBezierData()
+        {
+            int minY = 10, maxY = 100;
+            DateTime minTime = DateTime.Parse("2010-01-01 00:00:00");
+            DateTime maxTime = DateTime.Parse("2011-01-01 00:00:00");
+
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new DateTimeAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                MinValue = minTime,
+                MaxValue = maxTime,
+                LabelStep = null
+            });
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = minY,
+                MaxValue = maxY,
+                LabelStep = double.NaN
+            });
+
+            
+            this.Axes = axes;
+
+
+            var series = new ChartCollection<ISeries>();
+            series.Add(new LineSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                LineSeriesType = LineSeriesType.Bezier,
+                EnableTooltip = true,
+                Title = "Bezier",
+                Style = ChartStyleHelper.CreateLineSeriesStyle(ColorBrushHelper.GetNextColor())
+            });
+            series.Add(new LineSeries()
+            {
+                AxisX = axes[0],
+                AxisY = axes[1],
+                LineSeriesType = LineSeriesType.PolyLine,
+                EnableTooltip = true,
+                Title = "PolyLine",
+                Style = ChartStyleHelper.CreateLineSeriesStyle(ColorBrushHelper.GetNextColor()),
+                //CreatePointFunc = this.CreatePointFunc
+            });
+
+
+
+            double value;
+            DateTime time = minTime;
+
+            ChartCollection<IChartValue> values1 = new ChartCollection<IChartValue>();
+            ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
+            IChartValue chartValue;
+            double stepTotalMilliseconds = TimeSpan.FromDays(1).TotalMilliseconds;
+            while (time < maxTime)
+            {
+                value = _rnd.Next(minY, maxY);
+                chartValue = new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}");
+                values1.Add(chartValue);
+                values2.Add(chartValue);
+                time = time.AddMilliseconds(stepTotalMilliseconds);
+            }
+            series[0].Values = values1;
+            series[1].Values = values2;
+
+
+
+            this.Series = series;
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            this.ManaulComit = false;
+        }
+
 
 
         private void TestAllColumnVertical()
         {
-            int min = 0, max = 100;
+            int min = 10, max = 100;
 
             this.ManaulComit = true;
 

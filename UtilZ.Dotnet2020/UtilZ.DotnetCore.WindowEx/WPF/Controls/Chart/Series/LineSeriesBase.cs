@@ -124,7 +124,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             this._pointInfoList.Clear();
             this._pointGeometryList.Clear();
-
+            base.AddLegendItem(new SeriesLegendItem(this._pathLine.Stroke, base.Title, this));
             List<List<PointInfo>> pointInfoListCollection = this.GeneratePointList();
             if (pointInfoListCollection == null || pointInfoListCollection.Count == 0)
             {
