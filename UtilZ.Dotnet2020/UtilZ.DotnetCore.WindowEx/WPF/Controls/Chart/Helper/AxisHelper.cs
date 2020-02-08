@@ -75,7 +75,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, double x1, double x2)
         {
-            if (!axis.AxisLine || !DoubleHasValue(x1) || !DoubleHasValue(x2))
+            if (!axis.DrawAxisLine || !DoubleHasValue(x1) || !DoubleHasValue(x2))
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> xList)
         {
-            if (!axis.AxisLine || xList == null || xList.Count == 0)
+            if (!axis.DrawAxisLine || xList == null || xList.Count == 0)
             {
                 return;
             }
@@ -178,7 +178,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, double y1, double y2)
         {
-            if (!axis.AxisLine || !DoubleHasValue(y1) || !DoubleHasValue(y2))
+            if (!axis.DrawAxisLine || !DoubleHasValue(y1) || !DoubleHasValue(y2))
             {
                 return;
             }
@@ -214,7 +214,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> yList)
         {
-            if (!axis.AxisLine || yList == null || yList.Count == 0)
+            if (!axis.DrawAxisLine || yList == null || yList.Count == 0)
             {
                 return;
             }

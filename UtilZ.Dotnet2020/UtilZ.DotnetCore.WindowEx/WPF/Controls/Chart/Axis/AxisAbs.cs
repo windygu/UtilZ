@@ -100,17 +100,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        private bool _axisLine = true;
+        private bool _drawAxisAxisLine = true;
         /// <summary>
         /// true:绘制坐标线;false:不绘制坐标线
         /// </summary>
-        public bool AxisLine
+        public bool DrawAxisLine
         {
-            get { return _axisLine; }
+            get { return _drawAxisAxisLine; }
             set
             {
-                _axisLine = value;
-                base.OnRaisePropertyChanged(nameof(AxisLine));
+                _drawAxisAxisLine = value;
+                base.OnRaisePropertyChanged(nameof(DrawAxisLine));
             }
         }
 
@@ -316,32 +316,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
-        internal void UpdateLabelStyle()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void UpdateAxisLine()
-        {
-            throw new NotImplementedException();
-        }
-
         internal void UpdateTitle()
         {
-            throw new NotImplementedException();
+            if (this._titleControl != null)
+            {
+                this._titleControl.Text = this._title;
+            }
         }
 
         internal void UpdateTitleStyle()
         {
-            throw new NotImplementedException();
+            if (this._titleControl != null)
+            {
+                this._titleControl.Style = this._titleStyle;
+            }
         }
-
-        internal bool JustUpdateAxis(string propertyName)
-        {
-            throw new NotImplementedException();
-        }
-
 
 
 
@@ -383,7 +372,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Width = axisWidth;
-            this.AddAxisXTitle(this._axisCanvas);
+            this.AddAxisXTitle();
             return this.PrimitiveDrawX(this._axisCanvas, seriesCollection);
         }
         protected abstract List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
@@ -397,7 +386,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             this._axisCanvas.Children.Clear();
             this._axisCanvas.Height = axisHeight;
-            this.AddAxisYTitle(this._axisCanvas);
+            this.AddAxisYTitle();
             return this.PrimitiveDrawY(this._axisCanvas, seriesCollection);
         }
 
@@ -456,7 +445,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return this._titleControl;
         }
 
-        private void AddAxisXTitle(Canvas axisCanvas)
+        private void AddAxisXTitle()
         {
             //TextBlock titleControl = this._titleControl;
             //if (titleControl == null)
@@ -483,7 +472,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             //Canvas.SetTop(titleControl, top);
         }
 
-        private void AddAxisYTitle(Canvas axisCanvas)
+        private void AddAxisYTitle()
         {
             //TextBlock titleControl = this.GetTitleControl();
             //if (titleControl == null)

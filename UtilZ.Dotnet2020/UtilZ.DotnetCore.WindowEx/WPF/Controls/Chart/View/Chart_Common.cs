@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -233,14 +234,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        private void DrawSeries(Canvas chartCanvas, ChartCollection<ISeries> seriesCollection)
+        private void DrawSeries(Canvas chartCanvas, IEnumerable<ISeries> seriesCollection)
         {
             if (chartCanvas.Width <= AxisConstant.ZERO_D || chartCanvas.Height <= AxisConstant.ZERO_D)
             {
                 return;
             }
 
-            if (seriesCollection != null && seriesCollection.Count > AxisConstant.ZERO_I)
+            if (seriesCollection != null)
             {
                 foreach (ISeries series in seriesCollection)
                 {

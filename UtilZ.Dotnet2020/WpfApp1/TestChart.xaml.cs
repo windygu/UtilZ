@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.WPF.Controls;
+using UtilZ.DotnetStd.Ex.Base;
 using UtilZ.DotnetStd.Ex.Log;
 using UtilZ.DotnetStd.Ex.Log.Appender;
 using UtilZ.DotnetStd.Ex.Model;
@@ -163,6 +165,7 @@ namespace WpfApp1
         }
 
 
+
         private void ValidateLineSeriesBezierData()
         {
             int minY = 10, maxY = 100;
@@ -176,8 +179,8 @@ namespace WpfApp1
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
                 Orientation = AxisOrientation.LeftToRight,
-                MinValue = minTime,
-                MaxValue = maxTime,
+                //MinValue = minTime,
+                //MaxValue = maxTime,
                 LabelStep = null
             });
             axes.Add(new NumberAxis()
@@ -190,7 +193,7 @@ namespace WpfApp1
                 LabelStep = double.NaN
             });
 
-            
+
             this.Axes = axes;
 
 
@@ -217,16 +220,18 @@ namespace WpfApp1
 
 
 
-            double value;
+            int value = (minY + maxY) / 2;
             DateTime time = minTime;
 
             ChartCollection<IChartValue> values1 = new ChartCollection<IChartValue>();
             ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
             IChartValue chartValue;
             double stepTotalMilliseconds = TimeSpan.FromDays(1).TotalMilliseconds;
+            int offset = 10;
+
             while (time < maxTime)
             {
-                value = _rnd.Next(minY, maxY);
+                value = this.NextValue(value, minY, offset);
                 chartValue = new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}");
                 values1.Add(chartValue);
                 values2.Add(chartValue);
@@ -236,17 +241,34 @@ namespace WpfApp1
             series[1].Values = values2;
 
 
-
             this.Series = series;
             this.Legend = new HorizontalChartLegend()
             {
                 DockOrientation = ChartDockOrientation.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Background = Brushes.Transparent
+                Background = Brushes.Transparent,
+                IsChecked = true
             };
             this.ManaulComit = false;
         }
+        private int NextValue(int value, int minY, int offset)
+        {
+            int min = value - offset;
+            if (min < minY)
+            {
+                min = minY;
+            }
+            int max = min + offset * 2;
+            value = _rnd.Next(min, max);
+            return value;
+        }
+
+
+
+
+
+
 
 
 
@@ -1230,6 +1252,85 @@ namespace WpfApp1
                 LabelStep = double.NaN
             });
             this.Axes = axes;
+        }
+    }
+
+    internal class TimerChartValue
+    {
+        private ChartCollection<IChartValue> _values1;
+        private ChartCollection<IChartValue> _values2;
+        private DateTime _time;
+        private int _offset;
+        private int _value;
+        private int _minY;
+        private ThreadEx _thread;
+
+        public TimerChartValue()
+        {
+            this._thread = new ThreadEx(this.ThreadMethod, "ThreadMethod", true);
+        }
+
+        private void ThreadMethod(CancellationToken token)
+        {
+            const int INTERVAL = 500;
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    try
+                    {
+                        token.WaitHandle.WaitOne(INTERVAL);
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        break;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
+
+                    this._value = this.NextValue(this._value, this._minY, this._offset);
+                    //this._values1.Add()
+                    //this._values2
+                }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
+        }
+
+        internal void Start(ChartCollection<IChartValue> values1, ChartCollection<IChartValue> values2, DateTime time, int value, int minY, int offset)
+        {
+            this._time = time;
+            this._offset = offset;
+            this._value = value;
+            this._minY = minY;
+            this._values1 = values1;
+            this._values2 = values2;
+            this._thread.Start();
+        }
+
+        private readonly Random _rnd = new Random();
+        internal int NextValue(int value, int minY, int offset)
+        {
+            int min = value - offset;
+            if (min < minY)
+            {
+                min = minY;
+            }
+            int max = min + offset * 2;
+            value = _rnd.Next(min, max);
+            return value;
+        }
+
+
+        internal void Stop()
+        {
+            this._thread.Stop();
+            this._values1 = null;
+            this._values2 = null;
         }
     }
 }

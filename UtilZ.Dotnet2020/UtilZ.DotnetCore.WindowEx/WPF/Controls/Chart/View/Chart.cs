@@ -137,8 +137,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private readonly Canvas _chartCanvas;
         private readonly ScrollViewer _scrollViewer;
         private readonly Grid _chartContentGrid;
-        //private Rect _chartArea;
-        //private bool _fullUpdateCharted = false;
+        private double _scrollBarWidth;
 
         public Chart()
             : base()
@@ -185,8 +184,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
-        private double _scrollBarWidth;
         private void UpdateScrollBarWidth(double scrollBarWidth)
         {
             if (!AxisHelper.DoubleHasValue(scrollBarWidth) || scrollBarWidth < AxisConstant.ZERO_D)
@@ -198,6 +195,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this._scrollViewer.Resources[SystemParameters.HorizontalScrollBarHeightKey] = scrollBarWidth;
             this._scrollBarWidth = scrollBarWidth;
         }
+
 
 
         private void AxesChanged(ChartCollection<AxisAbs> oldAxisCollection, ChartCollection<AxisAbs> newAxisCollection)
@@ -224,15 +222,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private void Axis_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var axis = (AxisAbs)sender;
-            if (string.Equals(e.PropertyName, nameof(AxisAbs.LabelStyle)))
-            {
-                axis.UpdateLabelStyle();
-            }
-            else if (string.Equals(e.PropertyName, nameof(AxisAbs.AxisLine)))
-            {
-                axis.UpdateAxisLine();
-            }
-            else if (string.Equals(e.PropertyName, nameof(AxisAbs.Title)))
+            if (string.Equals(e.PropertyName, nameof(AxisAbs.Title)))
             {
                 axis.UpdateTitle();
             }
@@ -242,12 +232,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
             else
             {
-                if (axis.JustUpdateAxis(e.PropertyName))
-                {
-                    return;
-                }
-
                 //全部重绘                
+                //string.Equals(e.PropertyName, nameof(AxisAbs.LabelStyle)) ||
+                //string.Equals(e.PropertyName, nameof(AxisAbs.DrawAxisLine)) ||
                 //string.Equals(e.PropertyName, nameof(AxisAbs.LabelSize)) ||
                 //string.Equals(e.PropertyName, nameof(AxisAbs.AxisDockOrientation)) ||
                 //string.Equals(e.PropertyName, nameof(AxisAbs.AxisType)) ||
@@ -328,18 +315,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     throw new NotImplementedException(e.Action.ToString());
             }
 
-
             if (update)
             {
                 this.UpdateAll();
             }
         }
-
-
-
-
-
-
 
 
 
@@ -380,7 +360,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
             }
 
-            this.UpdateChart(null);
+            this.DrawSeries(this._chartCanvas, this.Series);
         }
 
         private void Series_ValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -484,7 +464,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
             else if (update)
             {
-                this.UpdateChart(e.NewItems);
+                this.DrawSeries(this._chartCanvas, e.NewItems);
             }
         }
 
@@ -539,28 +519,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 default:
                     throw new NotImplementedException(axisFreezeInfo.AxisFreezeType.ToString());
             }
-        }
-
-
-        private void UpdateChart(List<ISeries> seriesList)
-        {
-            if (this.IgnoreUpdateChart())
-            {
-                return;
-            }
-
-            //todo..计算并验证坐标轴最大值是否满足,满足则添加,不满足则更新坐标+图表约等于全部更新
-
-            if (seriesList == null)
-            {
-                this.PrimitiveUpdateChart();
-            }
-        }
-
-
-        private void PrimitiveUpdateChart()
-        {
-
         }
 
 

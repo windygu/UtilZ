@@ -879,7 +879,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             //计算AxisOrientation.LeftToRight或TopToBottom
-            double result = axisSize * (value.Value - this._minValue.Value).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
+            double result = axisSize * (value.Value - this._axisData.MinValue).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
             if (base.Orientation == AxisOrientation.RightToLeft ||
                 base.Orientation == AxisOrientation.BottomToTop)
             {
