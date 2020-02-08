@@ -33,7 +33,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private Func<PointInfo, FrameworkElement> _createPointFunc = null;
-        public Func<PointInfo, FrameworkElement> CreatePointFunc
+        public virtual Func<PointInfo, FrameworkElement> CreatePointFunc
         {
             get { return _createPointFunc; }
             set
@@ -124,7 +124,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
         /// </summary>
-        public double TooltipArea
+        public virtual double TooltipArea
         {
             get { return _tooltipArea; }
             set
