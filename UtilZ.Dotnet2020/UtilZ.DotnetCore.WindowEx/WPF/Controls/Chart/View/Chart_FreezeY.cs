@@ -33,7 +33,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             LegendAddResult legendAddResult = this.AddLegend(legend, chartGrid);
 
             //第二步 计算X轴总高度
-            AxisXHeightInfo axisXHeightInfo = CalculateAxisXHeight(axisCollection);
+            AxisXHeightInfo axisXHeightInfo = this.CalculateAxisXHeight(axisCollection);
 
             //第三步 根据X轴总高度计算图表区域高度高度(等于Y轴高度)
             double yAxisHeight = axisFreezeInfo.Height - axisXHeightInfo.TopAxisTotalHeight - axisXHeightInfo.BottomAxisTotalHeight - legendAddResult.Top - legendAddResult.Bottom - this._scrollBarWidth;
@@ -47,9 +47,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
             //第五步 根据宽度绘制X轴
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, axisFreezeInfo.Width);
+            double width = this.ActualWidth - axisYWidthInfo.LeftAxisTotalWidth - axisYWidthInfo.RightAxisTotalWidth  - legendAddResult.Left - legendAddResult.Right;
+            double xAxisWidth = axisFreezeInfo.Width;
+            if (xAxisWidth < AxisConstant.ZERO_D)
+            {
+                xAxisWidth = AxisConstant.ZERO_D;
+            }
+            else if (xAxisWidth - width < AxisConstant.ZERO_D)
+            {
+                //真实宽度大于最小值,取更大值
+                xAxisWidth = width;
+            }
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth);
 
-            chartCanvas.Width = axisFreezeInfo.Width;
+            chartCanvas.Width = xAxisWidth;
             chartCanvas.Height = yAxisHeight;
             chartContentGrid.Children.Add(chartCanvas);
 
@@ -74,6 +85,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
             scrollViewer.Content = chartContentGrid;
+            scrollViewer.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            scrollViewer.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             chartGrid.Children.Add(scrollViewer);
 
 

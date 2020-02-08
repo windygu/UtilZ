@@ -155,6 +155,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             if (hasLegend)
             {
+                if (legend.DockOrientation == ChartDockOrientation.Top ||
+                    legend.DockOrientation == ChartDockOrientation.Bottom)
+                {
+                    this.Chart.CreateRow(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
+                }
+
                 this.Legend.CreateLegendRowColumn(chartGrid, legend);
             }
 
@@ -209,6 +215,35 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             this.Chart.MergeRowColumn(chartContentGrid, this.Chart);
+        }
+
+
+
+        /// <summary>
+        /// FreezeY
+        /// </summary>
+        /// <param name="hasLegend"></param>
+        /// <param name="legend"></param>
+        /// <param name="chartGrid"></param>
+        /// <param name="axisYWidthInfo"></param>
+        public ChartGridRowColumnDefinition(bool hasLegend, IChartLegend legend, Grid chartGrid)
+        {
+            if (hasLegend)
+            {
+                this.Legend = new RowColumnDefinitionItem();
+            }
+
+            this.Chart = new RowColumnDefinitionItem();
+
+
+            this.Chart.CreateColumn(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
+            this.Chart.CreateRow(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (hasLegend)
+            {
+                this.Legend.CreateLegendRowColumn(chartGrid, legend);
+            }
+
+            this.Chart.MergeRowColumn(chartGrid, this.Chart);
         }
     }
 }

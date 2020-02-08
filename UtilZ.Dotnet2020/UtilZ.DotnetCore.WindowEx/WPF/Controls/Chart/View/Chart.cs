@@ -23,12 +23,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             DependencyProperty.Register(nameof(Series), typeof(ChartCollection<ISeries>), typeof(Chart),
                 new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
-        public static readonly DependencyProperty ChartHeightProperty =
-           DependencyProperty.Register(nameof(ChartHeight), typeof(double), typeof(Chart),
+        public static readonly DependencyProperty ChartMinHeightProperty =
+           DependencyProperty.Register(nameof(ChartMinHeight), typeof(double), typeof(Chart),
                new FrameworkPropertyMetadata(double.NaN, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
-        public static readonly DependencyProperty ChartWidthProperty =
-           DependencyProperty.Register(nameof(ChartWidth), typeof(double), typeof(Chart),
+        public static readonly DependencyProperty ChartMinWidthProperty =
+           DependencyProperty.Register(nameof(ChartMinWidth), typeof(double), typeof(Chart),
                new FrameworkPropertyMetadata(double.NaN, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
         public static readonly DependencyProperty AxesProperty =
@@ -57,16 +57,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             set { SetValue(SeriesProperty, value); }
         }
 
-        public double ChartHeight
+        /// <summary>
+        /// 图表区域最小高度值,为double.NaN或小于0此值无效,默认为double.NaN
+        /// </summary>
+        public double ChartMinHeight
         {
-            get { return (double)GetValue(ChartHeightProperty); }
-            set { SetValue(ChartHeightProperty, value); }
+            get { return (double)GetValue(ChartMinHeightProperty); }
+            set { SetValue(ChartMinHeightProperty, value); }
         }
 
-        public double ChartWidth
+        /// <summary>
+        /// 图表区域最小宽度值,为double.NaN或小于0此值无效,默认为double.NaN
+        /// </summary>
+        public double ChartMinWidth
         {
-            get { return (double)GetValue(ChartWidthProperty); }
-            set { SetValue(ChartWidthProperty, value); }
+            get { return (double)GetValue(ChartMinWidthProperty); }
+            set { SetValue(ChartMinWidthProperty, value); }
         }
 
         public ChartCollection<AxisAbs> Axes
@@ -526,7 +532,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     this.UpdateFreezeY(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, this._scrollViewer, chartContentGrid);
                     break;
                 case AxisFreezeType.All:
-                    this.UpdateFreezeAll(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid);
+                    this.UpdateFreezeAll(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, this._scrollViewer, chartContentGrid);
                     break;
                 default:
                     throw new NotImplementedException(axisFreezeInfo.AxisFreezeType.ToString());
@@ -562,10 +568,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             double width, height;
             AxisFreezeType axisFreezeType;
-            if (double.IsNaN(this.ChartHeight))
+            if (double.IsNaN(this.ChartMinHeight))
             {
                 height = this.ActualHeight;
-                if (double.IsNaN(this.ChartWidth))
+                if (double.IsNaN(this.ChartMinWidth))
                 {
                     axisFreezeType = AxisFreezeType.None;
                     width = this.ActualWidth;
@@ -573,13 +579,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 else
                 {
                     axisFreezeType = AxisFreezeType.Y;
-                    width = this.ChartWidth;
+                    width = this.ChartMinWidth;
                 }
             }
             else
             {
-                height = this.ChartHeight;
-                if (double.IsNaN(this.ChartWidth))
+                height = this.ChartMinHeight;
+                if (double.IsNaN(this.ChartMinWidth))
                 {
                     axisFreezeType = AxisFreezeType.X;
                     width = this.ActualWidth;
@@ -587,7 +593,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 else
                 {
                     axisFreezeType = AxisFreezeType.All;
-                    width = this.ChartWidth;
+                    width = this.ChartMinWidth;
                 }
             }
 

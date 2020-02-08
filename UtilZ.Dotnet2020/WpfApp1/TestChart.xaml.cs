@@ -76,24 +76,24 @@ namespace WpfApp1
             }
         }
 
-        private double _chartHeight = double.NaN;
-        public double ChartHeight
+        private double _chartMinHeight = double.NaN;
+        public double ChartMinHeight
         {
-            get { return _chartHeight; }
+            get { return _chartMinHeight; }
             set
             {
-                _chartHeight = value;
+                _chartMinHeight = value;
                 base.OnRaisePropertyChanged();
             }
         }
 
-        private double _chartWidth = double.NaN;
-        public double ChartWidth
+        private double _chartMinWidth = double.NaN;
+        public double ChartMinWidth
         {
-            get { return _chartWidth; }
+            get { return _chartMinWidth; }
             set
             {
-                _chartWidth = value;
+                _chartMinWidth = value;
                 base.OnRaisePropertyChanged();
             }
         }
@@ -167,7 +167,8 @@ namespace WpfApp1
 
             this.ManaulComit = true;
 
-            //this.ChartWidth = 1200d;
+            this.ChartMinWidth = 900d;
+            this.ChartMinHeight = 500d;
 
             var axes = new ChartCollection<AxisAbs>();
             axes.Add(new LabelAxis()
@@ -292,20 +293,20 @@ namespace WpfApp1
 
 
             this.Series = series;
-            this.Legend = new VerticalChartLegend()
-            {
-                DockOrientation = ChartDockOrientation.Right,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Background = Brushes.Transparent
-            };
-            //this.Legend = new HorizontalChartLegend()
+            //this.Legend = new VerticalChartLegend()
             //{
-            //    DockOrientation = ChartDockOrientation.Bottom,
+            //    DockOrientation = ChartDockOrientation.Right,
             //    HorizontalAlignment = HorizontalAlignment.Center,
             //    VerticalAlignment = VerticalAlignment.Center,
             //    Background = Brushes.Transparent
             //};
+            this.Legend = new HorizontalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
             this.ManaulComit = false;
         }
 

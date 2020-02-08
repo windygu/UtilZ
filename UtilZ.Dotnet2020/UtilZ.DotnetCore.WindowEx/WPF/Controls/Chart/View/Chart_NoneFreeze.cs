@@ -38,7 +38,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
             //第二步 计算X轴总高度
-            AxisXHeightInfo axisXHeightInfo = CalculateAxisXHeight(axisCollection);
+            AxisXHeightInfo axisXHeightInfo = this.CalculateAxisXHeight(axisCollection);
 
 
             //第三步 根据X轴总高度计算图表区域高度高度(等于Y轴高度)
