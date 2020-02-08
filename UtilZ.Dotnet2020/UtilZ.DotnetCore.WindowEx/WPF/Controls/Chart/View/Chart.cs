@@ -509,8 +509,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             Grid chartGrid = this._chartGrid;
             Canvas chartCanvas = this._chartCanvas;
             Grid chartContentGrid = this._chartContentGrid;
+            ScrollViewer scrollViewer = this._scrollViewer;
 
             this.Content = null;
+            scrollViewer.Content = null;
             this._scrollViewer.Content = null;
             chartGrid.Children.Clear();
             chartCanvas.Children.Clear();
@@ -526,13 +528,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     this.UpdateNoneFreeze(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid);
                     break;
                 case AxisFreezeType.X:
-                    this.UpdateFreezeX(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid);
+                    this.UpdateFreezeX(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, scrollViewer, chartContentGrid);
                     break;
                 case AxisFreezeType.Y:
-                    this.UpdateFreezeY(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, this._scrollViewer, chartContentGrid);
+                    this.UpdateFreezeY(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, scrollViewer, chartContentGrid);
                     break;
                 case AxisFreezeType.All:
-                    this.UpdateFreezeAll(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, this._scrollViewer, chartContentGrid);
+                    this.UpdateFreezeAll(axisFreezeInfo, axes, series, legend, chartCanvas, chartGrid, scrollViewer, chartContentGrid);
                     break;
                 default:
                     throw new NotImplementedException(axisFreezeInfo.AxisFreezeType.ToString());

@@ -47,7 +47,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
             //第五步 根据宽度绘制X轴
-            double width = this.ActualWidth - axisYWidthInfo.LeftAxisTotalWidth - axisYWidthInfo.RightAxisTotalWidth  - legendAddResult.Left - legendAddResult.Right;
+            double width = this.ActualWidth - axisYWidthInfo.LeftAxisTotalWidth - axisYWidthInfo.RightAxisTotalWidth - legendAddResult.Left - legendAddResult.Right;
             double xAxisWidth = axisFreezeInfo.Width;
             if (xAxisWidth < AxisConstant.ZERO_D)
             {
@@ -58,7 +58,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 //真实宽度大于最小值,取更大值
                 xAxisWidth = width;
             }
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth);
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth, AxisConstant.ZERO_D);
 
             chartCanvas.Width = xAxisWidth;
             chartCanvas.Height = yAxisHeight;

@@ -59,7 +59,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 xAxisWidth = width;
             }
 
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth);
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth, AxisConstant.ZERO_D);
 
             chartContentGrid.Width = xAxisWidth + axisYWidthInfo.LeftAxisTotalWidth + axisYWidthInfo.RightAxisTotalWidth;
             chartContentGrid.Height = yAxisHeight + axisXHeightInfo.TopAxisTotalHeight + axisXHeightInfo.BottomAxisTotalHeight;

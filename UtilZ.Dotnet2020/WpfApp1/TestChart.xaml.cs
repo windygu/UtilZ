@@ -168,7 +168,7 @@ namespace WpfApp1
             this.ManaulComit = true;
 
             this.ChartMinWidth = 900d;
-            this.ChartMinHeight = 500d;
+            this.ChartMinHeight = 400d;
 
             var axes = new ChartCollection<AxisAbs>();
             axes.Add(new LabelAxis()
@@ -293,20 +293,20 @@ namespace WpfApp1
 
 
             this.Series = series;
-            //this.Legend = new VerticalChartLegend()
-            //{
-            //    DockOrientation = ChartDockOrientation.Right,
-            //    HorizontalAlignment = HorizontalAlignment.Center,
-            //    VerticalAlignment = VerticalAlignment.Center,
-            //    Background = Brushes.Transparent
-            //};
-            this.Legend = new HorizontalChartLegend()
+            this.Legend = new VerticalChartLegend()
             {
-                DockOrientation = ChartDockOrientation.Bottom,
+                DockOrientation = ChartDockOrientation.Left,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Background = Brushes.Transparent
             };
+            //this.Legend = new HorizontalChartLegend()
+            //{
+            //    DockOrientation = ChartDockOrientation.Top,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    Background = Brushes.Transparent
+            //};
             this.ManaulComit = false;
         }
 

@@ -82,6 +82,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private AxisYWidthInfo DrawAxisYByAxisXHeightInfo(ChartCollection<AxisAbs> axisCollection, UIElementCollection children, ChartCollection<ISeries> seriesCollection, double yAxisHeight, double top)
         {
+            if (!AxisHelper.DoubleHasValue(yAxisHeight) || yAxisHeight <= AxisConstant.ZERO_D)
+            {
+                return new AxisYWidthInfo(AxisConstant.ZERO_D, AxisConstant.ZERO_D, null);
+            }
+
             double leftAxisTotalWidth = AxisConstant.ZERO_D, rightAxisTotalWidth = AxisConstant.ZERO_D;
             Dictionary<AxisAbs, List<double>> axisYLabelDic = null;
             if (axisCollection != null && axisCollection.Count > AxisConstant.ZERO_I)
@@ -130,8 +135,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return new AxisYWidthInfo(leftAxisTotalWidth, rightAxisTotalWidth, axisYLabelDic);
         }
 
-        private Dictionary<AxisAbs, List<double>> DrawAxisX(ChartCollection<AxisAbs> axisCollection, ChartCollection<ISeries> seriesCollection, Grid chartGrid, double xAxisWidth)
+        private Dictionary<AxisAbs, List<double>> DrawAxisX(ChartCollection<AxisAbs> axisCollection, ChartCollection<ISeries> seriesCollection, Grid chartGrid, double xAxisWidth, double left)
         {
+            if (!AxisHelper.DoubleHasValue(xAxisWidth) || xAxisWidth <= AxisConstant.ZERO_D)
+            {
+                return null;
+            }
+
             Dictionary<AxisAbs, List<double>> axisXLabelDic = null;
             bool hasAxis = axisCollection != null && axisCollection.Count > AxisConstant.ZERO_I;
             if (hasAxis)
@@ -158,17 +168,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     }
 
                     axisXControl = axis.AxisControl;
+                    axisXControl.HorizontalAlignment = HorizontalAlignment.Left;
                     chartGrid.Children.Add(axisXControl);
                     if (axis.IsAxisXBottom())
                     {
                         axisXControl.VerticalAlignment = VerticalAlignment.Bottom;
-                        axisXControl.Margin = new Thickness(AxisConstant.ZERO_D, axisTop, AxisConstant.ZERO_D, AxisConstant.ZERO_D);
+                        axisXControl.Margin = new Thickness(left, axisTop, AxisConstant.ZERO_D, AxisConstant.ZERO_D);
                         axisTop += axisXControl.Height;
                     }
                     else
                     {
                         axisXControl.VerticalAlignment = VerticalAlignment.Top;
-                        axisXControl.Margin = new Thickness(AxisConstant.ZERO_D, AxisConstant.ZERO_D, AxisConstant.ZERO_D, axisBottom);
+                        axisXControl.Margin = new Thickness(left, AxisConstant.ZERO_D, AxisConstant.ZERO_D, axisBottom);
                         axisBottom += axisXControl.Height;
                     }
                 }
@@ -224,6 +235,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private void DrawSeries(Canvas chartCanvas, ChartCollection<ISeries> seriesCollection)
         {
+            if (chartCanvas.Width <= AxisConstant.ZERO_D || chartCanvas.Height <= AxisConstant.ZERO_D)
+            {
+                return;
+            }
+
             if (seriesCollection != null && seriesCollection.Count > AxisConstant.ZERO_I)
             {
                 foreach (ISeries series in seriesCollection)

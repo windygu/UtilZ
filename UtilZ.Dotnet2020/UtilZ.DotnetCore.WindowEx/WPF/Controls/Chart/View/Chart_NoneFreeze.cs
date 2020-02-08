@@ -58,8 +58,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 xAxisWidth = AxisConstant.ZERO_D;
             }
-
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartGrid, xAxisWidth);
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartGrid, xAxisWidth, AxisConstant.ZERO_D);
 
             chartCanvas.Width = xAxisWidth;
             chartCanvas.Height = yAxisHeight;
