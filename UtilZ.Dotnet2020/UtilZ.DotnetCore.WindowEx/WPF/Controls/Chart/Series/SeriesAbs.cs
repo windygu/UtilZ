@@ -219,7 +219,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         protected void AddOrReplaceLegendItem(SeriesLegendItem legendItem)
         {
-            this._currentSeriesLegendItemList.RemoveAll(t => t.Series == this);
+            this.RemoveLegendItem();
             this._currentSeriesLegendItemList.Add(legendItem);
         }
 
@@ -231,7 +231,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         protected void RemoveLegendItem()
         {
-            this._currentSeriesLegendItemList.RemoveAll(t => t.Series == this);
+            this._currentSeriesLegendItemList.Clear();
         }
 
 

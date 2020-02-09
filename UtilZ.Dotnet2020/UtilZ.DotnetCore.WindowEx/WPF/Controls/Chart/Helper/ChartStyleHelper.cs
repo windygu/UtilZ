@@ -222,6 +222,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        public static Style CreatePieSeriesStyle(Brush stroke, Brush fill, double strokeThickness = 0d, double mouseOverStrokeThickness = 2d)
+        {
+            Style style = CreateLineSeriesStyle(stroke, strokeThickness, mouseOverStrokeThickness);
+            style.Setters.Add(new Setter(Path.FillProperty, fill));
+            return style;
+        }
+
         //public static Style CreateStepLineStyle()
         //{
         //    var style = new Style();

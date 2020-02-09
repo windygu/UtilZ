@@ -169,7 +169,66 @@ namespace WpfApp1
 
         private void TestPieChart()
         {
+            this.ManaulComit = true;
+            var series = new ChartCollection<ISeries>();
+            series.Add(new PieSeries()
+            {
+                PushOut = double.NaN,
+                Radius = double.NaN,
+                EnableTooltip = true
+            });
 
+            //series.Add(new PieSeries()
+            //{
+            //    PushOut = double.NaN,
+            //    Radius = 100d,
+            //    EnableTooltip = true,
+            //    Margin=new Thickness(220,0,0,0)
+            //});
+
+
+            int min = 10, max = 100;
+            int count = 5;
+            int value;
+            ChartCollection<IChartValue> values1 = new ChartCollection<IChartValue>();
+            //ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
+
+            for (int i = 0; i < count; i++)
+            {
+                value = _rnd.Next(min, max);
+                values1.Add(new ChartNoAxisValue(value, $"Item_{i}", null, $"{value}%"));
+
+                //value = _rnd.Next(min, max);
+                //values2.Add(new ChartNoAxisValue(value, $"Item_{i}", null, $"{value}%"));
+            }
+
+
+            //int i = 0;
+
+            //value = 120;
+            //values1.Add(new ChartNoAxisValue(value, $"Item_{i++}", null, $"{value}%"));
+            //value = 45;
+            //values1.Add(new ChartNoAxisValue(value, $"Item_{i++}", null, $"{value}%"));
+            //value = 60;
+            //values1.Add(new ChartNoAxisValue(value, $"Item_{i++}", null, $"{value}%"));
+            //value = 80;
+            //values1.Add(new ChartNoAxisValue(value, $"Item_{i++}", null, $"{value}%"));
+            //value = 5;
+            //values1.Add(new ChartNoAxisValue(value, $"Item_{i++}", null, $"{value}%"));
+
+            series[0].Values = values1;
+            //series[1].Values = values2;
+
+
+            this.Series = series;
+            this.Legend = new VerticalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Right,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent
+            };
+            this.ManaulComit = false;
         }
 
         private void ValidateLineSeriesBezierData()
@@ -284,8 +343,8 @@ namespace WpfApp1
 
             this.ManaulComit = true;
 
-            this.ChartMinWidth = 900d;
-            this.ChartMinHeight = 400d;
+            //this.ChartMinWidth = 900d;
+            //this.ChartMinHeight = 400d;
 
             var axes = new ChartCollection<AxisAbs>();
             axes.Add(new LabelAxis()

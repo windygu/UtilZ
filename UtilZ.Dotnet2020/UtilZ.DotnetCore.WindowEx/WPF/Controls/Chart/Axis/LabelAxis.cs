@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.Base;
+using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
@@ -384,23 +385,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             switch (angleQuadrantInfo.Quadrant)
             {
-                case Quadrant.One:
+                case Quadrant.One:  //angle:270-360°
                     x = labelTextSize.Height * Math.Cos(angleQuadrantInfo.Radians);
                     y = labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
                     translateTransform.X = labelTextSize.Width / 2 - x;
                     translateTransform.Y = labelTextSize.Height - y;
                     break;
-                case Quadrant.Two:
+                case Quadrant.Two: //angle:180-270°
                     translateTransform.X = labelTextSize.Width / 2;
                     translateTransform.Y = labelTextSize.Height;
                     break;
-                case Quadrant.Three:
+                case Quadrant.Three://angle:90-180°
                     x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
                     y = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
                     translateTransform.X = labelTextSize.Width / 2 + x;
                     translateTransform.Y = labelTextSize.Height - y;
                     break;
-                case Quadrant.Four:
+                case Quadrant.Four:  //angle:0-90°
                     x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians) - labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
                     y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Cos(angleQuadrantInfo.Radians);
                     translateTransform.X = labelTextSize.Width / 2 - x;
@@ -434,25 +435,25 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             switch (angleQuadrantInfo.Quadrant)
             {
-                case Quadrant.One:
+                case Quadrant.One://angle:270-360°
                     x = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians);
                     y = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians);
                     translateTransform.X = labelTextSize.Width / 2 - x;
                     translateTransform.Y = y;
                     break;
-                case Quadrant.Two:
+                case Quadrant.Two: //angle:180-270°
                     x = labelTextSize.Width * Math.Cos(angleQuadrantInfo.Radians) - labelTextSize.Height * Math.Sin(angleQuadrantInfo.Radians);
                     y = labelTextSize.Width * Math.Sin(angleQuadrantInfo.Radians) + labelTextSize.Height * Math.Cos(angleQuadrantInfo.ModRadians);
                     translateTransform.X = labelTextSize.Width / 2 + x;
                     translateTransform.Y = y;
                     break;
-                case Quadrant.Three:
+                case Quadrant.Three://angle:90-180°
                     x = labelTextSize.Height * Math.Sin(angleQuadrantInfo.ModRadians);
                     y = labelTextSize.Height * Math.Cos(angleQuadrantInfo.ModRadians); ;
                     translateTransform.X = labelTextSize.Width / 2 + x;
                     translateTransform.Y = y;
                     break;
-                case Quadrant.Four:
+                case Quadrant.Four://angle:0-90°
                     translateTransform.X = labelTextSize.Width / 2;
                     translateTransform.Y = AxisConstant.ZERO_D;
                     break;
@@ -651,10 +652,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-        private const double ANGLE_90 = 90d;
-        private const double ANGLE_180 = 180d;
-        private const double ANGLE_270 = 270d;
-        private const double ANGLE_360 = 360d;
 
 
         public AngleQuadrantInfo(double angle, double pre)
@@ -666,11 +663,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             //将角度转换为-360到360度之间
-            angle = angle % ANGLE_360;
+            angle = angle % MathEx.ANGLE_360;
             if (angle < AxisConstant.ZERO_D)
             {
                 //将负数角度转换为正数角度
-                angle += ANGLE_360;
+                angle += MathEx.ANGLE_360;
             }
             this._angle = angle;
 
@@ -684,26 +681,26 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             double mathAngle;
             Quadrant quadrant;
-            if (angle - ANGLE_270 > AxisConstant.ZERO_D)
+            if (angle - MathEx.ANGLE_270 > AxisConstant.ZERO_D)
             {
                 //angle:270-360°
                 quadrant = Quadrant.One;
-                mathAngle = angle - ANGLE_270;
-                this._modRadians = (ANGLE_180 - ANGLE_90 - mathAngle) * Math.PI / ANGLE_180;
+                mathAngle = angle - MathEx.ANGLE_270;
+                this._modRadians = MathEx.AngleToRadians(MathEx.ANGLE_180 - MathEx.ANGLE_90 - mathAngle);
             }
-            else if (angle - ANGLE_180 > AxisConstant.ZERO_D)
+            else if (angle - MathEx.ANGLE_180 > AxisConstant.ZERO_D)
             {
                 //angle:180-270°
                 quadrant = Quadrant.Two;
-                mathAngle = angle - ANGLE_180;
-                this._modRadians = (ANGLE_360 - ANGLE_90 - angle) * Math.PI / ANGLE_180;
+                mathAngle = angle - MathEx.ANGLE_180;
+                this._modRadians = MathEx.AngleToRadians(MathEx.ANGLE_360 - MathEx.ANGLE_90 - angle);
             }
-            else if (angle - ANGLE_90 > AxisConstant.ZERO_D)
+            else if (angle - MathEx.ANGLE_90 > AxisConstant.ZERO_D)
             {
                 //angle:90-180°
                 quadrant = Quadrant.Three;
-                mathAngle = angle - ANGLE_90;
-                this._modRadians = (ANGLE_270 - ANGLE_90 - angle) * Math.PI / ANGLE_180;
+                mathAngle = angle - MathEx.ANGLE_90;
+                this._modRadians = MathEx.AngleToRadians(MathEx.ANGLE_270 - MathEx.ANGLE_90 - angle);
             }
             else
             {
@@ -712,34 +709,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 mathAngle = angle;
             }
 
-            this._radians = mathAngle * Math.PI / ANGLE_180;
+            this._radians = MathEx.AngleToRadians(mathAngle);
             this._quadrant = quadrant;
         }
-    }
-
-    /// <summary>
-    /// XY坐标系象限类型枚举
-    /// </summary>
-    internal enum Quadrant
-    {
-        /// <summary>
-        /// 第一象限[270-360°]
-        /// </summary>
-        One,
-
-        /// <summary>
-        /// 第二象限[180-270°]
-        /// </summary>
-        Two,
-
-        /// <summary>
-        /// 第三象限[90-180°]
-        /// </summary>
-        Three,
-
-        /// <summary>
-        /// 第四象限[0-90°]
-        /// </summary>
-        Four
     }
 }

@@ -481,7 +481,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return;
             }
 
-            //todo..布局-绘制坐标-绘制图表
             AxisFreezeInfo axisFreezeInfo = this.GetAxisFreezeInfo();
             ChartCollection<AxisAbs> axes = this.Axes;
             ChartCollection<ISeries> series = this.Series;

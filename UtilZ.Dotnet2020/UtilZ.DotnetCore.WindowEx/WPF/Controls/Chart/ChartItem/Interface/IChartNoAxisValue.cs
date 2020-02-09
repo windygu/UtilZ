@@ -21,6 +21,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// 获取值
         /// </summary>
         /// <returns></returns>
-        object Getvalue();
+        object GetValue();
     }
 }
