@@ -232,7 +232,7 @@ namespace WpfApp1
             while (time < maxTime)
             {
                 value = this.NextValue(value, minY, offset);
-                chartValue = new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}");
+                chartValue = new ChartAxisValue(time, value, $"{time.ToString()}_{value}");
                 values1.Add(chartValue);
                 values2.Add(chartValue);
                 time = time.AddMilliseconds(stepTotalMilliseconds);
@@ -356,9 +356,10 @@ namespace WpfApp1
                 for (int j = 0; j < stackCount; j++)
                 {
                     value = _rnd.Next(min, max);
-                    x.Add(new ChartStackColumnChildItem(value, $"{value}", null));
+                    x.Add(new ChartChildValue(value, $"{value}", null));
                 }
-                values1.Add(new ChartStackColumnItemVertical(time, x));
+                //values1.Add(new ChartAxisValue(time, x,null));
+                values1.Add(new VerticalStackColumnValue(time, x));
                 time = time.AddMonths(1);
             }
             series[0].Values = values1;
@@ -392,10 +393,10 @@ namespace WpfApp1
             for (int i = 0; i < columnCount; i++)
             {
                 value = _rnd.Next(min, max);
-                values2.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+                values2.Add(new VerticalChartColumnValue(time, value, $"{value}"));
 
                 value = _rnd.Next(min, max);
-                values3.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+                values3.Add(new VerticalChartColumnValue(time, value, $"{value}"));
 
                 time = time.AddMonths(1);
             }
@@ -477,9 +478,9 @@ namespace WpfApp1
                 for (int j = 0; j < stackCount; j++)
                 {
                     value = _rnd.Next(min, max);
-                    x.Add(new ChartStackColumnChildItem(value, $"{value}", null));
+                    x.Add(new ChartChildValue(value, $"{value}", null));
                 }
-                values.Add(new ChartStackColumnItemVertical(time, x));
+                values.Add(new VerticalStackColumnValue(time, x));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -555,13 +556,13 @@ namespace WpfApp1
             ChartCollection<IChartValue> values = new ChartCollection<IChartValue>();
             for (int i = 0; i < 5; i++)
             {
-                var x = new List<IChartChildValue>();
+                var xValues = new List<IChartChildValue>();
                 for (int j = 0; j < stackCount; j++)
                 {
                     value = _rnd.Next(min, max);
-                    x.Add(new ChartStackColumnChildItem(value, $"{value}", null));
+                    xValues.Add(new ChartChildValue(value, $"{value}", null));
                 }
-                values.Add(new ChartStackColumnItemHorizontal(time, x));
+                values.Add(new HorizontalStackColumnValue(time, xValues));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -649,10 +650,10 @@ namespace WpfApp1
             for (int i = 0; i < count; i++)
             {
                 value = _rnd.Next(min, max);
-                values.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+                values.Add(new VerticalChartColumnValue(time, value, $"{value}"));
 
                 value = _rnd.Next(min, max);
-                values2.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+                values2.Add(new VerticalChartColumnValue(time, value, $"{value}"));
 
                 time = time.AddMonths(1);
             }
@@ -726,7 +727,7 @@ namespace WpfApp1
             for (int i = 0; i < 5; i++)
             {
                 value = _rnd.Next(min, max);
-                values.Add(new ChartColumnItemVertical(time, value, $"{value}"));
+                values.Add(new VerticalChartColumnValue(time, value, $"{value}"));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -797,7 +798,7 @@ namespace WpfApp1
             for (int i = 0; i < 5; i++)
             {
                 value = _rnd.Next(min, max);
-                values.Add(new ChartColumnItemHorizontal(time, value, $"{value}"));
+                values.Add(new HorizontalChartColumnValue(time, value, $"{value}"));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -929,7 +930,9 @@ namespace WpfApp1
                     strArr = line.Split('_', 2, StringSplitOptions.RemoveEmptyEntries);
                     time = DateTime.Parse(strArr[0]);
                     value = double.Parse(strArr[1]);
-                    values3.Add(new ChartDateTimeItem2(time, value, $"{time.ToString()}_{value}"));
+                    //values3.Add(new ChartDateTimeItem2(time, value, $"{time.ToString()}_{value}"));
+                    values3.Add(new ChartAxisValue(value, time, $"{time.ToString()}_{value}"));
+
                     line = sr.ReadLine();
                 }
             }
@@ -1046,7 +1049,7 @@ namespace WpfApp1
             while (axisXValue < maxX)
             {
                 value = _rnd.Next(minY, maxY);
-                values.Add(new ChartNumberItem(axisXValue, value, $"{axisXValue}_{value}"));
+                values.Add(new ChartAxisValue(axisXValue, value, $"{axisXValue}_{value}"));
                 axisXValue += axisXValueStep;
             }
             series[0].Values = values;
@@ -1060,7 +1063,7 @@ namespace WpfApp1
             while (time < maxTime)
             {
                 value = _rnd.Next(minY, maxY);
-                values2.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+                values2.Add(new ChartAxisValue(time, value, $"{time.ToString()}_{value}"));
                 time = time.AddMilliseconds(stepTotalMilliseconds);
             }
             series[1].Values = values2;
@@ -1074,7 +1077,7 @@ namespace WpfApp1
             while (time < maxTime)
             {
                 value = _rnd.Next(minY, maxY) * 10;
-                values3.Add(new ChartDateTimeItem(time, value, $"{time.ToString()}_{value}"));
+                values3.Add(new ChartAxisValue(time, value, $"{time.ToString()}_{value}"));
                 //sb.AppendLine($"{time.ToString("yyyy-MM-dd HH:mm:ss")}_{value}");
                 ts = maxTime - time;
                 time = time.AddDays(_rnd.Next(1, (int)ts.TotalDays));

@@ -8,7 +8,7 @@ using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 
 namespace WpfApp1.Model
 {
-    public class ChartColumnItemHorizontal : ChartValueAbs
+    public class ChartColumnItemHorizontal : ChartAxisValueAbs
     {
         public DateTime Y { get; set; }
         public double X { get; set; }
@@ -32,7 +32,7 @@ namespace WpfApp1.Model
         }
     }
 
-    public class ChartColumnItemVertical : ChartValueAbs
+    public class ChartColumnItemVertical : ChartAxisValueAbs
     {
         public double Y { get; set; }
         public DateTime X { get; set; }
@@ -65,7 +65,7 @@ namespace WpfApp1.Model
 
 
 
-    public class ChartStackColumnItemVertical : ChartValueAbs
+    public class ChartStackColumnItemVertical : ChartAxisValueAbs
     {
         public List<IChartChildValue> Y { get; set; }
         public DateTime X { get; set; }
@@ -90,7 +90,7 @@ namespace WpfApp1.Model
         }
     }
 
-    public class ChartStackColumnItemHorizontal : ChartValueAbs
+    public class ChartStackColumnItemHorizontal : ChartAxisValueAbs
     {
         public DateTime Y { get; set; }
         public List<IChartChildValue> X { get; set; }

@@ -144,6 +144,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private (DateTime? MinTime, DateTime? MaxTime) GetMinAndMaxValue(ChartCollection<ISeries> seriesCollection)
         {
             DateTime? min = null, max = null;
+            IChartAxisValue chartAxisValue;
             object obj;
             DateTime? time;
             foreach (var series in seriesCollection)
@@ -157,7 +158,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                 foreach (var value in series.Values)
                 {
-                    if (value == null)
+                    chartAxisValue = value as IChartAxisValue;
+                    if (chartAxisValue == null)
                     {
                         continue;
                     }
@@ -165,10 +167,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     switch (this.AxisType)
                     {
                         case AxisType.X:
-                            obj = value.GetXValue();
+                            obj = chartAxisValue.GetXValue();
                             break;
                         case AxisType.Y:
-                            obj = value.GetYValue();
+                            obj = chartAxisValue.GetYValue();
                             break;
                         default:
                             throw new NotImplementedException(this.AxisType.ToString());

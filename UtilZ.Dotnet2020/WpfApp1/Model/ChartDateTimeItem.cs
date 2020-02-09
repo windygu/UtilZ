@@ -7,7 +7,7 @@ using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 
 namespace WpfApp1.Model
 {
-    public class ChartDateTimeItem : ChartValueAbs
+    public class ChartDateTimeItem : ChartAxisValueAbs
     {
         private DateTime _x;
         public DateTime X
@@ -42,32 +42,5 @@ namespace WpfApp1.Model
     }
 
 
-    public class ChartDateTimeItem2 : ChartValueAbs
-    {
-        public DateTime Y { get; set; }
-
-        public double X { get; set; }
-
-        public ChartDateTimeItem2(DateTime y, double x, string tooltipText)
-            : base(tooltipText, null)
-        {
-            this.X = x;
-            this.Y = y;
-        }
-
-        public override string ToString()
-        {
-            return $"{X} {Y}";
-        }
-
-        public override object GetXValue()
-        {
-            return this.X;
-        }
-
-        public override object GetYValue()
-        {
-            return this.Y;
-        }
-    }
+ 
 }

@@ -7,7 +7,7 @@ using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 
 namespace WpfApp1.Model
 {
-    public class ChartNumberItem : ChartValueAbs
+    public class ChartNumberItem : ChartAxisValueAbs
     {
         public double X { get; set; }
         public double Y { get; set; }

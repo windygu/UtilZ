@@ -159,6 +159,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             double x, y, leftOrRight;
             object obj;
+            IChartAxisValue chartAxisValue;
             IEnumerable enumerable;
             IChartChildValue chartChildValue;
             Rectangle columnElement;
@@ -166,7 +167,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             foreach (var value in base._values)
             {
-                if (value == null)
+                chartAxisValue = value as IChartAxisValue;
+                if (chartAxisValue == null)
                 {
                     continue;
                 }
@@ -177,7 +179,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     continue;
                 }
 
-                obj = value.GetXValue();
+                obj = chartAxisValue.GetXValue();
                 if (obj == null || !(obj is IEnumerable))
                 {
                     continue;
@@ -235,6 +237,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private void PrimitiveAddVertical(Canvas canvas)
         {
             double x, y, topOrBottom;
+            IChartAxisValue chartAxisValue;
             object obj;
             IEnumerable enumerable;
             IChartChildValue chartChildValue;
@@ -243,19 +246,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             foreach (var value in base._values)
             {
-                if (value == null)
+                chartAxisValue = value as IChartAxisValue;
+                if (chartAxisValue == null)
                 {
                     continue;
                 }
 
-                x = this.AxisX.GetX(value);
+                x = this.AxisX.GetX(chartAxisValue);
                 if (!AxisHelper.DoubleHasValue(x))
                 {
                     continue;
                 }
 
 
-                obj = value.GetYValue();
+                obj = chartAxisValue.GetYValue();
                 if (obj == null || !(obj is IEnumerable))
                 {
                     continue;

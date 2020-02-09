@@ -213,13 +213,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             double pre = double.IsNaN(axis.PRE) ? AxisConstant.ZERO_D : axis.PRE;
+            IChartAxisValue chartAxisValue;
             object obj;
             IEnumerable enumerable;
             double tmp, tmpTotalChild;
 
             foreach (var value in values)
             {
-                if (value == null)
+                chartAxisValue = value as IChartAxisValue;
+                if (chartAxisValue == null)
                 {
                     continue;
                 }
@@ -227,10 +229,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 switch (axis.AxisType)
                 {
                     case AxisType.X:
-                        obj = value.GetXValue();
+                        obj = chartAxisValue.GetXValue();
                         break;
                     case AxisType.Y:
-                        obj = value.GetYValue();
+                        obj = chartAxisValue.GetYValue();
                         break;
                     default:
                         throw new NotImplementedException(axis.AxisType.ToString());

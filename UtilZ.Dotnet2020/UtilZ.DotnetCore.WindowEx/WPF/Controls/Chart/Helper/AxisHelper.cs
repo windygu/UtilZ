@@ -353,18 +353,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 return null;
             }
-
+             ;
             object value;
-            if (item is IChartValue)
+            if (item is IChartAxisValue)
             {
-                var chartITem = (IChartValue)item;
+                var chartAxisValue = (IChartAxisValue)item;
                 if (x)
                 {
-                    value = chartITem.GetXValue();
+                    value = chartAxisValue.GetXValue();
                 }
                 else
                 {
-                    value = chartITem.GetYValue();
+                    value = chartAxisValue.GetYValue();
                 }
             }
             else if (item is IChartChildValue)

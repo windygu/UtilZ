@@ -125,6 +125,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return;
             }
 
+            IChartAxisValue chartAxisValue;
             object axisValue;
             LabelSeriesItem labelAxisItem, labelAxisItemTmp;
             int preCount;
@@ -141,6 +142,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 preCount = this._axisData.Count > 0 ? this._axisData.Values.ElementAt(0).Count : 0;
                 foreach (var value in series.Values)
                 {
+                    chartAxisValue = value as IChartAxisValue;
                     if (value == null)
                     {
                         continue;
@@ -149,11 +151,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     axisValue = null;
                     if (series.AxisX == this)
                     {
-                        axisValue = value.GetXValue();
+                        axisValue = chartAxisValue.GetXValue();
                     }
                     else if (series.AxisY == this)
                     {
-                        axisValue = value.GetYValue();
+                        axisValue = chartAxisValue.GetYValue();
                     }
 
                     if (axisValue == null)
@@ -560,20 +562,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private double GetAxis(IChartItem item, bool x)
         {
-            if (item == null || !(item is IChartValue))
+            if (item == null || !(item is IChartAxisValue))
             {
                 return double.NaN;
             }
 
-            IChartValue chartItem = (IChartValue)item;
+            var chartAxisValue = (IChartAxisValue)item;
             object labelAxisItem;
             if (x)
             {
-                labelAxisItem = chartItem.GetXValue();
+                labelAxisItem = chartAxisValue.GetXValue();
             }
             else
             {
-                labelAxisItem = chartItem.GetYValue();
+                labelAxisItem = chartAxisValue.GetYValue();
             }
 
             if (labelAxisItem == null)
@@ -588,7 +590,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
 
             double result;
-            if (labelSeriesItem.TryGetValue(chartItem, out result))
+            if (labelSeriesItem.TryGetValue(chartAxisValue, out result))
             {
                 return result;
             }
