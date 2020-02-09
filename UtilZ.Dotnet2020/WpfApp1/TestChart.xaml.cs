@@ -161,10 +161,16 @@ namespace WpfApp1
 
             //TestAllColumnVertical();
 
-            ValidateLineSeriesBezierData();
+            //ValidateLineSeriesBezierData();
+
+
+            TestPieChart();
         }
 
+        private void TestPieChart()
+        {
 
+        }
 
         private void ValidateLineSeriesBezierData()
         {
@@ -358,8 +364,7 @@ namespace WpfApp1
                     value = _rnd.Next(min, max);
                     x.Add(new ChartChildValue(value, $"{value}", null));
                 }
-                //values1.Add(new ChartAxisValue(time, x,null));
-                values1.Add(new VerticalStackColumnValue(time, x));
+                values1.Add(new ChartAxisValue(time, x, null));
                 time = time.AddMonths(1);
             }
             series[0].Values = values1;
@@ -393,10 +398,10 @@ namespace WpfApp1
             for (int i = 0; i < columnCount; i++)
             {
                 value = _rnd.Next(min, max);
-                values2.Add(new VerticalChartColumnValue(time, value, $"{value}"));
+                values2.Add(new ChartAxisValue(time, value, $"{value}"));
 
                 value = _rnd.Next(min, max);
-                values3.Add(new VerticalChartColumnValue(time, value, $"{value}"));
+                values3.Add(new ChartAxisValue(time, value, $"{value}"));
 
                 time = time.AddMonths(1);
             }
@@ -480,7 +485,7 @@ namespace WpfApp1
                     value = _rnd.Next(min, max);
                     x.Add(new ChartChildValue(value, $"{value}", null));
                 }
-                values.Add(new VerticalStackColumnValue(time, x));
+                values.Add(new ChartAxisValue(time, x));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -562,7 +567,7 @@ namespace WpfApp1
                     value = _rnd.Next(min, max);
                     xValues.Add(new ChartChildValue(value, $"{value}", null));
                 }
-                values.Add(new HorizontalStackColumnValue(time, xValues));
+                values.Add(new ChartAxisValue(xValues, time));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -650,10 +655,10 @@ namespace WpfApp1
             for (int i = 0; i < count; i++)
             {
                 value = _rnd.Next(min, max);
-                values.Add(new VerticalChartColumnValue(time, value, $"{value}"));
+                values.Add(new ChartAxisValue(time, value, $"{value}"));
 
                 value = _rnd.Next(min, max);
-                values2.Add(new VerticalChartColumnValue(time, value, $"{value}"));
+                values2.Add(new ChartAxisValue(time, value, $"{value}"));
 
                 time = time.AddMonths(1);
             }
@@ -727,7 +732,7 @@ namespace WpfApp1
             for (int i = 0; i < 5; i++)
             {
                 value = _rnd.Next(min, max);
-                values.Add(new VerticalChartColumnValue(time, value, $"{value}"));
+                values.Add(new ChartAxisValue(time, value, $"{value}"));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;
@@ -798,7 +803,7 @@ namespace WpfApp1
             for (int i = 0; i < 5; i++)
             {
                 value = _rnd.Next(min, max);
-                values.Add(new HorizontalChartColumnValue(time, value, $"{value}"));
+                values.Add(new ChartAxisValue(value, time, $"{value}"));
                 time = time.AddMonths(1);
             }
             series[0].Values = values;

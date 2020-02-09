@@ -10,6 +10,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         public object YValue { get; private set; }
 
 
+        public ChartAxisValue(object xValue, object yValue)
+          : base()
+        {
+            this.XValue = xValue;
+            this.YValue = yValue;
+        }
+
         public ChartAxisValue(object xValue, object yValue, string tooltipText)
           : base(tooltipText, null)
         {
