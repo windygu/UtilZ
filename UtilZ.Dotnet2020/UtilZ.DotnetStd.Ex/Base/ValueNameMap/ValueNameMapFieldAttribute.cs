@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStandard.Base.ValueNameMap
+namespace UtilZ.DotnetStd.Ex.ValueNameMap
 {
     /// <summary>
     /// 常量字段值名称映射特性

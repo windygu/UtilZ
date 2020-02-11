@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace UtilZ.DotnetStandard.Base.TTLV
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     /// <summary>
     /// 基元类型集合(包括非基元类型的字符串集合)TTLV属性值编解码转换接口

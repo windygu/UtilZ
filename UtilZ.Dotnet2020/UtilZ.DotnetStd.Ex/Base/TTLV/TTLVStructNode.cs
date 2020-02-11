@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace UtilZ.DotnetStandard.Base.TTLV
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     /// <summary>
     /// 

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStandard.Base.TTLV
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     /// <summary>
     /// TTLV编解码接口

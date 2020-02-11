@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UtilZ.DotnetStd.Ex.Attributes;
 
-namespace UtilZ.DotnetStandard.Base.TTLV
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     /// <summary>
     /// TTLV属性或字段值序列化编解码转换接口

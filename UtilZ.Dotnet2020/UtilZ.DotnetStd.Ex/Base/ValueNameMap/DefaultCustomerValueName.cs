@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStandard.Base.ValueNameMap
+namespace UtilZ.DotnetStd.Ex.ValueNameMap
 {
     /// <summary>
     /// 默认值名称获取自定义类

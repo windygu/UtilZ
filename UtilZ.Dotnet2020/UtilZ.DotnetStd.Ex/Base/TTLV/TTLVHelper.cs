@@ -9,7 +9,7 @@ using UtilZ.DotnetStd.Ex.Attributes;
 using UtilZ.DotnetStd.Ex.Base;
 using UtilZ.DotnetStd.Ex.Log;
 
-namespace UtilZ.DotnetStandard.Base.TTLV
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     /// <summary>
     /// TTVL辅助类[编码规则:Tag:4字节;Type:1字节;Length:4字节;Value:bytes]

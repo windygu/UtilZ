@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace UtilZ.DotnetStandard.Base.ValueNameMap
+namespace UtilZ.DotnetStd.Ex.ValueNameMap
 {
     /// <summary>
     /// 值名称映射管理类

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using UtilZ.DotnetStd.Ex.Attributes;
 
-namespace UtilZ.DotnetStandard.Base.TTLV
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     internal struct TTLVDemoStruct
     {
