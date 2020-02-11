@@ -366,6 +366,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this._axisCanvas.Height = this.PrimitiveGetXAxisHeight();
             return this._axisCanvas.Height;
         }
+        /// <summary>
+        /// 获取X坐标轴高度
+        /// </summary>
+        /// <returns></returns>
         protected abstract double PrimitiveGetXAxisHeight();
 
         internal List<double> DrawX(ChartCollection<ISeries> seriesCollection, double axisWidth)

@@ -16,7 +16,9 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto"                              
                   VerticalScrollBarVisibility="Disabled"
-                  Style="{StaticResource scrollViewStyle}">
+                  Style="{StaticResource scrollViewStyle}"
+                  VerticalAlignment="Center" 
+                  HorizontalAlignment="Center">
         <ItemsControl x:Name="itemsControl"                  
                       IsEnabled="False">
             <ItemsControl.Template>

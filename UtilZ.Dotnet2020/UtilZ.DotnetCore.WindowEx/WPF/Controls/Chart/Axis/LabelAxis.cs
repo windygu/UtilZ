@@ -11,6 +11,9 @@ using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// LabelAxis
+    /// </summary>
     public class LabelAxis : AxisAbs
     {
         private double _axisSize = 100;
@@ -52,6 +55,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private double _angle = 310d;
+        /// <summary>
+        /// 旋转角度
+        /// </summary>
         public double Angle
         {
             get { return _angle; }
@@ -62,14 +68,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-
+        /// <summary>
+        /// 自定义LabelText
+        /// </summary>
         public Func<object, string> CustomAxisTextFormatCunc;
+
         /// <summary>
         /// [key:Label;value:LabelItem]
         /// </summary>
         private readonly Dictionary<object, LabelSeriesItem> _axisData = new Dictionary<object, LabelSeriesItem>();
+
         private readonly object _nullLabelAxisItem = new object();
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public LabelAxis()
             : base()
         {
@@ -77,7 +90,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected override double PrimitiveGetXAxisHeight()
         {
             return this._axisSize;

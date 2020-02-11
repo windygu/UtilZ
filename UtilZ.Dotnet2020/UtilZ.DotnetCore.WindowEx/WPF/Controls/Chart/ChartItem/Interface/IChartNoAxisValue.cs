@@ -8,6 +8,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     public interface IChartNoAxisValue : IChartValue
     {
         /// <summary>
+        /// Label
+        /// </summary>
+        string Label { get; }
+
+        /// <summary>
         /// 标题
         /// </summary>
         string Title { get; }

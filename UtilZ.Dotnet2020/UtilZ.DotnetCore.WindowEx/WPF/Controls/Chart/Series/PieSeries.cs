@@ -41,6 +41,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             set => throw new NotSupportedException("饼图不支持此属性");
         }
 
+        private Style _labelStyle = null;
+        /// <summary>
+        /// 标签样式
+        /// </summary>
+        public Style LabelStyle
+        {
+            get { return _labelStyle; }
+            set
+            {
+                _labelStyle = value;
+                base.OnRaisePropertyChanged(nameof(LabelStyle));
+            }
+        }
 
         private double _pushOut = double.NaN;
         /// <summary>
@@ -89,9 +102,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
         protected override void PrimitiveAdd(Canvas canvas)
         {
+            this._elementList.Clear();
             base.RemoveLegendItem();
 
             Dictionary<IChartNoAxisValue, double> valueDic = this.GetValueDic();
@@ -100,30 +113,38 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return;
             }
 
+
             double r = this.GetRadius(canvas);
             double R = r * 2;
+            double yOffset = (canvas.Height - R) / 2;
+            double xOffset = (canvas.Width - R) / 2;
             Size arcSegmentSize = new Size(r, r);
             double total = valueDic.Values.Sum();
+
 
             /******************************************************************************************
              * 步骤:
              * 圆的标准方程(x - a)²+(y - b)²= r²中，有三个参数a、b、r，即圆心坐标为(a，b)，半径为r 
-             * 此处计算时,以a=0,b=0,即加以在(0,0)的圆,那么可得 
-             * x=±(r/(Math.Sqrt(1+Math.Power(Math.Tan(angle),2)))) 
-             * y=Math.Tan(anglr)*x 
+             * 此处计算时,以a=0,b=0,即加以在(0,0)的圆 => 圆的方程x²+y²= r²
+             * => x=±(r/(Math.Sqrt(1+Math.Power(Math.Tan(angle),2)))) 
+             * => y=Math.Tan(anglr)*x 
              ******************************************************************************************/
+
+
             IChartNoAxisValue chartNoAxisValue;
             double value;
             Brush stroke = null;
-            double angle, radians;
-            const double CLIP_ANLE = 30d;
+            double angle = AxisConstant.ZERO_D, radians;
+            //const double CLIP_ANLE = 30d;
             double x, y;
-            Point point1 = new Point(r, r);
-            double totalRotateAngle = AxisConstant.ZERO_D;
+
+
+            Point center = new Point(r + xOffset, r + yOffset);
+            Point lastPoint = new Point(R + xOffset, r + yOffset), point;
 
             for (int i = 0; i < valueDic.Count; i++)
             {
-                chartNoAxisValue = valueDic.Keys.ElementAt(i);
+                chartNoAxisValue = valueDic.ElementAt(i).Key;
                 Path path = new Path();
                 path.Style = chartNoAxisValue.Style;
                 if (path.Style == null)
@@ -138,7 +159,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 base.AddLegendItem(new SeriesLegendItem(path.Fill.Clone(), chartNoAxisValue.Title, this));
 
 
-                value = valueDic.Values.ElementAt(i);
+                value = valueDic.ElementAt(i).Value;
                 if (value <= AxisConstant.ZERO_D)
                 {
                     continue;
@@ -146,47 +167,35 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                 path.ToolTip = chartNoAxisValue.TooltipText;
                 path.Tag = value;
-                angle = value * MathEx.ANGLE_360 / total;
+                angle = angle + value * MathEx.ANGLE_360 / total;
                 radians = MathEx.AngleToRadians(angle);
 
+
                 //+r是为了平移坐标
-                x = Math.Cos(radians) * r + r;
-                y = Math.Sin(radians) * r + r;
+                x = Math.Cos(radians) * r + r + xOffset;
+                y = Math.Sin(radians) * r + r + yOffset;
+                point = new Point(x, y);
 
                 List<PathSegment> pathSegments = new List<PathSegment>();
-                pathSegments.Add(new LineSegment() { Point = new Point(R, r) });
-                pathSegments.Add(new ArcSegment() { Size = arcSegmentSize, Point = new Point(x, y), SweepDirection = SweepDirection.Clockwise });
-                pathSegments.Add(new LineSegment() { Point = point1 });
-                PathFigure pathFigure = new PathFigure(point1, pathSegments, true);
+                pathSegments.Add(new LineSegment() { Point = lastPoint });
+                pathSegments.Add(new ArcSegment() { Size = arcSegmentSize, Point = point, SweepDirection = SweepDirection.Clockwise });
+                pathSegments.Add(new LineSegment() { Point = center });
+                PathFigure pathFigure = new PathFigure(center, pathSegments, true);
                 path.Data = new PathGeometry(new PathFigure[] { pathFigure });
 
-                if (angle - CLIP_ANLE < AxisConstant.ZERO_D)
-                {
-                    path.Clip = new RectangleGeometry(new Rect(r, r, r, r));
-                }
+                //if (angle - CLIP_ANLE < AxisConstant.ZERO_D)
+                //{
+                //    path.Clip = new RectangleGeometry(new Rect(x, y, Math.Abs(x - center.X), Math.Abs(y - center.Y)));
+                //}
 
-                //旋转
-                var transformGroup = new TransformGroup();
-                var rotateTransform = new RotateTransform();
-                rotateTransform.Angle = totalRotateAngle;
-                rotateTransform.CenterX = point1.X;
-                rotateTransform.CenterY = point1.Y;
-                transformGroup.Children.Add(rotateTransform);
-                path.RenderTransform = transformGroup;
 
                 path.Margin = this._margin;
                 //path.MouseLeftButtonUp += Path_MouseLeftButtonUp;
 
                 canvas.Children.Add(path);
-
-                totalRotateAngle += angle;
+                this._elementList.Add(path);
+                lastPoint = point;
             }
-        }
-
-        private void Path_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            var path = (Path)sender;
-            path.Margin = new Thickness(10, 5, 0, 0);
         }
 
         private Quadrant GetQuadrantByAngle(double angle)
@@ -268,7 +277,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 canvas.Children.Remove(element);
             }
-
+            this._elementList.Clear();
             return false;
         }
 
