@@ -34,7 +34,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
             set
             {
-                this.Height = Width;
+                this.Width = value;
             }
         }
 

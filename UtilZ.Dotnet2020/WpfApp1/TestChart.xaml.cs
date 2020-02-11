@@ -163,8 +163,9 @@ namespace WpfApp1
 
             //ValidateLineSeriesBezierData();
 
+            TestVADResult();
 
-            TestPieChart();
+            //TestPieChart();
         }
 
         private void TestPieChart()
@@ -230,6 +231,82 @@ namespace WpfApp1
             };
             this.ManaulComit = false;
         }
+
+
+
+        private void TestVADResult()
+        {
+            this.ManaulComit = true;
+            var axes = new ChartCollection<AxisAbs>();
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.X,
+                DockOrientation = ChartDockOrientation.Bottom,
+                Orientation = AxisOrientation.LeftToRight,
+                LabelStep = double.NaN
+            });
+
+            axes.Add(new NumberAxis()
+            {
+                AxisType = AxisType.Y,
+                DockOrientation = ChartDockOrientation.Left,
+                Orientation = AxisOrientation.BottomToTop,
+                MinValue = 0,
+                MaxValue = 1,
+                LabelStep = 1d
+            });
+            this.Axes = axes;
+
+
+            var series = new ChartCollection<ISeries>();
+            const string DIR = @"F:\Projects\Demo\2020-1-13\WpfApp1\bin\Debug\Log";
+            string[] filePathArr = Directory.GetFiles(DIR, "*.txt");
+            double x, y;
+
+            foreach (var filePath in filePathArr)
+            {
+                IEnumerable<string> lines = System.IO.File.ReadLines(filePath);
+                var values = new ChartCollection<IChartValue>();
+                string[] strArr;
+                foreach (string line in lines)
+                {
+                    strArr = line.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+                    if (strArr.Length != 2)
+                    {
+                        continue;
+                    }
+
+                    x = double.Parse(strArr[0]) / 1000;
+                    y = strArr[1].Contains("有信号") ? 1d : 0d;
+                    values.Add(new ChartAxisValue(x, y, $"{x}s_{y}"));
+                }
+
+                series.Add(new StepLineSeries()
+                {
+                    AxisX = axes[0],
+                    AxisY = axes[1],
+                    EnableTooltip = false,
+                    Values = values,
+                    Title = System.IO.Path.GetFileNameWithoutExtension(filePath),
+                    Style = ChartStyleHelper.CreateLineSeriesStyle(ColorBrushHelper.GetNextColor()),
+                    Orientation = SeriesOrientation.Horizontal
+                });
+            }
+
+            this.Series = series;
+            this.Legend = new VerticalChartLegend()
+            {
+                DockOrientation = ChartDockOrientation.Left,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = Brushes.Transparent,
+                Width = 250d,
+                IsChecked = true
+            };
+            this.ManaulComit = false;
+        }
+
+
 
         private void ValidateLineSeriesBezierData()
         {

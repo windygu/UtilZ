@@ -144,7 +144,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 var style = new Style();
                 style.TargetType = typeof(Path);
-                style.Setters.Add(new Setter(Path.StrokeProperty, Brushes.Gray));
+                style.Setters.Add(new Setter(Path.StrokeProperty, ColorBrushHelper.GetColorByIndex(0)));
                 style.Setters.Add(new Setter(Path.StrokeThicknessProperty, 2d));
                 //style.Setters.Add(new Setter(Path.FillProperty, Brushes.White));
 
