@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Model
+namespace UtilZ.DotnetStd.Ex.Base
 {
     /// <summary>
     /// 模型基类

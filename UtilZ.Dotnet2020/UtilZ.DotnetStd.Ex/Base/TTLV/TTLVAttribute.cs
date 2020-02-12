@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Attributes
+namespace UtilZ.DotnetStd.Ex.TTLV
 {
     /// <summary>
     /// TTLV特性

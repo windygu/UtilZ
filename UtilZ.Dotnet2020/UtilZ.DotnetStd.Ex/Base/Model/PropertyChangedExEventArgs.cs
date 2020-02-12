@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Model
+namespace UtilZ.DotnetStd.Ex.Base
 {
     public class PropertyChangedExEventArgs : PropertyChangedEventArgs
     {

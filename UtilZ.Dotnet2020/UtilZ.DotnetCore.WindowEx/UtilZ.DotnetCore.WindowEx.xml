@@ -1,0 +1,1218 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UtilZ.DotnetCore.WindowEx</name>
+    </assembly>
+    <members>
+        <member name="T:UtilZ.DotnetCore.WindowEx.Base.FontEx">
+            <summary>
+            字体类扩展方法类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.FontEx.GetSystemInstallFonts">
+            <summary>
+            如何获得系统安装字体列表
+            </summary>
+            <returns>系统安装字体列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.FontEx.GetSystemFontStyles">
+            <summary>
+            如何获得系统字体样式列表
+            </summary>
+            <returns>系统字体样式列表</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.Base.ScreenHelper">
+            <summary>
+            屏幕辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.ScreenHelper.GetTaskbarArea">
+            <summary>
+            获取任务栏区域
+            </summary>
+            <returns>任务栏区域</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.ScreenHelper.GetWorkingArea(System.Int32)">
+            <summary>
+            获取工作区域
+            </summary>
+            <param name="offset">宽度和调度偏移量,因为按照系统API值计算出的结果比实际屏幕显示区域要大,原因不明,以后有空研究通了再去年此参数,现在使用默认值即可,不合理可调整</param>
+            <returns>工作区域</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.Base.ScreenArea">
+            <summary>
+            区域区域信息
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.Base.ScreenArea.Width">
+            <summary>
+            区域宽度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.Base.ScreenArea.Height">
+            <summary>
+            区域高度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.Base.ScreenArea.Orientation">
+            <summary>
+            区域所在屏幕方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.Base.ScreenArea.X">
+            <summary>
+            在屏幕中的X坐标
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.Base.ScreenArea.Y">
+            <summary>
+            在屏幕中的Y坐标
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.ScreenArea.#ctor(System.Int32,System.Int32,UtilZ.DotnetCore.WindowEx.Base.ScreenAreaOrientation,System.Int32,System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="width">区域宽度</param>
+            <param name="height">区域高度</param>
+            <param name="orientation">区域所在屏幕方向</param>
+            <param name="x">在屏幕中的X坐标</param>
+            <param name="y">在屏幕中的Y坐标</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.Base.ScreenAreaOrientation">
+            <summary>
+            任务栏所在方向
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.Base.ScreenAreaOrientation.Top">
+            <summary>
+            顶端
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.Base.ScreenAreaOrientation.Bottom">
+            <summary>
+            底部
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.Base.ScreenAreaOrientation.Left">
+            <summary>
+            左部
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.Base.ScreenAreaOrientation.Right">
+            <summary>
+            右部
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.Base.UITextHelper">
+            <summary>
+            UI文本辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.Windows.Controls.TextBlock,System.Windows.FlowDirection)">
+            <summary>
+            测量字符串长度
+            </summary>
+            <param name="textBlock">TextBlock</param>
+            <param name="flowDirection">测量方向</param>
+            <returns>符串长度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.Windows.Controls.TextBox,System.Windows.FlowDirection)">
+            <summary>
+            测量字符串长度
+            </summary>
+            <param name="textBox">TextBox</param>
+            <param name="flowDirection">测量方向</param>
+            <returns>符串长度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.Windows.Controls.Label,System.Windows.FlowDirection)">
+            <summary>
+            测量字符串长度
+            </summary>
+            <param name="label">label</param>
+            <param name="flowDirection">测量方向</param>
+            <returns>符串长度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.String,System.Windows.Media.Typeface,System.Double,System.Windows.Media.Brush)">
+            <summary>
+            测量字符串长度
+            </summary>
+            <param name="text">要测量的文本</param>
+            <param name="typeface">字符样式组合</param>
+            <param name="fontSize">字体大小</param>
+            <param name="foreground">字体Brush</param>
+            <returns>符串长度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.String,System.Globalization.CultureInfo,System.Windows.Media.Typeface,System.Windows.FlowDirection,System.Double,System.Windows.Media.Brush,System.Windows.Media.NumberSubstitution,System.Windows.Media.TextFormattingMode)">
+            <summary>
+            测量字符串长度
+            </summary>
+            <param name="text">要测量的文本</param>
+            <param name="cultureInfo">区域信息</param>
+            <param name="typeface">字符样式组合</param>
+            <param name="flowDirection">测量方向</param>
+            <param name="fontSize">字体大小</param>
+            <param name="foreground">字体Brush</param>
+            <param name="numberSubstitution">要应用于文本的数字替换行为</param>
+            <param name="textFormattingMode">要应用于文本的 System.Windows.Media.TextFormattingMode</param>
+            <returns>符串长度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.Windows.Media.GlyphTypeface,System.Double,System.String)">
+            <summary>
+            Fast text size calculation
+            </summary>
+            <param name="glyphTypeface">The glyph typeface.</param>
+            <param name="sizeInEm">The size.</param>
+            <param name="text">The text.</param>
+            <returns>The text size.</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.UserControl1">
+            <summary>
+            Interaction logic for UserControl1.xaml
+            </summary>
+            <summary>
+            UserControl1
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.UserControl1.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Base.WPFHelper">
+            <summary>
+            WPF辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.WPFHelper.IsInDesignMode(System.Windows.UIElement)">
+            <summary>
+            判断UI是否处于设计模式[处理设计模式返回true;否则返回false]
+            </summary>
+            <param name="ele">要判断的UI元素</param>
+            <returns>处理设计模式返回true;否则返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.WPFHelper.IsDisposed(System.Windows.Window)">
+            <summary>
+            判断当前窗口是否已释放[返回值:true:已释放Invoke;false:未释放]
+            </summary>
+            <param name="window">要判判断的窗口</param>
+            <returns>返回值:true:已释放Invoke;false:未释放</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.WPFHelper.InvokeRequired(System.Windows.Threading.DispatcherObject)">
+            <summary>
+            判断当前操作是否需要调用Invoke[返回值:true:调用Invoke;false:不需要]
+            </summary>
+            <param name="dispatcher">判断的对象</param>
+            <returns>返回值:true:调用Invoke;false:不需要</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.WPFHelper.FindRootWindow(System.Windows.FrameworkElement)">
+            <summary>
+            查找元素根窗口
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.DockOrientation">
+            <summary>
+            坐标轴停靠方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.AxisType">
+            <summary>
+            坐标轴类型
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.LabelStyle">
+            <summary>
+            刻度值样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.LabelSize">
+            <summary>
+            刻度线宽度或高度小于0使用默认值30,单位:像素
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.LabelMinInterval">
+            <summary>
+            两个刻度值间最小间隔, 为double.NaN使用默认值,单位:像素
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.DrawAxisLine">
+            <summary>
+            true:绘制坐标线;false:不绘制坐标线
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.AxisLineStyle">
+            <summary>
+            坐标线样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.EnableBackgroundLabelLine">
+            <summary>
+            是否启用背景刻度线
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.BackgroundLabelLineStyle">
+            <summary>
+            背景刻度线样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.TitleStyle">
+            <summary>
+            标题样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PRE">
+            <summary>
+            浮点数比较精度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Background">
+            <summary>
+            获取或设置坐标样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Width">
+            <summary>
+            获取坐标轴宽度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Height">
+            <summary>
+            获取坐标轴高度
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveGetXAxisHeight">
+            <summary>
+            获取X坐标轴高度
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            子类重写此函数时,必须设置Y轴宽度
+            </summary>
+            <param name="axisCanvas"></param>
+            <param name="seriesCollection"></param>
+            <param name="labelLineSegments"></param>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.LabelStep">
+            <summary>
+            坐标轴刻度值间隔,为null时自动计算
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.MinValue">
+            <summary>
+            坐标轴刻度最小值,为null时自动计算
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.MaxValue">
+            <summary>
+            坐标轴刻度最大值,为null时自动计算
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            子类重写此函数时,必须设置Y轴宽度
+            </summary>
+            <param name="axisCanvas"></param>
+            <param name="seriesCollection"></param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis">
+            <summary>
+            LabelAxis
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.AxisSize">
+            <summary>
+            X轴表示坐标轴表高度,Y轴表示坐标轴宽度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.AutoSizeFactor">
+            <summary>
+            自动计算条形图宽度因子,越大表示自动计算出来的条形图越宽,默认值2
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.Angle">
+            <summary>
+            旋转角度
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.CustomAxisTextFormatCunc">
+            <summary>
+            自定义LabelText
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis._axisData">
+            <summary>
+            [key:Label;value:LabelItem]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveGetXAxisHeight">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.CreateAxisData(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            返回Column X:宽度或Y:高度
+            </summary>
+            <param name="seriesCollection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            子类重写此函数时,必须设置Y轴宽度
+            </summary>
+            <param name="axisCanvas"></param>
+            <param name="seriesCollection"></param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelSeriesItem">
+            <summary>
+            [key:IChartItem;value:坐标值]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AngleQuadrantInfo.Radians">
+            <summary>
+            角度对应的弧度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AngleQuadrantInfo.ModRadians">
+            <summary>
+            用于计算值的余角弧度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.LabelStep">
+            <summary>
+            坐标轴刻度值间隔,为double.NaN时自动计算
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.MinValue">
+            <summary>
+            坐标轴刻度最小值,为double.NaN时自动计算
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.MaxValue">
+            <summary>
+            坐标轴刻度最大值,为double.NaN时自动计算
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            必须设置Y轴宽度
+            </summary>
+            <param name="axisCanvas"></param>
+            <param name="seriesCollection"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds the range.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Inserts the range.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="collection">The collection.</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant">
+            <summary>
+            XY坐标系象限类型枚举
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.One">
+            <summary>
+            第一象限[x>0,y>0]
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Two" -->
+        <!-- Badly formed XML comment ignored for member "F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Three" -->
+        <!-- Badly formed XML comment ignored for member "F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Four" -->
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.Label">
+            <summary>
+            Label
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.Style">
+            <summary>
+            样式
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.GetValue">
+            <summary>
+            获取值
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.#ctor(System.Object,System.String,System.String,System.Windows.Style,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="value"></param>
+            <param name="label"></param>
+            <param name="title"></param>
+            <param name="style"></param>
+            <param name="tooltip"></param>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartNoAxisValue.Label">
+            <summary>
+            Label
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartNoAxisValue.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartNoAxisValue.Style">
+            <summary>
+            样式
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartNoAxisValue.GetValue">
+            <summary>
+            获取值
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValue.#ctor(System.Object,System.String,System.String,System.Windows.Style,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="value"></param>
+            <param name="label"></param>
+            <param name="title"></param>
+            <param name="style"></param>
+            <param name="tooltip"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DoubleToCeilingInteger(System.Double,System.Nullable{System.Int64})">
+            <summary>
+            向上取整
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DoubleToFloorInteger(System.Double,System.Nullable{System.Int64})">
+            <summary>
+            向下取整
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColorBrushHelper._colorBrushList">
+            <summary>
+            Gets or sets the application level default series color list
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend">
+            <summary>
+            HorizontalChartLegend.xaml 的交互逻辑
+            </summary>
+            <summary>
+            HorizontalChartLegend
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.Size">
+            <summary>
+            水平方向高度;垂直方向宽度
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend">
+            <summary>
+            VerticalChartLegend.xaml 的交互逻辑
+            </summary>
+            <summary>
+            VerticalChartLegend
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries">
+            <summary>
+            条形图
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Remove">
+            <summary>
+            返回值:true:需要全部重绘;false:不需要重绘
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeries">
+            <summary>
+            线形图
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesType.PolyLine">
+            <summary>
+            特点:比较硬 
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesType.Bezier">
+            <summary>
+            特点:追加点时最后一节线的趋势走向与追加之前会发生变化
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesType.PolyQuadraticBezier">
+            <summary>
+            特点:线与点会发生偏移
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesType.QuadraticBezier">
+            <summary>
+            特点:转角很尖锐
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.LabelStyle">
+            <summary>
+            标签样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.PushOut">
+            <summary>
+            选中的饼向外突出的距离,单位:像素.小于等于0或为IsInfinity或NaN此值无效
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.Radius">
+            <summary>
+            饼图半径,小于等于0或为IsInfinity或NaN使用控件高度和宽度中的最小值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.EnableTooltip">
+            <summary>
+            true:启用Tooltip;false:禁用Tooltip
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.TooltipArea">
+            <summary>
+            鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.TitleStyleDic">
+            <summary>
+            堆叠标题及样式[key:标题;value:样式(为null自动创建)]
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.StepLineSeries">
+            <summary>
+            步进线形图
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart">
+            <summary>
+            图表控件
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.SeriesProperty">
+            <summary>
+            图表集合依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ChartMinHeightProperty">
+            <summary>
+             图表区域最小高度值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ChartMinWidthProperty">
+            <summary>
+            图表区域最小宽度值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.AxesProperty">
+            <summary>
+            坐标集合依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.LegendProperty">
+            <summary>
+            Legend依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ScrollBarWidthProperty">
+            <summary>
+            滚动条宽度依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ManaulComitProperty">
+            <summary>
+            手机提交依赖属性
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Series">
+            <summary>
+            图表集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ChartMinHeight">
+            <summary>
+            图表区域最小高度值,为double.NaN或小于0此值无效,默认为double.NaN
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ChartMinWidth">
+            <summary>
+            图表区域最小宽度值,为double.NaN或小于0此值无效,默认为double.NaN
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Axes">
+            <summary>
+            坐标集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.Legend">
+            <summary>
+            Legend
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ScrollBarWidth">
+            <summary>
+            滚动条宽度,默认10像素
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.ManaulComit">
+            <summary>
+            手机提交.true;手动更新;false:自动更新
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart.OnRenderSizeChanged(System.Windows.SizeChangedInfo)">
+            <summary>
+            重写OnRenderSizeChanged
+            </summary>
+            <param name="sizeInfo"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartGridRowColumnDefinition.#ctor(System.Boolean,UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend,System.Windows.Controls.Grid,UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisYWidthInfo,UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisXHeightInfo)">
+            <summary>
+            NoFreeze
+            </summary>
+            <param name="hasLegend"></param>
+            <param name="legend"></param>
+            <param name="chartGrid"></param>
+            <param name="axisYWidthInfo"></param>
+            <param name="axisXHeightInfo"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartGridRowColumnDefinition.#ctor(System.Boolean,UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend,System.Windows.Controls.Grid,UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisYWidthInfo)">
+            <summary>
+            FreezeY
+            </summary>
+            <param name="hasLegend"></param>
+            <param name="legend"></param>
+            <param name="chartGrid"></param>
+            <param name="axisYWidthInfo"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartGridRowColumnDefinition.#ctor(System.Boolean,UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend,System.Windows.Controls.Grid)">
+            <summary>
+            FreezeY
+            </summary>
+            <param name="hasLegend"></param>
+            <param name="legend"></param>
+            <param name="chartGrid"></param>
+            <param name="axisYWidthInfo"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartGridRowColumnDefinition.#ctor(System.Boolean,UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend,System.Windows.Controls.Grid,UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisXHeightInfo)">
+            <summary>
+            FreezeX
+            </summary>
+            <param name="hasLegend"></param>
+            <param name="legend"></param>
+            <param name="chartGrid"></param>
+            <param name="axisYWidthInfo"></param>
+            <param name="axisXHeightInfo"></param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker">
+            <summary>
+            DateTimePicker.xaml 的交互逻辑
+            </summary>
+            <summary>
+            DateTimePicker
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.ValueProperty">
+            <summary>
+            值依赖属性
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.Value">
+            <summary>
+            获取或设置值,百分比
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl">
+            <summary>
+            日志显示控件
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.MaxItemCountProperty">
+            <summary>
+            最多显示项数依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.IsLockProperty">
+            <summary>
+            是否锁定滚动依赖属性
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.MaxItemCount">
+            <summary>
+            获取或设置最多显示项数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.IsLock">
+            <summary>
+            是否锁定滚动
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl._refreshCount">
+            <summary>
+            单次最大刷新日志条数
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl._cacheCapcity">
+            <summary>
+            日志缓存容量
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl._styleDic">
+            <summary>
+            样式字典集合[key:样式key;value:样式]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.AddDefaultStyle">
+            <summary>
+            添加默认样式
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.SetLogRefreshInfo(System.Int32,System.Int32)">
+            <summary>
+            设置日志刷新信息
+            </summary>
+            <param name="refreshCount">单次最大刷新日志条数</param>
+            <param name="cacheCapcity">日志缓存容量,建议等于日志最大项数</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.StartRefreshLogThread">
+            <summary>
+            启动刷新日志线程
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.SetStyle(UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle)">
+            <summary>
+            设置样式,不存在添加,存在则用新样式替换旧样式
+            </summary>
+            <param name="style">样式</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.RemoveStyle(UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle)">
+            <summary>
+            移除样式
+            </summary>
+            <param name="style">样式标识</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.ClearStyle">
+            <summary>
+            清空样式
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.GetStyles">
+            <summary>
+            获取当前所有样式数组
+            </summary>
+            <returns>当前所有样式数组</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.GetStyleById(System.Int32)">
+            <summary>
+            根据样式标识ID获取样式
+            </summary>
+            <param name="id">样式标识ID</param>
+            <returns>获取样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.AddLog(System.String,UtilZ.DotnetStd.Ex.Log.LogLevel)">
+            <summary>
+            添加显示日志
+            </summary>
+            <param name="logText">显示内容</param>
+            <param name="level">日志级别</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.AddLog(System.String,System.Int32)">
+            <summary>
+            添加显示日志
+            </summary>
+            <param name="logText">显示内容</param>
+            <param name="styleId">样式标识ID</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.Clear">
+            <summary>
+            清空日志
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ShowLogItem">
+            <summary>
+            显示的日志项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ShowLogItem.StyleID">
+            <summary>
+            样式标识ID
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ShowLogItem.LogText">
+            <summary>
+            文本内容
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ShowLogItem.#ctor(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="logText"></param>
+            <param name="styleId"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ShowLogItem.#ctor(System.String,UtilZ.DotnetStd.Ex.Log.LogLevel)">
+            <summary>
+            
+            </summary>
+            <param name="logText"></param>
+            <param name="level">日志级别</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle">
+            <summary>
+            日志控件显示样式类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.ID">
+            <summary>
+            样式标识ID
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.ForegroundBrush">
+            <summary>
+            文本前景色Brush
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.FontSize">
+            <summary>
+            文本大小
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.FontFamily">
+            <summary>
+            字体
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.Name">
+            <summary>
+            样式名称
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.defaultFontSize">
+            <summary>
+            默认字体大小
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.#ctor(System.Int32,System.Windows.Media.Brush,System.Windows.Media.FontFamily,System.Double)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="id">样式标识ID</param>
+            <param name="foregroundBrush">文本前景色Brush</param>
+            <param name="fontFamily">文本字体[null使用默认字体]</param>
+            <param name="fontSize">文本大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.#ctor(System.Int32,System.Windows.Media.Color,System.String,System.Double)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="id">样式标识ID</param>
+            <param name="foreground">文本前景色</param>
+            <param name="fontName">文本字体名称[null使用默认字体]</param>
+            <param name="fontSize">文本大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.#ctor(UtilZ.DotnetStd.Ex.Log.LogLevel,System.Windows.Media.Color,System.String,System.Double)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="level">日志级别</param>
+            <param name="foreground">文本前景色</param>
+            <param name="fontName">文本字体名称[null使用默认字体]</param>
+            <param name="fontSize">文本大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.#ctor(System.Int32,System.Drawing.Color,System.String,System.Double)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="id">样式标识ID</param>
+            <param name="foreground">文本前景色</param>
+            <param name="fontName">文本字体名称[null使用默认字体]</param>
+            <param name="fontSize">文本大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.#ctor(UtilZ.DotnetStd.Ex.Log.LogLevel,System.Drawing.Color,System.String,System.Double)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="level">日志级别</param>
+            <param name="foreground">文本前景色</param>
+            <param name="fontName">文本字体名称[null使用默认字体]</param>
+            <param name="fontSize">文本大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogShowStyle.GetFontFamily(System.String)">
+            <summary>
+            获取字体
+            </summary>
+            <param name="fontName">文本字体名称</param>
+            <returns>字体</returns>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.ValueProperty">
+            <summary>
+            值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.AllowNaNProperty">
+            <summary>
+            值是否允许为NaN依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.MinimumProperty">
+            <summary>
+            最小值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.MaximumProperty">
+            <summary>
+            最大值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.DecimalPlacesProperty">
+            <summary>
+            获取或设置数字显示框中要显示的十进制小数位数依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.NumberWidthProperty">
+            <summary>
+            数字显示宽度依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.NumberWidthFillDirectionProperty">
+            <summary>
+            数字文本不足够显示宽度时0的填充方向依赖属性
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.Value">
+            <summary>
+            获取或设置值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.AllowNaN">
+            <summary>
+            获取或设置值是否允许为NaN,true:允许;false:不允许
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.Minimum">
+            <summary>
+            获取或设置数字显示框的最小允许值,为double.NaN时无限制
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.Maximum">
+            <summary>
+            获取或设置数字显示框的最大允许值,为double.NaN时无限制
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.DecimalPlaces">
+            <summary>
+            获取或设置数字显示框中要显示的十进制小数位数,小于等于0表示小数位数为0
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.NumberWidth">
+            <summary>
+            获取或设置数字显示宽度,即固定字符长度,小于1表示无限制
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.NumberWidthFillDirection">
+            <summary>
+            获取或设置当数字文本不足够显示宽度时0的填充方向
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewTextInput_AllLessThanZero(System.Windows.Input.TextCompositionEventArgs)">
+            <summary>
+            皆为负数
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewTextInput_MinimumLessThanZero(System.Windows.Input.TextCompositionEventArgs)">
+            <summary>
+            最大值非负数,最小值负数
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewTextInput_AllGreaterOrEqualToZero(System.Windows.Input.TextCompositionEventArgs)">
+            <summary>
+            皆为非负数
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.MinimumMaximumType.AllGreaterOrEqualToZero">
+            <summary>
+            最大最小值皆为非负数
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.MinimumMaximumType.MinimumLessThanZero">
+            <summary>
+            最小值负数,最大值非负数
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.MinimumMaximumType.AllLessThanZero">
+            <summary>
+            最大最小值皆为负数
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberWidthFillDirection.Left">
+            <summary>
+            左侧补0
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberWidthFillDirection.Right">
+            <summary>
+            右侧补0
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer">
+            <summary>
+            UCZoomTranslateContainerControl.xaml 的交互逻辑
+            </summary>
+            <summary>
+            ZoomTranslateContainer
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ChildProperty">
+            <summary>
+            烟雾值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomMinScaleProperty">
+            <summary>
+            缩放最小值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomMaxScaleProperty">
+            <summary>
+            缩放最大值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomScaleProperty">
+            <summary>
+            缩放值依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomToFullProperty">
+            <summary>
+            缩放至完整显示依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomEnableProperty">
+            <summary>
+            缩放启用依赖属性
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.TranslateEnableProperty">
+            <summary>
+            平移启用依赖属性
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.Child">
+            <summary>
+            获取或设置进行缩放平移的控件
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomMinScale">
+            <summary>
+            获取或设置缩放最小值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomMaxScale">
+            <summary>
+            获取或设置缩放最大值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomScale">
+            <summary>
+            获取或设置缩放值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomToFull">
+            <summary>
+            获取或设置是否自动缩放至完整显示
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.ZoomEnable">
+            <summary>
+            获取或设置缩放启用
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.TranslateEnable">
+            <summary>
+            获取或设置平移启用
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.AutoZoomToFull(System.Double)">
+            <summary>
+            缩放至完成展示
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.AdjustToZoomout(System.Double)">
+            <summary>
+            缩小
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.AdjustToZoomin(System.Double)">
+            <summary>
+            放大
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>

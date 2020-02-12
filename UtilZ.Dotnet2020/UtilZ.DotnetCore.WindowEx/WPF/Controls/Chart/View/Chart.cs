@@ -19,30 +19,51 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private const double _SCROLL_BAR_DEFAULT_WIDTH = 10d;
 
         #region 依赖属性
+        /// <summary>
+        /// 图表集合依赖属性
+        /// </summary>
         public static readonly DependencyProperty SeriesProperty =
             DependencyProperty.Register(nameof(Series), typeof(ChartCollection<ISeries>), typeof(Chart),
                 new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        /// <summary>
+        ///  图表区域最小高度值依赖属性
+        /// </summary>
         public static readonly DependencyProperty ChartMinHeightProperty =
            DependencyProperty.Register(nameof(ChartMinHeight), typeof(double), typeof(Chart),
                new FrameworkPropertyMetadata(double.NaN, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        /// <summary>
+        /// 图表区域最小宽度值依赖属性
+        /// </summary>
         public static readonly DependencyProperty ChartMinWidthProperty =
            DependencyProperty.Register(nameof(ChartMinWidth), typeof(double), typeof(Chart),
                new FrameworkPropertyMetadata(double.NaN, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        /// <summary>
+        /// 坐标集合依赖属性
+        /// </summary>
         public static readonly DependencyProperty AxesProperty =
            DependencyProperty.Register(nameof(Axes), typeof(ChartCollection<AxisAbs>), typeof(Chart),
                new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        /// <summary>
+        /// Legend依赖属性
+        /// </summary>
         public static readonly DependencyProperty LegendProperty =
            DependencyProperty.Register(nameof(Legend), typeof(IChartLegend), typeof(Chart),
                new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        /// <summary>
+        /// 滚动条宽度依赖属性
+        /// </summary>
         public static readonly DependencyProperty ScrollBarWidthProperty =
            DependencyProperty.Register(nameof(ScrollBarWidth), typeof(double), typeof(Chart),
                new FrameworkPropertyMetadata(_SCROLL_BAR_DEFAULT_WIDTH, new PropertyChangedCallback(OnPropertyChangedCallback)));
 
+        /// <summary>
+        /// 手机提交依赖属性
+        /// </summary>
         public static readonly DependencyProperty ManaulComitProperty =
            DependencyProperty.Register(nameof(ManaulComit), typeof(bool), typeof(Chart),
                new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnPropertyChangedCallback)));
@@ -50,7 +71,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 图表集合
+        /// </summary>
         public ChartCollection<ISeries> Series
         {
             get { return (ChartCollection<ISeries>)GetValue(SeriesProperty); }
@@ -75,24 +98,36 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             set { SetValue(ChartMinWidthProperty, value); }
         }
 
+        /// <summary>
+        /// 坐标集合
+        /// </summary>
         public ChartCollection<AxisAbs> Axes
         {
             get { return (ChartCollection<AxisAbs>)GetValue(AxesProperty); }
             set { SetValue(AxesProperty, value); }
         }
 
+        /// <summary>
+        /// Legend
+        /// </summary>
         public IChartLegend Legend
         {
             get { return (IChartLegend)GetValue(LegendProperty); }
             set { SetValue(LegendProperty, value); }
         }
 
+        /// <summary>
+        /// 滚动条宽度,默认10像素
+        /// </summary>
         public double ScrollBarWidth
         {
             get { return (double)GetValue(ScrollBarWidthProperty); }
             set { SetValue(ScrollBarWidthProperty, value); }
         }
 
+        /// <summary>
+        /// 手机提交.true;手动更新;false:自动更新
+        /// </summary>
         public bool ManaulComit
         {
             get { return (bool)GetValue(ManaulComitProperty); }
@@ -112,7 +147,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             if (e.Property == SeriesProperty)
             {
                 selfControl.SeriesChanged((ChartCollection<ISeries>)e.OldValue, (ChartCollection<ISeries>)e.NewValue);
-                return;
             }
             else if (e.Property == AxesProperty)
             {
@@ -139,6 +173,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private readonly Grid _chartContentGrid;
         private double _scrollBarWidth;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public Chart()
             : base()
         {
@@ -158,6 +195,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.UpdateAll();
         }
 
+        /// <summary>
+        /// 重写OnRenderSizeChanged
+        /// </summary>
+        /// <param name="sizeInfo"></param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
@@ -359,8 +400,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     series.ValuesCollectionChanged += Series_ValuesCollectionChanged;
                 }
             }
-
-            this.DrawSeries(this._chartCanvas, this.Series);
         }
 
         private void Series_ValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

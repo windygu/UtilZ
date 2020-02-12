@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UtilZ.DotnetStd.Ex.Attributes;
+using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetStd.Ex.TTLV
 {

@@ -33,7 +33,7 @@ namespace UtilZ.DotnetStd.Ex.Log
         /// </summary>
         static Loger()
         {
-            Base.ApplicationEx.Add(new Base.ApplicationExitNotify(ApplicationExitNotifyCallback));
+            Base.ApplicationHelper.RegesterExitNotify(new Base.ApplicationExitNotify(ApplicationExitNotifyCallback));
             StaticStructLoadLogConfig();
         }
 

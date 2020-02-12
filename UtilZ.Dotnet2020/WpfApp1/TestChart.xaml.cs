@@ -16,7 +16,6 @@ using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 using UtilZ.DotnetStd.Ex.Base;
 using UtilZ.DotnetStd.Ex.Log;
 using UtilZ.DotnetStd.Ex.Log.Appender;
-using UtilZ.DotnetStd.Ex.Model;
 using WpfApp1.Model;
 
 namespace WpfApp1

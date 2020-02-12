@@ -8,15 +8,4 @@
     <DocumentationFile>F:\Code\Git\UtilZ\UtilZ.Dotnet2020\UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Base\MemoryCacheEx.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="FileTransfer\" />
-    <Folder Include="LMQ\" />
-    <Folder Include="LRPC\" />
-    <Folder Include="Transfer\" />
-  </ItemGroup>
-
 </Project>

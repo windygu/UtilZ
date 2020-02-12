@@ -61,7 +61,12 @@ namespace UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile
                 try
                 {
                     //如果此命名互斥对象已存在则请求打开
-                    if (Mutex.TryOpenExisting(mutexName, out mutex))
+                    try
+                    {
+                        //如果此命名互斥对象已存在则请求打开
+                        mutex = Mutex.OpenExisting(mutexName);
+                    }
+                    catch (WaitHandleCannotBeOpenedException)
                     {
                         //打开失败则创建一个
                         mutex = new Mutex(false, mutexName);

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Attributes
+namespace UtilZ.DotnetStd.Ex.Base
 {
     /// <summary>
     /// 显示名称特性

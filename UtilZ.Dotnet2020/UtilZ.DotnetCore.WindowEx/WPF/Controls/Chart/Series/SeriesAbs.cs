@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using UtilZ.DotnetStd.Ex.Model;
+using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
