@@ -4,6 +4,75 @@
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Winform\Controls\BarChartControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\DataGridViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\FlowLayoutPanelZ.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\LineChartControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\LogControlF.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\LogControl_bk.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\NoneBorderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\NumberTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\OpacityPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PageGrid\FPageGridColumnsSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PageGrid\UCPageGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PageGrid\UCPageGridControl_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PageGrid\UCPageGridControl_Method.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PageGrid\UCPageGridControl_Property.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PaintBaseControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PartAsynWait\V1\MetroShadeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PartAsynWait\V2\UCMetroShadeControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PartAsynWait\V3\UCMetroShadeControl3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PartAsynWait\V4\UCMetroShadeControl4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PartAsynWait\V5\ShadeControl5.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\PropertyGrid\Demo\PropertyGridEnumControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\TreeViewZ.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Winform\Controls\UCOpacityControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="WPF\Controls\Chart\Legend\HorizontalChartLegend.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -21,6 +90,33 @@
     <Page Update="UserControl1.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetCalibrationControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetDeviceControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetDeviceUControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetEmptyUCalibrationControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetEmptyUControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetRowControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCCabinetUResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\Cabinet\UCSingleCabinetControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="WPF\Controls\Chart\Legend\ChartResourceDictionary.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -31,6 +127,24 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="WPF\Controls\DateTimePicker.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\GifImage\GifImage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\NumericTextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\PartAsynWait\V1\UCShadeControl1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\UCPagingControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\WaitingControls\MetroLRWaitIndicator.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WPF\Controls\WaitingControls\MetroRotaionIndicator.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="WPF\Controls\ZoomTranslateContainer.xaml">

@@ -393,13 +393,26 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
     }
 
-
+    /// <summary>
+    /// 时间值改变事件参数
+    /// </summary>
     public class DateTimeValueChangedArgs : EventArgs
     {
+        /// <summary>
+        /// 新值
+        /// </summary>
         public DateTime NewValue { get; private set; }
 
+        /// <summary>
+        /// 旧值
+        /// </summary>
         public DateTime OldValue { get; private set; }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="newValue"></param>
+        /// <param name="oldValue"></param>
         public DateTimeValueChangedArgs(DateTime newValue, DateTime oldValue)
         {
             this.NewValue = newValue;

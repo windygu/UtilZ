@@ -396,6 +396,20 @@
             <param name="token">取消通知对象</param>
             <param name="asynWait">异步等待提示UI</param>
         </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.AttributeEx">
+            <summary>
+            特性辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AttributeEx.UpdateValue``2(``0,``0)">
+            <summary>
+            将T类型valueObj对象中通过W特性标记的属性的值设置到T类型的targetObj对象中
+            </summary>
+            <typeparam name="T">对象类型</typeparam>
+            <typeparam name="W">特性类型</typeparam>
+            <param name="valueObj">值对象</param>
+            <param name="targetObj">目标对象</param>
+        </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute">
             <summary>
             显示名称特性
@@ -478,6 +492,539 @@
             重写ToString方法
             </summary>
             <returns>返回特性文本</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.BindingCollection`1">
+            <summary>
+            绑定集合
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.OnRaiseInvokeAction(System.Action)">
+            <summary>
+            触发一个Action
+            </summary>
+            <param name="action">Action</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.DataSource">
+            <summary>
+            获取数据源集合
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.SyncRoot">
+            <summary>
+            集合改变锁
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.#ctor(UtilZ.DotnetStd.Ex.Base.ICollectionOwner,System.Collections.ObjectModel.Collection{`0})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="owner">集合所属ui对象</param>
+            <param name="items">绑定集合[Winform:BindingListEx;WPF:ObservableCollection或是其子类]</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.#ctor(UtilZ.DotnetStd.Ex.Base.ICollectionOwner)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="owner">集合所属ui对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Add(`0)">
+            <summary>
+            将对象添加到集合的结尾处
+            </summary>
+            <param name="item">要添加的新项。对于引用类型，该值可以为 null</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.AddNew">
+            <summary>
+            隐藏重写AddNew,将新项添加集合开始
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.AddNewCore">
+            <summary>
+            隐藏重写AddNewCore,将新项添加到末尾
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            添加集合到末尾
+            </summary>
+            <param name="items">集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Insert(System.Int32,`0)">
+            <summary>
+            将元素插入集合的指定索引处
+            </summary>
+            <param name="index">从零开始的索引，应在该位置插入 item</param>
+            <param name="item">要插入的对象。对于引用类型，该值可以为 null</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Remove(`0)">
+            <summary>
+            从集合中移除特定对象的第一个匹配项
+            </summary>
+            <param name="item">要从集合中移除的对象。对于引用类型，该值可以为 null</param>
+            <returns>如果成功移除 item，则为 true；否则为 false。如果在原始集合中未找到 item，此方法也会返回 false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.RemoveAt(System.Int32)">
+            <summary>
+            移除集合的指定索引处的元素
+            异常:
+            System.ArgumentOutOfRangeException:index 小于零。- 或 -index 等于或大于集合.Count
+            </summary>
+            <param name="index">要移除的元素的从零开始的索引</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.RemoveArea(System.Int32,System.Int32)">
+            <summary>
+            从指定位置移除指定个数的项
+            </summary>
+            <param name="index">移除起始位置</param>
+            <param name="count">移除项个数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.RemoveArrange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            从指定位置移除指定个数的项
+            </summary>
+            <param name="items">要移除的集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Clear">
+            <summary>
+            从集合中移除所有元素
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Item(System.Int32)">
+            <summary>
+            获取或设置指定索引处的元素
+            异常:System.ArgumentOutOfRangeException:index 小于零。- 或 -index 等于或大于 System.Collections.ObjectModel.Collection`1.Count。
+            </summary>
+            <param name="index">要获得或设置的元素从零开始的索引</param>
+            <returns>指定索引处的元素</returns>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Count">
+            <summary>
+            获取集合中实际包含的元素数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.IsReadOnly">
+            <summary>
+            获取一个值，该值指示集合是否为只读
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.Contains(`0)">
+            <summary>
+            确定某元素是否在集合中[集合中找到 item，则为 true；否则为 false]
+            </summary>
+            <param name="item">要在 System.Collections.ObjectModel.Collection`1 中定位的对象。对于引用类型，该值可以为 null</param>
+            <returns>集合中找到 item，则为 true；否则为 false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            从目标数组的指定索引处开始将整个集合复制到兼容的一维 System.Array
+            异常:
+            System.ArgumentNullException:array 为 null
+            System.ArgumentOutOfRangeException: index 小于零
+            System.ArgumentException:源集合中的元素数目大于从 index 到目标 array 末尾之间的可用空间
+            </summary>
+            <param name="array">作为从 System.Collections.ObjectModel.Collection`1 复制的元素的目标位置的一维 System.Array。System.Array必须具有从零开始的索引</param>
+            <param name="index">array 中从零开始的索引，将在此处开始复制</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.IndexOf(`0)">
+            <summary>
+            搜索指定的对象，并返回整个集合中第一个匹配项的从零开始的索引
+            </summary>
+            <param name="item">要在集合中定位的对象。对于引用类型，该值可以为 null</param>
+            <returns>如果在整个集合中找到 item 的第一个匹配项，则为该项的从零开始的索引；否则为-1</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingCollection`1.GetEnumerator">
+            <summary>
+            返回循环访问集合的枚举数
+            </summary>
+            <returns>用于集合的IEnumerator</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1">
+            <summary>
+            UI绑定集合发生更改委托参数
+            </summary>
+            <typeparam name="T">数据类型</typeparam>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.#ctor(UtilZ.DotnetStd.Ex.Base.BindingListChangedType,`0,`0,System.Collections.Generic.List{`0},System.Collections.Generic.List{`0},System.Int32,System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="type">改变类型</param>
+            <param name="item">新项</param>
+            <param name="oldItem">旧项</param>
+            <param name="newItems">新项集合</param>
+            <param name="oldtems">旧项集合</param>
+            <param name="count">当前集合项组数</param>
+            <param name="index">当前项在集合中的位置索引</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.Type">
+            <summary>
+            UI绑定集合改变类型
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.NewItem">
+            <summary>
+            新项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.OldItem">
+            <summary>
+            旧项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.NewItems">
+            <summary>
+            新项集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.Oldtems">
+            <summary>
+            旧项集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.Count">
+            <summary>
+            当前集合项组数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListChangedArgs`1.Index">
+            <summary>
+            当前项在集合中的位置索引
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.BindingListChangedType">
+            <summary>
+            UI绑定集合改变类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.Add">
+            <summary>
+            添加项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.AddRange">
+            <summary>
+            添加多项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.Insert">
+            <summary>
+            插入
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.Update">
+            <summary>
+            更新项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.Remove">
+            <summary>
+            删除项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.RemoveRange">
+            <summary>
+            移除多项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListChangedType.Clear">
+            <summary>
+            清空项
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.BindingListEx`1">
+            <summary>
+            UI绑定集合
+            </summary>
+            <typeparam name="T">数据类型</typeparam>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx`1.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx`1.ApplySortCore(System.ComponentModel.PropertyDescriptor,System.ComponentModel.ListSortDirection)">
+            <summary>
+            重写排序
+            </summary>
+            <param name="prop"></param>
+            <param name="direction"></param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListEx`1.SupportsSortingCore">
+            <summary>
+            是否支持排序
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1">
+            <summary>
+            UI绑定集合
+            </summary>
+            <typeparam name="T">数据类型</typeparam>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1._isRingStruct">
+            <summary>
+            列表是否是环形结构[true:环形显示列表;false:非环形显示列表]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1._ringPosition">
+            <summary>
+            环形结构在容量满之后更新数据的位置索引,默认为0
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.ResetRingPosition">
+            <summary>
+            重置环形结构在容量满之后更新数据的位置索引
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.UpdateRingPosition(System.Boolean)">
+            <summary>
+            更新环形结构在容量满之后更新数据的位置索引
+            </summary>
+            <param name="flag">是否是增加项标识[true:添加项;false:减少项]</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.#ctor(UtilZ.DotnetStd.Ex.Base.ICollectionOwner)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="owner">绑定列表所属控件</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.#ctor(System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="capcity">环形结构时的容量</param>
+        </member>
+        <member name="E:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.BindingListChanged">
+            <summary>
+            UI绑定集合发生更改事件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.OnBindingListChanged(UtilZ.DotnetStd.Ex.Base.BindingListChangedType,`0,`0,System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="type">改变类型</param>
+            <param name="item">新项</param>
+            <param name="oldItem">旧项</param>
+            <param name="newItems">新项集合</param>
+            <param name="oldTems">旧项集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.OnRaiseInvokeAction(System.Action)">
+            <summary>
+            触发一个Action
+            </summary>
+            <param name="action">Action</param>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.SyncRoot">
+            <summary>
+            集合改变锁
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.Add(`0)">
+            <summary>
+            添加项到末尾
+            </summary>
+            <param name="item">要添加的新项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.AddNew">
+            <summary>
+            隐藏重写AddNew,将新项添加集合开始
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.AddNewCore">
+            <summary>
+            隐藏重写AddNewCore,将新项添加到末尾
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            添加集合到末尾
+            </summary>
+            <param name="items">集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.Insert(System.Int32,`0)">
+            <summary>
+            隐藏重写Insert,插入指定的项
+            </summary>
+            <param name="index">从开始处的索引</param>
+            <param name="item">插入的项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.Remove(`0)">
+            <summary>
+            隐藏重写Remove,移除一个匹配的项
+            </summary>
+            <param name="item">移除的项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.RemoveAt(System.Int32)">
+            <summary>
+            隐藏重写Remove,移除指定位置的项
+            </summary>
+            <param name="index">从开始处的索引</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.RemoveItem(System.Int32)">
+            <summary>
+            隐藏重写RemoveItem,移除指定位置的项
+            </summary>
+            <param name="index">从开始处的索引</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.RemoveArea(System.Int32,System.Int32)">
+            <summary>
+            从指定位置移除指定个数的项
+            </summary>
+            <param name="index">移除起始位置</param>
+            <param name="count">移除项个数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.RemoveArrange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            从指定位置移除指定个数的项
+            </summary>
+            <param name="items">要移除的集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.Clear">
+            <summary>
+            隐藏重写Clear
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.ApplySortCore(System.ComponentModel.PropertyDescriptor,System.ComponentModel.ListSortDirection)">
+            <summary>
+            重写排序
+            </summary>
+            <param name="prop"></param>
+            <param name="direction"></param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.SupportsSortingCore">
+            <summary>
+            是否支持排序
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.Item(System.Int32)">
+            <summary>
+            重写索引
+            </summary>
+            <param name="index">索引</param>
+            <returns>索引对应的数据项</returns>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1._capcity">
+            <summary>
+            环形结构容量
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.BindingListEx_bk`1.Capcity">
+            <summary>
+            获取或设置环形结构容量
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ComparerResultType">
+            <summary>
+            比较结果类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ComparerResultType.Equal">
+            <summary>
+            等于
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ComparerResultType.Greater">
+            <summary>
+            大于
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ComparerResultType.Less">
+            <summary>
+            小于
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ICollectionOwner">
+            <summary>
+            集合所属接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ICollectionOwner.Invoke(System.Delegate,System.Object[])">
+            <summary>
+            在拥有控件的基础窗口句柄的线程上，用指定的参数列表执行指定委托
+            </summary>
+            <param name="method">一个方法委托，它采用的参数的数量和类型与 args 参数中所包含的相同</param>
+            <param name="args">作为指定方法的参数传递的对象数组。如果此方法没有参数，该参数可以是 null</param>
+            <returns>System.Object，它包含正被调用的委托返回值；如果该委托没有返回值，则为 null</returns>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ICollectionOwner.InvokeRequired">
+            <summary>
+            获取一个值，该值指示调用方在对控件进行方法调用时是否必须调用 Invoke 方法，因为调用方位于创建控件所在的线程以外的线程中.
+            如果控件的 System.Windows.Forms.Control.Handle 是在与调用线程不同的线程上创建的（说明您必须通过 Invoke 方法对控件进行调用），则为true；否则为 false。
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ICollectionOwner.IsDisposed">
+            <summary>
+            获取一个值，该值指示控件是否已经被释放[如果控件已经被释放，则为 true；否则为 false]
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConvertEx">
+            <summary>
+            Convert类型扩展方法类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.ToObject``2(``0)">
+            <summary>
+            转换数据到
+            </summary>
+            <typeparam name="T">要待转换的目标类型</typeparam>
+            <typeparam name="TResult">目标类型</typeparam>
+            <param name="value">要转换的值</param>
+            <returns>转换后的值,存放在object中,如果转换失败为目标类型的默认值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.ToObject(System.Type,System.Object)">
+            <summary>
+            转换数据到
+            </summary>
+            <param name="targetValueType">要待转换的目标类型</param>
+            <param name="value">要转换的值</param>
+            <returns>转换后的值,存放在object中,如果转换失败为目标类型的默认值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.ToNumber``1(System.String,System.Byte)">
+            <summary>
+            字符串转换为指定类型数值类型
+            </summary>
+            <typeparam name="T">目标数值类型</typeparam>
+            <param name="value">待转换字符串</param>
+            <param name="fromBase">值中数字基数(value是何种进制的字符串),必须是2,8,10,16</param>
+            <returns>目标数值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.ToNumber``1(System.String,``0,System.Byte,System.IFormatProvider)">
+            <summary>
+            各种进制字符串转换为数据类型,转换失败返回默认值,包括枚举
+            </summary>
+            <typeparam name="T">目标数值类型</typeparam>
+            <param name="value">要转换的值</param>
+            <param name="defaultValue">转换失败时的默认值</param>
+            <param name="fromBase">值中数字基数(value是何种进制的字符串),必须是2,8,10,16</param>
+            <param name="formatProvider">一个提供区域性特定的格式设置信息的对象</param>
+            <returns>转换后的值,存放在object中,如果转换失败为目标类型的默认值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.ToNumber(System.Type,System.String,System.Byte,System.IFormatProvider)">
+            <summary>
+            各种进制字符串转换为数据类型,包括枚举
+            </summary>
+            <param name="targetValueType">要待转换的目标类型</param>
+            <param name="value">要转换的值</param>
+            <param name="fromBase">值中数字基数(value是何种进制的字符串),必须是2,8,10,16</param>
+            <param name="formatProvider">一个提供区域性特定的格式设置信息的对象</param>
+            <returns>转换后的值,存放在object中,如果转换失败为目标类型的默认值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.TryToNumber(System.Type,System.String,System.Object@)">
+            <summary>
+            字符串转换为数据类型,包括枚举
+            </summary>
+            <param name="targetValueType">要待转换的目标类型</param>
+            <param name="value">要转换的值</param>
+            <param name="result">转换结果</param>
+            <returns>转换后的值,存放在object中,如果转换失败为目标类型的默认值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConvertEx.GetTypeDefaultValue(System.Type)">
+            <summary>
+            获得类型默认值
+            </summary>
+            <param name="targetType">要获取默认值的目标类型</param>
+            <returns>类型默认值</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.DictionaryEx`2">
             <summary>
@@ -1315,6 +1862,11 @@
             模型基类
             </summary>
         </member>
+        <member name="E:UtilZ.DotnetStd.Ex.Base.BaseModelAbs.PropertyChanged">
+            <summary>
+            PropertyChanged
+            </summary>
+        </member>
         <member name="M:UtilZ.DotnetStd.Ex.Base.BaseModelAbs.OnRaisePropertyChanged(System.String)">
             <summary>
             触发属性值改变事件
@@ -1331,6 +1883,175 @@
             <summary>
             构造函数
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.BasePropertyValueVerifyModel">
+            <summary>
+            属性验证模型基类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BasePropertyValueVerifyModel.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetStd.Ex.Base.BasePropertyValueVerifyModel.PropertyValueVerifyResultNotify">
+            <summary>
+            属性值有效性验证结果通知事件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.BasePropertyValueVerifyModel.OnRaisePropertyValueVerifyResultNotify(System.Boolean,System.String)">
+            <summary>
+            调用属性设置值有效性验证结果通知事件
+            </summary>
+            <param name="isValid">最新值的有效性[true:有效,false:无效]</param>
+            <param name="errorMesage">当最新值无效时的错误提示消息</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ClrSystemType">
+            <summary>
+            CLR系统类型类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.BoolType">
+            <summary>
+            bool类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.ByteType">
+            <summary>
+            byte类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.CharType">
+            <summary>
+            char类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.DateTimeType">
+            <summary>
+            DateTime类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.DecimalType">
+            <summary>
+            decimal类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.DoubleType">
+            <summary>
+            double类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.Int16Type">
+            <summary>
+            Int16类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.Int32Type">
+            <summary>
+            Int32类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.Int64Type">
+            <summary>
+            Int64类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.SbyteType">
+            <summary>
+            sbyte类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.FloatType">
+            <summary>
+            float类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.StringType">
+            <summary>
+            string类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.UInt16Type">
+            <summary>
+            UInt16类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.UInt32Type">
+            <summary>
+            UInt32类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.UInt64Type">
+            <summary>
+            UInt64类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.ObjectType">
+            <summary>
+            Object类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.TimeSpanType">
+            <summary>
+            TimeSpan类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.DateTimeOffsetType">
+            <summary>
+            DateTimeOffset类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.GuidType">
+            <summary>
+            Guid类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ClrSystemType.BytesType">
+            <summary>
+            byte[]类型
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ClrSystemType.GetSystemTypeBriefName(System.Type)">
+            <summary>
+            获取系统类型缩写名称
+            </summary>
+            <param name="type">类型</param>
+            <returns>系统类型缩写名称</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ClrSystemType.IsIntegerType(System.Type)">
+            <summary>
+            判断目标类型是否是整形[包括int,uint等]
+            </summary>
+            <param name="targetValueType">目标类型</param>
+            <returns>true:是;false:否</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ClrSystemType.IsUIntegerType(System.Type)">
+            <summary>
+            判断目标类型是否是无符号整形[包括int,uint等]
+            </summary>
+            <param name="targetValueType">目标类型</param>
+            <returns>true:是;false:否</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ClrSystemType.IsHIntegerType(System.Type)">
+            <summary>
+            判断目标类型是否是有符号整形[包括int,uint等]
+            </summary>
+            <param name="targetValueType">目标类型</param>
+            <returns>true:是;false:否</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ClrSystemType.IsFloatType(System.Type)">
+            <summary>
+            判断目标类型是否是浮点形[包括int,uint等;true:是;false:否]
+            </summary>
+            <param name="targetValueType">目标类型</param>
+            <returns>true:是;false:否</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ClrSystemType.IsSystemNumberType(System.Type)">
+            <summary>
+            判断目标类型是否是系统数值类型[true:是;false:否]
+            </summary>
+            <param name="targetValueType">目标类型</param>
+            <returns>true:是;false:否</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.DropdownBindingItem">
             <summary>
@@ -1409,6 +2130,38 @@
             <param name="srcItems">原始泛型集合</param>
             <param name="displayFun">显示转换委托</param>
             <returns>DropdownBindingItem列表</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.IPropertyValueVerify">
+            <summary>
+            属性值验证接口
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetStd.Ex.Base.IPropertyValueVerify.PropertyValueVerifyResultNotify">
+            <summary>
+            属性值有效性验证结果通知事件
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.PropertyValueVerifyArgs">
+            <summary>
+            属性值验证结果通知事件参数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.PropertyValueVerifyArgs.#ctor(System.Boolean,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="isValid">最新值的有效性[true:有效,false:无效]</param>
+            <param name="errorMesage">当最新值无效时的错误提示消息</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PropertyValueVerifyArgs.IsValid">
+            <summary>
+            获取最新值的有效性[true:有效,false:无效]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PropertyValueVerifyArgs.ErrorMesage">
+            <summary>
+            获取当最新值无效时的错误提示消息
+            </summary>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.RegexConstant">
             <summary>
@@ -1938,6 +2691,77 @@
             是否超时
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.XmlEx">
+            <summary>
+            Xml辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.GetXElementValue(System.Xml.Linq.XElement)">
+            <summary>
+            获取XElement元素节点值[节点为null时返回空字符串]
+            </summary>
+            <param name="ele">XElement节点</param>
+            <returns>值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.GetXElementValue``1(System.Xml.Linq.XElement)">
+            <summary>
+            获取XElement元素节点值[节点为null时返回空字符串]
+            </summary>
+            <param name="ele">XElement节点</param>
+            <returns>值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.GetXElementValue(System.Xml.Linq.XElement,System.Type)">
+            <summary>
+            获取XElement元素节点值[节点为null时返回空字符串]
+            </summary>
+            <param name="ele">XElement节点</param>
+            <param name="targetType">数据目标类型</param>
+            <returns>值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.GetXElementAttributeValue(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            获取XElement元素属性值
+            </summary>
+            <param name="ele">XElement节点</param>
+            <param name="attributeName">属性名称</param>
+            <returns>值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.GetXElementAttributeValue``1(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            获取XElement元素属性值
+            </summary>
+            <typeparam name="T">数据目标泛型类型</typeparam>
+            <param name="ele">XElement节点</param>
+            <param name="attributeName">属性名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.GetXElementAttributeValue(System.Xml.Linq.XElement,System.String,System.Type)">
+            <summary>
+            获取XElement元素属性值
+            </summary>
+            <param name="ele">XElement节点</param>
+            <param name="attributeName">属性名称</param>
+            <param name="targetType">数据目标类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.CreateXElement(System.String,System.String,System.Object,System.String)">
+            <summary>
+            创建特性值xml元素节点
+            </summary>
+            <param name="eleName">节点名称</param>
+            <param name="attriName">属性名称</param>
+            <param name="attiValue">属性值</param>
+            <param name="eleValue">节点值</param>
+            <returns>特性值xml元素节点</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.XmlEx.CreateXCDataXElement(System.String,System.String)">
+            <summary>
+            创建CDataxml元素节点
+            </summary>
+            <param name="eleName">节点名称</param>
+            <param name="value">值</param>
+            <returns>CDataxml元素节点</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.TTLV.ITTLVConverter">
             <summary>

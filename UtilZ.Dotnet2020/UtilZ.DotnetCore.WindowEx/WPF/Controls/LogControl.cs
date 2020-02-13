@@ -18,7 +18,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// <summary>
     /// 日志显示控件
     /// </summary>
-    public sealed class LogControl : RichTextBox, IDisposable
+    public sealed class LogControl : RichTextBox, ILogControl, IDisposable
     {
         #region 依赖属性
         /// <summary>
@@ -119,6 +119,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private readonly Paragraph content;
         private readonly Delegate _primitiveShowLogDelegate;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public LogControl()
             : base()
         {
@@ -479,144 +483,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         public ShowLogItem(string logText, LogLevel level) :
             this(logText, (int)level)
         {
-        }
-    }
-
-    /// <summary>
-    /// 日志控件显示样式类
-    /// </summary>
-    public class LogShowStyle
-    {
-        /// <summary>
-        /// 样式标识ID
-        /// </summary>
-        public int ID { get; private set; }
-
-        /// <summary>
-        /// 文本前景色Brush
-        /// </summary>
-        public System.Windows.Media.Brush ForegroundBrush { get; private set; }
-
-        /// <summary>
-        /// 文本大小
-        /// </summary>
-        public double FontSize { get; private set; }
-
-        /// <summary>
-        /// 字体
-        /// </summary>
-        public System.Windows.Media.FontFamily FontFamily { get; private set; }
-
-        /// <summary>
-        /// 样式名称
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 默认字体大小
-        /// </summary>
-        private const double defaultFontSize = 15d;
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="id">样式标识ID</param>
-        /// <param name="foregroundBrush">文本前景色Brush</param>
-        /// <param name="fontFamily">文本字体[null使用默认字体]</param>
-        /// <param name="fontSize">文本大小</param>
-        public LogShowStyle(int id, System.Windows.Media.Brush foregroundBrush, System.Windows.Media.FontFamily fontFamily, double fontSize)
-        {
-            if (fontSize <= 0)
-            {
-                throw new ArgumentException("字体大小值无效", nameof(fontSize));
-            }
-
-            this.ID = id;
-            this.ForegroundBrush = foregroundBrush;
-            this.FontFamily = fontFamily;
-            this.FontSize = fontSize;
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="id">样式标识ID</param>
-        /// <param name="foreground">文本前景色</param>
-        /// <param name="fontName">文本字体名称[null使用默认字体]</param>
-        /// <param name="fontSize">文本大小</param>
-        public LogShowStyle(int id, System.Windows.Media.Color foreground, string fontName = null, double fontSize = defaultFontSize) :
-            this(id, new System.Windows.Media.SolidColorBrush(foreground), GetFontFamily(fontName), fontSize)
-        {
-
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="level">日志级别</param>
-        /// <param name="foreground">文本前景色</param>
-        /// <param name="fontName">文本字体名称[null使用默认字体]</param>
-        /// <param name="fontSize">文本大小</param>
-        public LogShowStyle(LogLevel level, System.Windows.Media.Color foreground, string fontName = null, double fontSize = defaultFontSize) :
-            this((int)level, new System.Windows.Media.SolidColorBrush(foreground), GetFontFamily(fontName), fontSize)
-        {
-
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="id">样式标识ID</param>
-        /// <param name="foreground">文本前景色</param>
-        /// <param name="fontName">文本字体名称[null使用默认字体]</param>
-        /// <param name="fontSize">文本大小</param>
-        public LogShowStyle(int id, System.Drawing.Color foreground, string fontName = null, double fontSize = defaultFontSize) :
-            this(id, new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(foreground.A, foreground.R, foreground.G, foreground.B)), GetFontFamily(fontName), fontSize)
-        {
-
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="level">日志级别</param>
-        /// <param name="foreground">文本前景色</param>
-        /// <param name="fontName">文本字体名称[null使用默认字体]</param>
-        /// <param name="fontSize">文本大小</param>
-        public LogShowStyle(LogLevel level, System.Drawing.Color foreground, string fontName = null, double fontSize = defaultFontSize) :
-            this((int)level, new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(foreground.A, foreground.R, foreground.G, foreground.B)), GetFontFamily(fontName), fontSize)
-        {
-
-        }
-
-        /// <summary>
-        /// 获取字体
-        /// </summary>
-        /// <param name="fontName">文本字体名称</param>
-        /// <returns>字体</returns>
-        private static System.Windows.Media.FontFamily GetFontFamily(string fontName)
-        {
-            System.Windows.Media.FontFamily fontFamily;
-            if (string.IsNullOrWhiteSpace(fontName))
-            {
-                fontFamily = null;
-                //fontName = "Microsoft YaHei UI";
-            }
-            else
-            {
-                var fonts = FontEx.GetSystemInstallFonts();
-                bool existYahei = (from tmpItem in fonts where string.Equals(tmpItem.Name, fontName, StringComparison.OrdinalIgnoreCase) select tmpItem).Count() > 0;
-                if (existYahei)
-                {
-                    fontFamily = new System.Windows.Media.FontFamily(fontName);
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format("当前系统中不存在名称为:{0}的字体", fontName), nameof(fontName));
-                }
-            }
-
-            return fontFamily;
         }
     }
 }

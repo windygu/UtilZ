@@ -13,6 +13,9 @@ namespace UtilZ.DotnetStd.Ex.Base
     public abstract class BaseModelAbs : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
+        /// <summary>
+        /// PropertyChanged
+        /// </summary>
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 

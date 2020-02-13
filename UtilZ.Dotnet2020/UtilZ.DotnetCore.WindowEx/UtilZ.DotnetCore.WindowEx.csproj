@@ -12,11 +12,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Winform\" />
+    <ProjectReference Include="..\UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.csproj" />
+    <Compile Update="Winform\Controls\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Winform\Controls\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
