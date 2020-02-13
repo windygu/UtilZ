@@ -10,14 +10,16 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
     public class CacheItem
     {
         /// <summary>
-        /// 
+        /// 构造函数
         /// </summary>
         /// <param name="key">CacheItem 项的唯一标识符</param>
         /// <param name="value">CacheItem 项的数据</param>
         public CacheItem(object key, object value)
         {
-
+            this.Key = key;
+            this.Value = value;
         }
+
 
 
         /// <summary>
@@ -30,89 +32,115 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
         /// </summary>
         public object Value { get; private set; }
 
-        ///// <summary>
-        ///// 存储模式
-        ///// </summary>
-        //public ZMemoryStoreMode Mode { get; set; }
-
-        ///// <summary>
-        ///// key
-        ///// </summary>
-        //public string Key { get; set; }
-
-        ///// <summary>
-        ///// 值
-        ///// </summary>
-        //public object Value { get; set; }
-
-        ///// <summary>
-        ///// 修改时间
-        ///// </summary>
-        //public DateTime UpdateTime { get; set; }
-
-        ///// <summary>
-        ///// 有效时间类型
-        ///// </summary>
-        //public ZMemoryTimeOutType TimeOutType { get; set; }
-
-        ///// <summary>
-        ///// 有效值到指定时间点
-        ///// </summary>
-        //public DateTime ExpiresAt { get; set; }
-
-        ///// <summary>
-        ///// 有效时长
-        ///// </summary>
-        //public TimeSpan ValidFor { get; set; }
-    }
-
-
-    /// <summary>
-    /// 超时时间类型
-    /// </summary>
-    public enum ZMemoryTimeOutType
-    {
         /// <summary>
-        /// 有效值到达指定时刻
+        /// 绝对过期时间，为null则条件无效
         /// </summary>
-        [DisplayNameExAttribute("有效值到达指定时刻")]
-        ExpiresAt = 1,
+        public DateTimeOffset? AbsoluteExpiration { get; set; }
+
+        ///// <summary>
+        ///// 相对当前时间的绝对过期时间（使用TimeSpan），为null条件无效
+        ///// </summary>
+        //public TimeSpan? AbsoluteExpirationRelativeToNow { get; set; }
 
         /// <summary>
-        /// 有效时长
+        /// 滑动过期时间，为null条件无效
         /// </summary>
-        [DisplayNameExAttribute("有效时长")]
-        ValidFor = 2,
+        public TimeSpan? SlidingExpiration { get; set; }
 
         /// <summary>
-        /// 从不
+        /// 提供用来自定义缓存过期，为null条件无效
         /// </summary>
-        [DisplayNameExAttribute("从不")]
-        Never = 3
-    }
-
-
-    /// <summary>
-    /// 存储模式
-    /// </summary>
-    public enum ZMemoryStoreMode
-    {
-        /// <summary>
-        /// 添加
-        /// </summary>
-        [DisplayNameExAttribute("添加")]
-        Add = 1,
+        public Func<CacheItem, bool> CustomerExpiration { get; set; }
 
         /// <summary>
-        /// 替换
+        /// 缓存移除回调，为null条件无效
         /// </summary>
-        [DisplayNameExAttribute("替换")]
-        Replace = 2,
+        public CacheEntryRemovedCallback RemovedCallback { get; set; }
+
+
+
 
         /// <summary>
-        /// 设置[不存在该项则添加,存在则替换旧的值]
+        /// 指示移除回调通知是否是ObjectCache内赋值的
         /// </summary>
-        [DisplayNameExAttribute("设置")]
-        Set = 3,
+        internal bool InnerRemovedCallback { get; set; } = false;
+
+        /// <summary>
+        /// 上次Get时间
+        /// </summary>
+        internal DateTimeOffset? LastGetTime { get; set; }
+
+        /// <summary>
+        /// 缓存项添加时间
+        /// </summary>
+        public DateTimeOffset AddTime { get; set; }
+
+
+
+        /// <summary>
+        /// 获取当前缓存项是否过期
+        /// </summary>
+        /// <returns></returns>
+        internal bool Expiration()
+        {
+            lock (this)
+            {
+                var currentTime = DateTimeOffset.Now;
+                if (this.AbsoluteExpiration.HasValue && currentTime >= this.AbsoluteExpiration.Value)
+                {
+                    return true;
+                }
+
+                if (this.SlidingExpiration.HasValue)
+                {
+                    if (this.LastGetTime.HasValue)
+                    {
+                        if (currentTime - this.LastGetTime.Value > this.SlidingExpiration.Value)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (currentTime - this.AddTime > this.SlidingExpiration.Value)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                var handler = this.CustomerExpiration;
+                if (handler != null)
+                {
+                    if (handler(this))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 触发缓存项移除回调
+        /// </summary>
+        /// <param name="objectCache"></param>
+        /// <param name="cacheEntryRemovedReason"></param>
+        internal void CallRemovedCallback(ObjectCache objectCache, CacheEntryRemovedReason cacheEntryRemovedReason)
+        {
+            lock (this)
+            {
+                var handler = this.RemovedCallback;
+                if (handler != null)
+                {
+                    handler(new CacheEntryRemovedArguments(objectCache, cacheEntryRemovedReason, this));
+                    if (this.InnerRemovedCallback)
+                    {
+                        this.RemovedCallback = null;
+                    }
+                }
+            }
+        }
     }
 }

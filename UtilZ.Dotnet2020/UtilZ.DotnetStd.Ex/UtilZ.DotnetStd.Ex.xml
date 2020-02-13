@@ -4,156 +4,6 @@
         <name>UtilZ.DotnetStd.Ex</name>
     </assembly>
     <members>
-        <member name="T:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute">
-            <summary>
-            显示名称特性
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor">
-            <summary>
-            默认构造函数
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String,System.Object)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-            <param name="tag">标识</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String,System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-            <param name="description">描述</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String,System.String,System.Object)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-            <param name="description">描述</param>
-            <param name="tag">标识</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String,System.Int32)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-            <param name="orderIndex">项显示顺序</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String,System.Int32,System.String)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-            <param name="orderIndex">项显示顺序</param>
-            <param name="description">描述</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.#ctor(System.String,System.Int32,System.String,System.Object)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="displayName">显示文本</param>
-            <param name="orderIndex">项显示顺序</param>
-            <param name="description">描述</param>
-            <param name="tag">标识</param>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.OrderIndex">
-            <summary>
-            项显示顺序
-            </summary>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.Description">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.Tag">
-            <summary>
-            获取或设置标识
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.DisplayNameExAttribute.ToString">
-            <summary>
-            重写ToString方法
-            </summary>
-            <returns>返回特性文本</returns>
-        </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute">
-            <summary>
-            TTLV特性
-            </summary>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute.Tag">
-            <summary>
-            标签
-            </summary>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute.ConverterType">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute.PropertyType">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute.#ctor(System.Int32,System.Boolean,System.Object[])">
-            <summary>
-            构造函数
-            </summary>
-            <param name="tag">标签</param>
-            <param name="propertyType">属性类型[true:单个对象;false;集合(支持类型:IList子类和数组);如果为集合,则属性类型不只能是具体类型,不能是抽象类类型]</param>
-            <param name="index">索引化属性的可选索引值。对于非索引化属性，此值应为 null</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute.#ctor(System.Int32,System.Type,System.Object[],System.Object)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="tag">标签</param>
-            <param name="converterType">属性值转换器类型[该类型必须实现ITTLVConverter接口,且有无参构造函数]</param>
-            <param name="index">索引化属性的可选索引值。对于非索引化属性，此值应为 null</param>
-            <param name="converterPara">转换器参数</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Attributes.TTLVAttribute.#ctor(System.Int32,System.Type,UtilZ.DotnetStd.Ex.Attributes.TTLVPropertyType,System.Object[],System.Object)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="tag">标签</param>
-            <param name="converterType">属性值转换器类型[该类型必须实现ITTLVConverter接口,且有无参构造函数]</param>
-            <param name="propertyType">属性类型[如果为Collection]</param>
-            <param name="index">索引化属性的可选索引值。对于非索引化属性，此值应为 null</param>
-            <param name="converterPara">转换器参数</param>
-        </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Attributes.TTLVPropertyType">
-            <summary>
-            数据类型
-            </summary>
-        </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Attributes.TTLVPropertyType.SingleObject">
-            <summary>
-            单对象
-            </summary>
-        </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Attributes.TTLVPropertyType.Collection">
-            <summary>
-            集合(仅支持类型,IList子类和数组)
-            </summary>
-        </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Attributes.TTLVPropertyType.Converter">
-            <summary>
-            自定义转换器
-            </summary>
-        </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.ApplicationEx">
             <summary>
             应用程序辅助类,控制台程序正常结束需要手动调用ApplicationHelper.OnRaiseApplicationExitNotify方法
@@ -436,6 +286,270 @@
             </summary>
             <param name="isDispose">是否释放标识</param>
         </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.IPartAsynWait">
+            <summary>
+            异步等待UI接口
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.IsCanceled">
+            <summary>
+            获取是否已经取消
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Caption">
+            <summary>
+            获取或设置提示标题
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Hint">
+            <summary>
+            获取或设置提示内容
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.IsShowCancel">
+            <summary>
+            是否显示取消按钮
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.ShadeBackground">
+            <summary>
+            获取或设置遮罩层背景色
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Canceled">
+            <summary>
+            取消操作事件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Cancel">
+            <summary>
+            取消操作
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.StartAnimation">
+            <summary>
+            开始等待动画
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.StopAnimation">
+            <summary>
+            停止等待动画
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.SetInfo(System.Object)">
+            <summary>
+            设置信息(保留接口),比如用来设置其它的什么进度条之类的
+            </summary>
+            <param name="para">参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Reset">
+            <summary>
+            重置异步等待框
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.InvokeRequired">
+             <summary>
+            获取一个值，该值指示调用方在对控件进行方法调用时是否必须调用 Invoke 方法，因为调用方位于创建控件所在的线程以外的线程中[如果控件的 true 是在与调用线程不同的线程上创建的（说明您必须通过 Invoke 方法对控件进行调用），则为 System.Windows.Forms.Control.Handle；否则为false]
+             </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Invoke(System.Delegate)">
+            <summary>
+            在拥有此控件的基础窗口句柄的线程上执行指定的委托
+            </summary>
+            <param name="method">包含要在控件的线程上下文中调用的方法的委托</param>
+            <returns>正在被调用的委托的返回值，或者如果委托没有返回值，则为 null</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IPartAsynWait.Invoke(System.Delegate,System.Object[])">
+            <summary>
+            在拥有控件的基础窗口句柄的线程上，用指定的自变量列表执行指定委托
+            </summary>
+            <param name="method">一个方法委托，它采用的参数的数量和类型与 args 参数中所包含的相同</param>
+            <param name="args">作为指定方法的自变量传递的对象数组。 如果此方法没有参数，该参数可以是 null</param>
+            <returns>System.Object，它包含正被调用的委托返回值；如果该委托没有返回值，则为 null</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.PartAsynFuncPara`1">
+            <summary>
+            异步执行执行委托参数
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PartAsynFuncPara`1.Para">
+            <summary>
+            输入参数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PartAsynFuncPara`1.Token">
+            <summary>
+            取消通知对象
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PartAsynFuncPara`1.AsynWait">
+            <summary>
+            异步等待提示UI
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.PartAsynFuncPara`1.#ctor(`0,System.Threading.CancellationToken,UtilZ.DotnetStd.Ex.Base.IPartAsynWait)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="para">输入参数</param>
+            <param name="token">取消通知对象</param>
+            <param name="asynWait">异步等待提示UI</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute">
+            <summary>
+            显示名称特性
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+            <param name="tag">标识</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+            <param name="description">描述</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String,System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+            <param name="description">描述</param>
+            <param name="tag">标识</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String,System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+            <param name="orderIndex">项显示顺序</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+            <param name="orderIndex">项显示顺序</param>
+            <param name="description">描述</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.#ctor(System.String,System.Int32,System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="displayName">显示文本</param>
+            <param name="orderIndex">项显示顺序</param>
+            <param name="description">描述</param>
+            <param name="tag">标识</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.OrderIndex">
+            <summary>
+            项显示顺序
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.Tag">
+            <summary>
+            获取或设置标识
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DisplayNameExAttribute.ToString">
+            <summary>
+            重写ToString方法
+            </summary>
+            <returns>返回特性文本</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.DictionaryEx`2">
+            <summary>
+            Dictionary扩展类
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DictionaryEx`2.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.DictionaryEx`2.SyncRoot">
+            <summary>
+            获取可用于同步对 System.Collections.Hashtable 的访问的对象。
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx">
+            <summary>
+            扩展DirectoryInfo类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx._currentAssemblyDirectory">
+            <summary>
+            当前程序集所在目录
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.CurrentAssemblyDirectory">
+            <summary>
+            获取当前程序集所在目录
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.CopyFolder(System.String,System.String)">
+            <summary>
+            复制文件夹内容到指定目录
+            </summary>
+            <param name="srcDir">原目录</param>
+            <param name="dstDir">目标目录</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.CopyFolder(System.IO.DirectoryInfo,System.String)">
+            <summary>
+            复制文件夹内容到指定目录
+            </summary>
+            <param name="srcDirInfo">原目录信息</param>
+            <param name="dstDir">目标目录</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.GetFullPath(System.String)">
+            <summary>
+            获取路径中有携带特殊目录的路径转换为完整路径
+            </summary>
+            <param name="srcPath">有携带特殊目录的路径</param>
+            <returns>完整路径</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.OpenFileDirectory(System.String)">
+            <summary>
+            打开指定文件所在目录[如果文件不存在,但目录存在则打开该文件上一层目录,如果目录不存在,则直接返回]
+            </summary>
+            <param name="filePath">指定文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.CheckDirectory(System.String)">
+            <summary>
+            检查目录是否存在,如果不存在则创建
+            </summary>
+            <param name="dir">目录</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.DirectoryInfoEx.CheckFilePathDirectory(System.String)">
+            <summary>
+            检查文件路径中所包含的目录是否存在,如果不存在则创建
+            </summary>
+            <param name="filePath">文件路径</param>
+        </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.EnumEx">
             <summary>
             枚举辅助类
@@ -568,6 +682,185 @@
             <param name="enumItem">枚举项</param>
             <returns>显示文本</returns>
         </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx">
+            <summary>
+            EventWaitHandle扩展类,通知正在等待的线程已发生事件
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx._eventWaitHandle">
+            <summary>
+            通知正在等待的线程已发生事件对象
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx._isDisposed">
+            <summary>
+            对象是否已释放[true:已释放;false:未释放]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.#ctor(System.Boolean,System.Threading.EventResetMode)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="initialState"></param>
+            <param name="mode"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.Reset">
+            <summary>
+            将事件状态设置为非终止，从而导致线程受阻[如果该操作成功，则为 true；否则为 false]
+            </summary>
+            <returns>如果该操作成功，则为 true；否则为 false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.Set">
+            <summary>
+            将事件状态设置为有信号，从而允许一个或多个等待线程继续执行[如果该操作成功，则为 true；否则为 false]
+            </summary>
+            <returns>如果该操作成功，则为 true；否则为 false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.WaitOne(System.Int32)">
+            <summary>
+            阻止当前线程，直到当前 System.Threading.WaitHandle 收到信号，同时使用 32 位带符号整数指定时间间隔（以毫秒为单位）
+            </summary>
+            <param name="millisecondsTimeout">等待的毫秒数，或为 System.Threading.Timeout.Infinite (-1)，表示无限期等待</param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.SetAccessControl(Microsoft.Win32.SafeHandles.SafeWaitHandle)">
+            <summary>
+            设置已命名的系统事件的访问控制安全性
+            异常:
+              T:System.UnauthorizedAccessException:用户不具备 System.Security.AccessControl.EventWaitHandleRights.ChangePermissions。- 或 - 事件不是以 System.Security.AccessControl.EventWaitHandleRights.ChangePermissions打开的。
+              T:System.SystemException:当前 System.Threading.EventWaitHandle 对象不表示已命名的系统事件。
+              T:System.ObjectDisposedException:之前已在此 System.Threading.EventWaitHandle 上调用 System.Threading.WaitHandle.Close方法。
+            </summary>
+            <param name="eventSecurity">一个 System.Security.AccessControl.EventWaitHandleSecurity 对象，表示应用于已命名的系统事件的访问控制安全性</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleEx.Dispose(System.Boolean)">
+            <summary>
+            释放资源方法
+            </summary>
+            <param name="isDispose">是否释放标识</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager">
+            <summary>
+            EventWaitHandle自动管理类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager._htEventWaitHandle">
+            <summary>
+            key:EventKey(object);value:(EventWaitHandleInfo)
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.AddIdToCache(System.Object,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="expirationMilliseconds">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.CreateEventWaitHandle(System.Object,System.Int32,System.Object)">
+            <summary>
+            创建并添加EventWaitHandle
+            </summary>
+            <param name="id">EventWaitHandle的唯一标识</param>
+            <param name="expirationMilliseconds">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
+            <param name="tag">Tag</param>
+            <returns>创建的EventWaitHandle</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.AddEventWaitHandle(System.Object,System.Threading.EventWaitHandle,System.Int32,System.Object)">
+            <summary>
+            添加外部创建的EventWaitHandle
+            </summary>
+            <param name="id">EventWaitHandle的唯一标识</param>
+            <param name="eventWaitHandle">EventWaitHandle</param>
+            <param name="expiration">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
+            <param name="tag">Tag</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.SetEventWaitHandle(System.Object,System.Threading.EventWaitHandle,System.Int32,System.Object)">
+            <summary>
+            设置外部创建的EventWaitHandle,如果id存在则替换,否则则添加
+            </summary>
+            <param name="id">EventWaitHandle的唯一标识</param>
+            <param name="eventWaitHandle">EventWaitHandle</param>
+            <param name="expiration">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
+            <param name="tag">Tag</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.GetEventWaitHandle(System.Object)">
+            <summary>
+            获取EventWaitHandle
+            </summary>
+            <param name="id">EventWaitHandle的唯一标识</param>
+            <returns>EventWaitHandle</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.GetEventWaitHandleInfo(System.Object)">
+            <summary>
+            获取EventWaitHandleInfo
+            </summary>
+            <param name="id">EventWaitHandle的唯一标识</param>
+            <returns>EventWaitHandleInfo</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AutoEventWaitHandleManager.RemoveEventWaitHandle(System.Object)">
+            <summary>
+            移除并返回EventWaitHandle
+            </summary>
+            <param name="id">EventWaitHandle的唯一标识</param>
+            <returns>EventWaitHandle</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo">
+            <summary>
+            EventWaitHandleInfo
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo.Id">
+            <summary>
+            EventWaitHandle的唯一标识
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo.EventWaitHandle">
+            <summary>
+            EventWaitHandle
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo.Tag">
+            <summary>
+            Tag
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo.#ctor(System.Object,System.Threading.EventWaitHandle,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="id"></param>
+            <param name="eventWaitHandle"></param>
+            <param name="tag"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo.Set(System.Object)">
+            <summary>
+            发出通知,对象释放将抛出异常
+            </summary>
+            <param name="tag">tag</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.EventWaitHandleInfo.TrySet(System.Object)">
+            <summary>
+            尝试发出通知,成功返回true,否则返回false
+            </summary>
+            <param name="tag">tag</param>
+            <returns>成功返回true,否则返回false</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.GUIDEx">
+            <summary>
+            GUID扩展类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.GUIDEx.GetGUIDHashCode">
+            <summary>
+            获取GUID对应的HskCode
+            </summary>
+            <returns>GUID对应的HskCode</returns>
+        </member>
         <member name="M:UtilZ.DotnetStd.Ex.Base.MathEx.AngleToRadians(System.Double)">
             <summary>
             角度转换为弧度
@@ -581,6 +874,441 @@
             </summary>
             <param name="radians">弧度</param>
             <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedArguments">
+            <summary>
+            提供有关已从缓存中移除的缓存项的信息
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedArguments.Key">
+            <summary>
+            获取已从缓存中移除的缓存项的Key
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedArguments.CacheItem">
+            <summary>
+            获取已从缓存中移除的缓存项的实例
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedArguments.RemovedReason">
+            <summary>
+            获取一个值，该值指示移除某个缓存项的原因
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedArguments.Source">
+            <summary>
+            获取对源 System.Runtime.Caching.ObjectCache 实例的引用，该实例最初包含已移除的缓存项
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedArguments.#ctor(UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedReason,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem)">
+            <summary>
+            初始化 System.Runtime.Caching.CacheEntryRemovedArguments 类的新实例
+            </summary>
+            <param name="source">已从中移除 cacheItem 的 System.Runtime.Caching.ObjectCache 实例</param>
+            <param name="reason">用于指示移除 cacheItem 的原因的枚举值之一</param>
+            <param name="cacheItem">已移除的缓存项的实例</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedReason">
+            <summary>
+            指定已移除或将要移除某个缓存项的原因
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedReason.Removed">
+            <summary>
+            通过使用Remove或Set方法移除了某个缓存项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedReason.Expired">
+            <summary>
+            某个缓存项由于已过期而被移除。过期可基于绝对过期时间或可调过期时间
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedReason.Replace">
+            <summary>
+            某个缓存项由于被新项替换而被移除。
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem">
+            <summary>
+            张位存实体
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.#ctor(System.Object,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="key">CacheItem 项的唯一标识符</param>
+            <param name="value">CacheItem 项的数据</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.Key">
+            <summary>
+            获取CacheItem 实例的唯一标识符
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.Value">
+            <summary>
+            获取或设置 System.Runtime.Caching.CacheItem 实例的数据
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.AbsoluteExpiration">
+            <summary>
+            绝对过期时间，为null则条件无效
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.SlidingExpiration">
+            <summary>
+            滑动过期时间，为null条件无效
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.CustomerExpiration">
+            <summary>
+            提供用来自定义缓存过期，为null条件无效
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.RemovedCallback">
+            <summary>
+            缓存移除回调，为null条件无效
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.InnerRemovedCallback">
+            <summary>
+            指示移除回调通知是否是ObjectCache内赋值的
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.LastGetTime">
+            <summary>
+            上次Get时间
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.AddTime">
+            <summary>
+            缓存项添加时间
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.Expiration">
+            <summary>
+            获取当前缓存项是否过期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem.CallRemovedCallback(UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedReason)">
+            <summary>
+            触发缓存项移除回调
+            </summary>
+            <param name="objectCache"></param>
+            <param name="cacheEntryRemovedReason"></param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback">
+            <summary>
+            缓存项移除回调委托
+            </summary>
+            <param name="arguments">回调参数</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheKeyExistException">
+            <summary>
+            缓存key已存在异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheKeyExistException.#ctor(System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="key">Key</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheKeyExistException.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheKeyNullException">
+            <summary>
+            缓存key已存在异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheKeyNullException.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheAddException">
+            <summary>
+            缓存添加失败异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheAddException.#ctor(System.Object)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx">
+            <summary>
+            内存缓存类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Get(System.Object)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key">key</param>
+            <returns>缓存项,获取成功返回缓存项,值过期或key不存在返回null</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Exist(System.Object)">
+            <summary>
+            是否存在key值的数据[存在返回true;不存在返回false]
+            </summary>
+            <param name="key">key</param>
+            <returns>存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Remove(System.Object)">
+            <summary>
+            移除一个缓存项
+            </summary>
+            <param name="key">key</param>
+            <returns>移除的缓存项</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Add(System.Object,System.Object)">
+            <summary>
+            存储数据
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Add(System.Object,System.Object,System.Int32,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            存储数据
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="expirationMilliseconds">缓存项有效时间,单位/毫秒</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Add(System.Object,System.Object,System.TimeSpan,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="slidingExpiration">缓存项滑动有效时间</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Add(System.Object,System.Object,System.Func{UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem,System.Boolean},UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="customerExpiration">缓存项自定义过期验证回调</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Add(UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="cacheItem">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Set(System.Object,System.Object)">
+            <summary>
+            存储数据
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Set(System.Object,System.Object,System.Int32,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            存储数据
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="expirationMilliseconds">缓存项有效时间,单位/毫秒</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Set(System.Object,System.Object,System.TimeSpan,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            存储数据
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="slidingExpiration">缓存项滑动有效时间</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Set(System.Object,System.Object,System.Func{UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem,System.Boolean},UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            设置缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="customerExpiration">缓存项自定义过期验证回调</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Set(UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem)">
+            <summary>
+            设置缓存项
+            </summary>
+            <param name="cacheItem">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.MemoryCacheEx.Clear">
+            <summary>
+            清空缓存
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache">
+            <summary>
+            原始缓存类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache._cacheDic">
+            <summary>
+            缓存项存放字典[key:key;value:缓存项]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache._checkIntervalMillisecondsTimeout">
+            <summary>
+            过期检查间隔
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache._expirationChaeckThread">
+            <summary>
+            缓存项过期检查线程
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache._disposed">
+            <summary>
+            Disposable标识[true:已释放;false:未释放]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.#ctor(System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="checkIntervalMillisecondsTimeout">过期检查间隔,单位:毫秒,默认值为100毫秒</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.StartExpirationChaeckThread">
+            <summary>
+            启动缓存过期检查线程
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.StopExpirationChaeckThread">
+            <summary>
+            如果缓存项数为0,则停止缓存过期检查线程
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.ExpirationRemove(System.Object)">
+            <summary>
+            返回移除结果[true:移除成功]
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Get(System.Object)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key">key</param>
+            <returns>缓存项,获取成功返回缓存项,值过期或key不存在返回null</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Exist(System.Object)">
+            <summary>
+            是否存在key值的数据[存在返回true;不存在返回false]
+            </summary>
+            <param name="key">key</param>
+            <returns>存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Remove(System.Object)">
+            <summary>
+            移除一个缓存项
+            </summary>
+            <param name="key">key</param>
+            <returns>被移除的缓存项</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Add(System.Object,System.Object)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Add(System.Object,System.Object,System.Int32,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="expirationMilliseconds">缓存项绝对有效时间,单位/毫秒</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Add(System.Object,System.Object,System.TimeSpan,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="slidingExpiration">缓存项滑动有效时间</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Add(System.Object,System.Object,System.Func{UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem,System.Boolean},UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="customerExpiration">缓存项自定义过期验证回调</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Add(UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem)">
+            <summary>
+            添加缓存项
+            </summary>
+            <param name="cacheItem">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Set(System.Object,System.Object)">
+            <summary>
+            存储数据
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Set(System.Object,System.Object,System.Int32,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            设置缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="expirationMilliseconds">缓存项有效时间,单位/毫秒</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Set(System.Object,System.Object,System.TimeSpan,UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            设置缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="slidingExpiration">缓存项滑动有效时间</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Set(System.Object,System.Object,System.Func{UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem,System.Boolean},UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheEntryRemovedCallback)">
+            <summary>
+            设置缓存项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">缓存项</param>
+            <param name="customerExpiration">缓存项自定义过期验证回调</param>
+            <param name="removedCallback">移除回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Set(UtilZ.DotnetStd.Ex.Base.MemoryCache.CacheItem)">
+            <summary>
+            设置缓存项
+            </summary>
+            <param name="cacheItem">缓存项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Clear">
+            <summary>
+            清空缓存
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.MemoryCache.ObjectCache.Dispose">
+            <summary>
+            Dispose
+            </summary>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.BaseModelAbs">
             <summary>
@@ -682,6 +1410,26 @@
             <param name="displayFun">显示转换委托</param>
             <returns>DropdownBindingItem列表</returns>
         </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.RegexConstant">
+            <summary>
+            正则表达式常量定义
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.RegexConstant.IPV4Reg">
+            <summary>
+            IPV4正则表达式
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.RegexConstant.Port">
+            <summary>
+            端口号正则表达式
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.RegexConstant.FtpUrl">
+            <summary>
+            FtpUrl正则表达式,可通过组取得IP,端口,以及之后的相对目录[ip,port,dir]
+            </summary>
+        </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.TEventArgs`1">
             <summary>
             泛型事件参数
@@ -724,6 +1472,146 @@
             <summary>
             获取或设置值
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ObjectEx">
+            <summary>
+            Object扩展方法类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ObjectEx.DeepCopy``1(System.Object)">
+            <summary>
+            对象的深拷贝
+            </summary>
+            <typeparam name="T">目标对象类型</typeparam>
+            <param name="obj">原始对象</param>
+            <returns>新实例</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ObjectEx.GetAssemblyDirectory(System.Object)">
+            <summary>
+            获取对象类型定义程序集所在目录
+            </summary>
+            <param name="obj">对象</param>
+            <returns>程序集所在目录</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ObjectEx.GetAssemblyDirectory``1">
+            <summary>
+            获取T类型定义程序集所在目录
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <returns>程序集所在目录</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ObjectEx.GetAssemblyDirectory(System.Type)">
+            <summary>
+            获取类型定义程序集所在目录
+            </summary>
+            <param name="type">类型</param>
+            <returns>程序集所在目录</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ObjectEx.GetAvailablePhysicalMemory">
+            <summary>
+            获取当前可用物理内存大小(Microsoft.VisualBasic程序集->Microsoft.VisualBasic.Devices.ComputerInfo.AvailablePhysicalMemory)
+            </summary>
+            <returns>当前可用物理内存大小</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.SerializeEx">
+            <summary>
+            序列化扩展类[注:当对象中有继承后重写父类的属性时,不适用]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.XmlSerializer(System.Object,System.String)">
+            <summary>
+            XML序列化
+            </summary>
+            <param name="obj">待序列化对象</param>
+            <param name="filePath">序列化文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.XmlSerializer(System.Object)">
+            <summary>
+            XML序列化
+            </summary>
+            <param name="obj">待序列化对象</param>
+            <returns>xml</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.XmlDeserializerFromFile``1(System.String)">
+            <summary>        
+            XML反序列化
+            </summary>
+            <param name="filePath">序列化文件路径</param>
+            <returns>反序列化后的对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.XmlDeserializerFromFile(System.String,System.Type)">
+            <summary>        
+            XML反序列化
+            </summary>
+            <param name="filePath">序列化文件路径</param>
+            <param name="type">目标类型</param>
+            <returns>反序列化后的对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.XmlDeserializerFromString``1(System.String)">
+            <summary>        
+            XML反序列化
+            </summary>
+            <param name="xmlStr">xml</param>
+            <returns>反序列化后的对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.XmlDeserializerFromString(System.String,System.Type)">
+            <summary>        
+            XML反序列化
+            </summary>
+            <param name="xmlStr">xml</param>
+            <param name="type">目标类型</param>
+            <returns>反序列化后的对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.BinarySerialize(System.Object,System.String)">
+            <summary>
+            二进制序列化
+            </summary>
+            <param name="obj">待序列化对象</param>
+            <param name="filePath">序列化文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.BinarySerialize(System.Object)">
+            <summary>
+            可序列化对象序列化为byte数组
+            </summary>
+            <param name="obj">可序列化对象</param>
+            <returns>byte数组</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.BinaryDeserialize``1(System.String)">
+            <summary>        
+            二进制反序列化
+            </summary>
+            <param name="filePath">序列化文件路径</param>
+            <returns>反序列化后的对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.BinaryDeserialize``1(System.Byte[])">
+            <summary>
+            二进制转换为可序列化的对象
+            </summary>
+            <typeparam name="T">可序列化的类型 </typeparam>
+            <param name="buffer">byte数组</param>
+            <returns>可序列化的类型实例</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.BinaryDeserialize(System.Byte[])">
+            <summary>
+            二进制转换为可序列化的对象
+            </summary>
+            <param name="buffer">byte数组</param>
+            <returns>可序列化的类型实例</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.RuntimeJsonSerializerObject(System.Object)">
+            <summary>
+            JSON序列化
+            </summary>
+            <param name="obj">要序列化的对象</param>
+            <returns>json序列化之后的字符串</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.SerializeEx.RuntimeJsonDeserializeObject``1(System.String)">
+            <summary>
+            JSON反序列化
+            </summary>
+            <typeparam name="T">反序列化之类的类型</typeparam>
+            <param name="json">json字符串</param>
+            <returns>反序列化之后的对象</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.ThreadEx">
             <summary>
@@ -995,7 +1883,7 @@
             <param name="utc">是否使用utc时间[true:utc时间;false:本机时间]</param>
             <returns>当前时间的时间戳</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.TimeEx.DateTimeToTimestamp(System.DateTime)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.TimeEx.DateTimeToTimestamp(System.DateTimeOffset)">
             <summary>
             日期时间转换为时间戳
             </summary>
@@ -1097,6 +1985,73 @@
             </summary>
             <param name="br">BinaryReader</param>
             <param name="nodeInfo">存储节点信息对象</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute">
+            <summary>
+            TTLV特性
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute.Tag">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute.ConverterType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute.PropertyType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute.#ctor(System.Int32,System.Boolean,System.Object[])">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tag">标签</param>
+            <param name="propertyType">属性类型[true:单个对象;false;集合(支持类型:IList子类和数组);如果为集合,则属性类型不只能是具体类型,不能是抽象类类型]</param>
+            <param name="index">索引化属性的可选索引值。对于非索引化属性，此值应为 null</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute.#ctor(System.Int32,System.Type,System.Object[],System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tag">标签</param>
+            <param name="converterType">属性值转换器类型[该类型必须实现ITTLVConverter接口,且有无参构造函数]</param>
+            <param name="index">索引化属性的可选索引值。对于非索引化属性，此值应为 null</param>
+            <param name="converterPara">转换器参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.TTLV.TTLVAttribute.#ctor(System.Int32,System.Type,UtilZ.DotnetStd.Ex.TTLV.TTLVPropertyType,System.Object[],System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tag">标签</param>
+            <param name="converterType">属性值转换器类型[该类型必须实现ITTLVConverter接口,且有无参构造函数]</param>
+            <param name="propertyType">属性类型[如果为Collection]</param>
+            <param name="index">索引化属性的可选索引值。对于非索引化属性，此值应为 null</param>
+            <param name="converterPara">转换器参数</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.TTLV.TTLVPropertyType">
+            <summary>
+            数据类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.TTLV.TTLVPropertyType.SingleObject">
+            <summary>
+            单对象
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.TTLV.TTLVPropertyType.Collection">
+            <summary>
+            集合(仅支持类型,IList子类和数组)
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.TTLV.TTLVPropertyType.Converter">
+            <summary>
+            自定义转换器
+            </summary>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.TTLV.TTLVCommon">
             <summary>
@@ -1659,6 +2614,738 @@
             </summary>
             <param name="name"></param>
             <param name="customerValueNameType"></param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.DirectoryInfoItem">
+            <summary>
+            目录信息
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.DirectoryInfoItem.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.FileInfoItem">
+            <summary>
+            文件信息
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.FileTransfer.FileInfoItem.Length">
+            <summary>
+            文件长度
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FileInfoItem.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.FileSystemItemInfo">
+            <summary>
+            文件信息基类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.FileTransfer.FileSystemItemInfo.CreationTime">
+            <summary>
+            获取或设置当前文件或目录的创建时间
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.FileTransfer.FileSystemItemInfo.FullName">
+            <summary>
+            获取目录或文件的完整目录
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.FileTransfer.FileSystemItemInfo.Name">
+            <summary>
+            对于文件，获取该文件的名称。对于目录，如果存在层次结构，则获取层次结构中最后一个目录的名称。否则，Name 属性获取该目录的名称
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FileSystemItemInfo.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FileSystemItemInfo.ToString">
+            <summary>
+            重写ToString
+            </summary>
+            <returns>String</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer">
+            <summary>
+            ftp文件传输类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._ftpUrl">
+            <summary>
+            init ftp url
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._ftpRootUrl">
+            <summary>
+            ftp根地址
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._rootDirs">
+            <summary>
+            根目录层级数组
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._userName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._proxy">
+            <summary>
+            代理
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._splitDirChs">
+            <summary>
+            路径拆分字符数组
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._ftpDirRegStr">
+            <summary>
+            FTP目录信息匹配正则表达式
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._ftpFileRegStr">
+            <summary>
+            FTP文件信息匹配正则表达式
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._splitFileInfoChs">
+            <summary>
+            拆分文件或目录列表字符数组
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer._yearPre">
+            <summary>
+            年前缀
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.#ctor(System.String,System.String,System.String,System.Net.IWebProxy)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="ftpUrl">ftpUrl</param>
+            <param name="userName">用户名</param>
+            <param name="password">密码</param>
+            <param name="proxy">代理</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.CreateRequest(System.String,System.String)">
+            <summary>
+            创建FtpWebRequest
+            </summary>
+            <param name="ftpUrl">ftp url</param>
+            <param name="method">请求方法</param>
+            <returns>FtpWebRequest</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.GetFullDirFolderNames(System.String)">
+            <summary>
+            获取全目录层级名称列表
+            </summary>
+            <param name="relativeDir">相对目录</param>
+            <returns>全目录层级名称列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.GetFullPath(System.String)">
+            <summary>
+            获取全路径
+            </summary>
+            <param name="relativePath">相对路径</param>
+            <returns>全路径</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Upload(System.String,System.IO.Stream,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传数据
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="stream">读取数据的流</param>
+            <param name="position">数组中读取数据的起始位置</param>
+            <param name="length">要上传的数据长度</param>
+            <param name="mode">上传文件的创建模式</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Upload(System.String,System.String,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传数据
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="localFilePath">本地文件路径</param>
+            <param name="position">数组中读取数据的起始位置</param>
+            <param name="length">要上传的数据长度</param>
+            <param name="mode">上传文件的创建模式</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Upload(System.String,System.Byte[],System.Int32,System.Int32,UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传数据
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="buffer">要上传的数据</param>
+            <param name="position">数组中读取数据的起始位置</param>
+            <param name="length">要上传的数据长度</param>
+            <param name="mode">上传文件的创建模式</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.UploadDirectory(System.String,System.String,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传目录
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="localDir">本地目录</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Download(System.String,System.IO.Stream,System.Int64,System.Int64,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="stream">本地存储数据的流</param>
+            <param name="position">起始位置</param>
+            <param name="length">数据长度</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Download(System.String,System.String,System.Int64,System.Int64,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="localFilePath">本地文件路径</param>
+            <param name="position">起始位置</param>
+            <param name="length">数据长度</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Download(System.String,System.Byte[],System.Int64,System.Int64,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="buffer">存放数据的数组</param>
+            <param name="position">起始位置</param>
+            <param name="length">数据长度</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.DownloadDirectory(System.String,System.String,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载服务器上指定目录及其子目录内的所有文件,并按原结构存放本地
+            </summary>
+            <param name="localDir">本地目录</param>
+            <param name="remoteDir">远程目录</param>
+            <param name="scheduleNotify">进度回调,第一个参数为下载总文件数,第二参数为当前所下载的文件数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.ExistFile(System.String)">
+            <summary>
+            检查文件是否存;在存在返回true;不存在返回false
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <returns>在存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.ExistDirectory(System.String)">
+            <summary>
+            检查目录是否存在[存在返回true;不存在返回false]
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <returns>存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.DeleteFile(System.String)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.DeleteDirectory(System.String,System.Boolean)">
+            <summary>
+            删除目录
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="recursive">是否递归删除,true:先删除文件夹内的所有内容再删除文件夹;false:如果文件夹内有内容则会失败</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.CreateDirectory(System.String)">
+            <summary>
+            创建目录
+            </summary>
+            <param name="remoteDir">远程目录</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.ConvertFTPCreateTime(System.String,System.String)">
+            <summary>
+            转换FTP创建时间
+            </summary>
+            <param name="year">年月日</param>
+            <param name="time">时间</param>
+            <returns>FTP创建时间</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.GetFiles(System.String,System.IO.SearchOption)">
+            <summary>
+            获取文件集合
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="option">获取选项</param>
+            <returns>文件集合</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.GetDirectories(System.String,System.IO.SearchOption)">
+            <summary>
+            获取文件夹集合
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="option">获取选项</param>
+            <returns>文件夹集合</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.GetFileLength(System.String)">
+            <summary>
+            获取文件大小
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <returns>文件大小</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Rename(System.String,System.String)">
+            <summary>
+            重命名文件
+            </summary>
+            <param name="oldRemoteFilePath">旧文件路径</param>
+            <param name="newFileName">新文件名</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Copy(System.String,System.String)">
+            <summary>
+            复制指定文件到指定路径
+            </summary>
+            <param name="sourceRemoteFilePath">原始文件路径</param>
+            <param name="destRemoteFilePath">目的地文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.FtpFileTransfer.Move(System.String,System.String)">
+            <summary>
+            移除文件到指定路径
+            </summary>
+            <param name="sourceRemoteFilePath">原始文件路径</param>
+            <param name="destRemoteFilePath">目的地文件路径</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer">
+            <summary>
+            文件传输接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Upload(System.String,System.IO.Stream,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传数据
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="stream">读取数据的流</param>
+            <param name="position">数组中读取数据的起始位置</param>
+            <param name="length">要上传的数据长度</param>
+            <param name="mode">上传文件的创建模式</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Upload(System.String,System.String,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传数据
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="localFilePath">本地文件路径</param>
+            <param name="position">数组中读取数据的起始位置</param>
+            <param name="length">要上传的数据长度</param>
+            <param name="mode">上传文件的创建模式</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Upload(System.String,System.Byte[],System.Int32,System.Int32,UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传数据
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="buffer">要上传的数据</param>
+            <param name="position">数组中读取数据的起始位置</param>
+            <param name="length">要上传的数据长度</param>
+            <param name="mode">上传文件的创建模式</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.UploadDirectory(System.String,System.String,System.Action{System.Int64,System.Int64})">
+            <summary>
+            上传目录
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="localDir">本地目录</param>
+            <param name="scheduleNotify">进度回调,第一个参数为下载总文件数,第二参数为当前所下载的文件数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Download(System.String,System.IO.Stream,System.Int64,System.Int64,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="stream">本地存储数据的流</param>
+            <param name="position">起始位置</param>
+            <param name="length">数据长度</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Download(System.String,System.String,System.Int64,System.Int64,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="localFilePath">本地文件路径</param>
+            <param name="position">起始位置</param>
+            <param name="length">数据长度</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Download(System.String,System.Byte[],System.Int64,System.Int64,System.Int64,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <param name="buffer">存放数据的数组</param>
+            <param name="position">起始位置</param>
+            <param name="length">数据长度</param>
+            <param name="transferedLength">已传输数据长度</param>
+            <param name="scheduleNotify">进度回调,第一个参数为传输总大小,第二参数为已传输数据大小</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.DownloadDirectory(System.String,System.String,System.Action{System.Int64,System.Int64})">
+            <summary>
+            下载服务器上指定目录及其子目录内的所有文件,并按原结构存放本地
+            </summary>
+            <param name="localDir">本地目录</param>
+            <param name="remoteDir">远程目录</param>
+            <param name="scheduleNotify">进度回调,第一个参数为下载总文件数,第二参数为当前所下载的文件数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.ExistFile(System.String)">
+            <summary>
+            检查文件是否存;在存在返回true;不存在返回false
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <returns>在存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.ExistDirectory(System.String)">
+            <summary>
+            检查目录是否存在[存在返回true;不存在返回false]
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <returns>存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.DeleteFile(System.String)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.DeleteDirectory(System.String,System.Boolean)">
+            <summary>
+            删除目录
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="recursive">是否递归删除,true:先删除文件夹内的所有内容再删除文件夹;false:如果文件夹内有内容则会失败</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.CreateDirectory(System.String)">
+            <summary>
+            创建目录
+            </summary>
+            <param name="remoteDir">远程目录</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.GetFiles(System.String,System.IO.SearchOption)">
+            <summary>
+            获取文件集合
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="option">获取选项</param>
+            <returns>文件集合</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.GetDirectories(System.String,System.IO.SearchOption)">
+            <summary>
+            获取文件夹集合
+            </summary>
+            <param name="remoteDir">远程目录</param>
+            <param name="option">获取选项</param>
+            <returns>文件夹集合</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.GetFileLength(System.String)">
+            <summary>
+            获取文件大小
+            </summary>
+            <param name="remoteFilePath">远程文件路径</param>
+            <returns>文件大小</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Rename(System.String,System.String)">
+            <summary>
+            重命名文件
+            </summary>
+            <param name="oldRemoteFilePath">旧文件路径</param>
+            <param name="newFileName">新文件名</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Copy(System.String,System.String)">
+            <summary>
+            复制指定文件到指定路径
+            </summary>
+            <param name="sourceRemoteFilePath">原始文件路径</param>
+            <param name="destRemoteFilePath">目的地文件路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.IFileTransfer.Move(System.String,System.String)">
+            <summary>
+            移除文件到指定路径
+            </summary>
+            <param name="sourceRemoteFilePath">原始文件路径</param>
+            <param name="destRemoteFilePath">目的地文件路径</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.TransferFileException">
+            <summary>
+            传输文件异常
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.FileTransfer.TransferFileException.TransferLength">
+            <summary>
+            已传输文件大小
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.FileTransfer.TransferFileException.#ctor(System.Int64,System.String,System.Exception)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="transferLength">已传输文件大小</param>
+            <param name="message">信息</param>
+            <param name="ex">内部异常</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode">
+            <summary>
+            更新模式
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode.Create">
+            <summary>
+            指定操作系统应创建新文件。如果文件已存在，它将被覆盖这需要 System.Security.Permissions.FileIOPermissionAccess.Write
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.FileTransfer.UpdateMode.Append">
+            <summary>
+            若存在文件，则打开该文件并查找到文件尾，或者创建一个新文件。这需要 System.Security.Permissions.FileIOPermissionAccess.Append权限
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LMQ.LMQBase">
+            <summary>
+            本地消息队列数据模型基类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.LMQ.LMQBase.Topic">
+            <summary>
+            主题
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQBase.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topic">主题</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LMQ.LMQCenter">
+            <summary>
+            本地消息队列中心
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LMQ.LMQCenter._htSubscibeItems">
+            <summary>
+            订阅项集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQCenter.Subscibe(UtilZ.DotnetStd.Ex.LMQ.SubscibeItem)">
+            <summary>
+            订阅
+            </summary>
+            <param name="item">订阅项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQCenter.UnSubscibe(UtilZ.DotnetStd.Ex.LMQ.SubscibeItem)">
+            <summary>
+            取消订阅
+            </summary>
+            <param name="item">订阅项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQCenter.Clear(System.String)">
+            <summary>
+            清空订阅
+            </summary>
+            <param name="topic">订阅ID下要清空订阅主题,为null清空所有订阅组</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQCenter.Publish(System.String,System.Object)">
+            <summary>
+            发布数据消息
+            </summary>
+            <param name="topic">主题名称</param>
+            <param name="obj">数据对象</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LMQ.LMQConfigManager">
+            <summary>
+            本地消息队列中心配置管理类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LMQ.LMQConfigManager._htLMQConfig">
+            <summary>
+            本地消息队列中心配置集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQConfigManager.AddLMQConfig(UtilZ.DotnetStd.Ex.LMQ.LMQConfig)">
+            <summary>
+            添加本地消息队列中心配置
+            </summary>
+            <param name="config">本地消息队列中心配置</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQConfigManager.RemoveLMQConfig(System.String)">
+            <summary>
+            移除本地消息队列中心配置
+            </summary>
+            <param name="topic">主题</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQConfigManager.GetLMQConfig(System.String)">
+            <summary>
+            获取本地消息队列中心配置[无该主题的配置项返回null]
+            </summary>
+            <param name="topic">主题</param>
+            <returns>本地消息队列中心配置</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LMQ.LMQConfig">
+            <summary>
+            本地消息队列中心配置类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.LMQ.LMQConfig.Topic">
+            <summary>
+            主题
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.LMQ.LMQConfig.IsSyncPublish">
+            <summary>
+            发布数据时是否同步发布[true:单线程同同步发布;false:多线程并行发布]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.LMQConfig.#ctor(System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topic">主题</param>
+            <param name="isSyncPublish">发布数据时是否同步发布[true:单线程同同步发布;false:多线程并行发布]</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup">
+            <summary>
+            订阅组
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup._items">
+            <summary>
+            订阅项集合
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup._itemsMonitor">
+            <summary>
+            订阅项集合线程锁
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup._asynPublishParaQueueThread">
+            <summary>
+            异步发布消息队列线程
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topic">主题</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.PublishThreadMethod(System.Object)">
+            <summary>
+            发布消息线程方法
+            </summary>
+            <param name="dataMessage">数据消息</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Publish(System.Object)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="dataMessage">数据消息</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Count">
+            <summary>
+            已订阅项数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Add(UtilZ.DotnetStd.Ex.LMQ.SubscibeItem)">
+            <summary>
+            添加订阅项
+            </summary>
+            <param name="item">订阅项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Clear">
+            <summary>
+            清空订阅项
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Contains(UtilZ.DotnetStd.Ex.LMQ.SubscibeItem)">
+            <summary>
+            是否包含订阅项
+            </summary>
+            <param name="item">订阅项</param>
+            <returns>包含返回true,否则返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Remove(UtilZ.DotnetStd.Ex.LMQ.SubscibeItem)">
+            <summary>
+            移除订阅项
+            </summary>
+            <param name="item">订阅项</param>
+            <returns>移除结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeGroup.Dispose(System.Boolean)">
+            <summary>
+            释放资源方法
+            </summary>
+            <param name="isDispose">是否释放标识</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LMQ.SubscibeItem">
+            <summary>
+            订阅项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LMQ.SubscibeItem.MessageNotify">
+            <summary>
+            消息通知委托
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.LMQ.SubscibeItem.Tag">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeItem.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topic">主题</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeItem.#ctor(System.String,System.Action{UtilZ.DotnetStd.Ex.LMQ.SubscibeItem,System.Object})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topic">主题</param>
+            <param name="messageNotify">消息通知委托</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LMQ.SubscibeItem.Publish(System.Object)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="message">数据消息</param>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase">
             <summary>
@@ -3781,6 +5468,138 @@
             <param name="logerName">日志记录器名称</param>
             <param name="logMsg">日志信息</param>
         </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter">
+            <summary>
+            重定向输出中心
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter._logOutputThread">
+            <summary>
+            日志输出线程
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter._cts">
+            <summary>
+            线程取消通知对象
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter._logOutputAutoResetEvent">
+            <summary>
+            日志输出线程同步对象
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter._logOutputQueue">
+            <summary>
+            日志输出队列
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.LogOutputThreadMethod(System.Object)">
+            <summary>
+            日志输出线程方法
+            </summary>
+            <param name="obj">参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.LogOutput(UtilZ.DotnetStd.Ex.Log.RedirectOuputItem)">
+            <summary>
+            日志输出
+            </summary>
+            <param name="logItem"></param>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter._logOutputSubscribeItemList">
+            <summary>
+            日志输出订阅项集合
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter._logOutputSubscribeItemListMonitor">
+            <summary>
+            日志输出订阅项集合线程锁
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.RedirectOutputChannelArray">
+            <summary>
+            获取日志输出订阅项数组集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.Add(UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel)">
+            <summary>
+            添加日志输出订阅项
+            </summary>
+            <param name="item">日志输出订阅项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.Remove(UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel)">
+            <summary>
+            移除日志输出订阅项
+            </summary>
+            <param name="item">日志输出订阅项</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.Clear">
+            <summary>
+            清空日志输出订阅项
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputCenter.Output(System.String,UtilZ.DotnetStd.Ex.Log.LogItem)">
+            <summary>
+            输出日志
+            </summary>
+            <param name="appenderName">日志追加器名称</param>
+            <param name="logItem">日志项</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.RedirectOuputItem">
+            <summary>
+            重定向输出项
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputItem.#ctor(System.String,UtilZ.DotnetStd.Ex.Log.LogItem)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="appenderName">日志追加器名称</param>
+            <param name="item">日志信息项</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Log.RedirectOuputItem.AppenderName">
+            <summary>
+            日志追加器名称
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Log.RedirectOuputItem.Item">
+            <summary>
+            日志信息项
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel">
+            <summary>
+            输出日志订阅项
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel._logOutput">
+            <summary>
+            日志输出回调
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel._appenderName">
+            <summary>
+            过滤日志追加器名称,忽略大小写[空或null不作验证,其它值需要有匹配的日志追加器验证]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel._loggerName">
+            <summary>
+            日志记录器名称
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel.#ctor(System.Action{UtilZ.DotnetStd.Ex.Log.RedirectOuputItem},System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="logOutput">日志输出回调</param>
+            <param name="appenderName">过滤日志追加器名称,忽略大小写[空或null不作验证,其它值需要有匹配的日志追加器验证]</param>
+            <param name="loggerName">日志记录器名称</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOutputChannel.OnRaiseLogOutput(UtilZ.DotnetStd.Ex.Log.RedirectOuputItem)">
+            <summary>
+            日志输出
+            </summary>
+            <param name="logItem">要输出的日志项</param>
+        </member>
         <member name="T:UtilZ.DotnetStd.Ex.Log.ILogSecurityPolicy">
             <summary>
             日志安全策略接口
@@ -3842,6 +5661,1102 @@
             </summary>
             <param name="srcLogFilePath">加密的日志文件路径</param>
             <param name="targetLogFilePath">解密后的日志文件路径</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel">
+            <summary>
+            远程调用通道
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel.ChannelName">
+            <summary>
+            本地远程调用通道名称
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel._proF">
+            <summary>
+            本地远程调用回调
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel.OnRaiseProF(System.Object)">
+            <summary>
+            调用本地远程调用回调
+            </summary>
+            <param name="obj">调用参数</param>
+            <returns>调用结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel.OnRaiseProA(System.Object)">
+            <summary>
+            调用本地远程调用回调
+            </summary>
+            <param name="obj">调用参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel.#ctor(System.String,System.Func{System.Object,System.Object})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="channelName">本地远程调用通道名称</param>
+            <param name="pro">本地远程调用回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCChannel.#ctor(System.String,System.Action{System.Object})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="channelName">本地远程调用通道名称</param>
+            <param name="pro">本地远程调用回调</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LRPC.LRPCCore">
+            <summary>
+            本地远程调用核心
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.LRPC.LRPCCore._channelDic">
+            <summary>
+            远程调用Hashtable集合[key:通道名称(string);value:通道(LRPCChannel)]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.TryCreateChannelF(System.String,System.Func{System.Object,System.Object})">
+            <summary>
+            创建本地远程调用通道[返回值:true:创建成功;false:创建失败,该通道已存在]
+            </summary>
+            <param name="channelName">通道名称</param>
+            <param name="pro">通道回调</param>
+            <returns>创建结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.TryCreateChannelA(System.String,System.Action{System.Object})">
+            <summary>
+            创建本地远程调用通道[返回值:true:创建成功;false:创建失败,该通道已存在]
+            </summary>
+            <param name="channelName">通道名称</param>
+            <param name="pro">通道回调</param>
+            <returns>创建结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.CreateChannelF(System.String,System.Func{System.Object,System.Object})">
+            <summary>
+            创建本地远程调用通道
+            </summary>
+            <param name="channelName">通道名称</param>
+            <param name="pro">通道回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.CreateChannelA(System.String,System.Action{System.Object})">
+            <summary>
+            创建本地远程调用通道
+            </summary>
+            <param name="channelName">通道名称</param>
+            <param name="pro">通道回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.ExistChannel(System.String)">
+            <summary>
+            是否存在本地远程调用通道[存在返回true;不存在返回false]
+            </summary>
+            <param name="channelName">通道名称</param>
+            <returns>存在返回true;不存在返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.GetChannelNames">
+            <summary>
+            获取已创建的本地远程调用通道名称列表
+            </summary>
+            <returns>已创建的本地远程调用通道名称列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.DeleteChannel(System.String)">
+            <summary>
+            删除本地远程调用通道
+            </summary>
+            <param name="channelName">通道名称</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.ClearChannel">
+            <summary>
+            清空所有通道
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.RemoteCallF(System.String,System.Object)">
+            <summary>
+            本地远程调用[如果通道未创建则会抛出]NotFoundLRPCChannelException
+            </summary>
+            <param name="channelName">远程通道名称</param>
+            <param name="obj">远程调用参数</param>
+            <returns>远程调用输出结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.RemoteCallA(System.String,System.Object)">
+            <summary>
+            本地远程调用[如果通道未创建则会抛出]NotFoundLRPCChannelException
+            </summary>
+            <param name="channelName">远程通道名称</param>
+            <param name="obj">远程调用参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.TryRemoteCallF(System.String,System.Object,System.Object@)">
+            <summary>
+            尝试本地远程调用[返回值:true:调用成功;false:调用失败]
+            </summary>
+            <param name="channelName">远程通道名称</param>
+            <param name="obj">远程调用参数</param>
+            <param name="result">远程调用输出结果</param>
+            <returns>远程调用结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.LRPCCore.TryRemoteCallA(System.String,System.Object)">
+            <summary>
+            尝试本地远程调用[返回值:true:调用成功;false:调用失败]
+            </summary>
+            <param name="channelName">远程通道名称</param>
+            <param name="obj">远程调用参数</param>
+            <returns>远程调用结果</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.LRPC.NotFoundLRPCChannelException">
+            <summary>
+            通道不能找到异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.NotFoundLRPCChannelException.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.LRPC.NotFoundLRPCChannelException.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResoucesInfo.Rid">
+            <summary>
+            资源标识
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceTypeConstant.Message">
+            <summary>
+            消息数据
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceTypeConstant.ResourceData">
+            <summary>
+            资源数据
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceTypeConstant.ResourceStream">
+            <summary>
+            数据流
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceTypeConstant.ResourceFile">
+            <summary>
+            资源文件
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy">
+            <summary>
+            传输策略
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy.RemoteEP">
+            <summary>
+            接收数据EndPoint
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy.Priority">
+            <summary>
+            发送数据优先级[值越小,优先级越高]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy.MillisecondsTimeout">
+            <summary>
+            单次发送超时时长,单位毫秒
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy.RepeatCount">
+            <summary>
+            重试次数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy.#ctor(System.Net.IPEndPoint,System.Int16,System.Int32,System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="remoteEP">接收数据EndPoint</param> 
+            <param name="priority">发送数据优先级[值越小,优先级越高]</param>
+            <param name="millisecondsTimeout">发送超时时长,单位毫秒[此值不应过大,否则当发方消息发送到一半时宕机,则可能出现超时时长的网络风暴]</param>
+            <param name="repeatCount">重试次数,小于1不重试</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem">
+            <summary>
+            接收到的数据项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.SrcEndPoint">
+            <summary>
+            地址信息
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem._flag">
+            <summary>
+            数据标识[true:byte[]数据;false:文件]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.Flag">
+            <summary>
+            获取数据标识[true:byte[]数据;false:文件]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem._data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.Data">
+            <summary>
+            获取数据
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem._filePath">
+            <summary>
+            文件路径
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.FilePath">
+            <summary>
+            获取文件路径
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem._isResourceMod">
+            <summary>
+            数据类型[true:资源模式;false:消息模式]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage)">
+            <summary>
+            构造函数-消息模式
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage,System.String,System.Int32)">
+            <summary>
+            构造函数-资源模式[数据资源-文件-流]
+            </summary>
+            <param name="message"></param>
+            <param name="tmpDir"></param>
+            <param name="threadCount"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.InitMemoryStream(System.Int32)">
+            <summary>
+            初始化内存流
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem.InitFileStream(System.String,System.String)">
+            <summary>
+            初始化文件流
+            </summary>
+            <param name="dir"></param>
+            <param name="fileName"></param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel">
+            <summary>
+            传输通道类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel._senderDic">
+            <summary>
+            key:RID;value:TransferSender
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.Config">
+            <summary>
+            获取传输配置
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig,System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="config">网络传输配置</param>
+            <param name="rev">接收函数回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.Start">
+            <summary>
+            启动
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.ProReceiveData(UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo)">
+            <summary>
+            解析收到的数据队列线程方法
+            </summary>
+            <param name="receiveDatagramInfo">要解析的数据</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.SendData(System.Byte[],UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.SendData(System.Byte[],System.Int32,System.Int32,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="postion">发送数据在流中的起始位置</param>
+            <param name="length">要发送数据长度</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.SendFile(System.String,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="filePath">要发送的文件路径</param>
+            <param name="policy">发送数据在流中的起始位置</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.SendFile(System.String,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="filePath">要发送的文件路径</param>
+            <param name="postion">发送数据在流中的起始位置</param>
+            <param name="length">要发送数据长度</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.SendData(System.IO.Stream,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据流
+            </summary>
+            <param name="stream">要发送的流</param>
+            <param name="postion">发送数据在流中的起始位置</param>
+            <param name="length">要发送数据长度</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferChannel.Dispose">
+            <summary>
+            IDisposable
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferParaAnalyze.AdjustDownMtu">
+            <summary>
+            下调mtu,并返回调整后的mtu
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferParaAnalyze.AdjustUpRto">
+            <summary>
+            上调rto,并返回调整后的rto值
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferParaManager._htNetParas">
+            <summary>
+            [key:ip;value:NetParaAnalyze]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferReqDataSchduleInfoManager.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage,UtilZ.DotnetStd.Ex.Base.ThreadEx[],System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+            <param name="reqDataThreads"></param>
+            <param name="millisecondsTimeout">超时时长,单位毫秒</param>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferResourceManager._reqDataSchduleInfoManagerDic">
+            <summary>
+            [key: rid;value:UdpTransferReqDataSchduleInfoManager]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader.Rid">
+            <summary>
+            资源标识
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader.#ctor(System.Int16,System.Int64,System.Int32,System.Int16)">
+            <summary>
+            创建
+            </summary>
+            <param name="cmd"></param>
+            <param name="timestamp"></param>
+            <param name="rid"></param>
+            <param name="ver"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader.#ctor(System.IO.BinaryReader)">
+            <summary>
+            解析
+            </summary>
+            <param name="br"></param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.MessageBase.SrcEndPoint">
+            <summary>
+            地址信息
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.MessageBase.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader)">
+            <summary>
+            创建
+            </summary>
+            <param name="header"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.MessageBase.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader,System.Net.IPEndPoint)">
+            <summary>
+            解析
+            </summary>
+            <param name="header"></param>
+            <param name="srcEndPoint"></param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceRequestMessage.ContextId">
+            <summary>
+            请求上下文标识
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceRequestMessage.Position">
+            <summary>
+            请求资源起始位置
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceRequestMessage.Size">
+            <summary>
+            本次请求资源部分大小
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceRequestMessage.#ctor(System.Int32,System.Int64,System.Int32)">
+            <summary>
+            创建
+            </summary>
+            <param name="rid"></param>
+            <param name="position"></param>
+            <param name="size"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceRequestMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader,System.IO.BinaryReader,System.Net.IPEndPoint)">
+            <summary>
+            解析
+            </summary>
+            <param name="header"></param>
+            <param name="br"></param>
+            <param name="srcEndPoint"></param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceResponseMessage.ContextId">
+            <summary>
+            请求上下文标识
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceResponseMessage.Position">
+            <summary>
+            请求资源起始位置
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceResponseMessage.Size">
+            <summary>
+            本次请求到资源部分大小
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceResponseMessage._data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceResponseMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.ResourceRequestMessage,System.Byte[])">
+            <summary>
+            创建
+            </summary>
+            <param name="req"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ResourceResponseMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader,System.IO.BinaryReader,System.Net.IPEndPoint)">
+            <summary>
+            解析
+            </summary>
+            <param name="header"></param>
+            <param name="br"></param>
+            <param name="srcEndPoint"></param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.Priority">
+            <summary>
+            优先级[值越小, 优先级越高]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.ResourceType">
+            <summary>
+            资源类型
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.Timeout">
+            <summary>
+            发送超时时长,单位毫秒
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.FileName">
+            <summary>
+            文件名
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.Size">
+            <summary>
+            资源大小
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.ResoucesInfo)">
+            <summary>
+            创建
+            </summary>
+            <param name="resoucesInfo"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader,System.IO.BinaryReader,System.Net.IPEndPoint)">
+            <summary>
+            解析
+            </summary>
+            <param name="header"></param>
+            <param name="br"></param>
+            <param name="srcEndPoint"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCompletedAckMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.TransferCompletedMessage)">
+            <summary>
+            创建
+            </summary>
+            <param name="transferCompletedMessage"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCompletedAckMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader,System.IO.BinaryReader,System.Net.IPEndPoint)">
+            <summary>
+            解析
+            </summary>
+            <param name="header"></param>
+            <param name="br"></param>
+            <param name="srcEndPoint"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCompletedMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.SendDataNotifyMessage)">
+            <summary>
+            创建
+            </summary>
+            <param name="sendDataNotifyMessage"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCompletedMessage.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.CommonHeader,System.IO.BinaryReader,System.Net.IPEndPoint)">
+            <summary>
+            解析
+            </summary>
+            <param name="header"></param>
+            <param name="br"></param>
+            <param name="srcEndPoint"></param>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCommands.SendNotify">
+            <summary>
+            数据发送通知
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCommands.ResourceRequest">
+            <summary>
+            资源请求
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCommands.ResourceResponse">
+            <summary>
+            资源响应
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCommands.TransferCompleted">
+            <summary>
+            传输完成通知
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferCommands.TransferCompletedAck">
+            <summary>
+            传输完成确认
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig">
+            <summary>
+            传输配置
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.LocalFileDirectory">
+            <summary>
+            收到的文件临时存放目录
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.TransferThreadCount">
+            <summary>
+            传输数据线程数,最大值32,为了社会和谐建议不要大于4
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.ParseDataMaxThreadCount">
+            <summary>
+            解析数据最大线程数,建议值为[传输数据线程数+2]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.ProReceiveDataAddThreadTimeout">
+            <summary>
+            解析数据超时时长,当超过此值时,会多开一个线程用于解析
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.DetectStepLength">
+            <summary>
+            探测步长,默认值1024
+            值建议不要太小也不要太大,因udp发包最大值为64k,如果太大则要花费更多的时间去微调到接近完美值;
+            如果值太小,则探测过程要花费更长的时间
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.StepDetectCount">
+            <summary>
+            每一步探测次数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.MtuFineTuning">
+            <summary>
+            mtu微调值,不可大于探测步长值
+            1).值越小多次调整后越接近完美值,但所需时间更长;
+            2).值越大调整速度越快,但离完美值会有一定的偏差;
+            3).建议为探测步长的三分之一
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.RtoFineTuning">
+            <summary>
+            rto微调值,默认值100
+            1).值越小多次调整后越接近完美值,但所需时间更长;
+            2).值越大调整速度越快,但离完美值会有一定的偏差;
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.RtoAmplitude">
+            <summary>
+            rto振幅倍数,建议1.5
+            作用于rto分析的结果再乘以振幅倍数得到真正的rto分析值,如果没有此值则容易超时
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.RtoMax">
+            <summary>
+            rto最大值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.MtuRepeatMaxCount">
+            <summary>
+            同一个mtu值超时重试最大次,默认为3
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.TimeoutHeartMul">
+            <summary>
+            超时心跳倍数[接收检测超时时长=发送超时/(传输线程数*超时心跳倍数)],值越大,心跳检测频率越高,高优先级传输整数速度越慢
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.NetConfig">
+            <summary>
+            网络配置
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.Validate">
+            <summary>
+            验证参数有效性,验证不通过抛出异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig.Clone">
+            <summary>
+            深拷贝一份当前对象
+            </summary>
+            <returns>当前对象副本</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant">
+            <summary>
+            传输常量定义类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.MTU_MAX">
+            <summary>
+            MTU最大值
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.MTU_MIN">
+            <summary>
+            MTU最小值
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.RTO_MIN">
+            <summary>
+            RTO最小值
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.DEFAULT_RTO">
+            <summary>
+            RTO默认值
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.PROTOCOL_VER">
+            <summary>
+            协议版本号
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.SYNC">
+            <summary>
+            同步字
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.VALID_CODE_FILL">
+            <summary>
+            校验码填充值
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.COMMON_HEADER_SIZE">
+            <summary>
+            公共头大小
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.PARALLEL_THREAD_MAX_COUN">
+            <summary>
+            并行传输数据最大线程数
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.MESSAGE_MAX_SIZE">
+            <summary>
+            消息数据最大值
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.TRACE_EVENT_ID">
+            <summary>
+            追踪事件ID
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.DEBUG_EVENT_ID">
+            <summary>
+            调试事件ID
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.INFO_EVENT_ID">
+            <summary>
+            信息事件ID
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.WARN_EVENT_ID">
+            <summary>
+            警告事件ID
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.ERROR_EVENT_ID">
+            <summary>
+            错误事件ID
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferConstant.FATAL_EVENT_ID">
+            <summary>
+            致命错误事件ID
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.ITransferNet">
+            <summary>
+            收发接口网络数据
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ITransferNet.Status">
+            <summary>
+            状态[true:正常false:停止]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ITransferNet.Init(UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig,System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo})">
+            <summary>
+            初始化
+            </summary>
+            <param name="config">传输配置</param>
+            <param name="rev">接收数据回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ITransferNet.Start">
+            <summary>
+            启动接收
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ITransferNet.Stop">
+            <summary>
+            停止接收
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ITransferNet.Send(System.Byte[],System.Net.IPEndPoint)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="remoteEP">接收数据EndPoint</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig">
+            <summary>
+            网络配置
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.TempBufferSize">
+            <summary>
+            接收数据临时存放空间大小,默认10MB
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.ReceiveBufferSize">
+            <summary>
+            收缓存大小,默认10MB
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.SendBufferSize">
+            <summary>
+            发送缓存大小,默认10MB
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.ListenEP">
+            <summary>
+            接收数据监听地址
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.Protocal">
+            <summary>
+            传输协议
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig.Validate">
+            <summary>
+            验证配置
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo">
+            <summary>
+            接收到的数据报信息
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo.SrcEndPoint">
+            <summary>
+            地址信息
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo.#ctor(System.Byte[],System.Net.IPEndPoint)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="data">数据</param>
+            <param name="remoteEP">发送方信息</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataException">
+            <summary>
+            发送数据异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.SendDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="message">消息</param>
+            <param name="innerException">内部异常</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TransferProtocal">
+            <summary>
+            传输协议
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferProtocal.Udp">
+            <summary>
+            udp
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.TransferProtocal.Tcp">
+            <summary>
+            tcp
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferChannel.#ctor(System.Net.Sockets.Socket,System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferChannel},System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo},System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferChannel})">
+            <summary>
+            监听连接构造函数
+            </summary>
+            <param name="client"></param>
+            <param name="clientDisconnectNotify"></param>
+            <param name="rev"></param>
+            <param name="idAck"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferChannel.#ctor(System.Net.Sockets.Socket,System.Net.IPEndPoint,System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferChannel},System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo})">
+            <summary>
+            主动建立连接构造函数
+            </summary>
+            <param name="client"></param>
+            <param name="remoteEP"></param>
+            <param name="clientDisconnectNotify"></param>
+            <param name="rev"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferChannel.FindTlvFirstTagPostion(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            找到返回亲自tag位置,失败返回-1
+            </summary>
+            <param name="parsePackgeBuffer"></param>
+            <param name="startIndex"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet">
+            <summary>
+            Tcp传输类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.Status">
+            <summary>
+            状态[true:正常false:停止]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.Init(UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig,System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo})">
+            <summary>
+            初始化
+            </summary>
+            <param name="config">传输配置</param>
+            <param name="rev">接收数据回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.Send(System.Byte[],System.Net.IPEndPoint)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="remoteEP">接收数据EndPoint</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.Start">
+            <summary>
+            启动接收
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.Stop">
+            <summary>
+            停止接收
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TcpTransferNet.Dispose">
+            <summary>
+            IDisposable
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.RevDataInfo">
+            <summary>
+            接收到的数据信息
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.RevDataInfo.Offset">
+            <summary>
+            接收缓存中的偏移位置
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.RevDataInfo.Length">
+            <summary>
+            本次数据长度
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Transfer.Net.RevDataInfo.RemoteEP">
+            <summary>
+            来源
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.RevDataInfo.#ctor(System.Int32,System.Int32,System.Net.IPEndPoint)">
+            <summary>
+            构造函数 
+            </summary>
+            <param name="offset">接收缓存中的偏移位置</param>
+            <param name="length">本次数据长度</param>
+            <param name="remoteEP">来源</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet">
+            <summary>
+            UDP传输类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.Status">
+            <summary>
+            状态[true:正常false:停止]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.Init(UtilZ.DotnetStd.Ex.Transfer.Net.NetConfig,System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDatagramInfo})">
+            <summary>
+            初始化
+            </summary>
+            <param name="config">传输配置</param>
+            <param name="rev">接收数据回调</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.Start">
+            <summary>
+            启动接收
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.Stop">
+            <summary>
+            停止接收
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.Send(System.Byte[],System.Net.IPEndPoint)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="remoteEP">接收数据EndPoint</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.UdpTransferNet.Dispose">
+            <summary>
+            IDisposable
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet">
+            <summary>
+            网络传输类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.#ctor(UtilZ.DotnetStd.Ex.Transfer.Net.TransferConfig,System.Collections.Generic.IEnumerable{System.UInt16},System.Action{UtilZ.DotnetStd.Ex.Transfer.Net.ReceiveDataItem})">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.SendData(System.Byte[],UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.SendData(System.Byte[],System.Int32,System.Int32,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="data">要发送的数据</param>
+            <param name="postion">发送数据在流中的起始位置</param>
+            <param name="length">要发送数据长度</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.SendFile(System.String,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="filePath">要发送的文件路径</param>
+            <param name="policy">发送数据在流中的起始位置</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.SendFile(System.String,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="filePath">要发送的文件路径</param>
+            <param name="postion">发送数据在流中的起始位置</param>
+            <param name="length">要发送数据长度</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.SendData(System.IO.Stream,System.Int64,System.Int64,UtilZ.DotnetStd.Ex.Transfer.Net.TransferPolicy)">
+            <summary>
+            发送数据流
+            </summary>
+            <param name="stream">要发送的流</param>
+            <param name="postion">发送数据在流中的起始位置</param>
+            <param name="length">要发送数据长度</param>
+            <param name="policy">发送策略</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Transfer.Net.TransferNet.Dispose">
+            <summary>
+            IDisposable
+            </summary>
         </member>
     </members>
 </doc>

@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.DotnetCore.DBIBase", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{1C83685A-2CCA-4387-9F33-AF645F9A0F49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilZ.DotnetStd.Ex", "UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.csproj", "{9C81F033-AC3E-475F-9D14-F376EA99994F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilZ.DotnetStd.Ex", "UtilZ.DotnetStd.Ex\UtilZ.DotnetStd.Ex.csproj", "{9C81F033-AC3E-475F-9D14-F376EA99994F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

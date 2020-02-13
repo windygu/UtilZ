@@ -227,16 +227,16 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// 
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="expiration">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
-        private static void AddIdToCache(object id, int expiration)
+        /// <param name="expirationMilliseconds">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
+        private static void AddIdToCache(object id, int expirationMilliseconds)
         {
-            if (expiration <= 0)
+            if (expirationMilliseconds <= 0)
             {
                 return;
             }
 
             string key = GetCacheKeyFromObjectId(id);
-            MemoryCacheEx.Set(key, id, expiration, new CacheEntryRemovedCallback(ExpirationCacheEntryRemovedCallback));
+            MemoryCacheEx.Set(key, id, expirationMilliseconds, new CacheEntryRemovedCallback(ExpirationCacheEntryRemovedCallback));
         }
 
         private static void FromCacheRemoveId(object id)
@@ -249,10 +249,10 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// 创建并添加EventWaitHandle
         /// </summary>
         /// <param name="id">EventWaitHandle的唯一标识</param>
-        /// <param name="expiration">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
+        /// <param name="expirationMilliseconds">缓存项有效时间,小于等于0永不过期,单位/毫秒</param>
         /// <param name="tag">Tag</param>
         /// <returns>创建的EventWaitHandle</returns>
-        public static EventWaitHandleInfo CreateEventWaitHandle(object id, int expiration = -1, object tag = null)
+        public static EventWaitHandleInfo CreateEventWaitHandle(object id, int expirationMilliseconds = -1, object tag = null)
         {
             lock (_htEventWaitHandle.SyncRoot)
             {
@@ -264,7 +264,7 @@ namespace UtilZ.DotnetStd.Ex.Base
                 var eventWaitHandle = new AutoResetEvent(false);
                 var eventWaitHandleInfo = new EventWaitHandleInfo(id, eventWaitHandle, tag);
                 _htEventWaitHandle.Add(id, eventWaitHandleInfo);
-                AddIdToCache(id, expiration);
+                AddIdToCache(id, expirationMilliseconds);
                 return eventWaitHandleInfo;
             }
         }

@@ -14,7 +14,7 @@ namespace UtilZ.Dotnet.Ex.MemoryCache
         /// <summary>
         /// 存储模式
         /// </summary>
-        public ZMemoryStoreMode Mode;
+        public ZMemoryStoreMode Mode { get; set; }
 
         /// <summary>
         /// key

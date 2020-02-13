@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetStd.Ex.FileTransfer
 {
@@ -83,7 +84,7 @@ namespace UtilZ.DotnetStd.Ex.FileTransfer
             }
 
             ftpUrl = ftpUrl.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            Match match = Regex.Match(ftpUrl, UtilZ.DotnetStd.Ex.Model.RegexConstant.FtpUrl);
+            Match match = Regex.Match(ftpUrl, RegexConstant.FtpUrl);
             if (!match.Success)
             {
                 throw new ArgumentException(string.Format("无效的Ftp地址:{0}", ftpUrl), "ftpUrl");

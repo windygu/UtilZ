@@ -28,9 +28,20 @@ namespace WpfApp1.Properties
 
         }
 
+        private DateTimeOffset AbsoluteExpiration;
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
+            //var ticks1 = DateTimeOffset.Now.Ticks;
+            //var ticks2 = DateTimeOffset.Now.Ticks;
+            //var ticks3 = DateTimeOffset.Now.Ticks;
+            //var ticks4 = DateTimeOffset.Now.Ticks;
+            //AbsoluteExpiration = new DateTimeOffset(DateTime.UtcNow, TimeSpan.FromSeconds(1000));
 
+            DateTimeOffset dd = new DateTimeOffset(1970, 1, 1, 0, 0, 0,TimeSpan.FromTicks(0L));
+            //TimeZoneInfo.ConvertTimeToUtc(new DateTime(1970, 1, 1, 0, 0, 0, 0));
+            var ticks1 = (DateTimeOffset.Now - dd).Ticks;
+            var ticks2 = (DateTimeOffset.Now - dd).Ticks;
+            var ticks3 = (DateTimeOffset.Now - dd).Ticks;
         }
     }
 }

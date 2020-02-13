@@ -11,7 +11,6 @@ namespace UtilZ.DotnetStd.Ex.Log
     /// <summary>
     /// 日志信息类
     /// </summary>
-    [Serializable]
     public class LogItem
     {
         /// <summary>

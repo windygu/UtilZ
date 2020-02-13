@@ -10,10 +10,11 @@ namespace UtilZ.DotnetStd.Ex.Base
     /// </summary>
     public class TimeEx
     {
-        private readonly static DateTime _refTime;
+        private readonly static DateTimeOffset _refTime;
         static TimeEx()
         {
-            _refTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1, 0, 0, 0, 0));
+            _refTime = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromTicks(0L));
+            //_refTime = TimeZoneInfo.ConvertTimeToUtc(new DateTime(1970, 1, 1, 0, 0, 0, 0));
         }
 
         /// <summary>
@@ -26,11 +27,11 @@ namespace UtilZ.DotnetStd.Ex.Base
             TimeSpan ts;
             if (utc)
             {
-                ts = DateTime.UtcNow - _refTime;
+                ts = DateTimeOffset.UtcNow - _refTime;
             }
             else
             {
-                ts = DateTime.Now - _refTime;
+                ts = DateTimeOffset.Now - _refTime;
             }
 
             return Convert.ToInt64(ts.TotalMilliseconds);
@@ -41,7 +42,7 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// </summary>
         /// <param name="datetime">指定日期时间</param>
         /// <returns>当前时间的时间戳</returns>
-        public static long DateTimeToTimestamp(DateTime datetime)
+        public static long DateTimeToTimestamp(DateTimeOffset datetime)
         {
             var ts = datetime - _refTime;
             return Convert.ToInt64(ts.TotalMilliseconds);
@@ -52,7 +53,7 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// </summary>
         /// <param name="timestamp">时间戳</param>
         /// <returns>时间</returns>
-        public static DateTime TimestampToDateTime(long timestamp)
+        public static DateTimeOffset TimestampToDateTime(long timestamp)
         {
             return _refTime.AddMilliseconds(timestamp);
         }

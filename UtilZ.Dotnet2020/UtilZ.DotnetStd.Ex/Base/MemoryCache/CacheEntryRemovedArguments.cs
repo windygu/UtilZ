@@ -37,7 +37,10 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
         /// <param name="cacheItem">已移除的缓存项的实例</param>
         public CacheEntryRemovedArguments(ObjectCache source, CacheEntryRemovedReason reason, CacheItem cacheItem)
         {
-
+            this.Key = cacheItem.Key;
+            this.Source = source;
+            this.RemovedReason = reason;
+            this.CacheItem = cacheItem;
         }
     }
 }

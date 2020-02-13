@@ -16,6 +16,8 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
             _default = new ObjectCache();
         }
 
+
+
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -46,6 +48,11 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
             return _default.Remove(key);
         }
 
+
+
+
+
+
         /// <summary>
         /// 存储数据
         /// </summary>
@@ -61,11 +68,51 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
         /// </summary>
         /// <param name="key">key</param>
         /// <param name="value">缓存项</param>
-        /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
-        public static void Add(object key, object value, int expiration)
+        /// <param name="expirationMilliseconds">缓存项有效时间,单位/毫秒</param>
+        /// <param name="removedCallback">移除回调</param>
+        public static void Add(object key, object value, int expirationMilliseconds, CacheEntryRemovedCallback removedCallback = null)
         {
-            _default.Add(key, value, expiration);
+            _default.Add(key, value, expirationMilliseconds, removedCallback);
         }
+
+        /// <summary>
+        /// 添加缓存项
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="value">缓存项</param>
+        /// <param name="slidingExpiration">缓存项滑动有效时间</param>
+        /// <param name="removedCallback">移除回调</param>
+        public static void Add(object key, object value, TimeSpan slidingExpiration, CacheEntryRemovedCallback removedCallback = null)
+        {
+            _default.Add(key, value, slidingExpiration, removedCallback);
+        }
+
+        /// <summary>
+        /// 添加缓存项
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="value">缓存项</param>
+        /// <param name="customerExpiration">缓存项自定义过期验证回调</param>
+        /// <param name="removedCallback">移除回调</param>
+        public static void Add(object key, object value, Func<CacheItem, bool> customerExpiration, CacheEntryRemovedCallback removedCallback = null)
+        {
+            _default.Add(key, value, customerExpiration, removedCallback);
+        }
+
+        /// <summary>
+        /// 添加缓存项
+        /// </summary>
+        /// <param name="cacheItem">缓存项</param>
+        public static void Add(CacheItem cacheItem)
+        {
+            _default.Add(cacheItem);
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// 存储数据
@@ -82,10 +129,11 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
         /// </summary>
         /// <param name="key">key</param>
         /// <param name="value">缓存项</param>
-        /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
-        public static void Set(object key, object value, int expiration)
+        /// <param name="expirationMilliseconds">缓存项有效时间,单位/毫秒</param>
+        /// <param name="removedCallback">移除回调</param>
+        public static void Set(object key, object value, int expirationMilliseconds, CacheEntryRemovedCallback removedCallback = null)
         {
-            _default.Set(key, value, expiration);
+            _default.Set(key, value, expirationMilliseconds, removedCallback);
         }
 
         /// <summary>
@@ -93,26 +141,43 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
         /// </summary>
         /// <param name="key">key</param>
         /// <param name="value">缓存项</param>
-        /// <param name="expiration">缓存项有效时间,单位/毫秒</param>
+        /// <param name="slidingExpiration">缓存项滑动有效时间</param>
         /// <param name="removedCallback">移除回调</param>
-        public static void Set(object key, object value, int expiration, CacheEntryRemovedCallback removedCallback)
+        public static void Set(object key, object value, TimeSpan slidingExpiration, CacheEntryRemovedCallback removedCallback)
         {
-            _default.Set(key, value, expiration, removedCallback);
+            _default.Set(key, value, slidingExpiration, removedCallback);
         }
 
         /// <summary>
-        /// 释放资源
+        /// 设置缓存项
         /// </summary>
-        public static void Dispose()
+        /// <param name="key">key</param>
+        /// <param name="value">缓存项</param>
+        /// <param name="customerExpiration">缓存项自定义过期验证回调</param>
+        /// <param name="removedCallback">移除回调</param>
+        public static void Set(object key, object value, Func<CacheItem, bool> customerExpiration, CacheEntryRemovedCallback removedCallback = null)
         {
-            try
-            {
-                _default.Dispose();
-            }
-            catch (Exception ex)
-            {
-                Loger.Error(ex);
-            }
+            _default.Set(key, value, customerExpiration, removedCallback);
+        }
+
+        /// <summary>
+        /// 设置缓存项
+        /// </summary>
+        /// <param name="cacheItem">缓存项</param>
+        public static void Set(CacheItem cacheItem)
+        {
+            _default.Set(cacheItem);
+        }
+
+
+
+
+        /// <summary>
+        /// 清空缓存
+        /// </summary>
+        public static void Clear()
+        {
+            _default.Clear();
         }
     }
 }

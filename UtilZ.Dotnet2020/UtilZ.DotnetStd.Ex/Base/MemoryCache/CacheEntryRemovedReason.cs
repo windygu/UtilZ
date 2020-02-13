@@ -19,6 +19,11 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
         /// </summary>
         Expired = 1,
 
+        /// <summary>
+        /// 某个缓存项由于被新项替换而被移除。
+        /// </summary>
+        Replace = 2,
+
         ///// <summary>
         ///// 某个缓存项由于释放缓存中的内存的原因而被移除。当某个缓存实例将超出特定于缓存的内存限制或某个进程或缓存实例将超出整个计算机范围的内存限制时，会发生这种情况
         ///// </summary>
@@ -37,25 +42,25 @@ namespace UtilZ.DotnetStd.Ex.Base.MemoryCache
 }
 
 
-绝对过期支持
-滑动过期支持（指定一个时间，TimeSpan，指定时间内有被Get缓存时间则顺延，否则过期）
-过期回调
-自定义过期
+//绝对过期支持
+//滑动过期支持（指定一个时间，TimeSpan，指定时间内有被Get缓存时间则顺延，否则过期）
+//过期回调
+//自定义过期
 
 
 
-    Key 缓存key
+//    Key 缓存key
 
-Value 缓存值
+//Value 缓存值
 
-AbsoluteExpiration 绝对过期时间，为null则条件无效
+//AbsoluteExpiration 绝对过期时间，为null则条件无效
 
-AbsoluteExpirationRelativeToNow 相对当前时间的绝对过期时间（使用TimeSpan），为null条件无效
+//AbsoluteExpirationRelativeToNow 相对当前时间的绝对过期时间（使用TimeSpan），为null条件无效
 
-SlidingExpiration 滑动过期时间
+//SlidingExpiration 滑动过期时间
 
-ExpirationTokens 提供用来自定义缓存过期
+//ExpirationTokens 提供用来自定义缓存过期
 
-PostEvictionCallbacks 缓存失效回调
+//PostEvictionCallbacks 缓存失效回调
 
-Priority 缓存项优先级（在缓存满载的时候绝对清除的顺序）
+//Priority 缓存项优先级（在缓存满载的时候绝对清除的顺序）
