@@ -14,6 +14,11 @@ namespace UtilZ.DotnetCore.WindowEx.Base
     /// </summary>
     public static class UITextHelper
     {
+        //pixelsPerDip参数参见:https://github.com/Microsoft/WPF-Samples/tree/master/PerMonitorDPI
+        //https://code-examples.net/en/q/266958c
+
+
+
         /// <summary>
         /// 测量字符串长度
         /// </summary>
