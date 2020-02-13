@@ -43,17 +43,7 @@ namespace WpfApp1
 
         private void RedirectLogOutput(object sender, RedirectOuputArgs e)
         {
-            string str;
-            try
-            {
-                str = string.Format("{0} {1}", DateTime.Now, e.Item.Content);
-            }
-            catch (Exception ex)
-            {
-                str = ex.Message;
-            }
-
-            logControl.AddLog(str, e.Item.Level);
+            logControl.AddLog($"{DateTime.Now} {e.Item.Content}", e.Item.Level);
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
@@ -187,8 +177,8 @@ namespace WpfApp1
             //});
 
 
-            int min = 10, max = 100;
-            int count = 5;
+            //int min = 10, max = 100;
+            //int count = 5;
             int value;
             ChartCollection<IChartValue> values1 = new ChartCollection<IChartValue>();
             //ChartCollection<IChartValue> values2 = new ChartCollection<IChartValue>();
@@ -233,7 +223,7 @@ namespace WpfApp1
 
 
 
-       
+
 
 
 

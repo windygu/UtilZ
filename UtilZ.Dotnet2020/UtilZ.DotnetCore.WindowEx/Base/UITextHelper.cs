@@ -12,7 +12,7 @@ namespace UtilZ.DotnetCore.WindowEx.Base
     /// <summary>
     /// UI文本辅助类
     /// </summary>
-    public class UITextHelper
+    public static class UITextHelper
     {
         /// <summary>
         /// 测量字符串长度
@@ -22,9 +22,10 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <returns>符串长度</returns>
         public static Size MeasureTextSize(TextBlock textBlock, FlowDirection flowDirection = FlowDirection.LeftToRight)
         {
+            var pixelsPerDip = VisualTreeHelper.GetDpi(textBlock).PixelsPerDip;
+            Typeface typeface = new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch);
             var formattedText = new FormattedText(textBlock.Text, CultureInfo.InvariantCulture, flowDirection,
-                new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch),
-                textBlock.FontSize, textBlock.Foreground);
+                typeface, textBlock.FontSize, textBlock.Foreground, pixelsPerDip);
             return GetTextSize(formattedText);
         }
 
@@ -36,9 +37,10 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <returns>符串长度</returns>
         public static Size MeasureTextSize(TextBox textBox, FlowDirection flowDirection = FlowDirection.LeftToRight)
         {
+            var pixelsPerDip = VisualTreeHelper.GetDpi(textBox).PixelsPerDip;
             var formattedText = new FormattedText(textBox.Text, CultureInfo.InvariantCulture, flowDirection,
                 new Typeface(textBox.FontFamily, textBox.FontStyle, textBox.FontWeight, textBox.FontStretch),
-                textBox.FontSize, textBox.Foreground);
+                textBox.FontSize, textBox.Foreground, pixelsPerDip);
             return GetTextSize(formattedText);
         }
 
@@ -60,29 +62,33 @@ namespace UtilZ.DotnetCore.WindowEx.Base
                 text = label.Content.ToString();
             }
 
+            var pixelsPerDip = VisualTreeHelper.GetDpi(label).PixelsPerDip;
             var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, flowDirection,
                 new Typeface(label.FontFamily, label.FontStyle, label.FontWeight, label.FontStretch),
-                label.FontSize, label.Foreground);
+                label.FontSize, label.Foreground, pixelsPerDip);
             return GetTextSize(formattedText);
         }
 
         /// <summary>
         /// 测量字符串长度
         /// </summary>
+        /// <param name="visual">目标的界面控件</param>
         /// <param name="text">要测量的文本</param>
         /// <param name="typeface">字符样式组合</param>
         /// <param name="fontSize">字体大小</param>
         /// <param name="foreground">字体Brush</param>
         /// <returns>符串长度</returns>
-        public static Size MeasureTextSize(string text, Typeface typeface, double fontSize, Brush foreground)
+        public static Size MeasureTextSize(Visual visual, string text, Typeface typeface, double fontSize, Brush foreground)
         {
-            var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface, fontSize, foreground);
+            var pixelsPerDip = VisualTreeHelper.GetDpi(visual).PixelsPerDip;
+            var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, typeface, fontSize, foreground, pixelsPerDip);
             return GetTextSize(formattedText);
         }
 
         /// <summary>
         /// 测量字符串长度
         /// </summary>
+        /// <param name="visual">目标的界面控件</param>
         /// <param name="text">要测量的文本</param>
         /// <param name="cultureInfo">区域信息</param>
         /// <param name="typeface">字符样式组合</param>
@@ -92,11 +98,12 @@ namespace UtilZ.DotnetCore.WindowEx.Base
         /// <param name="numberSubstitution">要应用于文本的数字替换行为</param>
         /// <param name="textFormattingMode">要应用于文本的 System.Windows.Media.TextFormattingMode</param>
         /// <returns>符串长度</returns>
-        public static Size MeasureTextSize(string text, CultureInfo cultureInfo, Typeface typeface, FlowDirection flowDirection,
+        public static Size MeasureTextSize(Visual visual, string text, CultureInfo cultureInfo, Typeface typeface, FlowDirection flowDirection,
             double fontSize, Brush foreground, NumberSubstitution numberSubstitution, TextFormattingMode textFormattingMode)
         {
+            var pixelsPerDip = VisualTreeHelper.GetDpi(visual).PixelsPerDip;
             var formattedText = new FormattedText(text, cultureInfo, flowDirection,
-                typeface, fontSize, foreground, numberSubstitution, textFormattingMode);
+                typeface, fontSize, foreground, numberSubstitution, textFormattingMode, pixelsPerDip);
             return GetTextSize(formattedText);
         }
 

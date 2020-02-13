@@ -908,20 +908,22 @@
             <param name="flowDirection">测量方向</param>
             <returns>符串长度</returns>
         </member>
-        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.String,System.Windows.Media.Typeface,System.Double,System.Windows.Media.Brush)">
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.Windows.Media.Visual,System.String,System.Windows.Media.Typeface,System.Double,System.Windows.Media.Brush)">
             <summary>
             测量字符串长度
             </summary>
+            <param name="visual">目标的界面控件</param>
             <param name="text">要测量的文本</param>
             <param name="typeface">字符样式组合</param>
             <param name="fontSize">字体大小</param>
             <param name="foreground">字体Brush</param>
             <returns>符串长度</returns>
         </member>
-        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.String,System.Globalization.CultureInfo,System.Windows.Media.Typeface,System.Windows.FlowDirection,System.Double,System.Windows.Media.Brush,System.Windows.Media.NumberSubstitution,System.Windows.Media.TextFormattingMode)">
+        <member name="M:UtilZ.DotnetCore.WindowEx.Base.UITextHelper.MeasureTextSize(System.Windows.Media.Visual,System.String,System.Globalization.CultureInfo,System.Windows.Media.Typeface,System.Windows.FlowDirection,System.Double,System.Windows.Media.Brush,System.Windows.Media.NumberSubstitution,System.Windows.Media.TextFormattingMode)">
             <summary>
             测量字符串长度
             </summary>
+            <param name="visual">目标的界面控件</param>
             <param name="text">要测量的文本</param>
             <param name="cultureInfo">区域信息</param>
             <param name="typeface">字符样式组合</param>
@@ -10328,6 +10330,36 @@
         <member name="P:UtilZ.Dotnet.WPFEx.GifImage.WebReadState.Buffer">
             <summary>
             缓存数据流
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
             </summary>
         </member>
     </members>
