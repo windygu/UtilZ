@@ -12,7 +12,6 @@ namespace UtilZ.Dotnet.WindowEx.Winform.Controls
     /// <summary>
     /// FlowLayoutPanel子类
     /// </summary>
-    [ClassInterface(ClassInterfaceType.AutoDispatch)]
     [ComVisible(true)]
     [DefaultProperty("FlowDirection")]
     [Designer("System.Windows.Forms.Design.FlowLayoutPanelDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]

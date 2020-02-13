@@ -10,7 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UtilZ.DotnetStd.Ex.Log;
-using UtilZ.DotnetStd.Ex.Log.Appender;
 
 namespace WpfApp1
 {

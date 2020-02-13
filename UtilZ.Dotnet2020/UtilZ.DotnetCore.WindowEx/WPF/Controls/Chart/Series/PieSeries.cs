@@ -10,31 +10,46 @@ using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 饼图
+    /// </summary>
     public class PieSeries : SeriesAbs
     {
+        /// <summary>
+        /// 获取或设置X坐标轴
+        /// </summary>
         public override AxisAbs AxisX
         {
             get => throw new NotSupportedException("饼图不需要指定坐标轴");
             set => throw new NotSupportedException("饼图不需要指定坐标轴");
         }
+        /// <summary>
+        /// 获取或设置Y坐标轴
+        /// </summary>
         public override AxisAbs AxisY
         {
             get => throw new NotSupportedException("饼图不需要指定坐标轴");
             set => throw new NotSupportedException("饼图不需要指定坐标轴");
         }
-
+        /// <summary>
+        /// 获取或设置创建坐标点对应的附加控件回调
+        /// </summary>
         public override Func<PointInfo, FrameworkElement> CreatePointFunc
         {
             get => throw new NotSupportedException("饼图不支持创建自定义点标注");
             set => throw new NotSupportedException("饼图不支持创建自定义点标注");
         }
-
+        /// <summary>
+        /// 获取或设置Tooltip有效区域,鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+        /// </summary>
         public override double TooltipArea
         {
             get => throw new NotSupportedException("饼图不支持此属性");
             set => throw new NotSupportedException("饼图不支持此属性");
         }
-
+        /// <summary>
+        /// 获取或设置Series样式
+        /// </summary>
         public override Style Style
         {
             get => throw new NotSupportedException("饼图不支持此属性");
@@ -79,22 +94,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-        private Thickness _margin = new Thickness(0d);
-        public Thickness Margin
-        {
-            get { return _margin; }
-            set
-            {
-                _margin = value;
-                base.OnRaisePropertyChanged(nameof(Margin));
-            }
-        }
 
 
 
 
         private readonly List<FrameworkElement> _elementList = new List<FrameworkElement>();
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public PieSeries()
             : base()
         {
@@ -102,6 +110,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 将Series添加到已设置设定大小的画布中
+        /// </summary>
+        /// <param name="canvas">目标画布</param>
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._elementList.Clear();
@@ -134,7 +146,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             IChartNoAxisValue chartNoAxisValue;
             double value;
             Brush stroke = null;
-            double angle = AxisConstant.ZERO_D, radians;
+            double angle = ChartConstant.ZERO_D, radians;
             //const double CLIP_ANLE = 30d;
             double x, y;
 
@@ -160,7 +172,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
                 value = valueDic.ElementAt(i).Value;
-                if (value <= AxisConstant.ZERO_D)
+                if (value <= ChartConstant.ZERO_D)
                 {
                     continue;
                 }
@@ -189,7 +201,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 //}
 
 
-                path.Margin = this._margin;
                 //path.MouseLeftButtonUp += Path_MouseLeftButtonUp;
 
                 canvas.Children.Add(path);
@@ -201,17 +212,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private Quadrant GetQuadrantByAngle(double angle)
         {
             Quadrant quadrant;
-            if (angle - MathEx.ANGLE_270 > AxisConstant.ZERO_D)
+            if (angle - MathEx.ANGLE_270 > ChartConstant.ZERO_D)
             {
                 //angle:270-360°
                 quadrant = Quadrant.Four;
             }
-            else if (angle - MathEx.ANGLE_180 > AxisConstant.ZERO_D)
+            else if (angle - MathEx.ANGLE_180 > ChartConstant.ZERO_D)
             {
                 //angle:180-270°
                 quadrant = Quadrant.Three;
             }
-            else if (angle - MathEx.ANGLE_90 > AxisConstant.ZERO_D)
+            else if (angle - MathEx.ANGLE_90 > ChartConstant.ZERO_D)
             {
                 //angle:90-180°
                 quadrant = Quadrant.Two;
@@ -246,7 +257,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 itemValue = AxisHelper.ConvertToDouble(chartNoAxisValue.GetValue());
                 if (!AxisHelper.DoubleHasValue(itemValue))
                 {
-                    itemValue = AxisConstant.ZERO_D;
+                    itemValue = ChartConstant.ZERO_D;
                 }
 
                 valueDic[chartNoAxisValue] = itemValue;
@@ -261,7 +272,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             if (!AxisHelper.DoubleHasValue(radius))
             {
                 radius = canvas.Width;
-                if (canvas.Height - radius < AxisConstant.ZERO_D)
+                if (canvas.Height - radius < ChartConstant.ZERO_D)
                 {
                     radius = canvas.Height;
                 }
@@ -271,6 +282,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return radius;
         }
 
+
+
+        /// <summary>
+        /// 将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+        /// </summary>
+        /// <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
         protected override bool PrimitiveRemove(Canvas canvas)
         {
             foreach (var element in this._elementList)
@@ -282,12 +299,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+
+        /// <summary>
+        /// Series样式改变通知
+        /// </summary>
+        /// <param name="style"></param>
         protected override void StyleChanged(Style style)
         {
             throw new NotImplementedException();
         }
 
 
+
+        /// <summary>
+        /// Visibility改变通知
+        /// </summary>
+        /// <param name="oldVisibility">旧值</param>
+        /// <param name="newVisibility">新值</param>
         protected override void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility)
         {
             foreach (var element in this._elementList)

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
-using UtilZ.DotnetStd.Ex.Log.Config;
+using UtilZ.DotnetStd.Ex.Log;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appender
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 控制台日志输出追加器

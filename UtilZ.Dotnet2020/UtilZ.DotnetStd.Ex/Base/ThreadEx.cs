@@ -321,7 +321,9 @@ namespace UtilZ.DotnetStd.Ex.Base
         }
         #endregion
 
-
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             try
@@ -452,12 +454,20 @@ namespace UtilZ.DotnetStd.Ex.Base
 
 
 
-
+    /// <summary>
+    /// 线程启动参数
+    /// </summary>
     public sealed class ThreadStartPara : IDisposable
     {
+        /// <summary>
+        /// 参数对象
+        /// </summary>
         public object Obj { get; private set; }
 
         private readonly CancellationTokenSource _cts;
+        /// <summary>
+        /// CancellationTokenSource
+        /// </summary>
         public CancellationTokenSource Cts
         {
             get { return _cts; }
@@ -465,6 +475,10 @@ namespace UtilZ.DotnetStd.Ex.Base
 
         private readonly AutoResetEvent _syncStopEventHandler;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="obj">参数对象</param>
         public ThreadStartPara(object obj)
         {
             this.Obj = obj;
@@ -475,6 +489,10 @@ namespace UtilZ.DotnetStd.Ex.Base
 
         private bool _cancel = false;
         private bool _disposed = false;
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             lock (this)
@@ -495,6 +513,9 @@ namespace UtilZ.DotnetStd.Ex.Base
             }
         }
 
+        /// <summary>
+        /// 取消执行
+        /// </summary>
         public void Cancell()
         {
             lock (this)
@@ -509,6 +530,11 @@ namespace UtilZ.DotnetStd.Ex.Base
             }
         }
 
+        /// <summary>
+        /// 等待
+        /// </summary>
+        /// <param name="millisecondsTimeout">等待时长,毫秒</param>
+        /// <returns></returns>
         public bool WaitOne(int millisecondsTimeout)
         {
             try
@@ -526,6 +552,9 @@ namespace UtilZ.DotnetStd.Ex.Base
             }
         }
 
+        /// <summary>
+        /// 发送信息通知
+        /// </summary>
         public void Set()
         {
             try

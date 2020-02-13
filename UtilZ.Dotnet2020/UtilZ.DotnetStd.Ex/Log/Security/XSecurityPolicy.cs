@@ -16,7 +16,7 @@ namespace UtilZ.DotnetStd.Ex.Log
         /// <summary>
         /// 加密key
         /// </summary>
-        private string _encrKey = "12345678";
+        private const string _encrKey = "12345678";
 
         /// <summary>
         /// 对称加密初始化向量
@@ -30,7 +30,7 @@ namespace UtilZ.DotnetStd.Ex.Log
         /// <returns>加密后的日志消息</returns>
         public string Encryption(string logMsg)
         {
-            byte[] byKey = Encoding.UTF8.GetBytes(this._encrKey.Substring(0, 8));
+            byte[] byKey = Encoding.UTF8.GetBytes(_encrKey.Substring(0, 8));
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             byte[] inputByteArray = Encoding.UTF8.GetBytes(logMsg);
             using (MemoryStream ms = new MemoryStream())
@@ -50,7 +50,7 @@ namespace UtilZ.DotnetStd.Ex.Log
         public string Decryption(string logMsg)
         {
             byte[] inputByteArray = new Byte[logMsg.Length];
-            byte[] byKey = Encoding.UTF8.GetBytes(this._encrKey.Substring(0, 8));
+            byte[] byKey = Encoding.UTF8.GetBytes(_encrKey.Substring(0, 8));
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             inputByteArray = Convert.FromBase64String(logMsg);
             using (MemoryStream ms = new MemoryStream())

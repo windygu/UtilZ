@@ -11,13 +11,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private RowDefinition _row = null;
         private ColumnDefinition _column = null;
 
-        public int RowIndex { get; set; } = AxisConstant.ROW_COLUMN_DEFAULT_INDEX;
+        public int RowIndex { get; set; } = ChartConstant.ROW_COLUMN_DEFAULT_INDEX;
 
-        public int ColumnIndex { get; set; } = AxisConstant.ROW_COLUMN_DEFAULT_INDEX;
+        public int ColumnIndex { get; set; } = ChartConstant.ROW_COLUMN_DEFAULT_INDEX;
 
-        public int RowSpan { get; set; } = AxisConstant.ROW_COLUMN_DEFAULT_INDEX;
+        public int RowSpan { get; set; } = ChartConstant.ROW_COLUMN_DEFAULT_INDEX;
 
-        public int ColumnSpan { get; set; } = AxisConstant.ROW_COLUMN_DEFAULT_INDEX;
+        public int ColumnSpan { get; set; } = ChartConstant.ROW_COLUMN_DEFAULT_INDEX;
 
 
         public RowColumnDefinitionItem()

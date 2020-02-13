@@ -10,18 +10,28 @@ using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// Chart集合
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ChartCollection<T> : BaseModelAbs, IChartCollection<T>
     {
         private readonly object _sourceLock = new object();
         private readonly List<T> _source = new List<T>();
 
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public ChartCollection()
         {
 
         }
 
 
-
+        /// <summary>
+        /// 集合改变事件
+        /// </summary>
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
@@ -34,6 +44,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// Chart集合改变事件
+        /// </summary>
         public event EventHandler<ChartCollectionChangedEventArgs<T>> ChartCollectionChanged;
         private void OnRaiseChartCollectionChanged(ChartCollectionChangedEventArgs<T> e)
         {
@@ -46,7 +59,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取或设置指定索引的值
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public T this[int index]
         {
             get
@@ -68,6 +85,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 获取集合中的元素个数
+        /// </summary>
         public int Count
         {
             get
@@ -79,6 +99,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 集合是否只读
+        /// </summary>
         public bool IsReadOnly
         {
             get { return false; }
@@ -93,7 +116,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 添加项到集合中
+        /// </summary>
+        /// <param name="item">新项</param>
         public void Add(T item)
         {
             lock (this._sourceLock)
@@ -105,6 +131,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 添加集合到本集合中
+        /// </summary>
+        /// <param name="items">目标集合</param>
         public void AddRange(IEnumerable<T> items)
         {
             if (items == null || items.Count() == 0)
@@ -123,6 +153,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 插入项到指定位置
+        /// </summary>
+        /// <param name="index">插入位置</param>
+        /// <param name="item">要插入的项</param>
         public void Insert(int index, T item)
         {
             lock (this._sourceLock)
@@ -132,7 +167,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.OnRaiseChartCollectionChanged(new ChartCollectionChangedEventArgs<T>(ChartCollectionChangedAction.Add, item, default(T)));
             }
         }
-
+        /// <summary>
+        /// 插入集合到指定位置
+        /// </summary>
+        /// <param name="index">插入位置</param>
+        /// <param name="items">要插入的集合</param>
         public void InsertRange(int index, IEnumerable<T> items)
         {
             if (items == null || items.Count() == 0)
@@ -154,7 +193,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 移除项
+        /// </summary>
+        /// <param name="item">要移除的项</param>
+        /// <returns>移除结果</returns>
         public bool Remove(T item)
         {
             lock (this._sourceLock)
@@ -170,7 +213,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 移除满足匹配条件的项
+        /// </summary>
+        /// <param name="match">匹配条件</param>
+        /// <returns>移除的项数</returns>
         public int RemoveAll(Predicate<T> match)
         {
             if (match == null)
@@ -209,6 +256,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         }
 
+        /// <summary>
+        /// 移除指定索引位置的项
+        /// </summary>
+        /// <param name="index">目标索引</param>
         public void RemoveAt(int index)
         {
             lock (this._sourceLock)
@@ -221,7 +272,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
+        /// <summary>
+        /// 清空集合
+        /// </summary>
         public void Clear()
         {
             lock (this._sourceLock)
@@ -234,7 +287,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
+        /// <summary>
+        /// 集合中是否包含某项
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>包含结果</returns>
         public bool Contains(T item)
         {
             lock (this._sourceLock)
@@ -243,6 +300,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+
+        /// <summary>
+        /// 复制集合到指定数据
+        /// </summary>
+        /// <param name="array">目标数据</param>
+        /// <param name="arrayIndex">起始位置</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             lock (this._sourceLock)
@@ -252,7 +315,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
+        /// <summary>
+        /// 检索某项所在位置
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>目标项在集合中的位置</returns>
         public int IndexOf(T item)
         {
             lock (this._sourceLock)
@@ -263,7 +330,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// GetEnumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             lock (_sourceLock)
@@ -272,6 +342,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// IEnumerable.GetEnumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

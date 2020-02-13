@@ -43,22 +43,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //第三步 根据X轴总高度计算图表区域高度高度(等于Y轴高度)
             double yAxisHeight = axisFreezeInfo.Height - axisXHeightInfo.TopAxisTotalHeight - axisXHeightInfo.BottomAxisTotalHeight - legendAddResult.Top - legendAddResult.Bottom;
-            if (yAxisHeight < AxisConstant.ZERO_D)
+            if (yAxisHeight < ChartConstant.ZERO_D)
             {
-                yAxisHeight = AxisConstant.ZERO_D;
+                yAxisHeight = ChartConstant.ZERO_D;
             }
 
             //第四步 根据Y轴高度绘制Y轴,并计算Y轴宽度
-            AxisYWidthInfo axisYWidthInfo = this.DrawAxisYByAxisXHeightInfo(axisCollection, chartGrid.Children, seriesCollection, yAxisHeight, AxisConstant.ZERO_D);
+            AxisYWidthInfo axisYWidthInfo = this.DrawAxisYByAxisXHeightInfo(axisCollection, chartGrid.Children, seriesCollection, yAxisHeight, ChartConstant.ZERO_D);
 
 
             //第五步 根据Y轴宽度计算X轴宽度并绘制X轴
             double xAxisWidth = axisFreezeInfo.Width - axisYWidthInfo.LeftAxisTotalWidth - axisYWidthInfo.RightAxisTotalWidth - legendAddResult.Left - legendAddResult.Right;
-            if (xAxisWidth < AxisConstant.ZERO_D)
+            if (xAxisWidth < ChartConstant.ZERO_D)
             {
-                xAxisWidth = AxisConstant.ZERO_D;
+                xAxisWidth = ChartConstant.ZERO_D;
             }
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartGrid, xAxisWidth, AxisConstant.ZERO_D);
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartGrid, xAxisWidth, ChartConstant.ZERO_D);
 
             chartCanvas.Width = xAxisWidth;
             chartCanvas.Height = yAxisHeight;
@@ -84,7 +84,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.SetRowColumn(chartGrid, legend.LegendControl, chartGridRowColumnDefinition.Legend);
             }
 
-            if (axisCollection != null && axisCollection.Count > AxisConstant.ZERO_I)
+            if (axisCollection != null && axisCollection.Count > ChartConstant.ZERO_I)
             {
                 RowColumnDefinitionItem rowColumnDefinition;
                 foreach (var axis in axisCollection)

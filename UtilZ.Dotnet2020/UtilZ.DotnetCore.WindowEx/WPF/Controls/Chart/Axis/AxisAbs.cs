@@ -9,6 +9,9 @@ using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 坐标基类
+    /// </summary>
     public abstract class AxisAbs : BaseModelAbs
     {
         private ChartDockOrientation _dockOrientation;
@@ -40,8 +43,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-        private AxisOrientation _orientation;
-        public AxisOrientation Orientation
+        private AxisLabelOrientation _orientation;
+        /// <summary>
+        /// 坐标方向
+        /// </summary>
+        public AxisLabelOrientation Orientation
         {
             get { return _orientation; }
             set
@@ -173,6 +179,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 创建图表中坐标背景线回调
+        /// </summary>
         public Func<List<BackgroundLabelLineSegment>, Path> CreateBackgroundLabelLineFunc;
 
         internal Path CreateBackgroundLabelLine(List<BackgroundLabelLineSegment> labelLineSegments)
@@ -248,6 +257,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 浮点数比较精度
+        /// </summary>
         protected double _PRE = 0.00000001d;
         /// <summary>
         /// 浮点数比较精度
@@ -304,8 +316,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 绘制坐标的画布
+        /// </summary>
         protected readonly Canvas _axisCanvas = new Canvas();
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public AxisAbs()
             : base()
         {
@@ -336,11 +353,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 计算X轴高度和Y轴宽度
+        /// </summary>
+        /// <param name="labelTextSize">Label文本X轴高度,Y轴宽度</param>
+        /// <returns></returns>
         protected double CalculateAxisSize(double labelTextSize)
         {
-            double axisSize = labelTextSize + AxisConstant.LABEL_TEXT_INTERVAL * 3;
-            if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > AxisConstant.ZERO_D)
+            double axisSize = labelTextSize + ChartConstant.LABEL_TEXT_INTERVAL * 3;
+            if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > ChartConstant.ZERO_D)
             {
                 axisSize = axisSize + this._labelSize;
             }
@@ -348,10 +369,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return axisSize;
         }
 
+
+        /// <summary>
+        /// 获取Y轴Label和文本之间的间隔
+        /// </summary>
+        /// <returns>Y轴Label和文本之间的间隔</returns>
         protected double GetAxisYLabelTextLineInterval()
         {
-            double interval = AxisConstant.LABEL_TEXT_INTERVAL;
-            if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > AxisConstant.ZERO_D)
+            double interval = ChartConstant.LABEL_TEXT_INTERVAL;
+            if (AxisHelper.DoubleHasValue(this._labelSize) && this._labelSize > ChartConstant.ZERO_D)
             {
                 interval = interval + this._labelSize;
             }
@@ -361,6 +387,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// 获取X坐标轴高度
+        /// </summary>
+        /// <returns>X坐标轴高度</returns>
         internal double GetXAxisHeight()
         {
             this._axisCanvas.Height = this.PrimitiveGetXAxisHeight();
@@ -369,9 +399,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 获取X坐标轴高度
         /// </summary>
-        /// <returns></returns>
+        /// <returns>X坐标轴高度</returns>
         protected abstract double PrimitiveGetXAxisHeight();
 
+
+        /// <summary>
+        /// 绘制X轴
+        /// </summary>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <param name="axisWidth">X轴宽度</param>
+        /// <returns>Label的X列表</returns>
         internal List<double> DrawX(ChartCollection<ISeries> seriesCollection, double axisWidth)
         {
             this._axisCanvas.Children.Clear();
@@ -379,12 +416,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.AddAxisXTitle();
             return this.PrimitiveDrawX(this._axisCanvas, seriesCollection);
         }
+        /// <summary>
+        /// 绘制X轴
+        /// </summary>
+        /// <param name="axisCanvas">画布</param>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <returns>Label的X列表</returns>
         protected abstract List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
 
 
-
+        /// <summary>
+        /// 绘制Y轴
+        /// </summary>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <param name="axisHeight">Y轴高度</param>
+        /// <returns>Label的Y列表</returns>
 
         internal List<double> DrawY(ChartCollection<ISeries> seriesCollection, double axisHeight)
         {
@@ -397,9 +445,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 子类重写此函数时,必须设置Y轴宽度
         /// </summary>
-        /// <param name="axisCanvas"></param>
-        /// <param name="seriesCollection"></param>
-        /// <param name="labelLineSegments"></param>
+        /// <param name="axisCanvas">画布</param>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <returns>Label的Y列表</returns>
         protected abstract List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection);
 
 
@@ -408,7 +456,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取坐标轴控件
+        /// </summary>
         public FrameworkElement AxisControl
         {
             get
@@ -533,22 +583,35 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// Y坐标轴是否左停靠
+        /// </summary>
+        /// <returns></returns>
         public bool IsAxisYLeft()
         {
             return this._dockOrientation == ChartDockOrientation.Left;
         }
 
+        /// <summary>
+        /// X坐标轴是否底部停靠
+        /// </summary>
+        /// <returns></returns>
         public bool IsAxisXBottom()
         {
             return this._dockOrientation == ChartDockOrientation.Bottom;
         }
 
-
+        /// <summary>
+        /// 验证坐标轴有效性,无效直接抛出ArgumentException异常
+        /// </summary>
         public void Validate()
         {
             this.PrimitiveValidate();
         }
+
+        /// <summary>
+        /// 验证坐标轴有效性,无效直接抛出ArgumentException异常
+        /// </summary>
         protected virtual void PrimitiveValidate()
         {
             switch (this._axisType)
@@ -560,10 +623,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                         throw new ArgumentException($"X坐标轴停靠只能为{nameof(ChartDockOrientation.Top)}或{nameof(ChartDockOrientation.Bottom)},值{this._dockOrientation.ToString()}无效");
                     }
 
-                    if (this._orientation != AxisOrientation.LeftToRight &&
-                        this._orientation != AxisOrientation.RightToLeft)
+                    if (this._orientation != AxisLabelOrientation.LeftToRight &&
+                        this._orientation != AxisLabelOrientation.RightToLeft)
                     {
-                        throw new ArgumentException($"X坐标轴坐标方向只能为{nameof(AxisOrientation.LeftToRight)}或{nameof(AxisOrientation.RightToLeft)},值{this._orientation.ToString()}无效");
+                        throw new ArgumentException($"X坐标轴坐标方向只能为{nameof(AxisLabelOrientation.LeftToRight)}或{nameof(AxisLabelOrientation.RightToLeft)},值{this._orientation.ToString()}无效");
                     }
                     break;
                 case AxisType.Y:
@@ -573,10 +636,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                         throw new ArgumentException($"X坐标轴停靠只能为{nameof(ChartDockOrientation.Left)}或{nameof(ChartDockOrientation.Right)},值{this._dockOrientation.ToString()}无效");
                     }
 
-                    if (this._orientation != AxisOrientation.TopToBottom &&
-                        this._orientation != AxisOrientation.BottomToTop)
+                    if (this._orientation != AxisLabelOrientation.TopToBottom &&
+                        this._orientation != AxisLabelOrientation.BottomToTop)
                     {
-                        throw new ArgumentException($"X坐标轴坐标方向只能为{nameof(AxisOrientation.TopToBottom)}或{nameof(AxisOrientation.BottomToTop)},值{this._orientation.ToString()}无效");
+                        throw new ArgumentException($"X坐标轴坐标方向只能为{nameof(AxisLabelOrientation.TopToBottom)}或{nameof(AxisLabelOrientation.BottomToTop)},值{this._orientation.ToString()}无效");
                     }
                     break;
                 default:
@@ -586,17 +649,37 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取指定项在X轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在X轴的坐标值</returns>
         internal double GetX(IChartItem item)
         {
             return this.PrimitiveGetX(item);
         }
+        /// <summary>
+        /// 获取指定项在X轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在X轴的坐标值</returns>
         protected abstract double PrimitiveGetX(IChartItem item);
 
+
+        /// <summary>
+        /// 获取指定项在Y轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在Y轴的坐标值</returns>
         internal double GetY(IChartItem item)
         {
             return this.PrimitiveGetY(item);
         }
+        /// <summary>
+        /// 获取指定项在Y轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在Y轴的坐标值</returns>
         protected abstract double PrimitiveGetY(IChartItem item);
     }
 }

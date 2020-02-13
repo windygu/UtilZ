@@ -37,22 +37,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.Legend = new RowColumnDefinitionItem();
             }
 
-            if (axisYWidthInfo.LeftAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.LeftAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.LeftAxis = new RowColumnDefinitionItem();
             }
 
-            if (axisYWidthInfo.RightAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.RightAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.RightAxis = new RowColumnDefinitionItem();
             }
 
-            if (axisXHeightInfo.TopAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.TopAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.TopAxis = new RowColumnDefinitionItem();
             }
 
-            if (axisXHeightInfo.BottomAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.BottomAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.BottomAxis = new RowColumnDefinitionItem();
             }
@@ -61,23 +61,23 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-            if (axisYWidthInfo.LeftAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.LeftAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.LeftAxis.CreateColumn(chartGrid, axisYWidthInfo.LeftAxisTotalWidth, GridUnitType.Pixel);
             }
-            this.Chart.CreateColumn(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            if (axisYWidthInfo.RightAxisTotalWidth > AxisConstant.ZERO_D)
+            this.Chart.CreateColumn(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (axisYWidthInfo.RightAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.RightAxis.CreateColumn(chartGrid, axisYWidthInfo.RightAxisTotalWidth, GridUnitType.Pixel);
             }
 
 
-            if (axisXHeightInfo.TopAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.TopAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.TopAxis.CreateRow(chartGrid, axisXHeightInfo.TopAxisTotalHeight, GridUnitType.Pixel);
             }
-            this.Chart.CreateRow(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            if (axisXHeightInfo.BottomAxisTotalHeight > AxisConstant.ZERO_D)
+            this.Chart.CreateRow(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (axisXHeightInfo.BottomAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.BottomAxis.CreateRow(chartGrid, axisXHeightInfo.BottomAxisTotalHeight, GridUnitType.Pixel);
             }
@@ -126,12 +126,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.Legend = new RowColumnDefinitionItem();
             }
 
-            if (axisYWidthInfo.LeftAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.LeftAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.LeftAxis = new RowColumnDefinitionItem();
             }
 
-            if (axisYWidthInfo.RightAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.RightAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.RightAxis = new RowColumnDefinitionItem();
             }
@@ -142,12 +142,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-            if (axisYWidthInfo.LeftAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.LeftAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.LeftAxis.CreateColumn(chartGrid, axisYWidthInfo.LeftAxisTotalWidth, GridUnitType.Pixel);
             }
-            this.Chart.CreateColumn(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            if (axisYWidthInfo.RightAxisTotalWidth > AxisConstant.ZERO_D)
+            this.Chart.CreateColumn(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (axisYWidthInfo.RightAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.RightAxis.CreateColumn(chartGrid, axisYWidthInfo.RightAxisTotalWidth, GridUnitType.Pixel);
             }
@@ -157,7 +157,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (legend.DockOrientation == ChartDockOrientation.Top ||
                     legend.DockOrientation == ChartDockOrientation.Bottom)
                 {
-                    this.Chart.CreateRow(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
+                    this.Chart.CreateRow(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
                 }
 
                 this.Legend.CreateLegendRowColumn(chartGrid, legend);
@@ -179,12 +179,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public ChartGridRowColumnDefinition(Grid chartContentGrid, AxisXHeightInfo axisXHeightInfo)
         {
-            if (axisXHeightInfo.TopAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.TopAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.TopAxis = new RowColumnDefinitionItem();
             }
 
-            if (axisXHeightInfo.BottomAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.BottomAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.BottomAxis = new RowColumnDefinitionItem();
             }
@@ -192,12 +192,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.Chart = new RowColumnDefinitionItem();
 
 
-            if (axisXHeightInfo.TopAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.TopAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.TopAxis.CreateRow(chartContentGrid, axisXHeightInfo.TopAxisTotalHeight, GridUnitType.Pixel);
             }
-            this.Chart.CreateRow(chartContentGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            if (axisXHeightInfo.BottomAxisTotalHeight > AxisConstant.ZERO_D)
+            this.Chart.CreateRow(chartContentGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (axisXHeightInfo.BottomAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.BottomAxis.CreateRow(chartContentGrid, axisXHeightInfo.BottomAxisTotalHeight, GridUnitType.Pixel);
             }
@@ -224,7 +224,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <param name="hasLegend"></param>
         /// <param name="legend"></param>
         /// <param name="chartGrid"></param>
-        /// <param name="axisYWidthInfo"></param>
         public ChartGridRowColumnDefinition(bool hasLegend, IChartLegend legend, Grid chartGrid)
         {
             if (hasLegend)
@@ -235,8 +234,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.Chart = new RowColumnDefinitionItem();
 
 
-            this.Chart.CreateColumn(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            this.Chart.CreateRow(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
+            this.Chart.CreateColumn(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            this.Chart.CreateRow(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
             if (hasLegend)
             {
                 this.Legend.CreateLegendRowColumn(chartGrid, legend);
@@ -252,7 +251,6 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <param name="hasLegend"></param>
         /// <param name="legend"></param>
         /// <param name="chartGrid"></param>
-        /// <param name="axisYWidthInfo"></param>
         /// <param name="axisXHeightInfo"></param>
         public ChartGridRowColumnDefinition(bool hasLegend, IChartLegend legend, Grid chartGrid, AxisXHeightInfo axisXHeightInfo)
         {
@@ -261,12 +259,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.Legend = new RowColumnDefinitionItem();
             }
 
-            if (axisXHeightInfo.TopAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.TopAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.TopAxis = new RowColumnDefinitionItem();
             }
 
-            if (axisXHeightInfo.BottomAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.BottomAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.BottomAxis = new RowColumnDefinitionItem();
             }
@@ -279,12 +277,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-            if (axisXHeightInfo.TopAxisTotalHeight > AxisConstant.ZERO_D)
+            if (axisXHeightInfo.TopAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.TopAxis.CreateRow(chartGrid, axisXHeightInfo.TopAxisTotalHeight, GridUnitType.Pixel);
             }
-            this.Chart.CreateRow(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            if (axisXHeightInfo.BottomAxisTotalHeight > AxisConstant.ZERO_D)
+            this.Chart.CreateRow(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (axisXHeightInfo.BottomAxisTotalHeight > ChartConstant.ZERO_D)
             {
                 this.BottomAxis.CreateRow(chartGrid, axisXHeightInfo.BottomAxisTotalHeight, GridUnitType.Pixel);
             }
@@ -294,7 +292,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (legend.DockOrientation == ChartDockOrientation.Left ||
                     legend.DockOrientation == ChartDockOrientation.Right)
                 {
-                    this.Chart.CreateColumn(chartGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
+                    this.Chart.CreateColumn(chartGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
                 }
 
                 this.Legend.CreateLegendRowColumn(chartGrid, legend);
@@ -316,24 +314,24 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         public ChartGridRowColumnDefinition(Grid chartContentGrid, AxisYWidthInfo axisYWidthInfo)
         {
-            if (axisYWidthInfo.LeftAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.LeftAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.LeftAxis = new RowColumnDefinitionItem();
             }
             this.Chart = new RowColumnDefinitionItem();
-            if (axisYWidthInfo.RightAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.RightAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.RightAxis = new RowColumnDefinitionItem();
             }
 
 
 
-            if (axisYWidthInfo.LeftAxisTotalWidth > AxisConstant.ZERO_D)
+            if (axisYWidthInfo.LeftAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.LeftAxis.CreateColumn(chartContentGrid, axisYWidthInfo.LeftAxisTotalWidth, GridUnitType.Pixel);
             }
-            this.Chart.CreateColumn(chartContentGrid, AxisConstant.GRID_START_SIZE, GridUnitType.Star);
-            if (axisYWidthInfo.RightAxisTotalWidth > AxisConstant.ZERO_D)
+            this.Chart.CreateColumn(chartContentGrid, ChartConstant.GRID_START_SIZE, GridUnitType.Star);
+            if (axisYWidthInfo.RightAxisTotalWidth > ChartConstant.ZERO_D)
             {
                 this.RightAxis.CreateColumn(chartContentGrid, axisYWidthInfo.RightAxisTotalWidth, GridUnitType.Pixel);
             }

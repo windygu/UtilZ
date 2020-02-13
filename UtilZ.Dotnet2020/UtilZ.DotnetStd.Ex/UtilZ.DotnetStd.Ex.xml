@@ -1408,6 +1408,36 @@
             </summary>
             <returns>GUID对应的HskCode</returns>
         </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.MathEx">
+            <summary>
+            Math扩展类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MathEx.ANGLE_0">
+            <summary>
+            角度0°
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MathEx.ANGLE_90">
+            <summary>
+            角度90°
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MathEx.ANGLE_180">
+            <summary>
+            角度180°
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MathEx.ANGLE_270">
+            <summary>
+            角度270°
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.MathEx.ANGLE_360">
+            <summary>
+            角度360°
+            </summary>
+        </member>
         <member name="M:UtilZ.DotnetStd.Ex.Base.MathEx.AngleToRadians(System.Double)">
             <summary>
             角度转换为弧度
@@ -1877,7 +1907,7 @@
             <summary>
             触发属性值改变事件
             </summary>
-            <param name="propertyName">属性名</param>
+            <param name="e">改变属性信息</param>
         </member>
         <member name="M:UtilZ.DotnetStd.Ex.Base.BaseModelAbs.#ctor">
             <summary>
@@ -2140,6 +2170,29 @@
             <summary>
             属性值有效性验证结果通知事件
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.PropertyChangedExEventArgs">
+            <summary>
+            属性改变事件扩展参数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PropertyChangedExEventArgs.OldValue">
+            <summary>
+            旧值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.PropertyChangedExEventArgs.NewValue">
+            <summary>
+            新值
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.PropertyChangedExEventArgs.#ctor(System.String,System.Object,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="propertyName">属性名</param>
+            <param name="oldValue">旧值</param>
+            <param name="newValue">新值</param>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.PropertyValueVerifyArgs">
             <summary>
@@ -2498,6 +2551,11 @@
             </summary>
             <param name="stateInfo">An object that contains application-specific information, such as state, which can be used by the thread being aborted</param>
         </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadEx.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
         <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadEx.Start(System.Action{System.Threading.CancellationToken},System.String,System.Boolean)">
             <summary>
             创建线程对象
@@ -2531,6 +2589,49 @@
             </summary>
             <param name="thread">要设置的线程</param>
             <param name="isBackground">true:后台线程;false:前台线程</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ThreadStartPara">
+            <summary>
+            线程启动参数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.Obj">
+            <summary>
+            参数对象
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.Cts">
+            <summary>
+            CancellationTokenSource
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.#ctor(System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="obj">参数对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.Cancell">
+            <summary>
+            取消执行
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.WaitOne(System.Int32)">
+            <summary>
+            等待
+            </summary>
+            <param name="millisecondsTimeout">等待时长,毫秒</param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ThreadStartPara.Set">
+            <summary>
+            发送信息通知
+            </summary>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.IThreadEx">
             <summary>
@@ -4171,63 +4272,63 @@
             </summary>
             <param name="message">数据消息</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.AppenderBase">
             <summary>
             日志追加器基类
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.Name">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.AppenderBase.Name">
             <summary>
             日志追加器名称
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase._config">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.AppenderBase._config">
             <summary>
             配置对象
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.Config">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.AppenderBase.Config">
             <summary>
             获取配置对象
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase._logWriteQueue">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.AppenderBase._logWriteQueue">
             <summary>
             日志写线程队列
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
             <summary>
             构造函数
             </summary>
             <param name="config">配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             写日志
             </summary>
             <param name="item">日志项</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.CreateConfig(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.CreateConfig(System.Xml.Linq.XElement)">
             <summary>
             创建配置对象实例
             </summary>
             <param name="ele">配置元素</param>
             <returns>配置对象实例</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.WriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.WriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             写日志
             </summary>
             <param name="item">日志项</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.Validate(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig,UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.Validate(UtilZ.DotnetStd.Ex.Log.BaseConfig,UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             验证日志是否允许输出[返回值true:允许输出;false:丢弃]
             </summary>
@@ -4235,131 +4336,140 @@
             <param name="item">要验证输出的日志项</param>
             <returns>true:允许输出;false:丢弃</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.LayoutLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.LayoutLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             布局一条日志文本记录
             </summary>
             <param name="item">日志信息对象</param>
             <returns>日志文本记录</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.ToString">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.ToString">
             <summary>
             重写ToString
             </summary>
             <returns></returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.Finalize">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.Finalize">
             <summary>
             构造函数释放非托管资源
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.Dispose">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.Dispose">
             <summary>
             释放资源
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase.Dispose(System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.AppenderBase.Dispose(System.Boolean)">
             <summary>
             释放资源
             </summary>
             <param name="disposing">释放资源标识</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.ConsoleAppender">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.ConsoleAppender">
             <summary>
             控制台日志输出追加器
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.ConsoleAppender.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ConsoleAppender.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.ConsoleAppender.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ConsoleAppender.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
             <summary>
             构造函数
             </summary>
             <param name="config">配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.ConsoleAppender.CreateConfig(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ConsoleAppender.CreateConfig(System.Xml.Linq.XElement)">
             <summary>
             创建配置对象实例
             </summary>
             <param name="ele">配置元素</param>
             <returns>配置对象实例</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.ConsoleAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ConsoleAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             写日志
             </summary>
             <param name="item">日志项</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.DatabaseAppender">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.DatabaseAppender">
             <summary>
             数据库日志输出追加器
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.DatabaseAppender.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.DatabaseAppender.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.DatabaseAppender.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.DatabaseAppender.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
             <summary>
             构造函数
             </summary>
             <param name="config">配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.DatabaseAppender.CreateConfig(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.DatabaseAppender.CreateConfig(System.Xml.Linq.XElement)">
             <summary>
             创建配置对象实例
             </summary>
             <param name="ele">配置元素</param>
             <returns>配置对象实例</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.DatabaseAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.DatabaseAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             写日志
             </summary>
             <param name="item">日志项</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.FileAppender">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ExclusiveFileLogWriter.WriteLog(UtilZ.DotnetStd.Ex.Log.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
+            <summary>
+            写日志
+            </summary>
+            <param name="fileAppenderConfig">配置</param>
+            <param name="pathManager">路由管理器</param>
+            <param name="createFilePathTime">创建时间</param>
+            <param name="logMessage">日志信息项</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.FileAppender">
             <summary>
             文件日志追加器
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppender.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppender.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppender.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppender.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
             <summary>
             构造函数
             </summary>
             <param name="config">配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppender.Init">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppender.Init">
             <summary>
             初始化
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppender.CreateConfig(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppender.CreateConfig(System.Xml.Linq.XElement)">
             <summary>
             创建配置对象实例
             </summary>
             <param name="ele">配置元素</param>
             <returns>配置对象实例</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
             <summary>
             写日志
             </summary>
             <param name="item">日志项</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderFixFileNameBuilder.CheckPath(System.String,System.DateTime@)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderFixFileNameBuilder.CheckPath(System.String,System.DateTime@)">
             <summary>
             检查日志文件路径是否是有效路径[有效返回true;无效返回false]
             </summary>
@@ -4367,7 +4477,7 @@
             <param name="createTime"></param>
             <returns></returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathBuilderBase.CheckPath(System.String,System.DateTime@)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderPathBuilderBase.CheckPath(System.String,System.DateTime@)">
             <summary>
             检查日志文件路径是否是有效路径[有效返回true;无效返回false]
             </summary>
@@ -4375,12 +4485,12 @@
             <param name="createTime"></param>
             <returns></returns>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathItem._isRealCreatePath">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.FileAppenderPathItem._isRealCreatePath">
             <summary>
             当前路径项是否是需要实时创建的路径[true:需要实时创建;false:固定路径]
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathItem.CheckPath(System.String,System.DateTime@)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderPathItem.CheckPath(System.String,System.DateTime@)">
             <summary>
             检查日志文件路径是否是有效路径[有效返回true;无效返回false]
             </summary>
@@ -4388,19 +4498,19 @@
             <param name="createTime"></param>
             <returns></returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderVariateFileNameBuilder.ClearExpireLogFile(System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderVariateFileNameBuilder.ClearExpireLogFile(System.String)">
             <summary>
             清理过期的日志文件
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderVariateFileNameBuilder.ValidatePath(System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderVariateFileNameBuilder.ValidatePath(System.String)">
             <summary>
             检查日志文件路径是否是有效路径[有效返回true;无效返回false]
             </summary>
             <param name="path"></param>
             <returns></returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderVariateFileNameBuilder.CheckPath(System.String,System.DateTime@)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderVariateFileNameBuilder.CheckPath(System.String,System.DateTime@)">
             <summary>
             检查日志文件路径是否是有效路径[有效返回true;无效返回false]
             </summary>
@@ -4408,138 +4518,18 @@
             <param name="createTime"></param>
             <returns></returns>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.MailAppender">
-            <summary>
-            邮件日志输出追加器
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.MailAppender.#ctor(System.Xml.Linq.XElement)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="ele">配置元素</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.MailAppender.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="config">配置对象</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.MailAppender.CreateConfig(System.Xml.Linq.XElement)">
-            <summary>
-            创建配置对象实例
-            </summary>
-            <param name="ele">配置元素</param>
-            <returns>配置对象实例</returns>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.MailAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
-            <summary>
-            写日志
-            </summary>
-            <param name="item">日志项</param>
-        </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.RedirectAppender">
-            <summary>
-            重定向日志输出追加器
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.RedirectAppender.#ctor(System.Xml.Linq.XElement)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="ele">配置元素</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.RedirectAppender.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="config">配置对象</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.RedirectAppender.CreateConfig(System.Xml.Linq.XElement)">
-            <summary>
-            创建配置对象实例
-            </summary>
-            <param name="ele">配置元素</param>
-            <returns>配置对象实例</returns>
-        </member>
-        <member name="E:UtilZ.DotnetStd.Ex.Log.Appender.RedirectAppender.RedirectOuput">
-            <summary>
-            重定向输出事件
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.RedirectAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
-            <summary>
-            写日志
-            </summary>
-            <param name="item">日志项</param>
-        </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.RedirectOuputArgs">
-            <summary>
-            重定向输出项
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.RedirectOuputArgs.#ctor(UtilZ.DotnetStd.Ex.Log.LogItem)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="item">日志信息项</param>
-        </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Appender.RedirectOuputArgs.Item">
-            <summary>
-            日志信息项
-            </summary>
-        </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Appender.SystemLogAppender">
-            <summary>
-            操作系统日志输出追加器
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.SystemLogAppender.#ctor(System.Xml.Linq.XElement)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="ele">配置元素</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.SystemLogAppender.#ctor(UtilZ.DotnetStd.Ex.Log.Config.BaseConfig)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="config">配置对象</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.SystemLogAppender.CreateConfig(System.Xml.Linq.XElement)">
-            <summary>
-            创建配置对象实例
-            </summary>
-            <param name="ele">配置元素</param>
-            <returns>配置对象实例</returns>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appender.SystemLogAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
-            <summary>
-            写日志
-            </summary>
-            <param name="item">日志项</param>
-        </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.ExclusiveFileLogWriter.WriteLog(UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
-            <summary>
-            写日志
-            </summary>
-            <param name="fileAppenderConfig">配置</param>
-            <param name="pathManager">路由管理器</param>
-            <param name="createFilePathTime">创建时间</param>
-            <param name="logMessage">日志信息项</param>
-        </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.FileLogWriterBase._securityPolicy">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.FileLogWriterBase._securityPolicy">
             <summary>
             日志安全策略
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.FileLogWriterBase.WriteLog(UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileLogWriterBase.WriteLog(UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
             <summary>
             写日志
             </summary>
             <param name="logMessage">日志信息项</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.FileLogWriterBase.WriteLog(UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileLogWriterBase.WriteLog(UtilZ.DotnetStd.Ex.Log.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
             <summary>
             写日志
             </summary>
@@ -4548,20 +4538,20 @@
             <param name="createFilePathTime">创建时间</param>
             <param name="logMessage">日志信息项</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.FileLogWriterBase.WriteLogToFile(UtilZ.DotnetStd.Ex.Log.LogMessageItem,System.IO.StreamWriter)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileLogWriterBase.WriteLogToFile(UtilZ.DotnetStd.Ex.Log.LogMessageItem,System.IO.StreamWriter)">
             <summary>
             写日志到文件
             </summary>
             <param name="logMessage">日志信息项</param>
             <param name="sw">StreamWriter</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.FileLogWriterBase.GetLogFilePath">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileLogWriterBase.GetLogFilePath">
             <summary>
             获得日志文件路径
             </summary>
             <returns>日志文件路径</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.InterProcessFileLogWriter.WriteLog(UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.InterProcessFileLogWriter.WriteLog(UtilZ.DotnetStd.Ex.Log.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
             <summary>
             写日志
             </summary>
@@ -4570,19 +4560,19 @@
             <param name="createFilePathTime">创建时间</param>
             <param name="logMessage">日志信息项</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.InterProcessFileLogWriter.GetMutex(System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.InterProcessFileLogWriter.GetMutex(System.String)">
             <summary>
             获取进程锁
             </summary>
             <returns>进程锁</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.InterProcessFileLogWriter.ReleaseMutex(System.Threading.Mutex)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.InterProcessFileLogWriter.ReleaseMutex(System.Threading.Mutex)">
             <summary>
             释放进程锁
             </summary>
             <param name="mutex">进程锁</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile.MinimalFileLogWriter.WriteLog(UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.Appender.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.MinimalFileLogWriter.WriteLog(UtilZ.DotnetStd.Ex.Log.FileAppenderConfig,UtilZ.DotnetStd.Ex.Log.FileAppenderPathManager,System.DateTime,UtilZ.DotnetStd.Ex.Log.LogMessageItem)">
             <summary>
             写日志
             </summary>
@@ -4590,6 +4580,117 @@
             <param name="pathManager">路由管理器</param>
             <param name="createFilePathTime">创建时间</param>
             <param name="logMessage">日志信息项</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.MailAppender">
+            <summary>
+            邮件日志输出追加器
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.MailAppender.#ctor(System.Xml.Linq.XElement)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="ele">配置元素</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.MailAppender.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="config">配置对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.MailAppender.CreateConfig(System.Xml.Linq.XElement)">
+            <summary>
+            创建配置对象实例
+            </summary>
+            <param name="ele">配置元素</param>
+            <returns>配置对象实例</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.MailAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+            <summary>
+            写日志
+            </summary>
+            <param name="item">日志项</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.RedirectAppender">
+            <summary>
+            重定向日志输出追加器
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectAppender.#ctor(System.Xml.Linq.XElement)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="ele">配置元素</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectAppender.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="config">配置对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectAppender.CreateConfig(System.Xml.Linq.XElement)">
+            <summary>
+            创建配置对象实例
+            </summary>
+            <param name="ele">配置元素</param>
+            <returns>配置对象实例</returns>
+        </member>
+        <member name="E:UtilZ.DotnetStd.Ex.Log.RedirectAppender.RedirectOuput">
+            <summary>
+            重定向输出事件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+            <summary>
+            写日志
+            </summary>
+            <param name="item">日志项</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.RedirectOuputArgs">
+            <summary>
+            重定向输出项
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectOuputArgs.#ctor(UtilZ.DotnetStd.Ex.Log.LogItem)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="item">日志信息项</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Log.RedirectOuputArgs.Item">
+            <summary>
+            日志信息项
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Log.SystemLogAppender">
+            <summary>
+            操作系统日志输出追加器
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.SystemLogAppender.#ctor(System.Xml.Linq.XElement)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="ele">配置元素</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.SystemLogAppender.#ctor(UtilZ.DotnetStd.Ex.Log.BaseConfig)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="config">配置对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.SystemLogAppender.CreateConfig(System.Xml.Linq.XElement)">
+            <summary>
+            创建配置对象实例
+            </summary>
+            <param name="ele">配置元素</param>
+            <returns>配置对象实例</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Log.SystemLogAppender.PrimitiveWriteLog(UtilZ.DotnetStd.Ex.Log.LogItem)">
+            <summary>
+            写日志
+            </summary>
+            <param name="item">日志项</param>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Log.LogAsynQueue`1">
             <summary>
@@ -4708,170 +4809,170 @@
             <param name="stackCount">要获取的堆栈数</param>
             <returns>指定层级调用堆栈</returns>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.BaseConfig">
             <summary>
             基础配置
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.AppenderName">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.AppenderName">
             <summary>
             日志追加器名称
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.Layout">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.Layout">
             <summary>
             日志布局[%d %l %e %c 堆栈:%s]
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.DateFormat">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.DateFormat">
             <summary>
             时间格式[yyyy-MM-dd HH:mm:ss]
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.LevelMap">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.LevelMap">
             <summary>
             日志级别名称映射[Info:信息;Warn:warning;...]
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.SeparatorCount">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.SeparatorCount">
             <summary>
             分隔线长度
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.EnableOutputCache">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.EnableOutputCache">
             <summary>
             是否启用日志输出缓存[true:启用;false:禁用]
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.Enable">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.Enable">
             <summary>
             是否启用日志追加器
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.Levels">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.Levels">
             <summary>
             过滤日志级别
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.EventIdMin">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.EventIdMin">
             <summary>
             事件ID最小值(包含该值,默认值为不限)
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.EventIdMax">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.EventIdMax">
             <summary>
             事件ID最大值(包含该值,默认值为不限)
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.MatchString">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.MatchString">
             <summary>
             消息匹配指定的字符串才被记录,为空或null不匹配(默认为null)
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.MatchExceptionType">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.BaseConfig.MatchExceptionType">
             <summary>
             要记录的异常的类型为指定类型或其子类才被记录,为null不匹配(默认为null)
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig._levelMapDic">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.BaseConfig._levelMapDic">
             <summary>
             日志级别名称映射字典集合
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Config.BaseConfig.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.BaseConfig.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Config.ConsoleAppenderConfig">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.ConsoleAppenderConfig">
             <summary>
             日志追加器配置
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Config.ConsoleAppenderConfig.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ConsoleAppenderConfig.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig">
             <summary>
             日志追加器配置
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.Days">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.Days">
             <summary>
             日志保留天数小于1表示永不清除
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.MaxFileCount">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.MaxFileCount">
             <summary>
             最多产生的日志文件数，超过则只保留最新的n个,小于1为不限文件数
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.MaxFileSize">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.MaxFileSize">
             <summary>
             日志文件上限大小,当文件超过此值则分隔成多个日志文件,小于1不限制,单位/KB
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.MaxFileLength">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.MaxFileLength">
             <summary>
             获取日志单个文件最大大小,小于等于0不限制,单位/字节
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.FilePath">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.FilePath">
             <summary>
             日志存放路径
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.IsAppend">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.IsAppend">
             <summary>
             是否追加日志
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.SecurityPolicy">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.SecurityPolicy">
             <summary>
             日志安全策略,该类型为实现接口ILogSecurityPolicy的子类,必须实现Encryption方法
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.LockingModel">
+        <member name="P:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.LockingModel">
             <summary>
             锁类模型[Exclusive,InterProcess,Minimal]
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Config.FileAppenderConfig.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.FileAppenderConfig.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
             <param name="ele">配置元素</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Config.LockingModel">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.LockingModel">
             <summary>
             锁类模型
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Config.LockingModel.Exclusive">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.LockingModel.Exclusive">
             <summary>
             独占
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Config.LockingModel.InterProcess">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.LockingModel.InterProcess">
             <summary>
             相互写
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Log.Config.LockingModel.Minimal">
+        <member name="F:UtilZ.DotnetStd.Ex.Log.LockingModel.Minimal">
             <summary>
             最小,用完就关
             </summary>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Log.Config.RedirectAppendConfig">
+        <member name="T:UtilZ.DotnetStd.Ex.Log.RedirectAppendConfig">
             <summary>
             重定向输出日志追加器配置
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.Config.RedirectAppendConfig.#ctor(System.Xml.Linq.XElement)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.RedirectAppendConfig.#ctor(System.Xml.Linq.XElement)">
             <summary>
             构造函数
             </summary>
@@ -4930,7 +5031,7 @@
             是否启用日志追加器
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.ILoger.AddAppender(UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.ILoger.AddAppender(UtilZ.DotnetStd.Ex.Log.AppenderBase)">
             <summary>
             添加日志追加器
             </summary>
@@ -5582,7 +5683,7 @@
             是否启用日志追加器
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Log.LogerBase.UtilZ#DotnetStd#Ex#Log#ILoger#AddAppender(UtilZ.DotnetStd.Ex.Log.Appender.AppenderBase)">
+        <member name="M:UtilZ.DotnetStd.Ex.Log.LogerBase.UtilZ#DotnetStd#Ex#Log#ILoger#AddAppender(UtilZ.DotnetStd.Ex.Log.AppenderBase)">
             <summary>
             添加日志追加器
             </summary>

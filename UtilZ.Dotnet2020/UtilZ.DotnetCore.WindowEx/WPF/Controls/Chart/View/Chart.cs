@@ -227,7 +227,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private void UpdateScrollBarWidth(double scrollBarWidth)
         {
-            if (!AxisHelper.DoubleHasValue(scrollBarWidth) || scrollBarWidth < AxisConstant.ZERO_D)
+            if (!AxisHelper.DoubleHasValue(scrollBarWidth) || scrollBarWidth < ChartConstant.ZERO_D)
             {
                 scrollBarWidth = _SCROLL_BAR_DEFAULT_WIDTH;
             }

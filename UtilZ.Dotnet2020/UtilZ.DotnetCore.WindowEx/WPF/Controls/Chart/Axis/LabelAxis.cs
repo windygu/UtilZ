@@ -25,9 +25,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             get { return _axisSize; }
             set
             {
-                if (!AxisHelper.DoubleHasValue(value) || value < AxisConstant.ZERO_D)
+                if (!AxisHelper.DoubleHasValue(value) || value < ChartConstant.ZERO_D)
                 {
-                    value = AxisConstant.AXIS_DEFAULT_SIZE;
+                    value = ChartConstant.AXIS_DEFAULT_SIZE;
                 }
 
                 _axisSize = value;
@@ -69,7 +69,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         /// <summary>
-        /// 自定义LabelText
+        /// 获取或设置自定义LabelText
         /// </summary>
         public Func<object, string> CustomAxisTextFormatCunc;
 
@@ -91,9 +91,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         /// <summary>
-        /// 
+        /// 获取X坐标轴高度
         /// </summary>
-        /// <returns></returns>
+        /// <returns>X坐标轴高度</returns>
         protected override double PrimitiveGetXAxisHeight()
         {
             return this._axisSize;
@@ -256,7 +256,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private double CalculateSeriesSize(Dictionary<IColumnSeries, double> seriesSizeDic, double labelStepSize)
         {
-            double totalSeriesSize = AxisConstant.ZERO_D;
+            double totalSeriesSize = ChartConstant.ZERO_D;
             int seriesAutoSizeCount = 0;
             foreach (var seriesSize in seriesSizeDic.Values)
             {
@@ -272,7 +272,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             if (seriesAutoSizeCount > 0)
             {
-                double seriesAutoSize = AxisConstant.ZERO_D;
+                double seriesAutoSize = ChartConstant.ZERO_D;
                 double availableSpace = labelStepSize - totalSeriesSize;
                 if (availableSpace >= base._PRE)
                 {
@@ -310,7 +310,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 绘制X轴
+        /// </summary>
+        /// <param name="axisCanvas">画布</param>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <returns>Label的X列表</returns>
         protected override List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this.CreateAxisData(seriesCollection);
@@ -345,12 +350,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 Canvas.SetLeft(label, left + labelTextOffset);
                 if (this.IsAxisXBottom())
                 {
-                    Canvas.SetTop(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                    Canvas.SetTop(label, ChartConstant.LABEL_TEXT_INTERVAL);
                     this.RotateLabelBottom(label, angleQuadrantInfo, labelTextSize);
                 }
                 else
                 {
-                    Canvas.SetBottom(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                    Canvas.SetBottom(label, ChartConstant.LABEL_TEXT_INTERVAL);
                     this.RotateLabelTop(label, angleQuadrantInfo, labelTextSize);
                 }
 
@@ -378,7 +383,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 left += labelStepSize;
             }
 
-            AxisHelper.DrawXAxisLabelLine(this, axisCanvas, AxisConstant.ZERO_D, axisCanvas.Height);
+            AxisHelper.DrawXAxisLabelLine(this, axisCanvas, ChartConstant.ZERO_D, axisCanvas.Height);
             return xList;
         }
         private void RotateLabelTop(TextBlock label, AngleQuadrantInfo angleQuadrantInfo, Size labelTextSize)
@@ -391,8 +396,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             var transformGroup = new TransformGroup();
 
             var rotateTransform = new RotateTransform();
-            rotateTransform.CenterX = AxisConstant.ZERO_D;
-            rotateTransform.CenterY = AxisConstant.ZERO_D;
+            rotateTransform.CenterX = ChartConstant.ZERO_D;
+            rotateTransform.CenterY = ChartConstant.ZERO_D;
             rotateTransform.Angle = angleQuadrantInfo.Angle;
             transformGroup.Children.Add(rotateTransform);
 
@@ -441,8 +446,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             var transformGroup = new TransformGroup();
 
             var rotateTransform = new RotateTransform();
-            rotateTransform.CenterX = AxisConstant.ZERO_D;
-            rotateTransform.CenterY = AxisConstant.ZERO_D;
+            rotateTransform.CenterX = ChartConstant.ZERO_D;
+            rotateTransform.CenterY = ChartConstant.ZERO_D;
             rotateTransform.Angle = angleQuadrantInfo.Angle;
             transformGroup.Children.Add(rotateTransform);
 
@@ -471,7 +476,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     break;
                 case Quadrant.Four://angle:0-90°
                     translateTransform.X = labelTextSize.Width / 2;
-                    translateTransform.Y = AxisConstant.ZERO_D;
+                    translateTransform.Y = ChartConstant.ZERO_D;
                     break;
                 default:
                     throw new NotImplementedException(angleQuadrantInfo.Quadrant.ToString());
@@ -488,8 +493,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 子类重写此函数时,必须设置Y轴宽度
         /// </summary>
-        /// <param name="axisCanvas"></param>
-        /// <param name="seriesCollection"></param>
+        /// <param name="axisCanvas">画布</param>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <returns>Label的Y列表</returns>
         protected override List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             axisCanvas.Width = this._axisSize;
@@ -524,11 +530,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 Canvas.SetTop(label, top + labelTextOffset);
                 if (this.IsAxisYLeft())
                 {
-                    Canvas.SetRight(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                    Canvas.SetRight(label, ChartConstant.LABEL_TEXT_INTERVAL);
                 }
                 else
                 {
-                    Canvas.SetLeft(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                    Canvas.SetLeft(label, ChartConstant.LABEL_TEXT_INTERVAL);
                 }
 
                 switch (labelLocation)
@@ -555,7 +561,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 top += labelStepSize;
             }
 
-            AxisHelper.DrawYAxisLabelLine(this, axisCanvas, AxisConstant.ZERO_D, axisCanvas.Height);
+            AxisHelper.DrawYAxisLabelLine(this, axisCanvas, ChartConstant.ZERO_D, axisCanvas.Height);
             return yList;
         }
 
@@ -566,12 +572,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取指定项在X轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在X轴的坐标值</returns>
         protected override double PrimitiveGetX(IChartItem item)
         {
             return this.GetAxis(item, true);
         }
 
+        /// <summary>
+        /// 获取指定项在Y轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在Y轴的坐标值</returns>
         protected override double PrimitiveGetY(IChartItem item)
         {
             return this.GetAxis(item, false);
@@ -680,7 +695,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //将角度转换为-360到360度之间
             angle = angle % MathEx.ANGLE_360;
-            if (angle < AxisConstant.ZERO_D)
+            if (angle < ChartConstant.ZERO_D)
             {
                 //将负数角度转换为正数角度
                 angle += MathEx.ANGLE_360;
@@ -697,21 +712,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             double mathAngle;
             Quadrant quadrant;
-            if (angle - MathEx.ANGLE_270 > AxisConstant.ZERO_D)
+            if (angle - MathEx.ANGLE_270 > ChartConstant.ZERO_D)
             {
                 //angle:270-360°
                 quadrant = Quadrant.One;
                 mathAngle = angle - MathEx.ANGLE_270;
                 this._modRadians = MathEx.AngleToRadians(MathEx.ANGLE_180 - MathEx.ANGLE_90 - mathAngle);
             }
-            else if (angle - MathEx.ANGLE_180 > AxisConstant.ZERO_D)
+            else if (angle - MathEx.ANGLE_180 > ChartConstant.ZERO_D)
             {
                 //angle:180-270°
                 quadrant = Quadrant.Two;
                 mathAngle = angle - MathEx.ANGLE_180;
                 this._modRadians = MathEx.AngleToRadians(MathEx.ANGLE_360 - MathEx.ANGLE_90 - angle);
             }
-            else if (angle - MathEx.ANGLE_90 > AxisConstant.ZERO_D)
+            else if (angle - MathEx.ANGLE_90 > ChartConstant.ZERO_D)
             {
                 //angle:90-180°
                 quadrant = Quadrant.Three;

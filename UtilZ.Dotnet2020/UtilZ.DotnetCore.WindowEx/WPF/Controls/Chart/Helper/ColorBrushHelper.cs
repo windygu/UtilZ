@@ -7,6 +7,9 @@ using System.Windows.Media;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// SolidColorBrush辅助类
+    /// </summary>
     public class ColorBrushHelper
     {
         /// <summary>
@@ -36,6 +39,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private static int _colorBrushIndex = 0;
+        /// <summary>
+        /// 获取下一种颜色的Brush
+        /// </summary>
+        /// <returns>Brush</returns>
         public static Brush GetNextColor()
         {
             //var r = _colorBrushRandom.Next(0, _colorBrushList.Count);
@@ -49,6 +56,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return _colorBrushList[_colorBrushIndex++];
         }
 
+        /// <summary>
+        /// 获取指定索引的颜色的Brush
+        /// </summary>
+        /// <param name="index">目标索引</param>
+        /// <returns>Brush</returns>
         public static Brush GetNextColorByIndex(ref int index)
         {
             if (index >= _colorBrushList.Count)
@@ -59,6 +71,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return _colorBrushList[index];
         }
 
+        /// <summary>
+        /// 获取指定索引的颜色的Brush
+        /// </summary>
+        /// <param name="index">目标索引</param>
+        /// <returns>Brush</returns>
         public static Brush GetColorByIndex(int index)
         {
             if (index >= _colorBrushList.Count)

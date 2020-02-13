@@ -13,6 +13,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     public class LineSeries : LineSeriesBase
     {
         private LineSeriesType _lineSeriesType = LineSeriesType.Bezier;
+        /// <summary>
+        /// 获取或设置线曲线类型
+        /// </summary>
         public LineSeriesType LineSeriesType
         {
             get { return _lineSeriesType; }
@@ -23,13 +26,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public LineSeries()
             : base()
         {
 
         }
 
-
+        /// <summary>
+        /// 创建曲线Geometry
+        /// </summary>
+        /// <param name="pointInfoListCollection">目标点信息集合</param>
+        /// <returns>Geometry</returns>
         protected override Geometry CreatePathGeometry(List<List<PointInfo>> pointInfoListCollection)
         {
             Geometry geometry;
@@ -204,6 +214,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
     }
 
+    /// <summary>
+    /// 线类型枚举
+    /// </summary>
     public enum LineSeriesType
     {
         /// <summary>

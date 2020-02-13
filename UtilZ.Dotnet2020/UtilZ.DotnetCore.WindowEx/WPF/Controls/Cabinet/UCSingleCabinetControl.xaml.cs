@@ -144,6 +144,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return _cabinetNameDefaultStyle;
         }
 
+        /// <summary>
+        /// 计算机柜控件高度
+        /// </summary>
+        /// <param name="height">机柜身体高度</param>
+        /// <returns>机柜控件高度</returns>
         public static double CalCabinetControlHeight(int height)
         {
             return height * CabinetConstant.SINGLE_U_HEIGHT + _titleHeight + _bottomHeight;

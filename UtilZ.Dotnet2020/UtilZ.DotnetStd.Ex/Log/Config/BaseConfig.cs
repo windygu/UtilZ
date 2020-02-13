@@ -6,12 +6,11 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace UtilZ.DotnetStd.Ex.Log.Config
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 基础配置
     /// </summary>
-    [Serializable]
     public abstract class BaseConfig
     {
         #region 基础配置

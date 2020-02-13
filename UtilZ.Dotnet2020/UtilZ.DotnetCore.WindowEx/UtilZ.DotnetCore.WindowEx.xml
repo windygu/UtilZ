@@ -1414,19 +1414,6 @@
             使用淡出效果。只有当hWnd为顶层窗口的时候才可以使用此标志
             </summary>
         </member>
-        <member name="T:UtilZ.DotnetCore.WindowEx.UserControl1">
-            <summary>
-            Interaction logic for UserControl1.xaml
-            </summary>
-            <summary>
-            UserControl1
-            </summary>
-        </member>
-        <member name="M:UtilZ.DotnetCore.WindowEx.UserControl1.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.Winform.Controls.Resource">
             <summary>
               一个强类型的资源类，用于查找本地化的字符串等。
@@ -1472,6 +1459,42 @@
             <summary>
               查找 System.Drawing.Bitmap 类型的本地化资源。
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Base.ValueConverterAbs">
+            <summary>
+            ValueConverter基类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.ValueConverterAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.ValueConverterAbs.GetEntryAssemblyDirectory">
+            <summary>
+            获取主程序目录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.ValueConverterAbs.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            将后台对象转换为显示的对象
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Base.ValueConverterAbs.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            将显示的对象转换为后台对象
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Base.WPFHelper">
             <summary>
@@ -1816,6 +1839,12 @@
             <param name="deviceUnit"></param>
             <param name="deviceNameStyle"></param>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCCabinetDeviceUControl.UpdateDeviceNameStyle(System.Windows.Style)">
+            <summary>
+            蠹啄剖梁柱设备名称样式
+            </summary>
+            <param name="style"></param>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCCabinetDeviceUControl.InitializeComponent">
             <summary>
             InitializeComponent
@@ -1851,6 +1880,12 @@
             <summary>
             构造函数
             </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCCabinetEmptyUControl.UpdateCabinetDevice(UtilZ.DotnetCore.WindowEx.WPF.Controls.CabinetDeviceUnit)">
+            <summary>
+            更新设备单元
+            </summary>
+            <param name="deviceUnit">备单元</param>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCCabinetEmptyUControl.InitializeComponent">
             <summary>
@@ -1997,9 +2032,21 @@
             构造函数
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCSingleCabinetControl.CalCabinetControlHeight(System.Int32)">
+            <summary>
+            计算机柜控件高度
+            </summary>
+            <param name="height">机柜身体高度</param>
+            <returns>机柜控件高度</returns>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCSingleCabinetControl.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs">
+            <summary>
+            坐标基类
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.DockOrientation">
@@ -2010,6 +2057,11 @@
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.AxisType">
             <summary>
             坐标轴类型
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Orientation">
+            <summary>
+            坐标方向
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.LabelStyle">
@@ -2047,6 +2099,11 @@
             背景刻度线样式
             </summary>
         </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.CreateBackgroundLabelLineFunc">
+            <summary>
+            创建图表中坐标背景线回调
+            </summary>
+        </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Title">
             <summary>
             标题
@@ -2055,6 +2112,11 @@
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.TitleStyle">
             <summary>
             标题样式
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs._PRE">
+            <summary>
+            浮点数比较精度
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PRE">
@@ -2077,19 +2139,172 @@
             获取坐标轴高度
             </summary>
         </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs._axisCanvas">
+            <summary>
+            绘制坐标的画布
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.CalculateAxisSize(System.Double)">
+            <summary>
+            计算X轴高度和Y轴宽度
+            </summary>
+            <param name="labelTextSize">Label文本X轴高度,Y轴宽度</param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.GetAxisYLabelTextLineInterval">
+            <summary>
+            获取Y轴Label和文本之间的间隔
+            </summary>
+            <returns>Y轴Label和文本之间的间隔</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.GetXAxisHeight">
+            <summary>
+            获取X坐标轴高度
+            </summary>
+            <returns>X坐标轴高度</returns>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveGetXAxisHeight">
             <summary>
             获取X坐标轴高度
             </summary>
-            <returns></returns>
+            <returns>X坐标轴高度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.DrawX(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries},System.Double)">
+            <summary>
+            绘制X轴
+            </summary>
+            <param name="seriesCollection">Series集合</param>
+            <param name="axisWidth">X轴宽度</param>
+            <returns>Label的X列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveDrawX(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            绘制X轴
+            </summary>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的X列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.DrawY(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries},System.Double)">
+            <summary>
+            绘制Y轴
+            </summary>
+            <param name="seriesCollection">Series集合</param>
+            <param name="axisHeight">Y轴高度</param>
+            <returns>Label的Y列表</returns>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
             <summary>
             子类重写此函数时,必须设置Y轴宽度
             </summary>
-            <param name="axisCanvas"></param>
-            <param name="seriesCollection"></param>
-            <param name="labelLineSegments"></param>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的Y列表</returns>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.AxisControl">
+            <summary>
+            获取坐标轴控件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.IsAxisYLeft">
+            <summary>
+            Y坐标轴是否左停靠
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.IsAxisXBottom">
+            <summary>
+            X坐标轴是否底部停靠
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.Validate">
+            <summary>
+            验证坐标轴有效性,无效直接抛出ArgumentException异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveValidate">
+            <summary>
+            验证坐标轴有效性,无效直接抛出ArgumentException异常
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.GetX(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在X轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在X轴的坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveGetX(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在X轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在X轴的坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.GetY(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在Y轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在Y轴的坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs.PrimitiveGetY(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在Y轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在Y轴的坐标值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisLabelOrientation">
+            <summary>
+            坐标刻度方向
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisLabelOrientation.LeftToRight">
+            <summary>
+            从左往右
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisLabelOrientation.TopToBottom">
+            <summary>
+            从上往下
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisLabelOrientation.RightToLeft">
+            <summary>
+            从右往左
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisLabelOrientation.BottomToTop">
+            <summary>
+            从下往上
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisType">
+            <summary>
+            坐标类类型
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisType.X">
+            <summary>
+            X轴
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisType.Y">
+            <summary>
+            Y轴
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis">
+            <summary>
+            日期时间坐标轴
+            </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.LabelStep">
             <summary>
@@ -2106,12 +2321,56 @@
             坐标轴刻度最大值,为null时自动计算
             </summary>
         </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.ShowLastLabel">
+            <summary>
+            是否显示刻度标记[true:显示;false:不显示]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.CustomAxisTextFormatCunc">
+            <summary>
+            获取或设置自定义LabelText
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.PrimitiveGetXAxisHeight">
+            <summary>
+            获取X坐标轴高度
+            </summary>
+            <returns>X坐标轴高度</returns>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
             <summary>
             子类重写此函数时,必须设置Y轴宽度
             </summary>
-            <param name="axisCanvas"></param>
-            <param name="seriesCollection"></param>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的Y列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.PrimitiveDrawX(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            绘制X轴
+            </summary>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的X列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.PrimitiveGetX(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在X轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在X轴的坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimeAxis.PrimitiveGetY(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在Y轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在Y轴的坐标值</returns>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis">
             <summary>
@@ -2135,7 +2394,7 @@
         </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.CustomAxisTextFormatCunc">
             <summary>
-            自定义LabelText
+            获取或设置自定义LabelText
             </summary>
         </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis._axisData">
@@ -2150,9 +2409,9 @@
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveGetXAxisHeight">
             <summary>
-            
+            获取X坐标轴高度
             </summary>
-            <returns></returns>
+            <returns>X坐标轴高度</returns>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.CreateAxisData(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
             <summary>
@@ -2161,12 +2420,35 @@
             <param name="seriesCollection"></param>
             <returns></returns>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveDrawX(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            绘制X轴
+            </summary>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的X列表</returns>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
             <summary>
             子类重写此函数时,必须设置Y轴宽度
             </summary>
-            <param name="axisCanvas"></param>
-            <param name="seriesCollection"></param>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的Y列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveGetX(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在X轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在X轴的坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelAxis.PrimitiveGetY(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在Y轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在Y轴的坐标值</returns>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LabelSeriesItem">
             <summary>
@@ -2181,6 +2463,11 @@
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.AngleQuadrantInfo.ModRadians">
             <summary>
             用于计算值的余角弧度
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis">
+            <summary>
+            数值坐标轴
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.LabelStep">
@@ -2198,12 +2485,281 @@
             坐标轴刻度最大值,为double.NaN时自动计算
             </summary>
         </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.ShowLastLabel">
+            <summary>
+            是否显示刻度标记[true:显示;false:不显示]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.CustomAxisTextFormatCunc">
+            <summary>
+            获取或设置自定义LabelText
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.PrimitiveGetXAxisHeight">
+            <summary>
+            获取X坐标轴高度
+            </summary>
+            <returns>X坐标轴高度</returns>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.PrimitiveDrawY(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
             <summary>
-            必须设置Y轴宽度
+            子类重写此函数时,必须设置Y轴宽度
             </summary>
-            <param name="axisCanvas"></param>
-            <param name="seriesCollection"></param>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的Y列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.PrimitiveDrawX(System.Windows.Controls.Canvas,UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection{UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries})">
+            <summary>
+            绘制X轴
+            </summary>
+            <param name="axisCanvas">画布</param>
+            <param name="seriesCollection">Series集合</param>
+            <returns>Label的X列表</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.PrimitiveGetX(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在X轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在X轴的坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberAxis.PrimitiveGetY(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem)">
+            <summary>
+            获取指定项在Y轴的坐标值
+            </summary>
+            <param name="item">目标项</param>
+            <returns>指定项在Y轴的坐标值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.BackgroundLabelLineSegment">
+            <summary>
+            图表区域坐标线段
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.BackgroundLabelLineSegment.Point1">
+            <summary>
+            点1
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.BackgroundLabelLineSegment.Point2">
+            <summary>
+            点2
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.BackgroundLabelLineSegment.#ctor(System.Windows.Point,System.Windows.Point)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="point1">点1</param>
+            <param name="point2">点2</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1">
+            <summary>
+            Chart集合
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.CollectionChanged">
+            <summary>
+            集合改变事件
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.ChartCollectionChanged">
+            <summary>
+            Chart集合改变事件
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Item(System.Int32)">
+            <summary>
+            获取或设置指定索引的值
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Count">
+            <summary>
+            获取集合中的元素个数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.IsReadOnly">
+            <summary>
+            集合是否只读
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Add(`0)">
+            <summary>
+            添加项到集合中
+            </summary>
+            <param name="item">新项</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            添加集合到本集合中
+            </summary>
+            <param name="items">目标集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Insert(System.Int32,`0)">
+            <summary>
+            插入项到指定位置
+            </summary>
+            <param name="index">插入位置</param>
+            <param name="item">要插入的项</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            插入集合到指定位置
+            </summary>
+            <param name="index">插入位置</param>
+            <param name="items">要插入的集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Remove(`0)">
+            <summary>
+            移除项
+            </summary>
+            <param name="item">要移除的项</param>
+            <returns>移除结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.RemoveAll(System.Predicate{`0})">
+            <summary>
+            移除满足匹配条件的项
+            </summary>
+            <param name="match">匹配条件</param>
+            <returns>移除的项数</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.RemoveAt(System.Int32)">
+            <summary>
+            移除指定索引位置的项
+            </summary>
+            <param name="index">目标索引</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Clear">
+            <summary>
+            清空集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.Contains(`0)">
+            <summary>
+            集合中是否包含某项
+            </summary>
+            <param name="item">目标项</param>
+            <returns>包含结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            复制集合到指定数据
+            </summary>
+            <param name="array">目标数据</param>
+            <param name="arrayIndex">起始位置</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.IndexOf(`0)">
+            <summary>
+            检索某项所在位置
+            </summary>
+            <param name="item">目标项</param>
+            <returns>目标项在集合中的位置</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.GetEnumerator">
+            <summary>
+            GetEnumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            IEnumerable.GetEnumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant">
+            <summary>
+            图表常量定义类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.ZERO_D">
+            <summary>
+            double0
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.ZERO_I">
+            <summary>
+            int0
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.LABEL_TEXT_INTERVAL">
+            <summary>
+            标签现文本之间的间隔
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.DEFAULT_STEP_SIZE">
+            <summary>
+            默认步长
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.AXIS_DEFAULT_SIZE">
+            <summary>
+            坐标默认宽度或高度
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.TOOLTIP_PRE">
+            <summary>
+            TOOLTIP有效范围精度
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.ROW_COLUMN_DEFAULT_INDEX">
+            <summary>
+            Grid行列默认索引
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartConstant.GRID_START_SIZE">
+            <summary>
+            Grid*指示大小宽度
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation">
+            <summary>
+            图表元素停靠方向
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation.Left">
+            <summary>
+            左侧
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation.Top">
+            <summary>
+            上侧
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation.Right">
+            <summary>
+            右侧
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation.Bottom">
+            <summary>
+            下侧
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartCollection`1">
+            <summary>
+            Chart集合接口
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartCollection`1.ChartCollectionChanged">
+            <summary>
+            Chart集合改变事件
+            </summary>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
             <summary>
@@ -2218,6 +2774,96 @@
             <param name="index">The index.</param>
             <param name="collection">The collection.</param>
         </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedEventArgs`1">
+            <summary>
+            Chart集合改变事件参数
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedEventArgs`1.Action">
+            <summary>
+            改变行为
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedEventArgs`1.NewItems">
+            <summary>
+            新项集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedEventArgs`1.OldItems">
+            <summary>
+            旧项集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedEventArgs`1.#ctor(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction,System.Collections.Generic.List{`0},System.Collections.Generic.List{`0})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="action">改变行为</param>
+            <param name="newItems">新项集合</param>
+            <param name="oldItems">旧项集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedEventArgs`1.#ctor(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction,`0,`0)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="action">改变行为</param>
+            <param name="newItem">新项</param>
+            <param name="oldItem">旧项</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction">
+            <summary>
+            Chart集合改变改变行为
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction.Add">
+            <summary>
+            添加
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction.Remove">
+            <summary>
+            移除
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction.Replace">
+            <summary>
+            替换
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartCollectionChangedAction.Move">
+            <summary>
+            移动
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo">
+            <summary>
+            Chart绘制点信息
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo.Point">
+            <summary>
+            Point
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo.Item">
+            <summary>
+            数据项
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo.#ctor(System.Windows.Point,UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartValue)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="point">Point</param>
+            <param name="item">数据项</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo.ToString">
+            <summary>
+            ToString
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant">
             <summary>
             XY坐标系象限类型枚举
@@ -2225,12 +2871,151 @@
         </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.One">
             <summary>
-            第一象限[x>0,y>0]
+            <![CDATA[第一象限(x>0,y>0)]]>
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Two" -->
-        <!-- Badly formed XML comment ignored for member "F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Three" -->
-        <!-- Badly formed XML comment ignored for member "F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Four" -->
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Two">
+            <summary>
+            <![CDATA[第二象限(x<0,y>0)]]>
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Three">
+            <summary>
+            <![CDATA[第三象限(x<0,y<0)]]>
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.Quadrant.Four">
+            <summary>
+            <![CDATA[第四象限(x>0,y<0)]]>
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem">
+            <summary>
+            SeriesLegendItem
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem.Brush">
+            <summary>
+            Series Brush
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem.Title">
+            <summary>
+            Series Title
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem.Series">
+            <summary>
+            Series
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem.#ctor(System.Windows.Media.Brush,System.String,UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="brush">Series Brush</param>
+            <param name="title">Series Title</param>
+            <param name="series">Series</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesOrientation">
+            <summary>
+            Series方向
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesOrientation.Horizontal">
+            <summary>
+            水平方向
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesOrientation.Vertical">
+            <summary>
+            垂直方向
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValueAbs">
+            <summary>
+            包含坐标值项基类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValueAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValueAbs.#ctor(System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tooltipText">tooltipText</param>
+            <param name="tag">tag</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValueAbs.GetXValue">
+            <summary>
+            获取X轴坐标值
+            </summary>
+            <returns>X轴坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValueAbs.GetYValue">
+            <summary>
+            获取Y轴坐标值
+            </summary>
+            <returns>Y轴坐标值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValueAbs">
+            <summary>
+            ChartValue子项基类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValueAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValueAbs.#ctor(System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tooltipText">tooltipText</param>
+            <param name="tag">tag</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValueAbs.GetValue">
+            <summary>
+            获取子项值
+            </summary>
+            <returns>子项值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartItemAbs">
+            <summary>
+            Chart项基类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartItemAbs.TooltipText">
+            <summary>
+            Series上点显示的TooltipText
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartItemAbs.Tag">
+            <summary>
+            Tag
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartItemAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartItemAbs.#ctor(System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tooltipText">tooltipText</param>
+            <param name="tag">tag</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs">
+            <summary>
+            无坐标值基类
+            </summary>
+        </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValueAbs.Label">
             <summary>
             Label
@@ -2261,11 +3046,76 @@
             <summary>
             构造函数
             </summary>
-            <param name="value"></param>
-            <param name="label"></param>
-            <param name="title"></param>
-            <param name="style"></param>
-            <param name="tooltip"></param>
+            <param name="value">值</param>
+            <param name="label">Label</param>
+            <param name="title">标题</param>
+            <param name="style">样式</param>
+            <param name="tooltip">tooltip</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartValueAbs">
+            <summary>
+            Chart值基类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartValueAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartValueAbs.#ctor(System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tooltipText">tooltipText</param>
+            <param name="tag">tag</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartAxisValue">
+            <summary>
+            包含坐标值项接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartAxisValue.GetXValue">
+            <summary>
+            获取X轴坐标值
+            </summary>
+            <returns>X轴坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartAxisValue.GetYValue">
+            <summary>
+            获取Y轴坐标值
+            </summary>
+            <returns>Y轴坐标值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartChildValue">
+            <summary>
+            ChartValue子项接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartChildValue.GetValue">
+            <summary>
+            获取子项值
+            </summary>
+            <returns>子项值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem">
+            <summary>
+            Chart项接口
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem.TooltipText">
+            <summary>
+            Series上点显示的TooltipText
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem.Tag">
+            <summary>
+            Tag
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartNoAxisValue">
+            <summary>
+            无坐标值接口
+            </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartNoAxisValue.Label">
             <summary>
@@ -2288,6 +3138,93 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartValue">
+            <summary>
+            Chart值接口
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue">
+            <summary>
+            包含坐标值项实体类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.XValue">
+            <summary>
+            获取X轴值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.YValue">
+            <summary>
+            获取Y轴值
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.#ctor(System.Object,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="xValue">X轴值</param>
+            <param name="yValue">Y轴值</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.#ctor(System.Object,System.Object,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="xValue">X轴值</param>
+            <param name="yValue">Y轴值</param>
+            <param name="tooltipText">tooltipText</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.GetXValue">
+            <summary>
+            获取X轴坐标值
+            </summary>
+            <returns>X轴坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.GetYValue">
+            <summary>
+            获取Y轴坐标值
+            </summary>
+            <returns>Y轴坐标值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartAxisValue.ToString">
+            <summary>
+            重写ToString
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValue">
+            <summary>
+            ChartValue子项实体类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValue.Value">
+            <summary>
+            获取子项值
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValue.#ctor(System.Object)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValue.#ctor(System.Object,System.String,System.Object)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="value">子项值</param>
+            <param name="tooltipText">tooltipText</param>
+            <param name="tag">tag</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartChildValue.GetValue">
+            <summary>
+            获取子项值
+            </summary>
+            <returns>子项值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValue">
+            <summary>
+            无坐标值实体类
+            </summary>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartNoAxisValue.#ctor(System.Object,System.String,System.String,System.Windows.Style,System.String)">
             <summary>
             构造函数
@@ -2298,23 +3235,252 @@
             <param name="style"></param>
             <param name="tooltip"></param>
         </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper">
+            <summary>
+            坐标辅助类
+            </summary>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DoubleToCeilingInteger(System.Double,System.Nullable{System.Int64})">
             <summary>
             向上取整
             </summary>
-            <param name="value"></param>
-            <returns></returns>
+            <param name="value">目标值</param>
+            <param name="muilt">放大倍数</param>
+            <returns>处理结果</returns>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DoubleToFloorInteger(System.Double,System.Nullable{System.Int64})">
             <summary>
             向下取整
             </summary>
-            <param name="value"></param>
+            <param name="value">目标值</param>
+            <param name="muilt">缩小倍数</param>
+            <returns>处理结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.CalDoubleToIntegerMuilt(System.Double)">
+            <summary>
+            计算double值向上或向下取整的倍数
+            </summary>
+            <param name="value">目标值</param>
+            <returns>double值向上或向下取整的倍数</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DoubleHasValue(System.Double)">
+            <summary>
+            判断double什是否有效[有效返回true;无效返回false]
+            </summary>
+            <param name="value">目标值</param>
+            <returns>有效返回true;无效返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DrawXAxisLabelLine(UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs,System.Windows.Controls.Canvas,System.Double,System.Double)">
+            <summary>
+            绘制X轴坐标刻度线
+            </summary>
+            <param name="axis">X轴坐标</param>
+            <param name="canvas">画布</param>
+            <param name="x1">第一个X</param>
+            <param name="x2">第二个X</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DrawXAxisLabelLine(UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs,System.Windows.Controls.Canvas,System.Collections.Generic.List{System.Double})">
+            <summary>
+            绘制X轴坐标刻度线
+            </summary>
+            <param name="axis">X轴坐标</param>
+            <param name="canvas">画布</param>
+            <param name="xList">X轴刻度集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DrawYAxisLabelLine(UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs,System.Windows.Controls.Canvas,System.Double,System.Double)">
+            <summary>
+            绘制Y轴坐标刻度线
+            </summary>
+            <param name="axis">Y轴坐标</param>
+            <param name="canvas">画布</param>
+            <param name="y1">第一个Y</param>
+            <param name="y2">第二个Y</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.DrawYAxisLabelLine(UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs,System.Windows.Controls.Canvas,System.Collections.Generic.List{System.Double})">
+            <summary>
+            绘制Y轴坐标刻度线
+            </summary>
+            <param name="axis">Y轴坐标</param>
+            <param name="canvas">画布</param>
+            <param name="yList">Y轴刻度集合</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.CalculateLabelStepSize(System.Double,System.Double,System.Double)">
+            <summary>
+            计算LabelStepX坐标轴宽度或Y坐标轴高度
+            </summary>
+            <param name="area">坐标值范围</param>
+            <param name="axisSize">X坐标轴宽度或Y坐标轴高度</param>
+            <param name="labelStepValue">labelStep值</param>
+            <returns>LabelStepX坐标轴宽度或Y坐标轴高度</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.CreateLabelControl(UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs,System.String)">
+            <summary>
+            创建坐标轴Label控件
+            </summary>
+            <param name="axis">坐标轴</param>
+            <param name="labelText">标签文本</param>
+            <returns>Label控件</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.MeasureLabelTextSize(UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisAbs,System.String)">
+            <summary>
+            测量标签文本大小
+            </summary>
+            <param name="axis">坐标轴</param>
+            <param name="labelText">标签文本</param>
+            <returns>标签文本大小</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.GetChartItemAxisValue(UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartItem,System.Boolean)">
+            <summary>
+            获取IChartItem中坐标轴的值
+            </summary>
+            <param name="item">目标项</param>
+            <param name="x">X轴为true;Y轴为false</param>
+            <returns>IChartItem中坐标轴的值</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.CreateColumn(UtilZ.DotnetCore.WindowEx.WPF.Controls.IColumnSeries)">
+            <summary>
+            创建ColumnSeries显示控件
+            </summary>
+            <param name="series">ColumnSeries</param>
+            <returns>ColumnSeries显示控件</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.SetColumnTooltipText(UtilZ.DotnetCore.WindowEx.WPF.Controls.IColumnSeries,System.String,System.Windows.FrameworkElement)">
+            <summary>
+            设置ColumnSeriesTooltip
+            </summary>
+            <param name="series">ColumnSeries</param>
+            <param name="tooltipText">Tooltip</param>
+            <param name="column">Column控件</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.ConvertToDouble(System.Object)">
+            <summary>
+            将object转换为double,转换失败返回double.NaN
+            </summary>
+            <param name="obj">目标对象</param>
+            <returns>转换结果</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisHelper.ConvertToDateTime(System.Object)">
+            <summary>
+            将object转换为DateTime,转换失败返回null
+            </summary>
+            <param name="obj">目标对象</param>
+            <returns>转换结果</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper">
+            <summary>
+            Chart样式辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.GetDefaultAxisLabelLineStyle">
+            <summary>
+            获取默认坐标标签线样式
+            </summary>
+            <returns>默认坐标标签线样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.GetDefaultBackgroundLabelLineStyle">
+            <summary>
+            获取默认坐标标签背景线样式
+            </summary>
+            <returns>默认坐标标签背景线样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.GetAxisLabelStyle(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation)">
+            <summary>
+            获取默认坐标标签样式
+            </summary>
+            <returns>默认坐标标签样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.CreateAxisTitleStyle(UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartDockOrientation)">
+            <summary>
+            创建坐标标题样式
+            </summary>
+            <returns>坐标标题样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.GetLineSeriesDefaultStyle">
+            <summary>
+            获取LineSeries默认样式
+            </summary>
+            <returns>LineSeries默认样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.CreateLineSeriesStyle(System.Windows.Media.Brush,System.Double,System.Double)">
+            <summary>
+            创建LineSeries样式
+            </summary>
+            <param name="stroke">Path.Stroke</param>
+            <param name="strokeThickness">Path.StrokeThickness</param>
+            <param name="mouseOverStrokeThickness">鼠标移上去时Path.StrokeThickness的值</param>
+            <returns>LineSeries样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.CreateColumnSeriesStyle(System.Windows.Media.Brush,System.Windows.Media.Brush,System.Double,System.Double)">
+            <summary>
+            创建ColumnSeries样式
+            </summary>
+            <param name="fill">Rectangle.Fill</param>
+            <param name="stroke">Rectangle.Stroke</param>
+            <param name="strokeThickness">Rectangle.StrokeThickness</param>
+            <param name="mouseOverStrokeThickness">鼠标移上去时Rectangle.StrokeThickness的值</param>
+            <returns>ColumnSeries样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.CreateColumnSeriesStyle(System.Windows.Media.Brush,System.Double)">
+            <summary>
+            创建ColumnSeries样式
+            </summary>
+            <param name="fill">Rectangle.Fill</param>
+            <param name="mouseOverOpacity">鼠标移上去时Rectangle.Opacity的值</param>
             <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartStyleHelper.CreatePieSeriesStyle(System.Windows.Media.Brush,System.Windows.Media.Brush,System.Double,System.Double)">
+            <summary>
+            创建PieSeries样式
+            </summary>
+            <param name="stroke">Path.Stroke</param>
+            <param name="fill">Path.Fill</param>
+            <param name="strokeThickness">Path.StrokeThickness</param>
+            <param name="mouseOverStrokeThickness">鼠标移上去时Path.StrokeThickness的值</param>
+            <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColorBrushHelper">
+            <summary>
+            SolidColorBrush辅助类
+            </summary>
         </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColorBrushHelper._colorBrushList">
             <summary>
             Gets or sets the application level default series color list
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColorBrushHelper.GetNextColor">
+            <summary>
+            获取下一种颜色的Brush
+            </summary>
+            <returns>Brush</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColorBrushHelper.GetNextColorByIndex(System.Int32@)">
+            <summary>
+            获取指定索引的颜色的Brush
+            </summary>
+            <param name="index">目标索引</param>
+            <returns>Brush</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColorBrushHelper.GetColorByIndex(System.Int32)">
+            <summary>
+            获取指定索引的颜色的Brush
+            </summary>
+            <param name="index">目标索引</param>
+            <returns>Brush</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartLegendResourceDictionaryKeyConstant">
+            <summary>
+            Legend ItemControl.ItemTemplate Key定义常量类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartLegendResourceDictionaryKeyConstant.NO_EDIT_LEGEND_ITEMCONTROL_STYLE_KEY">
+            <summary>
+            UI上不允许点击CheckBox
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartLegendResourceDictionaryKeyConstant.ALOOW_EDIT_LEGEND_ITEMCONTROL_STYLE_KEY">
+            <summary>
+            UI上允许点击CheckBox
             </summary>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend">
@@ -2325,15 +3491,87 @@
             HorizontalChartLegend
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.DockOrientation">
+            <summary>
+            获取或设置Legend控件停靠方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.Size">
+            <summary>
+            获取或设置水平方向高度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.AllowChecked">
+            <summary>
+            获取或设置允许选中项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.LegendControl">
+            <summary>
+            获取或设置获取Legend控件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.UpdateLegend(System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem})">
+            <summary>
+            更新Legend控件显示项
+            </summary>
+            <param name="legendBrushList">Legend控件显示项列表</param>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.HorizontalChartLegend.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
         </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend">
+            <summary>
+            Legend接口
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.DockOrientation">
+            <summary>
+            获取或设置Legend控件停靠方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.AllowChecked">
+            <summary>
+            获取或设置允许选中项
+            </summary>
+        </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.Size">
             <summary>
-            水平方向高度;垂直方向宽度
+            获取或设置水平方向高度;垂直方向宽高度
             </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.HorizontalAlignment">
+            <summary>
+            获取或设置Legend控件水平对齐方式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.VerticalAlignment">
+            <summary>
+            获取或设置Legend控件垂直对齐方式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.Margin">
+            <summary>
+            获取或设置Legend控件Margin
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.LegendControl">
+            <summary>
+            获取或设置获取Legend控件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend.UpdateLegend(System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem})">
+            <summary>
+            更新Legend控件显示项
+            </summary>
+            <param name="legendBrushList">Legend控件显示项列表</param>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend">
             <summary>
@@ -2343,25 +3581,232 @@
             VerticalChartLegend
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.DockOrientation">
+            <summary>
+            获取或设置Legend控件停靠方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.Size">
+            <summary>
+            获取或设置垂直方向宽高度
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.AllowChecked">
+            <summary>
+            获取或设置允许选中项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.LegendControl">
+            <summary>
+            获取或设置获取Legend控件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.UpdateLegend(System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem})">
+            <summary>
+            更新Legend控件显示项
+            </summary>
+            <param name="legendBrushList">Legend控件显示项列表</param>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VerticalChartLegend.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.VisibilityBoolConverter">
+            <summary>
+            Visibility与Bool转换接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VisibilityBoolConverter.#ctor">
+            <summary>
+            构造函数 
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VisibilityBoolConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            将后台对象转换为显示的对象
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.VisibilityBoolConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            将显示的对象转换为后台对象
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries">
             <summary>
             条形图
             </summary>
         </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.Orientation">
+            <summary>
+            获取或设置ColumnSeries方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.Size">
+            <summary>
+            获取或设置ColumnSeries水平方向高度,垂直方向宽度,为double.NaN则自动计算,默认为double.NaN
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.GetStyle">
+            <summary>
+            获取ColumnSeries样式
+            </summary>
+            <returns>ColumnSeries样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.StyleChanged(System.Windows.Style)">
+            <summary>
+            重写StyleChanged
+            </summary>
+            <param name="style">新样式</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.PrimitiveAdd(System.Windows.Controls.Canvas)">
+            <summary>
+            重写PrimitiveAdd
+            </summary>
+            <param name="canvas"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.PrimitiveRemove(System.Windows.Controls.Canvas)">
+            <summary>
+            重写PrimitiveRemove
+            </summary>
+            <param name="canvas"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ColumnSeries.VisibilityChanged(System.Windows.Visibility,System.Windows.Visibility)">
+            <summary>
+            重写VisibilityChanged
+            </summary>
+            <param name="oldVisibility"></param>
+            <param name="newVisibility"></param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries">
+            <summary>
+            Series接口
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.AxisX">
+            <summary>
+            获取或设置X坐标轴
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.AxisY">
+            <summary>
+            获取或设置Y坐标轴
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.CreatePointFunc">
+            <summary>
+            获取或设置创建坐标点对应的附加控件回调
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.ValuesCollectionChanged">
+            <summary>
+            Values集合改变事件
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Values">
+            <summary>
+            获取或设置值集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Style">
+            <summary>
+            获取或设置Series样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.EnableTooltip">
+            <summary>
+            获取或设置是否启用Tooltip[true:启用Tooltip;false:禁用Tooltip]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.TooltipArea">
+            <summary>
+            获取或设置Tooltip有效区域,鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Title">
+            <summary>
+            获取或设置Series标题
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Add(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series添加到已设置设定大小的画布中
+            </summary>
+            <param name="canvas">目标画布</param>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Remove">
             <summary>
-            返回值:true:需要全部重绘;false:不需要重绘
+            将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
             </summary>
-            <returns></returns>
+            <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Update">
+            <summary>
+            更新Series
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.AppendLegendItemToList(System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem})">
+            <summary>
+            将Series中的Legend项追加到列表中
+            </summary>
+            <param name="legendBrushList">Legend列表</param>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Visibility">
+            <summary>
+            获取或设置SeriesVisibility
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ISeries.Tag">
+            <summary>
+            获取或设置Tag
+            </summary>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeries">
             <summary>
             线形图
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeries.LineSeriesType">
+            <summary>
+            获取或设置线曲线类型
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeries.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeries.CreatePathGeometry(System.Collections.Generic.List{System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo}})">
+            <summary>
+            创建曲线Geometry
+            </summary>
+            <param name="pointInfoListCollection">目标点信息集合</param>
+            <returns>Geometry</returns>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesType">
+            <summary>
+            线类型枚举
             </summary>
         </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesType.PolyLine">
@@ -2384,6 +3829,84 @@
             特点:转角很尖锐
             </summary>
         </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase">
+            <summary>
+            LineSeries基类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.StyleChanged(System.Windows.Style)">
+            <summary>
+            Series样式改变通知
+            </summary>
+            <param name="style">新样式</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.EnableTooltipChanged(System.Boolean)">
+            <summary>
+            EnableTooltip改变通知
+            </summary>
+            <param name="enableTooltip">新EnableTooltip值</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.PrimitiveAdd(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series添加到已设置设定大小的画布中
+            </summary>
+            <param name="canvas">目标画布</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.CreatePathGeometry(System.Collections.Generic.List{System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo}})">
+            <summary>
+            创建曲线Geometry
+            </summary>
+            <param name="pointInfoListCollection">目标点信息集合</param>
+            <returns>Geometry</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.PrimitiveRemove(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+            </summary>
+            <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LineSeriesBase.VisibilityChanged(System.Windows.Visibility,System.Windows.Visibility)">
+            <summary>
+            Visibility改变通知
+            </summary>
+            <param name="oldVisibility">旧值</param>
+            <param name="newVisibility">新值</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries">
+            <summary>
+            饼图
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.AxisX">
+            <summary>
+            获取或设置X坐标轴
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.AxisY">
+            <summary>
+            获取或设置Y坐标轴
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.CreatePointFunc">
+            <summary>
+            获取或设置创建坐标点对应的附加控件回调
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.TooltipArea">
+            <summary>
+            获取或设置Tooltip有效区域,鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.Style">
+            <summary>
+            获取或设置Series样式
+            </summary>
+        </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.LabelStyle">
             <summary>
             标签样式
@@ -2399,19 +3922,205 @@
             饼图半径,小于等于0或为IsInfinity或NaN使用控件高度和宽度中的最小值
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.PrimitiveAdd(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series添加到已设置设定大小的画布中
+            </summary>
+            <param name="canvas">目标画布</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.PrimitiveRemove(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+            </summary>
+            <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.StyleChanged(System.Windows.Style)">
+            <summary>
+            Series样式改变通知
+            </summary>
+            <param name="style"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PieSeries.VisibilityChanged(System.Windows.Visibility,System.Windows.Visibility)">
+            <summary>
+            Visibility改变通知
+            </summary>
+            <param name="oldVisibility">旧值</param>
+            <param name="newVisibility">新值</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs">
+            <summary>
+            Series基类
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.AxisX">
+            <summary>
+            获取或设置X坐标轴
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.AxisY">
+            <summary>
+            获取或设置Y坐标轴
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.CreatePointFunc">
+            <summary>
+            获取或设置创建坐标点对应的附加控件回调
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.ValuesCollectionChanged">
+            <summary>
+            Values集合改变事件
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs._values">
+            <summary>
+            值集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Values">
+            <summary>
+            获取或设置值集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Style">
+            <summary>
+            获取或设置Series样式
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.StyleChanged(System.Windows.Style)">
+            <summary>
+            Series样式改变通知
+            </summary>
+            <param name="style">新样式</param>
+        </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.EnableTooltip">
             <summary>
-            true:启用Tooltip;false:禁用Tooltip
+            获取或设置是否启用Tooltip[true:启用Tooltip;false:禁用Tooltip]
             </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.EnableTooltipChanged(System.Boolean)">
+            <summary>
+            EnableTooltip改变通知
+            </summary>
+            <param name="enableTooltip">新EnableTooltip值</param>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.TooltipArea">
             <summary>
-            鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+            获取或设置Tooltip有效区域,鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Title">
             <summary>
-            标题
+            获取或设置Series标题
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs._canvas">
+            <summary>
+            Chart画布
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Add(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series添加到已设置设定大小的画布中
+            </summary>
+            <param name="canvas">目标画布</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.PrimitiveAdd(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series添加到已设置设定大小的画布中
+            </summary>
+            <param name="canvas">目标画布</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Remove">
+            <summary>
+            将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+            </summary>
+            <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.PrimitiveRemove(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+            </summary>
+            <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Update">
+            <summary>
+            更新Series
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.AppendLegendItemToList(System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem})">
+            <summary>
+            将Series中的Legend项追加到列表中
+            </summary>
+            <param name="legendBrushList">Legend列表</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.AddOrReplaceLegendItem(UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem)">
+            <summary>
+            添加或替换SeriesLegendItem
+            </summary>
+            <param name="legendItem">新SeriesLegendItem</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.AddLegendItem(UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesLegendItem)">
+            <summary>
+            添加SeriesLegendItem
+            </summary>
+            <param name="legendItem">SeriesLegendItem</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.RemoveLegendItem">
+            <summary>
+            移除当前Series中的SeriesLegendItem
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Visibility">
+            <summary>
+            获取或设置SeriesVisibility
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.VisibilityChanged(System.Windows.Visibility,System.Windows.Visibility)">
+            <summary>
+            Visibility改变通知
+            </summary>
+            <param name="oldVisibility">旧值</param>
+            <param name="newVisibility">新值</param>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.SeriesAbs.Tag">
+            <summary>
+            获取或设置Tag
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries">
+            <summary>
+            堆叠条形图
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.Orientation">
+            <summary>
+            获取或设置ColumnSeries方向
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.Size">
+            <summary>
+            获取或设置ColumnSeries水平方向高度,垂直方向宽度,为double.NaN则自动计算,默认为double.NaN
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.Style">
+            <summary>
+            获取或设置Series样式
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.Title">
+            <summary>
+            获取或设置Series标题
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.TitleStyleDic">
@@ -2419,10 +4128,63 @@
             堆叠标题及样式[key:标题;value:样式(为null自动创建)]
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.GetStyle">
+            <summary>
+            获取样式
+            </summary>
+            <returns>样式</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.StyleChanged(System.Windows.Style)">
+            <summary>
+            Series样式改变通知
+            </summary>
+            <param name="style">新样式</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.PrimitiveAdd(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series添加到已设置设定大小的画布中
+            </summary>
+            <param name="canvas">目标画布</param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.PrimitiveRemove(System.Windows.Controls.Canvas)">
+            <summary>
+            将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+            </summary>
+            <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StackedColumnSeries.VisibilityChanged(System.Windows.Visibility,System.Windows.Visibility)">
+            <summary>
+            Visibility改变通知
+            </summary>
+            <param name="oldVisibility">旧值</param>
+            <param name="newVisibility">新值</param>
+        </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.StepLineSeries">
             <summary>
             步进线形图
             </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.StepLineSeries.Orientation">
+            <summary>
+            获取或设置ColumnSeries方向
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StepLineSeries.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.StepLineSeries.CreatePathGeometry(System.Collections.Generic.List{System.Collections.Generic.List{UtilZ.DotnetCore.WindowEx.WPF.Controls.PointInfo}})">
+            <summary>
+            创建曲线Geometry
+            </summary>
+            <param name="pointInfoListCollection">目标点信息集合</param>
+            <returns>Geometry</returns>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.Chart">
             <summary>
@@ -2536,7 +4298,6 @@
             <param name="hasLegend"></param>
             <param name="legend"></param>
             <param name="chartGrid"></param>
-            <param name="axisYWidthInfo"></param>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ChartGridRowColumnDefinition.#ctor(System.Boolean,UtilZ.DotnetCore.WindowEx.WPF.Controls.IChartLegend,System.Windows.Controls.Grid,UtilZ.DotnetCore.WindowEx.WPF.Controls.AxisXHeightInfo)">
             <summary>
@@ -2545,7 +4306,6 @@
             <param name="hasLegend"></param>
             <param name="legend"></param>
             <param name="chartGrid"></param>
-            <param name="axisYWidthInfo"></param>
             <param name="axisXHeightInfo"></param>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker">
@@ -2564,6 +4324,16 @@
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.Value">
             <summary>
             获取或设置值,百分比
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.DateTimeChanged">
+            <summary>
+            日期时间值改变事件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.#ctor">
+            <summary>
+            构造函数
             </summary>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.DateTimePicker.InitializeComponent">
@@ -2704,6 +4474,11 @@
             清空日志
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.LogControl.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.ShowLogItem">
             <summary>
             显示的日志项
@@ -2732,6 +4507,11 @@
             </summary>
             <param name="logText"></param>
             <param name="level">日志级别</param>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl">
+            <summary>
+            数值输入控件
+            </summary>
         </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.ValueProperty">
             <summary>
@@ -2766,6 +4546,11 @@
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.NumberWidthFillDirectionProperty">
             <summary>
             数字文本不足够显示宽度时0的填充方向依赖属性
+            </summary>
+        </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.ValueChanged">
+            <summary>
+            值改变事件
             </summary>
         </member>
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.Value">
@@ -2803,6 +4588,41 @@
             获取或设置当数字文本不足够显示宽度时0的填充方向
             </summary>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewMouseDown(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            重写OnPreviewMouseDown
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnGotFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            重写OnGotFocus
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnLostFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            重写OnLostFocus
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewKeyDown(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            重写OnPreviewKeyDown
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewTextInput(System.Windows.Input.TextCompositionEventArgs)">
+            <summary>
+            重写OnPreviewTextInput
+            </summary>
+            <param name="e"></param>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnPreviewTextInput_AllLessThanZero(System.Windows.Input.TextCompositionEventArgs)">
             <summary>
             皆为负数
@@ -2821,6 +4641,12 @@
             </summary>
             <param name="e"></param>
         </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberControl.OnTextChanged(System.Windows.Controls.TextChangedEventArgs)">
+            <summary>
+            重写OnTextChanged
+            </summary>
+            <param name="e"></param>
+        </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.MinimumMaximumType.AllGreaterOrEqualToZero">
             <summary>
             最大最小值皆为非负数
@@ -2836,6 +4662,11 @@
             最大最小值皆为负数
             </summary>
         </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberWidthFillDirection">
+            <summary>
+            数值宽度填充方向
+            </summary>
+        </member>
         <member name="F:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberWidthFillDirection.Left">
             <summary>
             左侧补0
@@ -2845,6 +4676,28 @@
             <summary>
             右侧补0
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberValueChangedArgs">
+            <summary>
+            number控件值改变事件参数
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberValueChangedArgs.OldValue">
+            <summary>
+            旧值
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberValueChangedArgs.NewValue">
+            <summary>
+            新值
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.NumberValueChangedArgs.#ctor(System.Double,System.Double)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="oldValue">旧值</param>
+            <param name="newValue">新值</param>
         </member>
         <member name="T:UtilZ.DotnetCore.WindowEx.WPF.Controls.PartAsynWait.PartAsynExcuteFactoryWPF">
             <summary>
@@ -3203,6 +5056,16 @@
             页大小最小值
             </summary>
         </member>
+        <member name="E:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCPagingControl.QueryData">
+            <summary>
+            查询数据事件
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCPagingControl.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.UCPagingControl.InitializeComponent">
             <summary>
             InitializeComponent
@@ -3232,6 +5095,21 @@
             <summary>
             页大小
             </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PagingQueryArgs.#ctor(System.Int64,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="totalCount"></param>
+            <param name="totalPageCount"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PagingQueryArgs.ToString">
+            <summary>
+            重写ToString
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.PagingQueryArgs.Cancel(System.Int64)">
             <summary>
@@ -3406,6 +5284,11 @@
         <member name="P:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.TranslateEnable">
             <summary>
             获取或设置平移启用
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.#ctor">
+            <summary>
+            构造函数
             </summary>
         </member>
         <member name="M:UtilZ.DotnetCore.WindowEx.WPF.Controls.ZoomTranslateContainer.AutoZoomToFull(System.Double)">

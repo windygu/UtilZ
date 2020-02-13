@@ -219,10 +219,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
         #endregion
 
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public ZoomTranslateContainer()
         {
             InitializeComponent();
         }
+
+
 
         private void UpdateChild(FrameworkElement newElement, FrameworkElement oldElement)
         {

@@ -52,7 +52,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
         #endregion
 
-
+        /// <summary>
+        /// 日期时间值改变事件
+        /// </summary>
         public event EventHandler<DateTimeValueChangedArgs> DateTimeChanged;
         private void DateTimeChangedCallback(DateTimeValueChangedArgs e)
         {
@@ -64,7 +66,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
-
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public DateTimePicker()
         {
             InitializeComponent();

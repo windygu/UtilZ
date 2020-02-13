@@ -8,9 +8,15 @@ using UtilZ.DotnetStd.Ex.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// Series基类
+    /// </summary>
     public abstract class SeriesAbs : BaseModelAbs, ISeries
     {
         private AxisAbs _axisX = null;
+        /// <summary>
+        /// 获取或设置X坐标轴
+        /// </summary>
         public virtual AxisAbs AxisX
         {
             get { return _axisX; }
@@ -22,6 +28,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private AxisAbs _axisY = null;
+        /// <summary>
+        /// 获取或设置Y坐标轴
+        /// </summary>
         public virtual AxisAbs AxisY
         {
             get { return _axisY; }
@@ -33,6 +42,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private Func<PointInfo, FrameworkElement> _createPointFunc = null;
+        /// <summary>
+        /// 获取或设置创建坐标点对应的附加控件回调
+        /// </summary>
         public virtual Func<PointInfo, FrameworkElement> CreatePointFunc
         {
             get { return _createPointFunc; }
@@ -45,6 +57,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// Values集合改变事件
+        /// </summary>
 
         public event NotifyCollectionChangedEventHandler ValuesCollectionChanged;
         private void Values_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -53,7 +68,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             handler?.Invoke(sender, e);
         }
 
+
+        /// <summary>
+        /// 值集合
+        /// </summary>
         protected ChartCollection<IChartValue> _values = null;
+        /// <summary>
+        /// 获取或设置值集合
+        /// </summary>
         public ChartCollection<IChartValue> Values
         {
             get { return _values; }
@@ -79,6 +101,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private Style _style = null;
+        /// <summary>
+        /// 获取或设置Series样式
+        /// </summary>
         public virtual Style Style
         {
             get { return _style; }
@@ -94,11 +119,15 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// Series样式改变通知
+        /// </summary>
+        /// <param name="style">新样式</param>
         protected abstract void StyleChanged(Style style);
 
         private bool _enableTooltip = false;
         /// <summary>
-        /// true:启用Tooltip;false:禁用Tooltip
+        /// 获取或设置是否启用Tooltip[true:启用Tooltip;false:禁用Tooltip]
         /// </summary>
         public bool EnableTooltip
         {
@@ -114,24 +143,27 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.EnableTooltipChanged(_enableTooltip);
             }
         }
-
+        /// <summary>
+        /// EnableTooltip改变通知
+        /// </summary>
+        /// <param name="enableTooltip">新EnableTooltip值</param>
         protected virtual void EnableTooltipChanged(bool enableTooltip)
         {
 
         }
 
-        private double _tooltipArea = AxisConstant.TOOLTIP_PRE;
+        private double _tooltipArea = ChartConstant.TOOLTIP_PRE;
         /// <summary>
-        /// 鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
+        /// 获取或设置Tooltip有效区域,鼠标点周围范围内有点则触发Tooltip,小于0使用默认值
         /// </summary>
         public virtual double TooltipArea
         {
             get { return _tooltipArea; }
             set
             {
-                if (value < AxisConstant.ZERO_D)
+                if (value < ChartConstant.ZERO_D)
                 {
-                    value = AxisConstant.TOOLTIP_PRE;
+                    value = ChartConstant.TOOLTIP_PRE;
                 }
                 _tooltipArea = value;
             }
@@ -139,7 +171,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private string _title = null;
         /// <summary>
-        /// 标题
+        /// 获取或设置Series标题
         /// </summary>
         public virtual string Title
         {
@@ -154,30 +186,44 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private readonly List<SeriesLegendItem> _currentSeriesLegendItemList = new List<SeriesLegendItem>();
         private List<SeriesLegendItem> _chartSeriesLegendItemList = null;
+        /// <summary>
+        /// Chart画布
+        /// </summary>
+        protected Canvas _canvas;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public SeriesAbs()
         {
 
         }
 
+        
 
-
-
-
-
-
-        protected Canvas _canvas;
+        /// <summary>
+        /// 将Series添加到已设置设定大小的画布中
+        /// </summary>
+        /// <param name="canvas">目标画布</param>
         public void Add(Canvas canvas)
         {
             this._canvas = canvas;
             this._currentSeriesLegendItemList.Clear();
             this.PrimitiveAdd(canvas);
         }
+        /// <summary>
+        /// 将Series添加到已设置设定大小的画布中
+        /// </summary>
+        /// <param name="canvas">目标画布</param>
         protected abstract void PrimitiveAdd(Canvas canvas);
 
 
 
 
-
+        /// <summary>
+        /// 将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+        /// </summary>
+        /// <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
         public bool Remove()
         {
             if (this.PrimitiveRemove(this._canvas))
@@ -197,12 +243,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             return false;
         }
+        /// <summary>
+        /// 将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+        /// </summary>
+        /// <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
         protected abstract bool PrimitiveRemove(Canvas canvas);
 
 
 
 
-
+        /// <summary>
+        /// 更新Series
+        /// </summary>
         public void Update()
         {
             this.PrimitiveRemove(this._canvas);
@@ -211,24 +263,35 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
-        public void FillLegendItemToList(List<SeriesLegendItem> legendBrushList)
+        /// <summary>
+        /// 将Series中的Legend项追加到列表中
+        /// </summary>
+        /// <param name="legendBrushList">Legend列表</param>
+        public void AppendLegendItemToList(List<SeriesLegendItem> legendBrushList)
         {
             legendBrushList.AddRange(this._currentSeriesLegendItemList);
         }
-
+        /// <summary>
+        /// 添加或替换SeriesLegendItem
+        /// </summary>
+        /// <param name="legendItem">新SeriesLegendItem</param>
         protected void AddOrReplaceLegendItem(SeriesLegendItem legendItem)
         {
             this.RemoveLegendItem();
             this._currentSeriesLegendItemList.Add(legendItem);
         }
-
+        /// <summary>
+        /// 添加SeriesLegendItem
+        /// </summary>
+        /// <param name="legendItem">SeriesLegendItem</param>
         protected void AddLegendItem(SeriesLegendItem legendItem)
         {
             this._currentSeriesLegendItemList.Add(legendItem);
         }
 
-
+        /// <summary>
+        /// 移除当前Series中的SeriesLegendItem
+        /// </summary>
         protected void RemoveLegendItem()
         {
             this._currentSeriesLegendItemList.Clear();
@@ -240,6 +303,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private Visibility _visibility = Visibility.Visible;
+        /// <summary>
+        /// 获取或设置SeriesVisibility
+        /// </summary>
         public Visibility Visibility
         {
             get { return _visibility; }
@@ -255,10 +321,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.VisibilityChanged(oldVisibility, _visibility);
             }
         }
-
+        /// <summary>
+        /// Visibility改变通知
+        /// </summary>
+        /// <param name="oldVisibility">旧值</param>
+        /// <param name="newVisibility">新值</param>
         protected abstract void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility);
 
-
+        /// <summary>
+        /// 获取或设置Tag
+        /// </summary>
         public object Tag { get; set; }
     }
 }

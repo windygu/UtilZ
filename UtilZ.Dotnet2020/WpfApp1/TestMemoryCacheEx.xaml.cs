@@ -9,9 +9,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UtilZ.DotnetStd.Ex.Base;
 using UtilZ.DotnetStd.Ex.Base.MemoryCache;
 using UtilZ.DotnetStd.Ex.Log;
-using UtilZ.DotnetStd.Ex.Log.Appender;
 
 namespace WpfApp1
 {
@@ -81,33 +81,40 @@ namespace WpfApp1
         private bool _firstAdd = true;
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (this._firstAdd)
+            try
             {
-                MemoryCacheEx.Add(1, 1);
-                this._firstAdd = false;
+                if (this._firstAdd)
+                {
+                    MemoryCacheEx.Add(1, TimeEx.GetTimestamp());
+                    this._firstAdd = false;
+                }
+
+                MemoryCacheEx.Add(2, TimeEx.GetTimestamp(), this._expiration, this.CacheItemRemovedCallback);
+                MemoryCacheEx.Add(3, TimeEx.GetTimestamp(), TimeSpan.FromMilliseconds(this._expiration), this.CacheItemRemovedCallback);
+                MemoryCacheEx.Add(4, TimeEx.GetTimestamp(), (t) => { return (DateTimeOffset.Now - t.AddTime).TotalMilliseconds > this._expiration * 2; }, this.CacheItemRemovedCallback);
+
+                CacheItem cacheItem = new CacheItem(5, TimeEx.GetTimestamp());
+                cacheItem.AbsoluteExpiration = DateTimeOffset.Now.AddMilliseconds(this._expiration);
+                //cacheItem.SlidingExpiration = slidingExpiration;
+                //cacheItem.CustomerExpiration = customerExpiration;
+                cacheItem.RemovedCallback = this.CacheItemRemovedCallback;
+                //cacheItem.InnerRemovedCallback = true;
+                MemoryCacheEx.Add(cacheItem);
             }
-
-            MemoryCacheEx.Add(2, 2, this._expiration, this.CacheItemRemovedCallback);
-            MemoryCacheEx.Add(3, 3, TimeSpan.FromMilliseconds(this._expiration), this.CacheItemRemovedCallback);
-            MemoryCacheEx.Add(4, 4, (t) => { return (DateTimeOffset.Now - t.AddTime).TotalMilliseconds > this._expiration * 2; }, this.CacheItemRemovedCallback);
-
-            CacheItem cacheItem = new CacheItem(5, 5);
-            cacheItem.AbsoluteExpiration = DateTimeOffset.Now.AddMilliseconds(this._expiration);
-            //cacheItem.SlidingExpiration = slidingExpiration;
-            //cacheItem.CustomerExpiration = customerExpiration;
-            cacheItem.RemovedCallback = this.CacheItemRemovedCallback;
-            //cacheItem.InnerRemovedCallback = true;
-            MemoryCacheEx.Add(cacheItem);
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
         }
 
         private void btnSet_Click(object sender, RoutedEventArgs e)
         {
-            MemoryCacheEx.Set(1, 1);
-            MemoryCacheEx.Set(2, 2, this._expiration, this.CacheItemRemovedCallback);
-            MemoryCacheEx.Set(3, 3, TimeSpan.FromMilliseconds(this._expiration), this.CacheItemRemovedCallback);
-            MemoryCacheEx.Set(4, 4, (t) => { return (DateTimeOffset.Now - t.AddTime).TotalMilliseconds > this._expiration * 2; }, this.CacheItemRemovedCallback);
+            MemoryCacheEx.Set(1, TimeEx.GetTimestamp());
+            MemoryCacheEx.Set(2, TimeEx.GetTimestamp(), this._expiration, this.CacheItemRemovedCallback);
+            MemoryCacheEx.Set(3, TimeEx.GetTimestamp(), TimeSpan.FromMilliseconds(this._expiration), this.CacheItemRemovedCallback);
+            MemoryCacheEx.Set(4, TimeEx.GetTimestamp(), (t) => { return (DateTimeOffset.Now - t.AddTime).TotalMilliseconds > this._expiration * 2; }, this.CacheItemRemovedCallback);
 
-            CacheItem cacheItem = new CacheItem(5, 5);
+            CacheItem cacheItem = new CacheItem(5, TimeEx.GetTimestamp());
             cacheItem.AbsoluteExpiration = DateTimeOffset.Now.AddMilliseconds(this._expiration);
             //cacheItem.SlidingExpiration = slidingExpiration;
             //cacheItem.CustomerExpiration = customerExpiration;

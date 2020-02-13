@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using UtilZ.DotnetCore.WindowEx.WPF.Controls;
 using UtilZ.DotnetStd.Ex.Base;
 using UtilZ.DotnetStd.Ex.Log;
-using UtilZ.DotnetStd.Ex.Log.Appender;
 using WpfApp1.Model;
 
 namespace WpfApp1
@@ -160,11 +159,11 @@ namespace WpfApp1
 
             //TestAllColumnVertical();
 
-            //ValidateLineSeriesBezierData();
+            ValidateLineSeriesBezierData();
 
-            
 
-            TestPieChart();
+
+            //TestPieChart();
         }
 
 
@@ -250,7 +249,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 //MinValue = minTime,
                 //MaxValue = maxTime,
                 LabelStep = null
@@ -259,7 +258,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = minY,
                 MaxValue = maxY,
                 LabelStep = double.NaN
@@ -320,7 +319,7 @@ namespace WpfApp1
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Background = Brushes.Transparent,
-                IsChecked = true
+                AllowChecked = true
             };
             this.ManaulComit = false;
         }
@@ -358,13 +357,13 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight
+                Orientation = AxisLabelOrientation.LeftToRight
             });
             axes.Add(new NumberAxis()
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 EnableBackgroundLabelLine = true,
                 LabelSize = 0d,
                 //MinValue = min,
@@ -378,7 +377,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.RightToLeft,
+                Orientation = AxisLabelOrientation.RightToLeft,
                 MinValue = minTime,
                 MaxValue = maxTime,
                 CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
@@ -388,7 +387,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 EnableBackgroundLabelLine = false,
                 MinValue = min,
                 MaxValue = max,
@@ -503,13 +502,13 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight
+                Orientation = AxisLabelOrientation.LeftToRight
             });
             axes.Add(new NumberAxis()
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 EnableBackgroundLabelLine = true,
                 LabelSize = 0d,
                 //MinValue = min,
@@ -587,13 +586,13 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.TopToBottom
+                Orientation = AxisLabelOrientation.TopToBottom
             });
             axes.Add(new NumberAxis()
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 //MinValue = min,
                 //MaxValue = max,
                 LabelStep = double.NaN
@@ -671,7 +670,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 AxisSize = 200d,
                 //CustomAxisTextFormatCunc = (t) => { return ((DateTime)t).ToString("yyyy-MM-dd \r\n    HH:mm:ss"); },
                 //Angle = 330  //1:310;2:220;3:130;4:50
@@ -681,7 +680,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = min,
                 MaxValue = max,
                 LabelStep = double.NaN,
@@ -763,14 +762,14 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 AxisSize = 20d
             });
             axes.Add(new NumberAxis()
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = min,
                 MaxValue = max,
                 LabelStep = double.NaN
@@ -835,13 +834,13 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.TopToBottom
+                Orientation = AxisLabelOrientation.TopToBottom
             });
             axes.Add(new NumberAxis()
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = min,
                 MaxValue = max,
                 LabelStep = double.NaN
@@ -910,7 +909,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.TopToBottom,
+                Orientation = AxisLabelOrientation.TopToBottom,
                 MinValue = minTime,
                 MaxValue = maxTime,
                 LabelStep = null
@@ -920,7 +919,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = minX,
                 MaxValue = maxX,
                 LabelStep = double.NaN
@@ -930,7 +929,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = minY,
                 MaxValue = maxY,
                 LabelStep = double.NaN
@@ -941,7 +940,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.TopToBottom,
+                Orientation = AxisLabelOrientation.TopToBottom,
                 MinValue = -100000,
                 MaxValue = 100000,
                 LabelStep = double.NaN
@@ -950,7 +949,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.RightToLeft,
+                Orientation = AxisLabelOrientation.RightToLeft,
                 MinValue = -100000,
                 MaxValue = 100000,
                 LabelStep = double.NaN
@@ -1035,7 +1034,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = minY,
                 MaxValue = maxY,
                 LabelStep = double.NaN
@@ -1044,7 +1043,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = minX,
                 MaxValue = maxX,
                 LabelStep = double.NaN
@@ -1054,7 +1053,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = minTime,
                 MaxValue = maxTime,
                 LabelStep = null
@@ -1065,7 +1064,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.TopToBottom,
+                Orientation = AxisLabelOrientation.TopToBottom,
                 MinValue = -100000,
                 MaxValue = 100000,
                 LabelStep = double.NaN
@@ -1074,7 +1073,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.RightToLeft,
+                Orientation = AxisLabelOrientation.RightToLeft,
                 MinValue = -100000,
                 MaxValue = 100000,
                 LabelStep = double.NaN
@@ -1200,7 +1199,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = min,
                 MaxValue = max,
                 CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
@@ -1210,7 +1209,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.RightToLeft,
+                Orientation = AxisLabelOrientation.RightToLeft,
                 MinValue = min,
                 MaxValue = max,
                 CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
@@ -1220,7 +1219,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = min,
                 MaxValue = max,
                 CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
@@ -1230,7 +1229,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.TopToBottom,
+                Orientation = AxisLabelOrientation.TopToBottom,
                 MinValue = min,
                 MaxValue = max,
                 CustomAxisTextFormatCunc = this.DatetimeAsixCustomAxisTextFormatCunc,
@@ -1251,7 +1250,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = -100,
                 MaxValue = 100,
                 LabelStep = double.NaN
@@ -1260,7 +1259,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.TopToBottom,
+                Orientation = AxisLabelOrientation.TopToBottom,
                 MinValue = -100000,
                 MaxValue = 100000,
                 LabelStep = double.NaN
@@ -1269,7 +1268,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = -1000,
                 MaxValue = 1000,
                 LabelStep = double.NaN
@@ -1278,7 +1277,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.RightToLeft,
+                Orientation = AxisLabelOrientation.RightToLeft,
                 MinValue = -100000,
                 MaxValue = 100000,
                 LabelStep = double.NaN
@@ -1293,7 +1292,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Left,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = 0,
                 MaxValue = 100,
                 LabelStep = 20
@@ -1302,7 +1301,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.Y,
                 DockOrientation = ChartDockOrientation.Right,
-                Orientation = AxisOrientation.BottomToTop,
+                Orientation = AxisLabelOrientation.BottomToTop,
                 MinValue = -100,
                 MaxValue = 100,
                 LabelStep = double.NaN
@@ -1311,7 +1310,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Bottom,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = 0,
                 MaxValue = 1000,
                 LabelStep = 200
@@ -1320,7 +1319,7 @@ namespace WpfApp1
             {
                 AxisType = AxisType.X,
                 DockOrientation = ChartDockOrientation.Top,
-                Orientation = AxisOrientation.LeftToRight,
+                Orientation = AxisLabelOrientation.LeftToRight,
                 MinValue = -1000,
                 MaxValue = 1000,
                 LabelStep = double.NaN

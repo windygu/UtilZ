@@ -11,13 +11,17 @@ using UtilZ.DotnetCore.WindowEx.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 坐标辅助类
+    /// </summary>
     public class AxisHelper
     {
         /// <summary>
         /// 向上取整
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">目标值</param>
+        /// <param name="muilt">放大倍数</param>
+        /// <returns>处理结果</returns>
         public static double DoubleToCeilingInteger(double value, long? muilt = null)
         {
             long m;
@@ -36,8 +40,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 向下取整
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">目标值</param>
+        /// <param name="muilt">缩小倍数</param>
+        /// <returns>处理结果</returns>
         public static double DoubleToFloorInteger(double value, long? muilt = null)
         {
             long m;
@@ -53,6 +58,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return Math.Floor(value / m) * m;
         }
 
+
+        /// <summary>
+        /// 计算double值向上或向下取整的倍数
+        /// </summary>
+        /// <param name="value">目标值</param>
+        /// <returns>double值向上或向下取整的倍数</returns>
         public static long CalDoubleToIntegerMuilt(double value)
         {
             int length = ((long)(Math.Abs(value) / 10)).ToString().Length;
@@ -61,6 +72,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// 判断double什是否有效[有效返回true;无效返回false]
+        /// </summary>
+        /// <param name="value">目标值</param>
+        /// <returns>有效返回true;无效返回false</returns>
         public static bool DoubleHasValue(double value)
         {
             if (double.IsInfinity(value) || double.IsNaN(value))
@@ -73,6 +89,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// 绘制X轴坐标刻度线
+        /// </summary>
+        /// <param name="axis">X轴坐标</param>
+        /// <param name="canvas">画布</param>
+        /// <param name="x1">第一个X</param>
+        /// <param name="x2">第二个X</param>
         public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, double x1, double x2)
         {
             if (!axis.DrawAxisLine || !DoubleHasValue(x1) || !DoubleHasValue(x2))
@@ -90,12 +113,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             Point point1, point2;
             if (axis.IsAxisXBottom())
             {
-                point1 = new Point(AxisConstant.ZERO_D, AxisConstant.ZERO_D);
-                point2 = new Point(canvas.Width, AxisConstant.ZERO_D);
+                point1 = new Point(ChartConstant.ZERO_D, ChartConstant.ZERO_D);
+                point2 = new Point(canvas.Width, ChartConstant.ZERO_D);
             }
             else
             {
-                point1 = new Point(AxisConstant.ZERO_D, canvas.Height);
+                point1 = new Point(ChartConstant.ZERO_D, canvas.Height);
                 point2 = new Point(canvas.Width, canvas.Height);
             }
 
@@ -109,6 +132,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             canvas.Children.Add(labelLinePath);
         }
 
+        /// <summary>
+        /// 绘制X轴坐标刻度线
+        /// </summary>
+        /// <param name="axis">X轴坐标</param>
+        /// <param name="canvas">画布</param>
+        /// <param name="xList">X轴刻度集合</param>
         public static void DrawXAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> xList)
         {
             if (!axis.DrawAxisLine || xList == null || xList.Count == 0)
@@ -133,7 +162,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 x = xList[i];
                 if (axis.IsAxisXBottom())
                 {
-                    point1 = new Point(x, AxisConstant.ZERO_D);
+                    point1 = new Point(x, ChartConstant.ZERO_D);
                     point2 = new Point(x, axis.LabelSize);
                 }
                 else
@@ -155,8 +184,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             //坐标轴
             if (axis.IsAxisXBottom())
             {
-                point1 = new Point(xList.First(), AxisConstant.ZERO_D);
-                point2 = new Point(xList.Last(), AxisConstant.ZERO_D);
+                point1 = new Point(xList.First(), ChartConstant.ZERO_D);
+                point2 = new Point(xList.Last(), ChartConstant.ZERO_D);
             }
             else
             {
@@ -176,6 +205,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             canvas.Children.Add(labelLinePath);
         }
 
+        /// <summary>
+        /// 绘制Y轴坐标刻度线
+        /// </summary>
+        /// <param name="axis">Y轴坐标</param>
+        /// <param name="canvas">画布</param>
+        /// <param name="y1">第一个Y</param>
+        /// <param name="y2">第二个Y</param>
         public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, double y1, double y2)
         {
             if (!axis.DrawAxisLine || !DoubleHasValue(y1) || !DoubleHasValue(y2))
@@ -198,8 +234,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
             else
             {
-                point1 = new Point(AxisConstant.ZERO_D, y1);
-                point2 = new Point(AxisConstant.ZERO_D, y2);
+                point1 = new Point(ChartConstant.ZERO_D, y1);
+                point2 = new Point(ChartConstant.ZERO_D, y2);
             }
 
             PathFigure labelPathFigure = new PathFigure();
@@ -212,6 +248,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             canvas.Children.Add(labelLinePath);
         }
 
+        /// <summary>
+        /// 绘制Y轴坐标刻度线
+        /// </summary>
+        /// <param name="axis">Y轴坐标</param>
+        /// <param name="canvas">画布</param>
+        /// <param name="yList">Y轴刻度集合</param>
         public static void DrawYAxisLabelLine(AxisAbs axis, Canvas canvas, List<double> yList)
         {
             if (!axis.DrawAxisLine || yList == null || yList.Count == 0)
@@ -241,7 +283,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 }
                 else
                 {
-                    point1 = new Point(AxisConstant.ZERO_D, y);
+                    point1 = new Point(ChartConstant.ZERO_D, y);
                     point2 = new Point(axis.LabelSize, y);
                 }
 
@@ -262,8 +304,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
             else
             {
-                point1 = new Point(AxisConstant.ZERO_D, yList.First());
-                point2 = new Point(AxisConstant.ZERO_D, yList.Last());
+                point1 = new Point(ChartConstant.ZERO_D, yList.First());
+                point2 = new Point(ChartConstant.ZERO_D, yList.Last());
             }
             PathFigure axisPathFigure = new PathFigure();
             axisPathFigure.StartPoint = point1;
@@ -281,29 +323,30 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-        public static int CalculateLabelCount(double area, double axisSize, double labelStep)
+        /// <summary>
+        /// 计算LabelStepX坐标轴宽度或Y坐标轴高度
+        /// </summary>
+        /// <param name="area">坐标值范围</param>
+        /// <param name="axisSize">X坐标轴宽度或Y坐标轴高度</param>
+        /// <param name="labelStepValue">labelStep值</param>
+        /// <returns>LabelStepX坐标轴宽度或Y坐标轴高度</returns>
+        public static double CalculateLabelStepSize(double area, double axisSize, double labelStepValue)
         {
-            int separatorCount;
-            separatorCount = (int)(area / labelStep);
-            if (area % labelStep > 0)
-            {
-                separatorCount += 1;
-            }
-
-            return separatorCount;
-        }
-
-        public static double CalculateLabelStepSize(double area, double axisSize, double labelStep)
-        {
-            return labelStep * axisSize / area;
+            return labelStepValue * axisSize / area;
         }
 
 
 
-        public static TextBlock CreateLabelControl(AxisAbs axis, string label)
+        /// <summary>
+        /// 创建坐标轴Label控件
+        /// </summary>
+        /// <param name="axis">坐标轴</param>
+        /// <param name="labelText">标签文本</param>
+        /// <returns>Label控件</returns>
+        public static TextBlock CreateLabelControl(AxisAbs axis, string labelText)
         {
             var textBlock = new TextBlock();
-            textBlock.Text = label;
+            textBlock.Text = labelText;
             if (axis.LabelStyle == null)
             {
                 textBlock.Style = ChartStyleHelper.GetAxisLabelStyle(axis.DockOrientation);
@@ -321,6 +364,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static TextBlock _measureTextLabel = null;
+        /// <summary>
+        /// 测量标签文本大小
+        /// </summary>
+        /// <param name="axis">坐标轴</param>
+        /// <param name="labelText">标签文本</param>
+        /// <returns>标签文本大小</returns>
         public static Size MeasureLabelTextSize(AxisAbs axis, string labelText)
         {
             if (_measureTextLabel == null)
@@ -346,7 +395,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取IChartItem中坐标轴的值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <param name="x">X轴为true;Y轴为false</param>
+        /// <returns>IChartItem中坐标轴的值</returns>
         public static object GetChartItemAxisValue(IChartItem item, bool x)
         {
             if (item == null)
@@ -385,7 +439,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 创建ColumnSeries显示控件
+        /// </summary>
+        /// <param name="series">ColumnSeries</param>
+        /// <returns>ColumnSeries显示控件</returns>
         internal static Rectangle CreateColumn(IColumnSeries series)
         {
             var column = new Rectangle();
@@ -393,6 +451,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return column;
         }
 
+        /// <summary>
+        /// 设置ColumnSeriesTooltip
+        /// </summary>
+        /// <param name="series">ColumnSeries</param>
+        /// <param name="tooltipText">Tooltip</param>
+        /// <param name="column">Column控件</param>
         internal static void SetColumnTooltipText(IColumnSeries series, string tooltipText, FrameworkElement column)
         {
             if (series.EnableTooltip &&
@@ -403,6 +467,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 将object转换为double,转换失败返回double.NaN
+        /// </summary>
+        /// <param name="obj">目标对象</param>
+        /// <returns>转换结果</returns>
         public static double ConvertToDouble(object obj)
         {
             if (obj == null)
@@ -431,6 +500,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+
+        /// <summary>
+        /// 将object转换为DateTime,转换失败返回null
+        /// </summary>
+        /// <param name="obj">目标对象</param>
+        /// <returns>转换结果</returns>
         public static DateTime? ConvertToDateTime(object obj)
         {
             if (obj == null)

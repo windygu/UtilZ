@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appender
+namespace UtilZ.DotnetStd.Ex.Log
 {
     internal class LogFileInfo
     {

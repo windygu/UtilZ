@@ -40,7 +40,7 @@ namespace UtilZ.DotnetStd.Ex.Base
         /// <summary>
         /// 触发属性值改变事件
         /// </summary>
-        /// <param name="propertyName">属性名</param>
+        /// <param name="e">改变属性信息</param>
         protected virtual void OnRaisePropertyChanged(PropertyChangedEventArgs e)
         {
             if (e == null)

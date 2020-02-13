@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UtilZ.DotnetStd.Ex.Log.Appender;
-using UtilZ.DotnetStd.Ex.Log.Config;
 
 namespace UtilZ.DotnetStd.Ex.Log
 {

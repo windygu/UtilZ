@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using UtilZ.DotnetStd.Ex.Log.Config;
+using UtilZ.DotnetStd.Ex.Log;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appender
+namespace UtilZ.DotnetStd.Ex.Log
 {
     internal class FileAppenderFixFileNameBuilder : FileAppenderPathBuilderBase
     {

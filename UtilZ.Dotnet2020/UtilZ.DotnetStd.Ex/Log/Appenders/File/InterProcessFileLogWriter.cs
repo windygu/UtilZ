@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
-using UtilZ.DotnetStd.Ex.Log.Appender;
-using UtilZ.DotnetStd.Ex.Log.Config;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile
+namespace UtilZ.DotnetStd.Ex.Log
 {
     internal class InterProcessFileLogWriter : FileLogWriterBase
     {

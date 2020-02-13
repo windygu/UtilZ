@@ -10,9 +10,16 @@ using System.Windows.Shapes;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// Chart样式辅助类
+    /// </summary>
     public class ChartStyleHelper
     {
         private static Style _defaultAxisLabelLineStyle = null;
+        /// <summary>
+        /// 获取默认坐标标签线样式
+        /// </summary>
+        /// <returns>默认坐标标签线样式</returns>
         public static Style GetDefaultAxisLabelLineStyle()
         {
             if (_defaultAxisLabelLineStyle == null)
@@ -30,6 +37,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static Style _defaultBackgroundLabelLineStyle = null;
+        /// <summary>
+        /// 获取默认坐标标签背景线样式
+        /// </summary>
+        /// <returns>默认坐标标签背景线样式</returns>
         public static Style GetDefaultBackgroundLabelLineStyle()
         {
             if (_defaultBackgroundLabelLineStyle == null)
@@ -47,6 +58,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static Dictionary<ChartDockOrientation, Style> _axisLabelDefaultStyleDic = null;
+        /// <summary>
+        /// 获取默认坐标标签样式
+        /// </summary>
+        /// <returns>默认坐标标签样式</returns>
         public static Style GetAxisLabelStyle(ChartDockOrientation axisDockOrientation)
         {
             if (_axisLabelDefaultStyleDic == null)
@@ -93,6 +108,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static Dictionary<ChartDockOrientation, Style> _axisTitleStyleDic = null;
+        /// <summary>
+        /// 创建坐标标题样式
+        /// </summary>
+        /// <returns>坐标标题样式</returns>
         public static Style CreateAxisTitleStyle(ChartDockOrientation axisDockOrientation)
         {
             if (_axisTitleStyleDic == null)
@@ -138,6 +157,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static Style _lineSeriesDefaultStyle = null;
+        /// <summary>
+        /// 获取LineSeries默认样式
+        /// </summary>
+        /// <returns>LineSeries默认样式</returns>
         public static Style GetLineSeriesDefaultStyle()
         {
             if (_lineSeriesDefaultStyle == null)
@@ -159,7 +182,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return _lineSeriesDefaultStyle;
         }
 
-
+        /// <summary>
+        /// 创建LineSeries样式
+        /// </summary>
+        /// <param name="stroke">Path.Stroke</param>
+        /// <param name="strokeThickness">Path.StrokeThickness</param>
+        /// <param name="mouseOverStrokeThickness">鼠标移上去时Path.StrokeThickness的值</param>
+        /// <returns>LineSeries样式</returns>
         public static Style CreateLineSeriesStyle(Brush stroke, double strokeThickness = 2d, double mouseOverStrokeThickness = 3d)
         {
             var style = new Style();
@@ -168,7 +197,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             style.Setters.Add(new Setter(Path.StrokeThicknessProperty, strokeThickness));
             //style.Setters.Add(new Setter(Path.FillProperty, Brushes.White));
 
-            if (AxisHelper.DoubleHasValue(mouseOverStrokeThickness) && mouseOverStrokeThickness > AxisConstant.ZERO_D)
+            if (AxisHelper.DoubleHasValue(mouseOverStrokeThickness) && mouseOverStrokeThickness > ChartConstant.ZERO_D)
             {
                 var trigger = new Trigger();
                 trigger.Property = Path.IsMouseOverProperty;
@@ -181,6 +210,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+
+
+        /// <summary>
+        /// 创建ColumnSeries样式
+        /// </summary>
+        /// <param name="fill">Rectangle.Fill</param>
+        /// <param name="stroke">Rectangle.Stroke</param>
+        /// <param name="strokeThickness">Rectangle.StrokeThickness</param>
+        /// <param name="mouseOverStrokeThickness">鼠标移上去时Rectangle.StrokeThickness的值</param>
+        /// <returns>ColumnSeries样式</returns>
         public static Style CreateColumnSeriesStyle(Brush fill, Brush stroke, double strokeThickness, double mouseOverStrokeThickness = 1d)
         {
             var style = new Style();
@@ -189,7 +228,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             style.Setters.Add(new Setter(Rectangle.StrokeProperty, stroke));
             style.Setters.Add(new Setter(Rectangle.StrokeThicknessProperty, strokeThickness));
 
-            if (AxisHelper.DoubleHasValue(mouseOverStrokeThickness) && mouseOverStrokeThickness > AxisConstant.ZERO_D)
+            if (AxisHelper.DoubleHasValue(mouseOverStrokeThickness) && mouseOverStrokeThickness > ChartConstant.ZERO_D)
             {
                 var trigger = new Trigger();
                 trigger.Property = Rectangle.IsMouseOverProperty;
@@ -201,15 +240,20 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return style;
         }
 
-
+        /// <summary>
+        /// 创建ColumnSeries样式
+        /// </summary>
+        /// <param name="fill">Rectangle.Fill</param>
+        /// <param name="mouseOverOpacity">鼠标移上去时Rectangle.Opacity的值</param>
+        /// <returns></returns>
         public static Style CreateColumnSeriesStyle(Brush fill, double mouseOverOpacity = 0.8d)
         {
             var style = new Style();
             style.TargetType = typeof(Rectangle);
             style.Setters.Add(new Setter(Rectangle.FillProperty, fill));
-            style.Setters.Add(new Setter(Rectangle.StrokeThicknessProperty, AxisConstant.ZERO_D));
+            style.Setters.Add(new Setter(Rectangle.StrokeThicknessProperty, ChartConstant.ZERO_D));
 
-            if (AxisHelper.DoubleHasValue(mouseOverOpacity) && mouseOverOpacity > AxisConstant.ZERO_D)
+            if (AxisHelper.DoubleHasValue(mouseOverOpacity) && mouseOverOpacity > ChartConstant.ZERO_D)
             {
                 var trigger = new Trigger();
                 trigger.Property = Rectangle.IsMouseOverProperty;
@@ -221,28 +265,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return style;
         }
 
-
+        /// <summary>
+        /// 创建PieSeries样式
+        /// </summary>
+        /// <param name="stroke">Path.Stroke</param>
+        /// <param name="fill">Path.Fill</param>
+        /// <param name="strokeThickness">Path.StrokeThickness</param>
+        /// <param name="mouseOverStrokeThickness">鼠标移上去时Path.StrokeThickness的值</param>
+        /// <returns></returns>
         public static Style CreatePieSeriesStyle(Brush stroke, Brush fill, double strokeThickness = 0d, double mouseOverStrokeThickness = 2d)
         {
             Style style = CreateLineSeriesStyle(stroke, strokeThickness, mouseOverStrokeThickness);
             style.Setters.Add(new Setter(Path.FillProperty, fill));
             return style;
         }
-
-        //public static Style CreateStepLineStyle()
-        //{
-        //    var style = new Style();
-        //    style.TargetType = typeof(Polyline);
-        //    style.Setters.Add(new Setter(Polyline.StrokeProperty, Brushes.Gray));
-        //    style.Setters.Add(new Setter(Polyline.StrokeThicknessProperty, 2d));
-        //    //style.Setters.Add(new Setter(Path.FillProperty, Brushes.White));
-
-        //    var trigger = new Trigger();
-        //    trigger.Property = Polyline.IsMouseOverProperty;
-        //    trigger.Value = true;
-        //    trigger.Setters.Add(new Setter(Polyline.StrokeThicknessProperty, 3d));
-        //    style.Triggers.Add(trigger);
-        //    return style;
-        //}
     }
 }

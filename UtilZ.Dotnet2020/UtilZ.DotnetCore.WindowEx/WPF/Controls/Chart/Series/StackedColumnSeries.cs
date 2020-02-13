@@ -10,9 +10,15 @@ using System.Windows.Shapes;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 堆叠条形图
+    /// </summary>
     public class StackedColumnSeries : SeriesAbs, IColumnSeries
     {
         private SeriesOrientation _orientation = SeriesOrientation.Vertical;
+        /// <summary>
+        /// 获取或设置ColumnSeries方向
+        /// </summary>
         public SeriesOrientation Orientation
         {
             get { return _orientation; }
@@ -29,6 +35,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private double _size = double.NaN;
+        /// <summary>
+        /// 获取或设置ColumnSeries水平方向高度,垂直方向宽度,为double.NaN则自动计算,默认为double.NaN
+        /// </summary>
         public double Size
         {
             get { return _size; }
@@ -36,12 +45,17 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 获取或设置Series样式
+        /// </summary>
         public override Style Style
         {
             get => throw new NotSupportedException();
             set => throw new NotSupportedException($"请通过{nameof(TitleStyleDic)}属性设置堆叠标题名称以及样式");
         }
-
+        /// <summary>
+        /// 获取或设置Series标题
+        /// </summary>
         public override string Title
         {
             get => throw new NotSupportedException();
@@ -63,6 +77,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 获取样式
+        /// </summary>
+        /// <returns>样式</returns>
         public Style GetStyle()
         {
             return this.GetStyle(0);
@@ -87,6 +105,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private readonly List<Rectangle> _columnElementList = new List<Rectangle>();
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public StackedColumnSeries()
            : base()
         {
@@ -94,8 +115,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// Series样式改变通知
+        /// </summary>
+        /// <param name="style">新样式</param>
         protected override void StyleChanged(Style style)
         {
+            //不需要实现
         }
 
         private void StyleChanged2()
@@ -124,6 +150,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// 将Series添加到已设置设定大小的画布中
+        /// </summary>
+        /// <param name="canvas">目标画布</param>
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._columnElementList.Clear();
@@ -187,7 +217,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                 enumerable = (IEnumerable)obj;
                 stytleIndex = -1;
-                leftOrRight = AxisConstant.ZERO_D;
+                leftOrRight = ChartConstant.ZERO_D;
 
                 foreach (var item in enumerable)
                 {
@@ -267,7 +297,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
                 enumerable = (IEnumerable)obj;
                 stytleIndex = -1;
-                topOrBottom = AxisConstant.ZERO_D;
+                topOrBottom = ChartConstant.ZERO_D;
 
                 foreach (var item in enumerable)
                 {
@@ -317,7 +347,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+        /// </summary>
+        /// <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
         protected override bool PrimitiveRemove(Canvas canvas)
         {
             //条形力移除后需要完整的重新绘制
@@ -333,7 +366,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// Visibility改变通知
+        /// </summary>
+        /// <param name="oldVisibility">旧值</param>
+        /// <param name="newVisibility">新值</param>
         protected override void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility)
         {
             foreach (var columnElement in this._columnElementList)

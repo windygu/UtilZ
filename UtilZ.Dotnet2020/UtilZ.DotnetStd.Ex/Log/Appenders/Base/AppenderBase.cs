@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using UtilZ.DotnetStd.Ex.Log.Config;
+using UtilZ.DotnetStd.Ex.Log;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appender
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 日志追加器基类
@@ -278,6 +278,7 @@ namespace UtilZ.DotnetStd.Ex.Log.Appender
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

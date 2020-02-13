@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
-using UtilZ.DotnetStd.Ex.Log.Appender;
-using UtilZ.DotnetStd.Ex.Log.Config;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appender
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 数据库日志输出追加器

@@ -5,29 +5,28 @@ using System.Text;
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
     /// <summary>
-    /// 图表元素停靠方向
+    /// 坐标刻度方向
     /// </summary>
-    public enum ChartDockOrientation
+    public enum AxisLabelOrientation
     {
         /// <summary>
-        /// 左侧
+        /// 从左往右
         /// </summary>
-        Left,
+        LeftToRight,
 
         /// <summary>
-        /// 上侧
+        /// 从上往下
         /// </summary>
-        Top,
+        TopToBottom,
 
         /// <summary>
-        /// 右侧
+        /// 从右往左
         /// </summary>
-        Right,
-
+        RightToLeft,
 
         /// <summary>
-        /// 下侧
+        /// 从下往上
         /// </summary>
-        Bottom
+        BottomToTop
     }
 }

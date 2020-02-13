@@ -35,31 +35,31 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //第三步 根据Y轴高度绘制Y轴,并计算Y轴宽度
             double yAxisHeight = axisFreezeInfo.Height;
-            if (yAxisHeight < AxisConstant.ZERO_D)
+            if (yAxisHeight < ChartConstant.ZERO_D)
             {
-                yAxisHeight = AxisConstant.ZERO_D;
+                yAxisHeight = ChartConstant.ZERO_D;
             }
-            else if (yAxisHeight - height < AxisConstant.ZERO_D)
+            else if (yAxisHeight - height < ChartConstant.ZERO_D)
             {
                 //真实高度大于最小值,取更大值
                 yAxisHeight = height;
             }
-            AxisYWidthInfo axisYWidthInfo = this.DrawAxisYByAxisXHeightInfo(axisCollection, chartContentGrid.Children, seriesCollection, yAxisHeight, AxisConstant.ZERO_D);
+            AxisYWidthInfo axisYWidthInfo = this.DrawAxisYByAxisXHeightInfo(axisCollection, chartContentGrid.Children, seriesCollection, yAxisHeight, ChartConstant.ZERO_D);
 
             //第四步 根据X轴宽度绘制X轴
             double width = this.ActualWidth - axisYWidthInfo.LeftAxisTotalWidth - axisYWidthInfo.RightAxisTotalWidth - this._scrollBarWidth - legendAddResult.Left - legendAddResult.Right;
             double xAxisWidth = axisFreezeInfo.Width;
-            if (xAxisWidth < AxisConstant.ZERO_D)
+            if (xAxisWidth < ChartConstant.ZERO_D)
             {
-                xAxisWidth = AxisConstant.ZERO_D;
+                xAxisWidth = ChartConstant.ZERO_D;
             }
-            else if (xAxisWidth - width < AxisConstant.ZERO_D)
+            else if (xAxisWidth - width < ChartConstant.ZERO_D)
             {
                 //真实宽度大于最小值,取更大值
                 xAxisWidth = width;
             }
 
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth, AxisConstant.ZERO_D);
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth, ChartConstant.ZERO_D);
 
             chartContentGrid.Width = xAxisWidth + axisYWidthInfo.LeftAxisTotalWidth + axisYWidthInfo.RightAxisTotalWidth;
             chartContentGrid.Height = yAxisHeight + axisXHeightInfo.TopAxisTotalHeight + axisXHeightInfo.BottomAxisTotalHeight;
@@ -100,7 +100,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //布局内部
             var chartGridRowColumnDefinition2 = new ChartGridRowColumnDefinition(false, null, chartContentGrid, axisYWidthInfo, axisXHeightInfo);
-            if (axisCollection != null && axisCollection.Count > AxisConstant.ZERO_I)
+            if (axisCollection != null && axisCollection.Count > ChartConstant.ZERO_I)
             {
                 RowColumnDefinitionItem rowColumnDefinition;
                 foreach (var axis in axisCollection)

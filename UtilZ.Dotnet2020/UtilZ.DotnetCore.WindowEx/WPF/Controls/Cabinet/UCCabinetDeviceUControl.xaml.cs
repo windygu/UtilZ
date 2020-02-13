@@ -77,6 +77,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
 
+        /// <summary>
+        /// 蠹啄剖梁柱设备名称样式
+        /// </summary>
+        /// <param name="style"></param>
         public void UpdateDeviceNameStyle(Style style)
         {
             if (stackPanel.Children.Count == 0)

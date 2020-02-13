@@ -12,6 +12,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     public class StepLineSeries : LineSeriesBase
     {
         private SeriesOrientation _orientation = SeriesOrientation.Horizontal;
+        /// <summary>
+        /// 获取或设置ColumnSeries方向
+        /// </summary>
         public SeriesOrientation Orientation
         {
             get { return _orientation; }
@@ -27,12 +30,22 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public StepLineSeries()
             : base()
         {
 
         }
 
+
+        /// <summary>
+        /// 创建曲线Geometry
+        /// </summary>
+        /// <param name="pointInfoListCollection">目标点信息集合</param>
+        /// <returns>Geometry</returns>
         protected override Geometry CreatePathGeometry(List<List<PointInfo>> pointInfoListCollection)
         {
             PathFigureCollection pfc;

@@ -87,9 +87,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="UserControl1.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="WPF\Controls\Cabinet\UCCabinetCalibrationControl.xaml">
       <SubType>Designer</SubType>
     </Page>

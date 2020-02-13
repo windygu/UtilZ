@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// Chart集合接口
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IChartCollection<T> : IList<T>, INotifyPropertyChanged, INotifyCollectionChanged
     {
+        /// <summary>
+        /// Chart集合改变事件
+        /// </summary>
         event EventHandler<ChartCollectionChangedEventArgs<T>> ChartCollectionChanged;
 
         /// <summary>
@@ -27,14 +34,33 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         void InsertRange(int index, IEnumerable<T> collection);
     }
 
+    /// <summary>
+    /// Chart集合改变事件参数
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ChartCollectionChangedEventArgs<T> : EventArgs
     {
+        /// <summary>
+        /// 改变行为
+        /// </summary>
         public ChartCollectionChangedAction Action { get; private set; }
 
+        /// <summary>
+        /// 新项集合
+        /// </summary>
         public List<T> NewItems { get; private set; }
 
+        /// <summary>
+        /// 旧项集合
+        /// </summary>
         public List<T> OldItems { get; private set; }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="action">改变行为</param>
+        /// <param name="newItems">新项集合</param>
+        /// <param name="oldItems">旧项集合</param>
         public ChartCollectionChangedEventArgs(ChartCollectionChangedAction action, List<T> newItems, List<T> oldItems)
         {
             this.Action = action;
@@ -42,6 +68,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.OldItems = oldItems;
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="action">改变行为</param>
+        /// <param name="newItem">新项</param>
+        /// <param name="oldItem">旧项</param>
         public ChartCollectionChangedEventArgs(ChartCollectionChangedAction action, T newItem, T oldItem)
         {
             this.Action = action;
@@ -57,12 +89,29 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
     }
 
-
+    /// <summary>
+    /// Chart集合改变改变行为
+    /// </summary>
     public enum ChartCollectionChangedAction
     {
+        /// <summary>
+        /// 添加
+        /// </summary>
         Add = 0,
+
+        /// <summary>
+        /// 移除
+        /// </summary>
         Remove = 1,
+
+        /// <summary>
+        /// 替换
+        /// </summary>
         Replace = 2,
+
+        /// <summary>
+        /// 移动
+        /// </summary>
         Move = 3,
     }
 }

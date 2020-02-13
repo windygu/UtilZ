@@ -417,6 +417,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this._lines.Clear();
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             try

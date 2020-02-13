@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// Chart值接口
+    /// </summary>
     public interface IChartValue : IChartItem
     {
 

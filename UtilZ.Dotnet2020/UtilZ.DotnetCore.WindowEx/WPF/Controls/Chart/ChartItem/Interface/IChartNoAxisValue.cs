@@ -5,6 +5,9 @@ using System.Windows;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 无坐标值接口
+    /// </summary>
     public interface IChartNoAxisValue : IChartValue
     {
         /// <summary>

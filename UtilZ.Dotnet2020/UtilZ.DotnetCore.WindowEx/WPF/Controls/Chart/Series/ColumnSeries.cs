@@ -14,6 +14,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     public class ColumnSeries : SeriesAbs, IColumnSeries
     {
         private SeriesOrientation _orientation = SeriesOrientation.Vertical;
+        /// <summary>
+        /// 获取或设置ColumnSeries方向
+        /// </summary>
         public SeriesOrientation Orientation
         {
             get { return _orientation; }
@@ -30,12 +33,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private double _size = double.NaN;
+        /// <summary>
+        /// 获取或设置ColumnSeries水平方向高度,垂直方向宽度,为double.NaN则自动计算,默认为double.NaN
+        /// </summary>
         public double Size
         {
             get { return _size; }
             set { _size = value; }
         }
 
+        /// <summary>
+        /// 获取ColumnSeries样式
+        /// </summary>
+        /// <returns>ColumnSeries样式</returns>
         public Style GetStyle()
         {
             return base.Style;
@@ -46,13 +56,19 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public ColumnSeries()
             : base()
         {
 
         }
 
-
+        /// <summary>
+        /// 重写StyleChanged
+        /// </summary>
+        /// <param name="style">新样式</param>
         protected override void StyleChanged(Style style)
         {
             base.RemoveLegendItem();
@@ -65,6 +81,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+
+
+        /// <summary>
+        /// 重写PrimitiveAdd
+        /// </summary>
+        /// <param name="canvas"></param>
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._columnElementList.Clear();
@@ -126,12 +148,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (this.AxisY.IsAxisYLeft())
                 {
                     columnElement.Width = x;
-                    Canvas.SetLeft(columnElement, AxisConstant.ZERO_D);
+                    Canvas.SetLeft(columnElement, ChartConstant.ZERO_D);
                 }
                 else
                 {
                     columnElement.Width = canvas.Width - x;
-                    Canvas.SetRight(columnElement, AxisConstant.ZERO_D);
+                    Canvas.SetRight(columnElement, ChartConstant.ZERO_D);
                 }
 
                 Canvas.SetTop(columnElement, y);
@@ -178,12 +200,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 if (this.AxisX.IsAxisXBottom())
                 {
                     columnElement.Height = canvas.Height - y;
-                    Canvas.SetBottom(columnElement, AxisConstant.ZERO_D);
+                    Canvas.SetBottom(columnElement, ChartConstant.ZERO_D);
                 }
                 else
                 {
                     columnElement.Height = y;
-                    Canvas.SetTop(columnElement, AxisConstant.ZERO_D);
+                    Canvas.SetTop(columnElement, ChartConstant.ZERO_D);
                 }
 
                 Canvas.SetLeft(columnElement, x);
@@ -193,7 +215,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 重写PrimitiveRemove
+        /// </summary>
+        /// <param name="canvas"></param>
+        /// <returns></returns>
         protected override bool PrimitiveRemove(Canvas canvas)
         {
             //条形力移除后需要完整的重新绘制
@@ -210,7 +236,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 重写VisibilityChanged
+        /// </summary>
+        /// <param name="oldVisibility"></param>
+        /// <param name="newVisibility"></param>
         protected override void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility)
         {
             foreach (var columnElement in this._columnElementList)

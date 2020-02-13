@@ -5,10 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using UtilZ.DotnetStd.Ex.Log.Appenders.AppendFile;
-using UtilZ.DotnetStd.Ex.Log.Config;
 
-namespace UtilZ.DotnetStd.Ex.Log.Appender
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 文件日志追加器

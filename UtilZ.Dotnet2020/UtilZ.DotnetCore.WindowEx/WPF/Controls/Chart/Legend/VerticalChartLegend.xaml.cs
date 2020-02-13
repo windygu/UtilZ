@@ -18,6 +18,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     /// </summary>
     public partial class VerticalChartLegend : UserControl, IChartLegend
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public VerticalChartLegend()
         {
             InitializeComponent();
@@ -25,7 +28,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.UpdateItemsControlStytle();
         }
 
+        /// <summary>
+        /// 获取或设置Legend控件停靠方向
+        /// </summary>
         public ChartDockOrientation DockOrientation { get; set; } = ChartDockOrientation.Right;
+
+        /// <summary>
+        /// 获取或设置垂直方向宽高度
+        /// </summary>
         public double Size
         {
             get
@@ -38,8 +48,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
-
-        public bool IsChecked
+        /// <summary>
+        /// 获取或设置允许选中项
+        /// </summary>
+        public bool AllowChecked
         {
             get
             {
@@ -69,11 +81,18 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 获取或设置获取Legend控件
+        /// </summary>
         public FrameworkElement LegendControl
         {
             get { return this; }
         }
 
+        /// <summary>
+        /// 更新Legend控件显示项
+        /// </summary>
+        /// <param name="legendBrushList">Legend控件显示项列表</param>
         public void UpdateLegend(List<SeriesLegendItem> legendBrushList)
         {
             itemsControl.ItemsSource = legendBrushList;

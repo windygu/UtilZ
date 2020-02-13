@@ -5,6 +5,9 @@ using System.Windows;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 无坐标值实体类
+    /// </summary>
     public class ChartNoAxisValue : ChartNoAxisValueAbs
     {
         /// <summary>

@@ -4,11 +4,34 @@ using System.Text;
 
 namespace UtilZ.DotnetStd.Ex.Base
 {
+    /// <summary>
+    /// Math扩展类
+    /// </summary>
     public class MathEx
     {
+        /// <summary>
+        /// 角度0°
+        /// </summary>
+        public const double ANGLE_0 = 0d;
+
+        /// <summary>
+        /// 角度90°
+        /// </summary>
         public const double ANGLE_90 = 90d;
+
+        /// <summary>
+        /// 角度180°
+        /// </summary>
         public const double ANGLE_180 = 180d;
+
+        /// <summary>
+        /// 角度270°
+        /// </summary>
         public const double ANGLE_270 = 270d;
+
+        /// <summary>
+        /// 角度360°
+        /// </summary>
         public const double ANGLE_360 = 360d;
 
         /// <summary>

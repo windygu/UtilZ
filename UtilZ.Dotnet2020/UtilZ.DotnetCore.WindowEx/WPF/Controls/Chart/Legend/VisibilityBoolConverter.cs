@@ -7,13 +7,27 @@ using UtilZ.DotnetCore.WindowEx.WPF.Base;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// Visibility与Bool转换接口
+    /// </summary>
     public class VisibilityBoolConverter : ValueConverterAbs
     {
+        /// <summary>
+        /// 构造函数 
+        /// </summary>
         public VisibilityBoolConverter()
         {
 
         }
 
+        /// <summary>
+        /// 将后台对象转换为显示的对象
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
@@ -30,6 +44,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             return false;
         }
 
+        /// <summary>
+        /// 将显示的对象转换为后台对象
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)

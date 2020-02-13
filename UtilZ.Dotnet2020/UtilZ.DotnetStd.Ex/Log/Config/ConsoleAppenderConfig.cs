@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 
-namespace UtilZ.DotnetStd.Ex.Log.Config
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 日志追加器配置
@@ -15,7 +15,8 @@ namespace UtilZ.DotnetStd.Ex.Log.Config
         /// 构造函数
         /// </summary>
         /// <param name="ele">配置元素</param>
-        public ConsoleAppenderConfig(XElement ele) : base(ele)
+        public ConsoleAppenderConfig(XElement ele)
+            : base(ele)
         {
 
         }

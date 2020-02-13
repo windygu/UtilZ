@@ -9,6 +9,9 @@ using System.Windows.Shapes;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 日期时间坐标轴
+    /// </summary>
     public class DateTimeAxis : AxisAbs
     {
         private TimeSpan? _labelStep = null;
@@ -55,6 +58,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         }
 
         private bool _showLastLabel = true;
+        /// <summary>
+        /// 是否显示刻度标记[true:显示;false:不显示]
+        /// </summary>
         public bool ShowLastLabel
         {
             get { return _showLastLabel; }
@@ -68,12 +74,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取或设置自定义LabelText
+        /// </summary>
         public Func<DateTime, string> CustomAxisTextFormatCunc;
         private DateTimeAxisData _axisData = null;
 
 
-
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public DateTimeAxis()
             : base()
         {
@@ -82,7 +92,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private Size _labelTextSize;
-
+        /// <summary>
+        /// 获取X坐标轴高度
+        /// </summary>
+        /// <returns>X坐标轴高度</returns>
         protected override double PrimitiveGetXAxisHeight()
         {
             this._labelTextSize = this.MeasureLabelTextSize();
@@ -227,8 +240,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double labelStepMilliseconds = this._labelStep != null ? this._labelStep.Value.TotalMilliseconds : double.NaN;
             if (double.IsNaN(labelStepMilliseconds))
             {
-                int labelCount = (int)(this._axisCanvas.Height / AxisConstant.DEFAULT_STEP_SIZE);
-                if (this._axisCanvas.Height % AxisConstant.DEFAULT_STEP_SIZE > AxisConstant.ZERO_D)
+                int labelCount = (int)(this._axisCanvas.Height / ChartConstant.DEFAULT_STEP_SIZE);
+                if (this._axisCanvas.Height % ChartConstant.DEFAULT_STEP_SIZE > ChartConstant.ZERO_D)
                 {
                     labelCount += 1;
                 }
@@ -379,8 +392,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 子类重写此函数时,必须设置Y轴宽度
         /// </summary>
-        /// <param name="axisCanvas"></param>
-        /// <param name="seriesCollection"></param>
+        /// <param name="axisCanvas">画布</param>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <returns>Label的Y列表</returns>
         protected override List<double> PrimitiveDrawY(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._labelTextSize = this.MeasureLabelTextSize();
@@ -396,10 +410,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             List<double> yList;
             switch (base.Orientation)
             {
-                case AxisOrientation.BottomToTop:
+                case AxisLabelOrientation.BottomToTop:
                     yList = this.DrawYAxisBottomToTop(axisCanvas, this._axisData, labelStepMilliseconds, labelStepSize);
                     break;
-                case AxisOrientation.TopToBottom:
+                case AxisLabelOrientation.TopToBottom:
                     yList = this.DrawXAxisTopToBottom(axisCanvas, this._axisData, labelStepMilliseconds, labelStepSize);
                     break;
                 default:
@@ -414,9 +428,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             List<double> yList = new List<double>();
             double axisHeight = axisCanvas.Height;
-            double top = AxisConstant.ZERO_D, top2;
+            double top = ChartConstant.ZERO_D, top2;
             DateTime time = axisData.MinValue;
-            double y = AxisConstant.ZERO_D;
+            double y = ChartConstant.ZERO_D;
             TextBlock label;
             Size labelSize = this._labelTextSize;
             double heightHalf = labelSize.Height / 2;
@@ -455,7 +469,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
-                                Canvas.SetBottom(label, AxisConstant.ZERO_D);
+                                Canvas.SetBottom(label, ChartConstant.ZERO_D);
                             }
                             break;
                         default:
@@ -466,11 +480,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisYLeft())
                         {
-                            Canvas.SetLeft(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetLeft(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                         else
                         {
-                            Canvas.SetRight(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetRight(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                     }
                 }
@@ -515,7 +529,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             List<double> yList = new List<double>();
             double axisHeight = axisCanvas.Height;
-            double bottom = AxisConstant.ZERO_D, bottom2;
+            double bottom = ChartConstant.ZERO_D, bottom2;
             DateTime time = axisData.MinValue;
             double y = axisHeight;
             TextBlock label;
@@ -543,7 +557,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             break;
                         case AxisLabelLocation.Middle:
                             bottom2 = bottom - heightHalf;
-                            if (bottom2 > AxisConstant.ZERO_D)
+                            if (bottom2 > ChartConstant.ZERO_D)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
@@ -552,11 +566,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             }
                             break;
                         case AxisLabelLocation.Last:
-                            if (lastLabelY - labelSize.Height > AxisConstant.ZERO_D)
+                            if (lastLabelY - labelSize.Height > ChartConstant.ZERO_D)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
-                                Canvas.SetTop(label, AxisConstant.ZERO_D);
+                                Canvas.SetTop(label, ChartConstant.ZERO_D);
                             }
                             break;
                         default:
@@ -567,11 +581,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisYLeft())
                         {
-                            Canvas.SetLeft(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetLeft(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                         else
                         {
-                            Canvas.SetRight(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetRight(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                     }
                 }
@@ -597,7 +611,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     }
 
                     time = axisData.MaxValue;
-                    y = AxisConstant.ZERO_D;
+                    y = ChartConstant.ZERO_D;
                     labelLocation = AxisLabelLocation.Last;
                 }
                 else
@@ -613,6 +627,13 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+
+        /// <summary>
+        /// 绘制X轴
+        /// </summary>
+        /// <param name="axisCanvas">画布</param>
+        /// <param name="seriesCollection">Series集合</param>
+        /// <returns>Label的X列表</returns>
         protected override List<double> PrimitiveDrawX(Canvas axisCanvas, ChartCollection<ISeries> seriesCollection)
         {
             this._axisData = this.CreateAxisData(seriesCollection);
@@ -626,10 +647,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             double labelStepSize = AxisHelper.CalculateLabelStepSize(this._axisData.Area.TotalMilliseconds, axisCanvas.Width, labelStepMilliseconds);
             switch (base.Orientation)
             {
-                case AxisOrientation.LeftToRight:
+                case AxisLabelOrientation.LeftToRight:
                     xList = this.DrawXAxisLeftToRight(axisCanvas, this._axisData, labelStepMilliseconds, labelStepSize);
                     break;
-                case AxisOrientation.RightToLeft:
+                case AxisLabelOrientation.RightToLeft:
                     xList = this.DrawXAxisRightToLeft(axisCanvas, this._axisData, labelStepMilliseconds, labelStepSize);
                     break;
                 default:
@@ -643,7 +664,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             List<double> xList = new List<double>();
             double axisWidth = axisCanvas.Width;
-            double right = AxisConstant.ZERO_D;
+            double right = ChartConstant.ZERO_D;
             double lastLabelX = axisWidth;
             DateTime time = axisData.MinValue;
             AxisLabelLocation labelTextLocation = AxisLabelLocation.First;
@@ -658,7 +679,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(time));
 
-                if (axisWidth - labelTextWidth > AxisConstant.LABEL_TEXT_INTERVAL)
+                if (axisWidth - labelTextWidth > ChartConstant.LABEL_TEXT_INTERVAL)
                 {
                     addLabelControl = false;
 
@@ -674,7 +695,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                         case AxisLabelLocation.Middle:
                             right += labelStepSize;
                             offset = right - labelTextWidthHalf - lastLabelX;
-                            if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
+                            if (offset >= ChartConstant.LABEL_TEXT_INTERVAL)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
@@ -692,11 +713,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             }
                             break;
                         case AxisLabelLocation.Last:
-                            if (right > AxisConstant.ZERO_D && labelTextWidth + AxisConstant.LABEL_TEXT_INTERVAL <= lastLabelX)
+                            if (right > ChartConstant.ZERO_D && labelTextWidth + ChartConstant.LABEL_TEXT_INTERVAL <= lastLabelX)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
-                                Canvas.SetLeft(label, AxisConstant.ZERO_D);
+                                Canvas.SetLeft(label, ChartConstant.ZERO_D);
                                 lastLabelX = axisWidth;
                             }
                             break;
@@ -708,11 +729,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisXBottom())
                         {
-                            Canvas.SetBottom(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetBottom(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                         else
                         {
-                            Canvas.SetTop(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetTop(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                     }
                 }
@@ -730,7 +751,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 time = time.AddMilliseconds(labelStepMilliseconds);
                 if (time >= axisData.MaxValue)
                 {
-                    x = AxisConstant.ZERO_D;
+                    x = ChartConstant.ZERO_D;
                     time = axisData.MaxValue;
                     labelTextLocation = AxisLabelLocation.Last;
                 }
@@ -747,8 +768,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         {
             List<double> xList = new List<double>();
             double axisWidth = axisCanvas.Width;
-            double left = AxisConstant.ZERO_D;
-            double lastLabelX = AxisConstant.ZERO_D;
+            double left = ChartConstant.ZERO_D;
+            double lastLabelX = ChartConstant.ZERO_D;
             DateTime time = axisData.MinValue;
             AxisLabelLocation labelTextLocation = AxisLabelLocation.First;
             double labelTextWidth = this._labelTextSize.Width;
@@ -762,7 +783,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             {
                 label = AxisHelper.CreateLabelControl(this, this.CreateAxisText(time));
 
-                if (axisWidth - labelTextWidth > AxisConstant.LABEL_TEXT_INTERVAL)
+                if (axisWidth - labelTextWidth > ChartConstant.LABEL_TEXT_INTERVAL)
                 {
                     addLabelControl = false;
 
@@ -778,7 +799,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                         case AxisLabelLocation.Middle:
                             left += labelStepSize;
                             offset = left - labelTextWidthHalf - lastLabelX;
-                            if (offset >= AxisConstant.LABEL_TEXT_INTERVAL)
+                            if (offset >= ChartConstant.LABEL_TEXT_INTERVAL)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
@@ -796,11 +817,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                             }
                             break;
                         case AxisLabelLocation.Last:
-                            if (lastLabelX + labelTextWidth + AxisConstant.LABEL_TEXT_INTERVAL <= axisWidth)
+                            if (lastLabelX + labelTextWidth + ChartConstant.LABEL_TEXT_INTERVAL <= axisWidth)
                             {
                                 axisCanvas.Children.Add(label);
                                 addLabelControl = true;
-                                Canvas.SetRight(label, AxisConstant.ZERO_D);
+                                Canvas.SetRight(label, ChartConstant.ZERO_D);
                                 lastLabelX = axisWidth;
                             }
                             break;
@@ -812,11 +833,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                     {
                         if (base.IsAxisXBottom())
                         {
-                            Canvas.SetBottom(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetBottom(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                         else
                         {
-                            Canvas.SetTop(label, AxisConstant.LABEL_TEXT_INTERVAL);
+                            Canvas.SetTop(label, ChartConstant.LABEL_TEXT_INTERVAL);
                         }
                     }
                 }
@@ -850,12 +871,21 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 获取指定项在X轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在X轴的坐标值</returns>
         protected override double PrimitiveGetX(IChartItem item)
         {
             return this.GetAxis(item, true, base._axisCanvas.Width);
         }
 
+        /// <summary>
+        /// 获取指定项在Y轴的坐标值
+        /// </summary>
+        /// <param name="item">目标项</param>
+        /// <returns>指定项在Y轴的坐标值</returns>
         protected override double PrimitiveGetY(IChartItem item)
         {
             return this.GetAxis(item, false, base._axisCanvas.Height);
@@ -882,8 +912,8 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //计算AxisOrientation.LeftToRight或TopToBottom
             double result = axisSize * (value.Value - this._axisData.MinValue).TotalMilliseconds / this._axisData.Area.TotalMilliseconds;
-            if (base.Orientation == AxisOrientation.RightToLeft ||
-                base.Orientation == AxisOrientation.BottomToTop)
+            if (base.Orientation == AxisLabelOrientation.RightToLeft ||
+                base.Orientation == AxisLabelOrientation.BottomToTop)
             {
                 result = axisSize - result;
             }

@@ -10,6 +10,9 @@ using System.Windows.Input;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 数值输入控件
+    /// </summary>
     public class NumberControl : TextBox
     {
         private const string _POINT = ".";
@@ -79,7 +82,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 值改变事件
+        /// </summary>
         public event EventHandler<NumberValueChangedArgs> ValueChanged;
 
         /// <summary>
@@ -349,6 +354,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         private bool _enablePreviewMouseDown = true;
         private bool _valueNoComit = false;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public NumberControl()
         {
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
@@ -416,7 +424,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 重写OnPreviewMouseDown
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseDown(e);
@@ -433,6 +444,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 重写OnGotFocus
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnGotFocus(RoutedEventArgs e)
         {
             base.OnGotFocus(e);
@@ -441,6 +456,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this._enablePreviewMouseDown = false;
         }
 
+        /// <summary>
+        /// 重写OnLostFocus
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
@@ -451,6 +470,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
         private static Key[] _allowInputKeyArr = null;
         private bool _lastPressDownCtrl = false;
+        /// <summary>
+        /// 重写OnPreviewKeyDown
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -580,6 +603,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
         private static string[] _allowInputStrArr = null;
+        /// <summary>
+        /// 重写OnPreviewTextInput
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPreviewTextInput(TextCompositionEventArgs e)
         {
             base.OnPreviewTextInput(e);
@@ -963,7 +990,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 重写OnTextChanged
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             base.OnTextChanged(e);
@@ -990,6 +1020,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         AllLessThanZero
     }
 
+    /// <summary>
+    /// 数值宽度填充方向
+    /// </summary>
     public enum NumberWidthFillDirection
     {
         /// <summary>
@@ -1004,11 +1037,26 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
     }
 
 
+    /// <summary>
+    /// number控件值改变事件参数
+    /// </summary>
     public class NumberValueChangedArgs : EventArgs
     {
+        /// <summary>
+        /// 旧值
+        /// </summary>
         public double OldValue { get; private set; }
+
+        /// <summary>
+        /// 新值
+        /// </summary>
         public double NewValue { get; private set; }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="oldValue">旧值</param>
+        /// <param name="newValue">新值</param>
         public NumberValueChangedArgs(double oldValue, double newValue)
         {
             this.OldValue = oldValue;

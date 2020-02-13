@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 
-namespace UtilZ.DotnetStd.Ex.Log.Config
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 日志追加器配置
     /// </summary>
-    [Serializable]
     public class FileAppenderConfig : BaseConfig
     {
         /// <summary>

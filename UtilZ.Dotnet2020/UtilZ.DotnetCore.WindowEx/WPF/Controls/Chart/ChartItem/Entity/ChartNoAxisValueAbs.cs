@@ -5,6 +5,9 @@ using System.Windows;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// 无坐标值基类
+    /// </summary>
     public abstract class ChartNoAxisValueAbs : ChartValueAbs, IChartNoAxisValue
     {
         /// <summary>
@@ -39,11 +42,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="label"></param>
-        /// <param name="title"></param>
-        /// <param name="style"></param>
-        /// <param name="tooltip"></param>
+        /// <param name="value">值</param>
+        /// <param name="label">Label</param>
+        /// <param name="title">标题</param>
+        /// <param name="style">样式</param>
+        /// <param name="tooltip">tooltip</param>
         public ChartNoAxisValueAbs(object value, string label, string title, Style style, string tooltip)
             : base(tooltip, null)
         {

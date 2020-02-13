@@ -37,8 +37,7 @@
                      ChartMinWidth="{Binding Path=ChartMinWidth}"
                      Axes="{Binding Path=Axes}"
                      Legend="{Binding Path=Legend}"
-                     ManaulComit="{Binding Path=ManaulComit}"
-                     Background="Beige"/>
+                     ManaulComit="{Binding Path=ManaulComit}"/>
 
         <utilz:LogControl Grid.Row="2" x:Name="logControl"/>
     </Grid>

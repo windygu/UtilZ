@@ -9,12 +9,18 @@ using System.Windows.Shapes;
 
 namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 {
+    /// <summary>
+    /// LineSeries基类
+    /// </summary>
     public abstract class LineSeriesBase : SeriesAbs
     {
         private readonly Path _pathLine = new Path();
         private readonly List<PointInfo> _pointInfoList = new List<PointInfo>();
         private readonly List<FrameworkElement> _pointGeometryList = new List<FrameworkElement>();
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public LineSeriesBase()
             : base()
         {
@@ -28,6 +34,12 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.VisibilityChanged(Visibility.Visible, base.Visibility);
         }
 
+
+
+        /// <summary>
+        /// Series样式改变通知
+        /// </summary>
+        /// <param name="style">新样式</param>
         protected override void StyleChanged(Style style)
         {
             this._pathLine.Style = style;
@@ -35,7 +47,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             base.AddLegendItem(new SeriesLegendItem(this._pathLine.Stroke, base.Title, this));
         }
 
+
+
+
         #region Tooltip
+        /// <summary>
+        /// EnableTooltip改变通知
+        /// </summary>
+        /// <param name="enableTooltip">新EnableTooltip值</param>
         protected override void EnableTooltipChanged(bool enableTooltip)
         {
             if (enableTooltip)
@@ -119,7 +138,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 将Series添加到已设置设定大小的画布中
+        /// </summary>
+        /// <param name="canvas">目标画布</param>
         protected override void PrimitiveAdd(Canvas canvas)
         {
             this._pointInfoList.Clear();
@@ -171,6 +193,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 创建曲线Geometry
+        /// </summary>
+        /// <param name="pointInfoListCollection">目标点信息集合</param>
+        /// <returns>Geometry</returns>
         protected abstract Geometry CreatePathGeometry(List<List<PointInfo>> pointInfoListCollection);
 
 
@@ -222,6 +249,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
+        /// <summary>
+        /// 将Series从画布中移除[返回值:true:需要全部重绘;false:不需要重绘]
+        /// </summary>
+        /// <returns>返回值:true:需要全部重绘;false:不需要重绘</returns>
         protected override bool PrimitiveRemove(Canvas canvas)
         {
             this._pointInfoList.Clear();
@@ -244,7 +275,11 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// Visibility改变通知
+        /// </summary>
+        /// <param name="oldVisibility">旧值</param>
+        /// <param name="newVisibility">新值</param>
         protected override void VisibilityChanged(Visibility oldVisibility, Visibility newVisibility)
         {
             this._pathLine.Visibility = newVisibility;

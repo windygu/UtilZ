@@ -37,9 +37,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //第三步 根据X轴总高度计算图表区域高度高度(等于Y轴高度)
             double yAxisHeight = axisFreezeInfo.Height - axisXHeightInfo.TopAxisTotalHeight - axisXHeightInfo.BottomAxisTotalHeight - legendAddResult.Top - legendAddResult.Bottom - this._scrollBarWidth;
-            if (yAxisHeight < AxisConstant.ZERO_D)
+            if (yAxisHeight < ChartConstant.ZERO_D)
             {
-                yAxisHeight = AxisConstant.ZERO_D;
+                yAxisHeight = ChartConstant.ZERO_D;
             }
 
             //第四步 根据Y轴高度绘制Y轴,并计算Y轴宽度
@@ -49,16 +49,16 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             //第五步 根据宽度绘制X轴
             double width = this.ActualWidth - axisYWidthInfo.LeftAxisTotalWidth - axisYWidthInfo.RightAxisTotalWidth - legendAddResult.Left - legendAddResult.Right;
             double xAxisWidth = axisFreezeInfo.Width;
-            if (xAxisWidth < AxisConstant.ZERO_D)
+            if (xAxisWidth < ChartConstant.ZERO_D)
             {
-                xAxisWidth = AxisConstant.ZERO_D;
+                xAxisWidth = ChartConstant.ZERO_D;
             }
-            else if (xAxisWidth - width < AxisConstant.ZERO_D)
+            else if (xAxisWidth - width < ChartConstant.ZERO_D)
             {
                 //真实宽度大于最小值,取更大值
                 xAxisWidth = width;
             }
-            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth, AxisConstant.ZERO_D);
+            Dictionary<AxisAbs, List<double>> axisXLabelDic = this.DrawAxisX(axisCollection, seriesCollection, chartContentGrid, xAxisWidth, ChartConstant.ZERO_D);
 
             chartCanvas.Width = xAxisWidth;
             chartCanvas.Height = yAxisHeight;
@@ -97,7 +97,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
                 this.SetRowColumn(chartGrid, legend.LegendControl, chartGridRowColumnDefinition.Legend);
             }
 
-            if (axisCollection != null && axisCollection.Count > AxisConstant.ZERO_I)
+            if (axisCollection != null && axisCollection.Count > ChartConstant.ZERO_I)
             {
                 RowColumnDefinitionItem rowColumnDefinition;
                 foreach (var axis in axisCollection)
@@ -134,7 +134,7 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
             //上中下三行布局
             var chartGridRowColumnDefinition2 = new ChartGridRowColumnDefinition(chartContentGrid, axisXHeightInfo);
-            if (axisCollection != null && axisCollection.Count > AxisConstant.ZERO_I)
+            if (axisCollection != null && axisCollection.Count > ChartConstant.ZERO_I)
             {
                 RowColumnDefinitionItem rowColumnDefinition;
                 foreach (var axis in axisCollection)

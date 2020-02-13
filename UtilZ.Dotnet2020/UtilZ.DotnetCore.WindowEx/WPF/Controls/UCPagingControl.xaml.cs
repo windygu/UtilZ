@@ -433,6 +433,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             }
         }
 
+        /// <summary>
+        /// 查询数据事件
+        /// </summary>
         public event EventHandler<PagingQueryArgs> QueryData;
         private void OnRaiseQueryData(long pageIndex)
         {
@@ -481,7 +484,9 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
 
 
 
-
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public UCPagingControl()
         {
             InitializeComponent();
@@ -934,6 +939,14 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
         /// </summary>
         public long PageSize { get; private set; }
 
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="totalCount"></param>
+        /// <param name="totalPageCount"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         public PagingQueryArgs(long totalCount, long totalPageCount, long pageIndex, long pageSize)
         {
             this.TotalCount = totalCount;
@@ -942,6 +955,10 @@ namespace UtilZ.DotnetCore.WindowEx.WPF.Controls
             this.PageSize = pageSize;
         }
 
+        /// <summary>
+        /// 重写ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"TotalCount;{TotalCount},TotalPageCount:{TotalPageCount};PageIndex:{PageIndex};PageSize:{PageSize}";
