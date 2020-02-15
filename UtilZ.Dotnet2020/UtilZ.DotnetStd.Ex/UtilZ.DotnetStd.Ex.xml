@@ -4,6 +4,26 @@
         <name>UtilZ.DotnetStd.Ex</name>
     </assembly>
     <members>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ActivatorEx">
+            <summary>
+             Activator类型扩展方法类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ActivatorEx.CreateInstance(System.String,System.Object[])">
+            <summary>
+            创建实例
+            </summary>
+            <param name="typeFullName">类型名称[格式:类型名,程序集命名.例如:Oracle.ManagedDataAccess.Client.OracleConnection,Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342]</param>
+            <param name="args">构造函数参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ActivatorEx.CreateInstance``1(System.Type)">
+            <summary>
+            创建指定接口类型实例 
+            </summary>
+            <typeparam name="T">接口类型</typeparam>
+            <param name="type">实现该接口的类</param>
+            <returns>接口实例</returns>
+        </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.ApplicationEx">
             <summary>
             应用程序辅助类,控制台程序正常结束需要手动调用ApplicationHelper.OnRaiseApplicationExitNotify方法
@@ -51,6 +71,123 @@
             构造函数 
             </summary>
             <param name="exitNotifyCallback">结束通知回调</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.AssemblyEx">
+            <summary>
+            程序集管理辅助类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.AssemblyEx._enable">
+            <summary>
+            是否内部加载数据库访问组件
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.AssemblyEx.Enable">
+            <summary>
+            获取或设置是否内部加载数据库访问组件,true:内部加载,false:外部加载
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.AssemblyEx._findArea">
+            <summary>
+            查找范围[true:主程序及所有了子目录;false:仅RequestingAssembly所在目录]
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.AssemblyEx.FindArea">
+            <summary>
+            获取或设置查找范围[true:主程序及所有了子目录;false:仅RequestingAssembly所在目录]
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.AssemblyEx._manualLoadAssemblyFuncDic">
+            <summary>
+            手动加载程序集委托列表
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.ManualLoadAssembly(System.Object,System.ResolveEventArgs)">
+            <summary>
+            加载数组库访问程序集
+            </summary>
+            <param name="sender">sender</param>
+            <param name="args">需要的程序集名称信息参数</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.AddManualLoadAssemblyFunc(System.String,System.Func{System.Object,System.ResolveEventArgs,System.Reflection.Assembly})">
+            <summary>
+            添加一个手动加载程序集委托
+            </summary>
+            <param name="key">委托key</param>
+            <param name="func">委托,找着了返回目标程序集,未找着返回null</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.RemoveManualLoadAssemblyFunc(System.String)">
+            <summary>
+            移除一个手动加载程序集委托
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.ClearManualLoadAssemblyFunc">
+            <summary>
+            清空手动加载程序集委托
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.FindAssembly(System.String)">
+            <summary>
+            从当前应用程序域中查找指定名称的程序集[找到返回目标程序集,没找到返回null]
+            </summary>
+            <param name="name">程序集名称或全名</param>
+            <returns>找到返回目标程序集,没找到返回null</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.AddAssembly(System.Reflection.Assembly)">
+            <summary>
+            添加一个程序集
+            </summary>
+            <param name="assembly">程序集</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.AddAssembly(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            添加一个程序集集合
+            </summary>
+            <param name="assemblies">程序集集合</param>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.AssemblyEx.TargetAssemblys">
+            <summary>
+            获取目标程序集集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.ContainsAssembly(System.String)">
+            <summary>
+            目标程序集中是否包含指定名称的程序集[存在返回:true,否则返回false]
+            </summary>
+            <param name="assemblyName">程序集名称</param>
+            <returns>存在返回:true,否则返回false</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.RemoveAssembly(System.Reflection.Assembly)">
+            <summary>
+            移除目标程序集
+            </summary>
+            <param name="assembly"></param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.ClearAssembly">
+            <summary>
+            清空目标程序集集合
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.GetAssemblyName(System.String)">
+            <summary>
+            获取程序集名称[获取失败或非.net程序集,则返回null]
+            </summary>
+            <param name="assemblyPath">程序集路径</param>
+            <returns>程序集名称</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.IsX64OrX86(System.String)">
+            <summary>
+            判断dll文件是64位还是32位[true:64位;false:32位;.NET AnyCpu程序集判断为32位]
+            </summary>
+            <param name="dllFilePath">dll文件路径</param>
+            <returns>[true:64位;false:32位;.NET AnyCpu程序集判断为32位]</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.AssemblyEx.GetAssemblyGUID(System.Reflection.Assembly)">
+            <summary>
+            获取程序集GUID
+            </summary>
+            <param name="assembly">Assembly</param>
+            <returns>程序集GUID</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.AsynQueue`1">
             <summary>
@@ -957,6 +1094,266 @@
             <summary>
             获取一个值，该值指示控件是否已经被释放[如果控件已经被释放，则为 true；否则为 false]
             </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigAttribute">
+            <summary>
+            配置Attribute基类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.ConfigAttribute._name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.Des">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.AllowNullValueElement">
+            <summary>
+            值为null时节点是否存在[true:存在;false:不存在]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+            <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在]</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigComplexItemAttribute">
+            <summary>
+            标记配置项是复合类型
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigComplexItemAttribute.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+            <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigHelper">
+            <summary>
+            配置辅助类
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.WriteConfigToXmlFile(System.Object,System.String)">
+            <summary>
+            写配置对象到xml文件
+            </summary>
+            <param name="config">配置对象</param>
+            <param name="configFilePath">配置文件存放路径</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.WriteConfigToXDocument(System.Object)">
+            <summary>
+            写配置到XDocument
+            </summary>
+            <param name="config">配置对象</param>
+            <returns>配置XDocument</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromFile``1(System.String)">
+            <summary>
+            从文件读取配置
+            </summary>
+            <typeparam name="T">配置对象类型</typeparam>
+            <param name="configFilePath">配置文件路径</param>
+            <returns>配置对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromFile(System.String,System.Object)">
+            <summary>
+            从文件读取配置到指定的配置对象
+            </summary>
+            <param name="configFilePath">配置文件路径</param>
+            <param name="config">指定的配置对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml``1(System.String)">
+            <summary>
+            从xml配置中读取配置
+            </summary>
+            <typeparam name="T">配置对象类型</typeparam>
+            <param name="xmlStr">xml字符串</param>
+            <returns>配置对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml(System.String,System.Object)">
+            <summary>
+            从xml配置中读取配置到指定的配置对象中
+            </summary>
+            <param name="xmlStr">xml字符串</param>
+            <param name="config">指定的配置对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml``1(System.Xml.Linq.XDocument)">
+            <summary>
+            从XDocument配置中读取配置
+            </summary>
+            <typeparam name="T">配置对象类型</typeparam>
+            <param name="xdoc">XDocument配置</param>
+            <returns>配置对象</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml(System.Xml.Linq.XDocument,System.Object)">
+            <summary>
+            从xml配置中读取配置到指定的配置对象中
+            </summary>
+            <param name="xdoc">xml配置</param>
+            <param name="config">指定的配置对象</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.PrimitiveReadConfigFromXml(System.Xml.Linq.XDocument,System.Object)">
+            <summary>
+            从xml配置中读取配置到指定的配置对象中
+            </summary>
+            <param name="xdoc">xml配置</param>
+            <param name="config">指定的配置对象</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigIgnoreAttribute">
+            <summary>
+            标记配置项为忽略
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigIgnoreAttribute.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemAttribute">
+            <summary>
+            标记基元配置项
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemAttribute.Converter">
+            <summary>
+            配置值转换对象
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemAttribute.#ctor(System.String,System.String,System.Type,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+            <param name="converterType">基元类型转换接口类型,该类型必需实现IConfigValueConverter接口</param>
+            <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemCollectionAttribute">
+            <summary>
+            标记配置项集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemCollectionAttribute.ChildName">
+            <summary>
+            子项名称
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemCollectionAttribute.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+            <param name="childName">子项名称</param>
+            <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemPrimitiveCollectionAttribute">
+            <summary>
+            标记配置项集合
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemPrimitiveCollectionAttribute.Converter">
+            <summary>
+            配置值转换对象
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemPrimitiveCollectionAttribute.#ctor(System.String,System.String,System.String,System.Type,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+            <param name="childName">子项名称</param>
+            <param name="converterType">基元类型转换接口类型,该类型必需实现IConfigValueConverter接口</param>
+            <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute">
+            <summary>
+            标记配置项自定义读写
+            </summary>
+        </member>
+        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute.CustomerConfig">
+            <summary>
+            自定义配置项读写
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute.#ctor(System.String,System.String,System.Type,System.Boolean)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+            <param name="customerConfigType">自定义配置项读写类型</param>
+            <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigRootAttribute">
+            <summary>
+            标记配置根
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigRootAttribute.#ctor(System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="name">名称</param>
+            <param name="des">描述</param>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.IConfigValueConverter">
+            <summary>
+            配置值转换接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IConfigValueConverter.ConvertTo(System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            将属性值转换为字符串
+            </summary>
+            <param name="propertyInfo">PropertyInfo</param>
+            <param name="value">属性值</param>
+            <returns>字符串</returns>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.IConfigValueConverter.ConvertFrom(System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            将字符串转换为属性值
+            </summary>
+            <param name="propertyInfo">PropertyInfo</param>
+            <param name="value">字符串</param>
+            <returns>属性值</returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.ICustomerConfig">
+            <summary>
+            自定义配置项读写接口
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ICustomerConfig.Write(System.Reflection.PropertyInfo,System.Object,System.Xml.Linq.XElement,UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute)">
+            <summary>
+            写配置项
+            </summary>
+            <param name="propertyInfo">PropertyInfo</param>
+            <param name="value">属性值</param>
+            <param name="element">存放配置的XElement</param>
+            <param name="attri">ConfigItemCustomerAttribute</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.ICustomerConfig.Read(System.Reflection.PropertyInfo,System.Xml.Linq.XElement,UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute)">
+            <summary>
+            读配置项
+            </summary>
+            <param name="propertyInfo">PropertyInfo</param>
+            <param name="element">存放配置的XElement</param>
+            <param name="attri">ConfigItemCustomerAttribute</param>
+            <returns>属性值</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.ConvertEx">
             <summary>
@@ -2792,6 +3189,31 @@
             是否超时
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:UtilZ.DotnetStd.Ex.Base.TypeEx">
+            <summary>
+             Type类型扩展方法类
+            </summary>
+        </member>
+        <member name="F:UtilZ.DotnetStd.Ex.Base.TypeEx._htTypes">
+            <summary>
+            已创建过后类型[key:类型名称;value:Type]
+            </summary>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.TypeEx.ConvertTypeByTypeFullName(System.String,System.Boolean)">
+            <summary>
+            根据类型全名称转换为类型
+            </summary>
+            <param name="typeFullName">类型名称[格式:类型名,程序集命名.例如:Oracle.ManagedDataAccess.Client.OracleConnection,Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342]</param>
+            <param name="hasCache">是否缓存转换之后的类型[true:缓存;false:不缓存]</param>
+        </member>
+        <member name="M:UtilZ.DotnetStd.Ex.Base.TypeEx.IsSubInterfaceOf(System.Type,System.Type)">
+            <summary>
+            确定当前的类型是继承自指定的接口[true:继承自接口;false:未继承自接口]
+            </summary>
+            <param name="type">当前的类型</param>
+            <param name="interfaceType">接口类型</param>
+            <returns>true:继承自接口;false:未继承自接口</returns>
         </member>
         <member name="T:UtilZ.DotnetStd.Ex.Base.XmlEx">
             <summary>

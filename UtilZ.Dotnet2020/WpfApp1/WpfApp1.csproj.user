@@ -15,6 +15,9 @@
     <Compile Update="TestChartCollection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="TestConfig.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="TestMemoryCacheEx.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -30,6 +33,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="TestChartCollection.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="TestConfig.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="TestLogControl.xaml">
