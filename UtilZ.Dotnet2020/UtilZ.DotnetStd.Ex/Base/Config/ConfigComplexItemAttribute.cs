@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Base
+namespace UtilZ.DotnetStd.Ex.Base.Config
 {
     /// <summary>
     /// 标记配置项是复合类型

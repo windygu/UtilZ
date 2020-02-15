@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Base
+namespace UtilZ.DotnetStd.Ex.Base.Config
 {
     /// <summary>
     /// 配置值转换接口

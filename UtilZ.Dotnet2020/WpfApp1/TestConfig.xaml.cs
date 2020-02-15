@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UtilZ.DotnetStd.Ex.Base;
+using UtilZ.DotnetStd.Ex.Base.Config;
 using UtilZ.DotnetStd.Ex.Log;
 
 namespace WpfApp1
@@ -70,37 +71,37 @@ namespace WpfApp1
     }
 
 
-    //[ConfigRoot("Config")]
+    [ConfigRoot("Config")]
     public class ConfigDemo
     {
-       // [ConfigItem("年龄", "1-200")]
+        [ConfigItem("年龄", "1-200")]
         public int Age { get; set; }
 
-       // [ConfigItemPrimitiveCollection("名字列表", "好多名称", "Name")]
+        [ConfigItemPrimitiveCollection("名字列表", "好多名称", "Name")]
         public List<string> Names { get; set; }
 
-       // [ConfigItemCollection("ChildList", null, "Child")]
+        [ConfigItemCollection("ChildList", null, "Child")]
         public List<ConfigChildItem> Child { get; set; }
     }
 
     public class ConfigChildItem
     {
-        //[ConfigItem("ID", "编号1...9999")]
+        [ConfigItem("ID", "编号1...9999")]
         public long ID { get; set; }
 
-        //[ConfigItem("姓名", "人的代号")]
+        [ConfigItem("姓名", "人的代号")]
         public string Name { get; set; }
 
-       // [ConfigComplexItem("ComplexChild", null, false)]
+        [ConfigComplexItem("ComplexChild", null, false)]
         public ConfigChildItem2 Child2 { get; set; }
     }
 
     public class ConfigChildItem2
     {
-       // [ConfigItem("ChildItem2.ID", "编号1...9999")]
+        [ConfigItem("ChildItem2.ID", "编号1...9999")]
         public long ID { get; set; }
 
-        //[ConfigItemAttribute("Bir", "生日", typeof(DateTimeConfigValueConverter), true)]
+        [ConfigItemAttribute("Bir", "生日", typeof(DateTimeConfigValueConverter), true)]
         public DateTime Bir { get; set; }
     }
 

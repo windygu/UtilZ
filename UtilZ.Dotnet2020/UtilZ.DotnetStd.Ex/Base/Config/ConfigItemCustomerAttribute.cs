@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.DotnetStd.Ex.Base
+namespace UtilZ.DotnetStd.Ex.Base.Config
 {
     /// <summary>
     /// 标记配置项自定义读写

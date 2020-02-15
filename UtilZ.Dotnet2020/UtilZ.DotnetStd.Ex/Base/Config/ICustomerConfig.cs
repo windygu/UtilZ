@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
-namespace UtilZ.DotnetStd.Ex.Base
+namespace UtilZ.DotnetStd.Ex.Base.Config
 {
     /// <summary>
     /// 自定义配置项读写接口

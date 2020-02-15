@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace UtilZ.DotnetStd.Ex.Base
+namespace UtilZ.DotnetStd.Ex.Base.Config
 {
     /// <summary>
     /// 配置辅助类

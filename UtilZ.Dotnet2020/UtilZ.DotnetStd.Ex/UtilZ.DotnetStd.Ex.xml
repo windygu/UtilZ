@@ -1095,27 +1095,27 @@
             获取一个值，该值指示控件是否已经被释放[如果控件已经被释放，则为 true；否则为 false]
             </summary>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigAttribute">
             <summary>
             配置Attribute基类
             </summary>
         </member>
-        <member name="F:UtilZ.DotnetStd.Ex.Base.ConfigAttribute._name">
+        <member name="F:UtilZ.DotnetStd.Ex.Base.Config.ConfigAttribute._name">
             <summary>
             名称
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.Des">
+        <member name="P:UtilZ.DotnetStd.Ex.Base.Config.ConfigAttribute.Des">
             <summary>
             描述
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.AllowNullValueElement">
+        <member name="P:UtilZ.DotnetStd.Ex.Base.Config.ConfigAttribute.AllowNullValueElement">
             <summary>
             值为null时节点是否存在[true:存在;false:不存在]
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.#ctor(System.String,System.String,System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigAttribute.#ctor(System.String,System.String,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -1123,17 +1123,17 @@
             <param name="des">描述</param>
             <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在]</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigAttribute.#ctor">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigAttribute.#ctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigComplexItemAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigComplexItemAttribute">
             <summary>
             标记配置项是复合类型
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigComplexItemAttribute.#ctor(System.String,System.String,System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigComplexItemAttribute.#ctor(System.String,System.String,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -1141,26 +1141,26 @@
             <param name="des">描述</param>
             <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigHelper">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper">
             <summary>
             配置辅助类
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.WriteConfigToXmlFile(System.Object,System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.WriteConfigToXmlFile(System.Object,System.String)">
             <summary>
             写配置对象到xml文件
             </summary>
             <param name="config">配置对象</param>
             <param name="configFilePath">配置文件存放路径</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.WriteConfigToXDocument(System.Object)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.WriteConfigToXDocument(System.Object)">
             <summary>
             写配置到XDocument
             </summary>
             <param name="config">配置对象</param>
             <returns>配置XDocument</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromFile``1(System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.ReadConfigFromFile``1(System.String)">
             <summary>
             从文件读取配置
             </summary>
@@ -1168,14 +1168,14 @@
             <param name="configFilePath">配置文件路径</param>
             <returns>配置对象</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromFile(System.String,System.Object)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.ReadConfigFromFile(System.String,System.Object)">
             <summary>
             从文件读取配置到指定的配置对象
             </summary>
             <param name="configFilePath">配置文件路径</param>
             <param name="config">指定的配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml``1(System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.ReadConfigFromXml``1(System.String)">
             <summary>
             从xml配置中读取配置
             </summary>
@@ -1183,14 +1183,14 @@
             <param name="xmlStr">xml字符串</param>
             <returns>配置对象</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml(System.String,System.Object)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.ReadConfigFromXml(System.String,System.Object)">
             <summary>
             从xml配置中读取配置到指定的配置对象中
             </summary>
             <param name="xmlStr">xml字符串</param>
             <param name="config">指定的配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml``1(System.Xml.Linq.XDocument)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.ReadConfigFromXml``1(System.Xml.Linq.XDocument)">
             <summary>
             从XDocument配置中读取配置
             </summary>
@@ -1198,41 +1198,41 @@
             <param name="xdoc">XDocument配置</param>
             <returns>配置对象</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.ReadConfigFromXml(System.Xml.Linq.XDocument,System.Object)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.ReadConfigFromXml(System.Xml.Linq.XDocument,System.Object)">
             <summary>
             从xml配置中读取配置到指定的配置对象中
             </summary>
             <param name="xdoc">xml配置</param>
             <param name="config">指定的配置对象</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigHelper.PrimitiveReadConfigFromXml(System.Xml.Linq.XDocument,System.Object)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigHelper.PrimitiveReadConfigFromXml(System.Xml.Linq.XDocument,System.Object)">
             <summary>
             从xml配置中读取配置到指定的配置对象中
             </summary>
             <param name="xdoc">xml配置</param>
             <param name="config">指定的配置对象</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigIgnoreAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigIgnoreAttribute">
             <summary>
             标记配置项为忽略
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigIgnoreAttribute.#ctor">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigIgnoreAttribute.#ctor">
             <summary>
             构造函数
             </summary>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemAttribute">
             <summary>
             标记基元配置项
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemAttribute.Converter">
+        <member name="P:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemAttribute.Converter">
             <summary>
             配置值转换对象
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemAttribute.#ctor(System.String,System.String,System.Type,System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemAttribute.#ctor(System.String,System.String,System.Type,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -1241,17 +1241,17 @@
             <param name="converterType">基元类型转换接口类型,该类型必需实现IConfigValueConverter接口</param>
             <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemCollectionAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCollectionAttribute">
             <summary>
             标记配置项集合
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemCollectionAttribute.ChildName">
+        <member name="P:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCollectionAttribute.ChildName">
             <summary>
             子项名称
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemCollectionAttribute.#ctor(System.String,System.String,System.String,System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCollectionAttribute.#ctor(System.String,System.String,System.String,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -1260,17 +1260,17 @@
             <param name="childName">子项名称</param>
             <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemPrimitiveCollectionAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemPrimitiveCollectionAttribute">
             <summary>
             标记配置项集合
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemPrimitiveCollectionAttribute.Converter">
+        <member name="P:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemPrimitiveCollectionAttribute.Converter">
             <summary>
             配置值转换对象
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemPrimitiveCollectionAttribute.#ctor(System.String,System.String,System.String,System.Type,System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemPrimitiveCollectionAttribute.#ctor(System.String,System.String,System.String,System.Type,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -1280,17 +1280,17 @@
             <param name="converterType">基元类型转换接口类型,该类型必需实现IConfigValueConverter接口</param>
             <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCustomerAttribute">
             <summary>
             标记配置项自定义读写
             </summary>
         </member>
-        <member name="P:UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute.CustomerConfig">
+        <member name="P:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCustomerAttribute.CustomerConfig">
             <summary>
             自定义配置项读写
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute.#ctor(System.String,System.String,System.Type,System.Boolean)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCustomerAttribute.#ctor(System.String,System.String,System.Type,System.Boolean)">
             <summary>
             构造函数
             </summary>
@@ -1299,24 +1299,24 @@
             <param name="customerConfigType">自定义配置项读写类型</param>
             <param name="allowNullValueElement">值为null时节点是否存在[true:存在;false:不存在],默认值false</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ConfigRootAttribute">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ConfigRootAttribute">
             <summary>
             标记配置根
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ConfigRootAttribute.#ctor(System.String,System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ConfigRootAttribute.#ctor(System.String,System.String)">
             <summary>
             构造函数
             </summary>
             <param name="name">名称</param>
             <param name="des">描述</param>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.IConfigValueConverter">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.IConfigValueConverter">
             <summary>
             配置值转换接口
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.IConfigValueConverter.ConvertTo(System.Reflection.PropertyInfo,System.Object)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.IConfigValueConverter.ConvertTo(System.Reflection.PropertyInfo,System.Object)">
             <summary>
             将属性值转换为字符串
             </summary>
@@ -1324,7 +1324,7 @@
             <param name="value">属性值</param>
             <returns>字符串</returns>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.IConfigValueConverter.ConvertFrom(System.Reflection.PropertyInfo,System.String)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.IConfigValueConverter.ConvertFrom(System.Reflection.PropertyInfo,System.String)">
             <summary>
             将字符串转换为属性值
             </summary>
@@ -1332,12 +1332,12 @@
             <param name="value">字符串</param>
             <returns>属性值</returns>
         </member>
-        <member name="T:UtilZ.DotnetStd.Ex.Base.ICustomerConfig">
+        <member name="T:UtilZ.DotnetStd.Ex.Base.Config.ICustomerConfig">
             <summary>
             自定义配置项读写接口
             </summary>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ICustomerConfig.Write(System.Reflection.PropertyInfo,System.Object,System.Xml.Linq.XElement,UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ICustomerConfig.Write(System.Reflection.PropertyInfo,System.Object,System.Xml.Linq.XElement,UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCustomerAttribute)">
             <summary>
             写配置项
             </summary>
@@ -1346,7 +1346,7 @@
             <param name="element">存放配置的XElement</param>
             <param name="attri">ConfigItemCustomerAttribute</param>
         </member>
-        <member name="M:UtilZ.DotnetStd.Ex.Base.ICustomerConfig.Read(System.Reflection.PropertyInfo,System.Xml.Linq.XElement,UtilZ.DotnetStd.Ex.Base.ConfigItemCustomerAttribute)">
+        <member name="M:UtilZ.DotnetStd.Ex.Base.Config.ICustomerConfig.Read(System.Reflection.PropertyInfo,System.Xml.Linq.XElement,UtilZ.DotnetStd.Ex.Base.Config.ConfigItemCustomerAttribute)">
             <summary>
             读配置项
             </summary>
