@@ -11,7 +11,6 @@ namespace UtilZ.Dotnet.Ex.Log
     /// <summary>
     /// 日志信息类
     /// </summary>
-    [Serializable]
     public class LogItem
     {
         /// <summary>
@@ -112,7 +111,7 @@ namespace UtilZ.Dotnet.Ex.Log
         public object[] Args { get; private set; }
 
         /// <summary>
-        /// 消息
+        /// 完整的日志信息
         /// </summary>
         public string Message { get; private set; }
 

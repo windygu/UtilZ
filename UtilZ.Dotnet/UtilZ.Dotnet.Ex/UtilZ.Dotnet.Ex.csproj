@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UtilZ.Dotnet.Ex</RootNamespace>
     <AssemblyName>UtilZ.Dotnet.Ex</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ActivatorEx.cs" />
-    <Compile Include="Base\ApplicationHelper.cs" />
+    <Compile Include="Base\ApplicationEx.cs" />
     <Compile Include="Base\BindingCollection\BindingCollection.cs" />
     <Compile Include="Base\BindingCollection\BindingListChangedArgs.cs" />
     <Compile Include="Base\BindingCollection\BindingListChangedType.cs" />
@@ -67,6 +67,17 @@
     <Compile Include="Base\BindingCollection\ICollectionOwner.cs" />
     <Compile Include="Base\BlockingCollectionEx.cs" />
     <Compile Include="Base\BlockingCollectionExThread.cs" />
+    <Compile Include="Base\Config\ConfigAttribute.cs" />
+    <Compile Include="Base\Config\ConfigAttributeTypes.cs" />
+    <Compile Include="Base\Config\ConfigComplexItemAttribute.cs" />
+    <Compile Include="Base\Config\ConfigHelper.cs" />
+    <Compile Include="Base\Config\ConfigIgnoreAttribute.cs" />
+    <Compile Include="Base\Config\ConfigItemAttribute.cs" />
+    <Compile Include="Base\Config\ConfigItemCollectionAttribute.cs" />
+    <Compile Include="Base\Config\ConfigItemCustomerAttribute.cs" />
+    <Compile Include="Base\Config\ConfigRootAttribute.cs" />
+    <Compile Include="Base\Config\IConfigValueConverter.cs" />
+    <Compile Include="Base\Config\ICustomerConfig.cs" />
     <Compile Include="Base\DebugEx.cs" />
     <Compile Include="Base\DictionaryEx.cs" />
     <Compile Include="Base\EnvironmentEx.cs" />

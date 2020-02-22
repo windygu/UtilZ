@@ -171,10 +171,10 @@ namespace UtilZ.Dotnet.Ex.Base
             {
                 ele.Value = eleValue;
             }
-            else
-            {
-                ele.Value = string.Empty;
-            }
+            //else
+            //{
+            //    ele.Value = string.Empty;
+            //}
 
             ele.Add(new XAttribute(attriName, attiValue));
             return ele;

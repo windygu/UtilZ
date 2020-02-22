@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using UtilZ.Dotnet.Ex.Log.Appender;
-using UtilZ.Dotnet.Ex.Log.Config;
 
-namespace UtilZ.Dotnet.Ex.Log.Appenders.AppendFile
+namespace UtilZ.Dotnet.Ex.Log
 {
     internal class MinimalFileLogWriter : FileLogWriterBase
     {

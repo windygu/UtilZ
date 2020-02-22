@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
-using UtilZ.Dotnet.Ex.Log.Appender;
-using UtilZ.Dotnet.Ex.Log.Config;
 
-namespace UtilZ.Dotnet.Ex.Log.Appender
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 邮件日志输出追加器

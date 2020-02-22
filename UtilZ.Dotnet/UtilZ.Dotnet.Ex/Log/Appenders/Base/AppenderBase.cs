@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using UtilZ.Dotnet.Ex.Log.Config;
+using UtilZ.Dotnet.Ex.Log;
 
-namespace UtilZ.Dotnet.Ex.Log.Appender
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 日志追加器基类
@@ -178,6 +178,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
                 List<object> args = new List<object>();
                 int index = 0;
                 string tmp;
+
                 //时间
                 if (layoutFormat.Contains(LogConstant.TIME))
                 {
@@ -278,6 +279,7 @@ namespace UtilZ.Dotnet.Ex.Log.Appender
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

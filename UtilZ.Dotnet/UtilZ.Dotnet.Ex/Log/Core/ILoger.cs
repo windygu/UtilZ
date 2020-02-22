@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UtilZ.Dotnet.Ex.Log.Appender;
+using UtilZ.Dotnet.Ex.Log;
 
 namespace UtilZ.Dotnet.Ex.Log
 {

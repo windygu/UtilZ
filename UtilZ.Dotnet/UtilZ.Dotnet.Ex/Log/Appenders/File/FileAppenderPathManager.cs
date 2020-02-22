@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using UtilZ.Dotnet.Ex.Log.Config;
+using UtilZ.Dotnet.Ex.Log;
 
-namespace UtilZ.Dotnet.Ex.Log.Appender
+namespace UtilZ.Dotnet.Ex.Log
 {
     internal class FileAppenderPathManager
     {

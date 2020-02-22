@@ -25,6 +25,5 @@
 
         <Button Style="{StaticResource btnStyle}" Content="Test" Margin="10,0,0,0" x:Name="btnTest" Click="btnTest_Click"/>
 
-        <chart:ChartControl Grid.Row="1" x:Name="chartControl"/>
     </Grid>
 </Window>

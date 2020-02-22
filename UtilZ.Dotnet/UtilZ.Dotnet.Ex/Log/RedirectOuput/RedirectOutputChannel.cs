@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace UtilZ.Dotnet.Ex.Log
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 输出日志订阅项
@@ -49,7 +49,7 @@ namespace UtilZ.Dotnet.Ex.Log
             try
             {
                 if (!string.IsNullOrEmpty(this._loggerName) &&
-                    !string.Equals(this._loggerName, logItem.Item.Name))
+                    !string.Equals(this._loggerName, logItem.Item.LogerName))
                 {
                     //日志记录器名称不为空或null,且与产生日志的日志记录器名称不匹配，直接返回
                     return;

@@ -6,15 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.DataStruct;
 using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base;
@@ -22,21 +16,22 @@ using UtilZ.Dotnet.WindowEx.Base;
 namespace UtilZ.Dotnet.WindowEx.WPF.Controls
 {
     /// <summary>
-    /// LogControl.xaml 的交互逻辑
+    /// 日志显示控件
     /// </summary>
-    public partial class LogControl : UserControl, ILogControl
+    public sealed class LogControl : RichTextBox, ILogControl, IDisposable
     {
+        #region 依赖属性
         /// <summary>
         /// 最多显示项数依赖属性
         /// </summary>
         private static readonly DependencyProperty MaxItemCountProperty =
-            DependencyProperty.RegisterAttached(nameof(LogControl.MaxItemCount), typeof(int), typeof(LogControl), new PropertyMetadata(100, PropertyChanged));
+            DependencyProperty.RegisterAttached(nameof(MaxItemCount), typeof(int), typeof(LogControl), new PropertyMetadata(100, PropertyChanged));
 
         /// <summary>
         /// 是否锁定滚动依赖属性
         /// </summary>
         private static readonly DependencyProperty IsLockProperty =
-            DependencyProperty.RegisterAttached(nameof(LogControl.IsLock), typeof(bool), typeof(LogControl), new PropertyMetadata(false, PropertyChanged));
+            DependencyProperty.RegisterAttached(nameof(IsLock), typeof(bool), typeof(LogControl), new PropertyMetadata(false, PropertyChanged));
 
         private static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -95,13 +90,17 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 this.SetValue(LogControl.IsLockProperty, value);
             }
         }
+        #endregion
+
+
+
 
         private AsynQueue<ShowLogItem> _logShowQueue = null;
-        private readonly object _logShowQueueLock = new object();
         /// <summary>
         /// 单次最大刷新日志条数
         /// </summary>
         private int _refreshCount = 5;
+        private readonly object _logLock = new object();
 
         /// <summary>
         /// 日志缓存容量
@@ -115,24 +114,31 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// </summary>
         private readonly Dictionary<int, LogShowStyle> _styleDic = new Dictionary<int, LogShowStyle>();
         private readonly LogShowStyle _defaultStyle;
+
+
+
+        private readonly Paragraph content;
         private readonly Delegate _primitiveShowLogDelegate;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public LogControl()
+            : base()
         {
-            InitializeComponent();
+            this.IsReadOnly = true;
+            this.Background = Brushes.Black;
+            this.BorderThickness = new Thickness(0d);
+            this.content = new Paragraph();
+            base.Document.Blocks.Clear();
+            base.Document.Blocks.Add(this.content);
 
             this._primitiveShowLogDelegate = new Action<List<ShowLogItem>>(this.PrimitiveShowLog);
 
-            this._defaultStyle = new LogShowStyle(0, Colors.Gray);
-            this._defaultStyle.Name = "默认样式";
+            this._defaultStyle = new LogShowStyle(0, Colors.Gray) { Name = "默认样式" };
             this.AddDefaultStyle();
             this.StartRefreshLogThread();
         }
-
-
 
         /// <summary>
         /// 添加默认样式
@@ -163,48 +169,35 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 throw new ArgumentException(string.Format("日志缓存容量参数值:{0}无效,该值不能小于单次最大刷新日志条数参数值:{1}", cacheCapcity, refreshCount), "cacheCapcity");
             }
 
-            if (this._refreshCount == refreshCount && this._cacheCapcity == cacheCapcity)
+            lock (this._logLock)
             {
-                //参数相同,忽略
-                return;
+                if (this._refreshCount == refreshCount && this._cacheCapcity == cacheCapcity)
+                {
+                    //参数相同,忽略
+                    return;
+                }
+
+                this._refreshCount = refreshCount;
+                this._cacheCapcity = cacheCapcity;
+                this.StartRefreshLogThread();
             }
-
-            this._refreshCount = refreshCount;
-            this._cacheCapcity = cacheCapcity;
-
-            this.StartRefreshLogThread();
         }
 
-        private ApplicationExitNotify _applicationExitNotify = null;
         /// <summary>
         /// 启动刷新日志线程
         /// </summary>
         private void StartRefreshLogThread()
         {
-            lock (this._logShowQueueLock)
+            lock (this._logLock)
             {
                 if (this._logShowQueue != null)
                 {
                     this._logShowQueue.Stop();
                     this._logShowQueue.Dispose();
+                    this._logShowQueue = null;
                 }
 
                 this._logShowQueue = new AsynQueue<ShowLogItem>(this.ShowLog, this._refreshCount, 10, "日志显示线程", true, true, this._cacheCapcity);
-
-                if (this._applicationExitNotify == null)
-                {
-                    this._applicationExitNotify = new ApplicationExitNotify(this.ApplicationExitNotifyCallback);
-                    ApplicationHelper.RegesterExitNotify(this._applicationExitNotify);
-                }
-            }
-        }
-
-        private void ApplicationExitNotifyCallback()
-        {
-            if (this._logShowQueue != null)
-            {
-                this._logShowQueue.Stop();
-                this._logShowQueue.Dispose();
             }
         }
 
@@ -234,10 +227,12 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 foreach (var item in items)
                 {
                     LogShowStyle style = this.GetStyleById(item.StyleID);
-                    var run = new Run();
-                    run.Text = item.LogText;
-                    run.Foreground = style.ForegroundBrush;
-                    run.FontSize = style.FontSize;
+                    var run = new Run()
+                    {
+                        Text = item.LogText,
+                        Foreground = style.ForegroundBrush,
+                        FontSize = style.FontSize,
+                    };
                     fontFamily = style.FontFamily;
                     if (fontFamily != null)
                     {
@@ -253,7 +248,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                     }
                 }
 
-                rtxt.ScrollToEnd();
+                base.ScrollToEnd();
             }
             catch (Exception ex)
             {
@@ -271,20 +266,33 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             }
         }
 
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// 设置样式,不存在添加,存在则用新样式替换旧样式
         /// </summary>
         /// <param name="style">样式</param>
         public void SetStyle(LogShowStyle style)
         {
-            var id = style.ID;
-            if (this._styleDic.ContainsKey(id))
+            lock (this._logLock)
             {
-                this._styleDic[id] = style;
-            }
-            else
-            {
-                this._styleDic.Add(id, style);
+                var id = style.ID;
+                if (this._styleDic.ContainsKey(id))
+                {
+                    this._styleDic[id] = style;
+                }
+                else
+                {
+                    this._styleDic.Add(id, style);
+                }
             }
         }
 
@@ -299,10 +307,13 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
                 return;
             }
 
-            var id = style.ID;
-            if (this._styleDic.ContainsKey(id))
+            lock (this._logLock)
             {
-                this._styleDic.Remove(id);
+                var id = style.ID;
+                if (this._styleDic.ContainsKey(id))
+                {
+                    this._styleDic.Remove(id);
+                }
             }
         }
 
@@ -311,7 +322,10 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// </summary>
         public void ClearStyle()
         {
-            this._styleDic.Clear();
+            lock (this._logLock)
+            {
+                this._styleDic.Clear();
+            }
         }
 
         /// <summary>
@@ -320,7 +334,10 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <returns>当前所有样式数组</returns>
         public LogShowStyle[] GetStyles()
         {
-            return this._styleDic.Values.ToArray();
+            lock (this._logLock)
+            {
+                return this._styleDic.Values.ToArray();
+            }
         }
 
         /// <summary>
@@ -330,12 +347,15 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         /// <returns>获取样式</returns>
         public LogShowStyle GetStyleById(int id)
         {
-            if (this._styleDic.ContainsKey(id))
+            lock (this._logLock)
             {
-                return this._styleDic[id];
-            }
+                if (this._styleDic.ContainsKey(id))
+                {
+                    return this._styleDic[id];
+                }
 
-            return this._defaultStyle;
+                return this._defaultStyle;
+            }
         }
 
         /// <summary>
@@ -348,7 +368,7 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             this.AddLog(logText, (int)level);
         }
 
-        private readonly object _addLogLock = new object();
+
         /// <summary>
         /// 添加显示日志
         /// </summary>
@@ -357,21 +377,14 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
         public void AddLog(string logText, int styleId)
         {
             var item = new ShowLogItem(logText, styleId);
-            bool result;
-            lock (this._addLogLock)
+            lock (this._logLock)
             {
-                while (true)
+                if (this._logShowQueue == null)
                 {
-                    result = this._logShowQueue.Enqueue(item);
-                    if (result)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        this._logShowQueue.Remove(1);
-                    }
+                    return;
                 }
+
+                this._logShowQueue.Enqueue(item);
             }
         }
 
@@ -384,68 +397,83 @@ namespace UtilZ.Dotnet.WindowEx.WPF.Controls
             this._lines.Clear();
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            try
+            {
+                lock (this._logLock)
+                {
+                    if (this._logShowQueue != null)
+                    {
+                        this._logShowQueue.Stop();
+                        this._logShowQueue.Dispose();
+                        this._logShowQueue = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Loger.Error(ex);
+            }
+        }
+    }
 
 
+
+
+
+    /// <summary>
+    /// 显示的日志项
+    /// </summary>
+    internal class ShowLogItem
+    {
+        /// <summary>
+        /// 样式标识ID
+        /// </summary>
+        public int StyleID { get; private set; }
 
         /// <summary>
-        /// 显示的日志项
+        /// 文本内容
         /// </summary>
-        [Serializable]
-        internal class ShowLogItem
+        public string LogText { get; private set; }
+
+        private const string _newLine = "\r\n";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logText"></param>
+        /// <param name="styleId"></param>
+        public ShowLogItem(string logText, int styleId)
         {
-            private int _styleId;
-            /// <summary>
-            /// 样式标识ID
-            /// </summary>
-            public int StyleID
-            {
-                get { return _styleId; }
-            }
+            logText += _newLine;
+            //if (logText == null)
+            //{
+            //    logText = string.Empty;
+            //}
+            //else
+            //{
+            //    if (!logText.EndsWith(_newLine))
+            //    {
+            //        logText += _newLine;
+            //    }
+            //}
 
-            private string _logText;
-            /// <summary>
-            /// 文本内容
-            /// </summary>
-            public string LogText
-            {
-                get { return _logText; }
-            }
+            this.LogText = logText;
+            this.StyleID = styleId;
+        }
 
-            private const string _newLine = "\r\n";
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="logText"></param>
-            /// <param name="styleId"></param>
-            public ShowLogItem(string logText, int styleId)
-            {
-                logText += _newLine;
-                //if (logText == null)
-                //{
-                //    logText = string.Empty;
-                //}
-                //else
-                //{
-                //    if (!logText.EndsWith(_newLine))
-                //    {
-                //        logText += _newLine;
-                //    }
-                //}
-
-                this._logText = logText;
-                this._styleId = styleId;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="logText"></param>
-            /// <param name="level">日志级别</param>
-            public ShowLogItem(string logText, LogLevel level) :
-                this(logText, (int)level)
-            {
-            }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logText"></param>
+        /// <param name="level">日志级别</param>
+        public ShowLogItem(string logText, LogLevel level) :
+            this(logText, (int)level)
+        {
         }
     }
 }

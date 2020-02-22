@@ -29,9 +29,9 @@ namespace UtilZ.Dotnet.Ex.Log
         private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
 
         /// <summary>
-        /// 空队列等待线程消息通知
+        /// 入队消息通知
         /// </summary>
-        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent _enqueueEventHandler = new AutoResetEvent(false);
 
         /// <summary>
         /// 数据处理委托
@@ -61,7 +61,7 @@ namespace UtilZ.Dotnet.Ex.Log
             this._processAction = processAction;
             this._cts = new CancellationTokenSource();
             this._thread = new Thread(this.LogThreadMethod);
-            this._thread.IsBackground = true;
+            this._thread.IsBackground = false;
             this._thread.Name = threadName;
             this._thread.Start();
         }
@@ -81,10 +81,9 @@ namespace UtilZ.Dotnet.Ex.Log
                     {
                         if (this._queue.Count == 0)
                         {
-                            this._thread.IsBackground = true;
                             try
                             {
-                                this._autoResetEvent.WaitOne();
+                                this._enqueueEventHandler.WaitOne();
                                 continue;
                             }
                             catch (ObjectDisposedException)
@@ -104,9 +103,9 @@ namespace UtilZ.Dotnet.Ex.Log
                     }
                 }
             }
-            catch (ObjectDisposedException)
+            catch (Exception e)
             {
-
+                LogSysInnerLog.OnRaiseLog(this, e);
             }
         }
 
@@ -117,12 +116,7 @@ namespace UtilZ.Dotnet.Ex.Log
         public void Enqueue(T item)
         {
             this._queue.Enqueue(item);
-            if (this._thread.IsBackground)
-            {
-                this._thread.IsBackground = false;
-            }
-
-            this._autoResetEvent.Set();
+            this._enqueueEventHandler.Set();
         }
 
         /// <summary>
@@ -136,9 +130,9 @@ namespace UtilZ.Dotnet.Ex.Log
             }
 
             this._cts.Cancel();
-            this._autoResetEvent.Set();
+            this._enqueueEventHandler.Set();
             this._cts.Dispose();
-            this._autoResetEvent.Dispose();
+            this._enqueueEventHandler.Dispose();
             this._isDispose = true;
         }
     }

@@ -67,5 +67,31 @@ namespace UtilZ.Dotnet.Ex.Base
             System.Runtime.Remoting.ObjectHandle objHandle = Activator.CreateInstance(appDomain, assemblyName, segs[0]);
             return objHandle.Unwrap();
         }
+
+
+
+        /// <summary>
+        /// 创建指定接口类型实例 
+        /// </summary>
+        /// <typeparam name="T">接口类型</typeparam>
+        /// <param name="type">实现该接口的类</param>
+        /// <returns>接口实例</returns>
+        public static T CreateInstance<T>(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (!type.IsClass ||
+                type.IsAbstract ||
+                type.GetConstructors().Where(t => { return t.GetParameters().Length == 0; }).Count() == 0 ||
+                type.GetInterface(typeof(T).FullName) == null)
+            {
+                throw new ArgumentException($"类型{type.FullName}需要有无参构造函数的可实例化类型,且该类型必须实现接口{typeof(T).FullName}");
+            }
+
+            return (T)Activator.CreateInstance(type);
+        }
     }
 }

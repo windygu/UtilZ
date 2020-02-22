@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace UtilZ.Dotnet.Ex.Log
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 重定向输出中心

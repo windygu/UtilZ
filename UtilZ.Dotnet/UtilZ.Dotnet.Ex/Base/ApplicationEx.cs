@@ -9,7 +9,7 @@ namespace UtilZ.Dotnet.Ex.Base
     /// <summary>
     /// 应用程序辅助类,控制台程序正常结束需要手动调用ApplicationHelper.OnRaiseApplicationExitNotify方法
     /// </summary>
-    public class ApplicationHelper
+    public class ApplicationEx
     {
         private static readonly List<ApplicationExitNotify> _list = new List<ApplicationExitNotify>();
         private readonly static object _listLock = new object();
@@ -20,14 +20,17 @@ namespace UtilZ.Dotnet.Ex.Base
         private static extern bool SetConsoleCtrlHandler(ControlCtrlDelegate handler, bool add);
         private static ControlCtrlDelegate _consoleAppCloseCtrlHandler = null;
 
-        static ApplicationHelper()
+        static ApplicationEx()
         {
             //var exeAssembly = System.Reflection.Assembly.GetEntryAssembly();
             //Type appType = exeAssembly.EntryPoint.DeclaringType;
 
             if (System.Windows.Application.Current != null)
             {
-                System.Windows.Application.Current.Exit += Current_Exit;
+                System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    System.Windows.Application.Current.Exit += Current_Exit;
+                }));
             }
             else
             {
@@ -81,8 +84,8 @@ namespace UtilZ.Dotnet.Ex.Base
         /// <summary>
         /// 注册应用程序退出通知
         /// </summary>
-        /// <param name="applicationExitNotify"></param>
-        public static void RegesterExitNotify(ApplicationExitNotify applicationExitNotify)
+        /// <param name="applicationExitNotify">应用程序退出通知对象</param>
+        public static void Add(ApplicationExitNotify applicationExitNotify)
         {
             if (applicationExitNotify == null)
             {

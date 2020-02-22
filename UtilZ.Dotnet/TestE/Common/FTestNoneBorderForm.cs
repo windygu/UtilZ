@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Log;
-using UtilZ.Dotnet.Ex.Log.Appender;
-using UtilZ.Dotnet.Ex.Log.Config;
 using UtilZ.Dotnet.WindowEx.Winform.Controls;
 
 namespace TestE.Common

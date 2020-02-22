@@ -102,7 +102,7 @@ namespace UtilZ.Dotnet.DBIBase.Core
         /// <param name="parameterNameValueDic">参数名名称及对应的值字典集合[key:参数名称,含参数符号;value:参数值]</param>
         /// <param name="transaction">事务对象</param>
         /// <returns>命令</returns>
-        public static IDbCommand CreateCommand(this IDBAccess dbAccess, IDbConnection con, string sqlStr, 
+        public static IDbCommand CreateCommand(this IDBAccess dbAccess, IDbConnection con, string sqlStr,
             Dictionary<string, object> parameterNameValueDic = null, IDbTransaction transaction = null)
         {
             IDbCommand cmd = CreateCommand(dbAccess, con, parameterNameValueDic);
@@ -123,6 +123,20 @@ namespace UtilZ.Dotnet.DBIBase.Core
             parameter.ParameterName = parameterName;
             parameter.Value = value;
             cmd.Parameters.Add(parameter);
+        }
+
+        /// <summary>
+        /// 创建命令参数
+        /// </summary>
+        /// <param name="cmd">所属命令对象</param>
+        /// <param name="parameterName">参数名称</param>
+        /// <returns>命令参数</returns>
+        public static IDbDataParameter CreateParameter(this IDbCommand cmd, string parameterName)
+        {
+            var parameter = cmd.CreateParameter();
+            parameter.ParameterName = parameterName;
+            cmd.Parameters.Add(parameter);
+            return parameter;
         }
     }
 }

@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UtilZ.Dotnet.Ex.Log.Appender;
-using UtilZ.Dotnet.Ex.Log.Config;
 
 namespace UtilZ.Dotnet.Ex.Log
 {
@@ -33,22 +31,10 @@ namespace UtilZ.Dotnet.Ex.Log
         /// </summary>
         static Loger()
         {
-            Base.ApplicationHelper.RegesterExitNotify(new Base.ApplicationExitNotify(ApplicationExitNotifyCallback));
+            Base.ApplicationEx.Add(new Base.ApplicationExitNotify(Release));
             StaticStructLoadLogConfig();
         }
 
-        private static void ApplicationExitNotifyCallback()
-        {
-            if (_defaultLoger != null)
-            {
-                _defaultLoger.Dispose();
-            }
-
-            foreach (var loger in _logerDic.Values)
-            {
-                loger.Dispose();
-            }
-        }
 
         private static void StaticStructLoadLogConfig()
         {
@@ -61,14 +47,14 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
                 else
                 {
-                    var xmlFilePaths = Directory.GetFiles(LogConstant.CurrentAssemblyDirectory, "*.xml", SearchOption.TopDirectoryOnly);
-                    if (xmlFilePaths.Length == 0)
+                    string[] xmlFilePathArr = Directory.GetFiles(LogConstant.CurrentAssemblyDirectory, "*.xml", SearchOption.TopDirectoryOnly);
+                    if (xmlFilePathArr.Length == 0)
                     {
                         CreateDefaultLoger();
                     }
                     else
                     {
-                        foreach (var xmlFilePath in xmlFilePaths)
+                        foreach (var xmlFilePath in xmlFilePathArr)
                         {
                             try
                             {
@@ -98,7 +84,7 @@ namespace UtilZ.Dotnet.Ex.Log
 
         private static void CreateDefaultLoger()
         {
-            var defaultLoger = new Loger();
+            var defaultLoger = new Loger(false);
             defaultLoger._appenders.Add(new FileAppender(new FileAppenderConfig(null)));
             _defaultLoger = defaultLoger;
         }
@@ -190,7 +176,13 @@ namespace UtilZ.Dotnet.Ex.Log
                     _defaultLoger = _emptyLoger;
                 }
 
-                var loger = new Loger();
+                bool thread;
+                if (!bool.TryParse(LogUtil.GetAttributeValue(logerEle, "thread"), out thread))
+                {
+                    thread = false;
+                }
+
+                var loger = new Loger(thread);
                 loger.Name = name;
 
                 LogLevel level;
@@ -418,35 +410,43 @@ namespace UtilZ.Dotnet.Ex.Log
         #endregion
 
         #region 日志记录器实例成员
+        private readonly bool _thread;
+        private readonly object _lock = null;
+
         /// <summary>
         /// 日志分发线程队列
         /// </summary>
         private readonly LogAsynQueue<LogItem> _logDispatcherQueue;
 
-        private Loger()
+        private Loger(bool thread)
             : base()
         {
-            this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLogCallback, "日志分发线程");
+            this._thread = thread;
+            if (thread)
+            {
+                this._logDispatcherQueue = new LogAsynQueue<LogItem>(this.RecordLogCallback, "日志分发线程");
+            }
+            else
+            {
+                this._lock = new object();
+            }
         }
 
         private void RecordLogCallback(LogItem item)
         {
-            AppenderBase[] appenders;
+            item.LogProcess();
             lock (base._appendersLock)
             {
-                appenders = base._appenders.ToArray();
-            }
-
-            item.LogProcess();
-            foreach (var appender in appenders)
-            {
-                try
+                foreach (var appender in base._appenders)
                 {
-                    appender.WriteLog(item);
-                }
-                catch (Exception exi)
-                {
-                    LogSysInnerLog.OnRaiseLog(this, exi);
+                    try
+                    {
+                        appender.WriteLog(item);
+                    }
+                    catch (Exception exi)
+                    {
+                        LogSysInnerLog.OnRaiseLog(this, exi);
+                    }
                 }
             }
         }
@@ -486,7 +486,17 @@ namespace UtilZ.Dotnet.Ex.Log
                 }
 
                 var item = new LogItem(DateTime.Now, Thread.CurrentThread, skipFrames, true, this.Name, level, eventId, tag, ex, format, args);
-                this._logDispatcherQueue.Enqueue(item);
+                if (this._thread)
+                {
+                    this._logDispatcherQueue.Enqueue(item);
+                }
+                else
+                {
+                    lock (this._lock)
+                    {
+                        this.RecordLogCallback(item);
+                    }
+                }
             }
             catch (Exception exi)
             {
@@ -501,7 +511,11 @@ namespace UtilZ.Dotnet.Ex.Log
         /// <param name="isDisposing">是否释放标识</param>
         protected override void Dispose(bool isDisposing)
         {
-            this._logDispatcherQueue.Dispose();
+            if (this._thread)
+            {
+                this._logDispatcherQueue.Dispose();
+            }
+
             lock (this._appendersLock)
             {
                 foreach (var appender in this._appenders)
@@ -891,6 +905,30 @@ namespace UtilZ.Dotnet.Ex.Log
             SAddLog(LogLevel.Fatal, eventId, tag, ex, format, args);
         }
         #endregion
+
+
+        /// <summary>
+        /// 释放日志资源
+        /// </summary>
+        public static void Release()
+        {
+            try
+            {
+                foreach (var loger in _logerDic.Values)
+                {
+                    loger.Dispose();
+                }
+
+                if (_defaultLoger != null)
+                {
+                    _defaultLoger.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSysInnerLog.OnRaiseLog(null, ex);
+            }
+        }
         #endregion
     }
 }

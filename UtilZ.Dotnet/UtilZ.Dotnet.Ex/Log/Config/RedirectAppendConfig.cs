@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 
-namespace UtilZ.Dotnet.Ex.Log.Config
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 重定向输出日志追加器配置

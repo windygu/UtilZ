@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UtilZ.Dotnet.Ex.Log;
 using UtilZ.Dotnet.WindowEx.Base.PartAsynWait.Model;
 using UtilZ.Dotnet.WindowEx.Winform.Base;
 using UtilZ.Dotnet.WindowEx.Winform.Controls.PartAsynWait;
@@ -20,10 +21,13 @@ namespace TestE.Winform
         {
             InitializeComponent();
         }
-        
+
         private readonly List<CobITemInfo> items = new List<CobITemInfo>();
         private void FTestPartAsynWait_Load(object sender, EventArgs e)
         {
+            //var task = Task.Factory.StartNew(TestApp, TaskCreationOptions.LongRunning);
+            
+
             items.Add(new CobITemInfo("yf", 23));
             items.Add(new CobITemInfo("zhn", 31));
             items.Add(new CobITemInfo("tq", 18));
@@ -34,6 +38,22 @@ namespace TestE.Winform
             //DropdownBoxHelper.BindingIEnumerableGenericToToolStripComboBox<CobITemInfo>(toolStripComboBox1, items, nameof(CobITemInfo.Name));
             //DropdownBoxHelper.BindingIEnumerableGenericToToolStripComboBox<CobITemInfo>(toolStripComboBox1, items);
             DropdownBoxHelper.BindingIEnumerableGenericToToolStripComboBox<CobITemInfo>(toolStripComboBox1, t => { return t.Name; }, items);
+
+
+            //Thread thread = new Thread(TestApp) ;
+            //thread.Start();
+            //thread.Join();
+        }
+
+        private void TestApp()
+        {
+            //var loger = Loger.GetLoger(null);
+
+            while (true)
+            {
+                Thread.Sleep(1000);
+                break;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

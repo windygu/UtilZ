@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UtilZ.Dotnet.Ex.Base;
 using UtilZ.Dotnet.Ex.Log;
-using UtilZ.Dotnet.Ex.Log.Appender;
 
 namespace TestE.Common
 {

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UtilZ.Dotnet.WindowEx</RootNamespace>
     <AssemblyName>UtilZ.Dotnet.WindowEx</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\UtilZ.Dotnet.WindowEx.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\UtilZ.Dotnet.WindowEx.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -263,9 +266,7 @@
     </Compile>
     <Compile Include="WPF\Controls\GifImage\GifImageExceptionRoutedEventArgs.cs" />
     <Compile Include="WPF\Controls\GifImage\WebReadState.cs" />
-    <Compile Include="WPF\Controls\LogControl.xaml.cs">
-      <DependentUpon>LogControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="WPF\Controls\LogControl.cs" />
     <Compile Include="WPF\Controls\NumericTextBox.xaml.cs">
       <DependentUpon>NumericTextBox.xaml</DependentUpon>
     </Compile>
@@ -311,10 +312,6 @@
     <Page Include="WPF\Controls\GifImage\GifImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\LogControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\Controls\NumericTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>

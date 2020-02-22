@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UtilZ.Dotnet.Ex.Log
+namespace UtilZ.DotnetStd.Ex.Log
 {
     /// <summary>
     /// 重定向输出项

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 
-namespace UtilZ.Dotnet.Ex.Log.Config
+namespace UtilZ.Dotnet.Ex.Log
 {
     /// <summary>
     /// 日志追加器配置
     /// </summary>
-    [Serializable]
     public class FileAppenderConfig : BaseConfig
     {
         /// <summary>
@@ -71,7 +70,7 @@ namespace UtilZ.Dotnet.Ex.Log.Config
         public FileAppenderConfig(XElement ele)
             : base(ele)
         {
-            base.EnableOutputCache = true;
+            //base.EnableOutputCache = true;
             this.MaxFileSize = 10 * 1024;//默认值10MB
 
             if (ele == null)
