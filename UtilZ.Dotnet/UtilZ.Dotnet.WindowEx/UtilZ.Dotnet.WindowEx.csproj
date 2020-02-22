@@ -229,36 +229,6 @@
     <Compile Include="WPF\Base\ElementExtend.cs" />
     <Compile Include="WPF\Base\TextBlockEx.cs" />
     <Compile Include="WPF\Base\TextBoxEx.cs" />
-    <Compile Include="WPF\Controls\Chart\Axis\AxesCollection.cs" />
-    <Compile Include="WPF\Controls\Chart\Axis\AxisAbs.cs" />
-    <Compile Include="WPF\Controls\Chart\Base\AxisDockOrientation.cs" />
-    <Compile Include="WPF\Controls\Chart\Base\AxisFreezeInfo.cs" />
-    <Compile Include="WPF\Controls\Chart\Base\AxisFreezeType.cs" />
-    <Compile Include="WPF\Controls\Chart\Base\AxisType.cs" />
-    <Compile Include="WPF\Controls\Chart\Base\LabelAxisItem.cs" />
-    <Compile Include="WPF\Controls\Chart\Base\SeriesOrientation.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartColumnItem.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartDateTimeItem.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartItemAbs.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Entity\ChartNumberItem.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartColumnItem.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartDateTimeItem.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartItem.cs" />
-    <Compile Include="WPF\Controls\Chart\ChartItem\Interface\IChartNumberItem.cs" />
-    <Compile Include="WPF\Controls\Chart\Legend\IChartLegend.cs" />
-    <Compile Include="WPF\Controls\Chart\Legend\SeriesLegendItem.cs" />
-    <Compile Include="WPF\Controls\Chart\Series\ISeries.cs" />
-    <Compile Include="WPF\Controls\Chart\View\ChartControl.cs" />
-    <Compile Include="WPF\Controls\Chart\View\ChartSeries.cs" />
-    <Compile Include="WPF\Controls\Chart\View\HorizontalChartLegend.xaml.cs">
-      <DependentUpon>HorizontalChartLegend.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Chart\View\StytleContainerControl.xaml.cs">
-      <DependentUpon>StytleContainerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\Controls\Chart\View\VerticalChartLegend.xaml.cs">
-      <DependentUpon>VerticalChartLegend.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WPF\Controls\GifImage\GifAnimation.cs" />
     <Compile Include="WPF\Controls\GifImage\GifFrame.cs" />
     <Compile Include="WPF\Controls\GifImage\GifImage.xaml.cs">
@@ -293,22 +263,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="WPF\Controls\Chart\ResourceDictionary\ChartResourceDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Chart\View\HorizontalChartLegend.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\Controls\Chart\View\StytleContainerControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WPF\Controls\Chart\View\VerticalChartLegend.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="WPF\Controls\GifImage\GifImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -381,8 +335,6 @@
   <ItemGroup>
     <None Include="Resources\prepage.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WPF\Controls\Chart\Helper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
