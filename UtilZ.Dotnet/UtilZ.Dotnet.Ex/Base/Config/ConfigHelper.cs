@@ -71,7 +71,7 @@ namespace UtilZ.Dotnet.Ex.Base.Config
 
             foreach (var proInfo in proInfoArr)
             {
-                attri = proInfo.PropertyType.GetCustomAttribute(configAttributeTypes.IgnoreAttributeType, false) as ConfigAttribute;
+                attri = proInfo.GetCustomAttribute(configAttributeTypes.IgnoreAttributeType, false) as ConfigAttribute;
                 if (attri != null)
                 {
                     //忽略该属性
