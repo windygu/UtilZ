@@ -346,7 +346,7 @@ namespace UtilZ.Dotnet.Ex.Log
         }
 
         /// <summary>
-        /// 获取日志记录器,如果日志记录器成功返回配置的日志记录器,如果不存在返回空日志记录器
+        /// 获取日志记录器,如果日志记录器名称为空或null则返回默认日志记录器,否则当名称对应的日志记录器存在时返回配置的日志记录器,不存在则抛出异常
         /// </summary>
         /// <param name="logerName">日志记录器名称</param>
         /// <returns>日志记录器</returns>
@@ -361,7 +361,10 @@ namespace UtilZ.Dotnet.Ex.Log
             {
                 lock (_logerDicLock)
                 {
-                    loger = _logerDic[logerName] as ILoger;
+                    if (!_logerDic.TryGetValue(logerName, out loger))
+                    {
+                        throw new ApplicationException($"不存在名称为\"{logerName}\"的日志记录器");
+                    }
                 }
             }
 

@@ -160,13 +160,20 @@ namespace UtilZ.Dotnet.Ex.Base.Config
             }
             else
             {
-                if (proInfoValue is string)
+                if (proInfoValue == null)
                 {
-                    value = (string)proInfoValue;
+                    value = string.Empty;
                 }
                 else
                 {
-                    value = proInfoValue.ToString();
+                    if (proInfoValue is string)
+                    {
+                        value = (string)proInfoValue;
+                    }
+                    else
+                    {
+                        value = proInfoValue.ToString();
+                    }
                 }
             }
 
@@ -405,7 +412,7 @@ namespace UtilZ.Dotnet.Ex.Base.Config
 
             foreach (var proInfo in proInfoArr)
             {
-                attri = proInfo.PropertyType.GetCustomAttribute(configAttributeTypes.IgnoreAttributeType, false) as ConfigAttribute;
+                attri = proInfo.GetCustomAttribute(configAttributeTypes.IgnoreAttributeType, false) as ConfigAttribute;
                 if (attri != null)
                 {
                     //忽略该属性
@@ -531,6 +538,11 @@ namespace UtilZ.Dotnet.Ex.Base.Config
 
         private static void ReadItem(XElement ele, ConfigItemAttribute attri, PropertyInfo proInfo, object ownerObj)
         {
+            if (!proInfo.CanWrite)
+            {
+                throw new ArgumentException($"属性{proInfo.DeclaringType.FullName}.{proInfo.Name}不支持set操作");
+            }
+
             string valueStr = XmlEx.GetXElementAttributeValue(ele, _VALUE);
             object value;
             if (attri.Converter != null)
@@ -554,6 +566,11 @@ namespace UtilZ.Dotnet.Ex.Base.Config
             object value = proInfo.GetValue(ownerObj, null);
             if (value == null)
             {
+                if (!proInfo.CanWrite)
+                {
+                    throw new ArgumentException($"属性{proInfo.DeclaringType.FullName}.{proInfo.Name}不支持set操作");
+                }
+
                 value = Activator.CreateInstance(proInfo.PropertyType);
                 proInfo.SetValue(ownerObj, value, null);
             }
@@ -573,6 +590,11 @@ namespace UtilZ.Dotnet.Ex.Base.Config
             object collection = proInfo.GetValue(ownerObj, null);
             if (collection == null)
             {
+                if (!proInfo.CanWrite)
+                {
+                    throw new ArgumentException($"属性{proInfo.DeclaringType.FullName}.{proInfo.Name}不支持set操作");
+                }
+
                 collection = Activator.CreateInstance(proInfo.PropertyType);
                 proInfo.SetValue(ownerObj, collection, null);
             }
