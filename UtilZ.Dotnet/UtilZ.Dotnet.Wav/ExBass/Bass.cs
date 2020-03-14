@@ -29,8 +29,9 @@ namespace UtilZ.Dotnet.Wav.ExBass
                 version = BassX86.BASS_GetVersion();
             }
 
-            //当前是基于bass的33819649版本开发
-            return version == 33819649;
+            //bass版本:33819649
+            //当前是基于bass的33820416版本开发
+            return version == 33820416;
         }
 
         /// <summary>

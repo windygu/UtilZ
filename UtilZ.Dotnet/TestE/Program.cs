@@ -19,7 +19,7 @@ namespace TestE
             //Loger.LoadConfig(@"logconfig.xml");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FTestPartAsynWait());
+            Application.Run(new FWave22());
         }
     }
 }
